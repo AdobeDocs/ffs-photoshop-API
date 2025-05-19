@@ -13,19 +13,17 @@
 module.exports = {
   pathPrefix: process.env.PATH_PREFIX || '/firefly-services/docs/photoshop/',
   siteMetadata: {
-    versions: [
-      {
-        title: 'v2.0',
-        selected: true
-      },
-      {
-        title: 'v1.4',
-        path: 'https://github.com/AdobeDocs/dev-site'
-      }
-    ],
     pages: [
       {
-        title: 'Cat Analytics',
+        title: 'Firefly Services',
+        path: 'https://developer.adobe.com/firefly-services/docs/guides/?aio_internal'
+      },
+      {
+        title: 'Getting Started',
+        path: '/getting_started/'
+      },
+      {
+        title: 'About Photoshop API',
         path: '/'
       },
       {
@@ -46,10 +44,6 @@ module.exports = {
             path: '/api/1.4.md'
           }
         ]
-      },
-      {
-        title: 'Support',
-        path: '/support/'
       }
     ],
     subPages: [
