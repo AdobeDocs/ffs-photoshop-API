@@ -2,6 +2,8 @@ title: Authentication
 description: Page for Authentication
 contributors:
   - https://github.com/khound
+  - https://github.com/archyposada
+
 ---
 
 # Authentication
