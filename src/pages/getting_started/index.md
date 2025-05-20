@@ -1,3 +1,4 @@
+---
 title: Authentication
 description: Page for Authentication
 contributors:
@@ -36,11 +37,12 @@ Be diligent when choosing the OAuth 2.0 library that works best for your applica
 
 The token endpoint also returns an expiry date, and the token itself (when decoded) contains the expiry time.
 
-Once you’ve created your token, you can follow the steps below to make your first API call.
-   - Open your terminal and paste the code below.
-   - Replace the variables "YOUR_ACCESS_TOKEN" with the token you generated on Adobe I/O Console.
-   - Replace <YOUR_CLIENT_ID>. You can find this on the same page you generated your token on.
-   - Once all variables have been replaced you can run the command.
+Once you've created your token, you can follow the steps below to make your first API call:
+
+1. Open your terminal and paste the code below.
+2. Replace the variables "YOUR_ACCESS_TOKEN" with the token you generated on Adobe I/O Console.
+3. Replace <YOUR_CLIENT_ID>. You can find this on the same page you generated your token on.
+4. Once all variables have been replaced you can run the command.
 
 ``` shell
 curl --request GET \
@@ -49,8 +51,10 @@ curl --request GET \
   --header "x-api-key: <YOUR_CLIENT_ID>"
 ```
 
-If you are using Windows machine don't use the backslash for the curl commands. e.g
+If you are using Windows machine don't use the backslash for the cURL commands:
+
 ``` shell
 curl --request GET --url https://image.adobe.io/pie/psdService/hello --header "Authorization: Bearer <YOUR_ACCESS_TOKEN>" --header "x-api-key: <YOUR_CLIENT_ID>"
 ```
+
 Congratulations! You just made your first request to the Photoshop API.
