@@ -19,12 +19,12 @@ module.exports = {
         path: 'https://developer.adobe.com/firefly-services/docs/guides/?aio_internal'
       },
       {
-        title: 'Getting Started',
-        path: '/getting_started/'
-      },
-      {
         title: 'About Photoshop API',
         path: '/'
+      },
+      {
+        title: 'Getting Started',
+        path: '/getting_started/'
       },
       {
         title: 'Guides',
@@ -32,18 +32,7 @@ module.exports = {
       },
       {
         title: 'API Reference',
-        menu: [
-          {
-            title: 'Cat Reference v2.0',
-            description: 'Cat Reporting API',
-            path: '/api/index.md'
-          },
-          {
-            title: 'Cat Reference v1.4',
-            description: 'Cat API Spec',
-            path: '/api/1.4.md'
-          }
-        ]
+        path: '/api/index.md'
       }
     ],
     subPages: [
@@ -52,50 +41,16 @@ module.exports = {
         path: '/guides/',
         pages: [
           {
-            title: 'Dummy an OAuth Client',
-            path: '/guides/dummy_oauth_client/'
+            title: 'Authorization',
+            path: '/guides/index.md'
           },
           {
-            title: 'Dummy OAuth using POSTMAN',
-            path: '/guides/dummy_using_postman/'
-          }
-        ]
-      },
-      {
-        title: 'Cat Metrics API',
-        path: '/guides/dummy_metrics_api/'
-      },
-      {
-        title: 'Migrating',
-        path: '/guides/migrating/'
-      },
-      {
-        title: 'Overview',
-        path: '/support/',
-        header: true,
-        pages: [
-          {
-            title: 'Help',
-            path: '/support/'
+            title: 'Storage Solutions',
+            path: '/guides/storage_solutions/'
           },
           {
-            title: 'FAQ',
-            path: '/support/FAQ/'
-          },
-          {
-            title: 'How to contribute',
-            path: '/support/contribute/'
-          }
-        ]
-      },
-      {
-        title: 'Community',
-        path: '/support/community/',
-        header: true,
-        pages: [
-          {
-            title: 'Information',
-            path: '/support/community/'
+            title: 'Usage',
+            path: '/guides/usage/'
           }
         ]
       }
