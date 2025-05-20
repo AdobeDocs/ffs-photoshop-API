@@ -1,5 +1,7 @@
 ---
 title: Photoshop API Reference
 description: Photoshop API Reference
-openAPISpec:  /photoshop_api.json
+layout: none
 --- 
+
+<RedoclyAPIBlock src="/photoshop_api.json" scrollYOffset={64} generateCodeSamples="languages: [{lang: 'curl'}]" />
