@@ -1,84 +1,54 @@
 ---
-title: Overview - Cat Analytics
-description: This is the overview page of Cat Analytics
+title: Photoshop API Overview
+description: This is the overview page of Adobe Photoshop API
+keywords:
+  - Photoshop API guides
+  - Photoshop API Overview
+  - Photoshop API documentation
+  - Photoshop API
+  - Photoshop API SDK
+  - Photoshop API Developer documentation
 contributors:
-  - https://github.com/icaraps 
+  - https://github.com/khound
+  - https://github.com/archyposada
+hideBreadcrumbNav: true
 ---
 
-<Hero slots="heading, text"/>
+<Hero slots="image, heading, text"/>
 
-# Cat Analytics API
+![Hero image](./hero.png)
 
-Cat Product API offers limitless ways to integrate your most important customer data into key business processes. Cat Product API offer limitless ways.
+# Adobe Photoshop API - Firefly Services
 
-<Resources slots="heading, links"/>
-
-#### Resources
-
-* [Quickstart Guide](https://developer.adobe.com)
-* [Cat Analytics Github Repo](https://github.com/AdobeDocs/dev-site)
+Unlock the potential of Adobe Photoshop and cutting edge AI/ML services through an easy-to-use RESTful API.
 
 ## Overview
 
-This documentation provides instructions for Catt Analytics 2.0 APIs. For working with Cat Analytics APIs, see [Cat Analytics API Documentation](https://github.com/AdobeDocs/dev-site).
+Welcome to the Adobe Photoshop API, now integrated into Firefly Services. Our API follows REST-like principles, utilizing standard HTTP response codes, verbs, and authentication methods that return JSON-encoded responses. While the examples provided are in cURL, feel free to develop your application in any preferred language.
 
-The Cat Analytics APIs are a collection of APIs that power Cat Analytics products like Cat Workspace.
-The APIs allow for the creation of data rich user interfaces that you can use to manipulate and integrate data.
-You can also create reports to explore, get insights, or answer important questions about your data.
+This guide will assist you in:
+
+- Creating a project within the Adobe Developer Console
+- Obtaining and authenticating your credentials
+- Constructing personalized workflows by chaining API calls to various endpoints within the Firefly Services APIs
+- Developing event-driven applications through Adobe I/O Events
 
 ## Discover
 
-<DiscoverBlock width="100%" slots="heading, link, text"/>
+<DiscoverBlock slots="heading, link, text"/>
 
 ### Get Started
 
-[Quickstart Guide](guides/)
+[Getting Started Guide](/getting_started/index.md)
 
-Get started with the Cat Analytics APIs.
+Get started with the Adobe Photoshop Firefly Services.
+
+<DiscoverBlock slots="link, text"/>
+
+[Tutorials](../guides/tutorials/index.md) 
+
+Explore our tutorials page for comprehensive guidance.  
 
 <DiscoverBlock slots="heading, link, text"/>
 
-### Guides
-
-[Calculated Metrics API](guides/dummy_metrics_api/)
-
-Returns information on the user's company that is necessary for making other Cat Analytics API calls.
-
-<DiscoverBlock slots="link, text"/>
-
-[Segments API](guides/dummy_oauth_client/)
-
-Provides configuration guidance and best practices for the /segments endpoint.
-
-<DiscoverBlock slots="link, text"/>
-
-[Reporting Guide API](guides/dummy_using_postman/)
-
-Provides configuration guidance and best practices for the /reports endpoint.
-
-<DiscoverBlock slots="link, text"/>
-
-[Migrating from 1.4 to 2.0](guides/migrating/)
-
-For help migrating from the 1.4 versions of the Analytics API to the newer and more capable /reports API.
-
-<DiscoverBlock width="100%" slots="heading, link, text"/>
-
-### API References
-
-[Try the API](api/)
-
-Try the Analytics API with Swagger UI. Explore, make calls, with full endpoint descriptions.
-
-## Contributing
-
-We encourage you to participate in our open documentation initiative, if you have suggestions, corrections, additions
-or deletions for this documentation, check out the source from [this github repo](https://github.com/adobe/gatsby-theme-spectrum-example), and submit a pull
-request with your contribution. For more information, refer to the [contributing page](support/contribute/).
-
-## API Requests & Rate Limits
-
-The timeout for API requests through adobe.io is currently *60 seconds*.
-
-The default rate limit for an Cat Analytics Company is *120 requests per minute*. (The limit is enforced as *12 requests every 6 seconds*).
-When rate limiting is being enforced you will get `429` HTTP response codes with the following response body: `{"error_code":"429050","message":"Too many requests"}`.
+<br/><br/><br/><br/>

@@ -7,7 +7,6 @@ keywords:
   - selections
   - layers
 contributors:
-  - https://github.com/sushiriot
   - https://github.com/archyposada
 hideBreadcrumbNav: true
 ---
