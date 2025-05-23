@@ -1,7 +1,11 @@
 ---
 title: Storage Solutions Concept Page
 description: This page explains the storage solutions that are acceptable for use with video services.
+contributors:
+  - https://github.com/khound
+  - https://github.com/archyposada
 ---
+
 # Storage Solutions
 
 Explore more about the storage solutions you'll need when you're using these APIs.
