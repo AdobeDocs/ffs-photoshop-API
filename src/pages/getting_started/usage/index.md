@@ -2,7 +2,7 @@
 title: Photoshop API Usage Notes
 description: This document has details about what's currently supported, limitations, and workarounds for the Photoshop APIs.
 contributors:
-  - 
+  - https://github.com/AEAbreu-hub
 ---
 
 # Audio/Video API Usage Notes

@@ -11,7 +11,6 @@ keywords:
 contributors:
   - https://github.com/khound
   - https://github.com/archyposada
-hideBreadcrumbNav: true
 ---
 
 <Hero slots="image, heading, text"/>

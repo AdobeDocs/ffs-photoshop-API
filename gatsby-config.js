@@ -27,12 +27,16 @@ module.exports = {
         path: '/getting_started/'
       },
       {
+        title: 'Getting Started',
+        path: '/getting_started/'
+      },
+      {
         title: 'Guides',
         path: '/guides/'
       },
       {
         title: 'API Reference',
-            path: '/api/index.md'
+        path: '/api/index.md'
           },
     ],
     subPages: [
