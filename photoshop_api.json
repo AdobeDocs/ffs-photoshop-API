@@ -2,12 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Adobe Photoshop and Imaging APIs",
-    "description": "Your interface to Adobe Photoshop and Imaging APIs",
-    "contact": {
-      "name": "Adobe Photoshop API Support",
-      "url": "https://developer.adobe.com/photoshop/photoshop-api-docs/api/#tag/Photoshop",
-      "email": "mantis@adobe.com"
-    },
+    "description": "This section provides a comprehensive guide to all available API endpoints, including request formats, parameters, authentication requirements, and example responses. Use this as your source of truth when integrating with or building on top of our APIs.",
     "version": "1.1"
   },
   "servers": [
@@ -24,10 +19,6 @@
   ],
   "tags": [
     {
-      "name": "Sensei",
-      "description": "Adobe Sensei and Imaging APIs"
-    },
-    {
       "name": "Photoshop",
       "description": "Adobe Photoshop and Imaging APIs"
     }
@@ -36,10 +27,10 @@
     "/sensei/status/{jobId}": {
       "get": {
         "tags": [
-          "Sensei"
+          "Photoshop"
         ],
-        "summary": "Get Status API",
-        "description": "Get job status of a Sensei job",
+        "summary": "Get Status - Mask",
+        "description": "This endpoint returns the status of a job for Remove Background and Create Mask. Please expand `200 Successful operation` under `Responses` to know details of the status returned.",
         "operationId": "senseiJobStatus",
         "parameters": [
           {
@@ -80,10 +71,10 @@
     "/sensei/cutout": {
       "post": {
         "tags": [
-          "Sensei"
+          "Photoshop"
         ],
-        "summary": "Remove Background API",
-        "description": "Isolate subject of interest in an image and remove background.",
+        "summary": "Remove Background",
+        "description":  "This endpoint will identify the main subject of your image and removes the background automatically. It also provides options to return a PNG file in 4 channel RGBA or 3 channel RGB format. To check the status of this process, utilize the `Get Status - Mask` endpoint.",
         "operationId": "removeBackgroundAsync",
         "parameters": [
           {
@@ -232,10 +223,10 @@
     "/sensei/mask": {
       "post": {
         "tags": [
-          "Sensei"
+          "Photoshop"
         ],
-        "summary": "Create Mask API",
-        "description": "Isolate a subject of interest in an image (people, objects, etc) and generate an image mask",
+        "summary": "Create Mask",
+        "description": "This endpoint uses the Remove Background AI/ML model to returrn a PNG file with a mask applied around the subject. To check the status of this process, utilize the `Get Status - Mask` endpoint.",
         "operationId": "createMaskAsync",
         "parameters": [
           {
@@ -386,7 +377,7 @@
         "tags": [
           "Photoshop"
         ],
-        "summary": "Get Status API",
+        "summary": "Get Status",
         "description": "Get job status of a Photoshop job",
         "operationId": "psJobStatus",
         "parameters": [
@@ -1508,8 +1499,8 @@
         "tags": [
           "Photoshop"
         ],
-        "summary": "Smart Crop API",
-        "description": "Smart crop an image keeping the subject of interest in view.",
+        "summary": "Prodct Crop",
+        "description": "This endpoint identifies the subject of the input file and automatically crops the image to keep the subject in the center. Check the status of this process with the `Get Status` endpoint.",
         "operationId": "applyAutoCropAsync",
         "parameters": [
           {
@@ -1660,8 +1651,8 @@
         "tags": [
           "Photoshop"
         ],
-        "summary": "Depth Blur API",
-        "description": "Apply depth blur to an image input ",
+        "summary": "Depth Blur",
+        "description": "Apply depth blur to an image input",
         "operationId": "applyDepthBlurAsync",
         "parameters": [
           {
