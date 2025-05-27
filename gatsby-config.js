@@ -22,6 +22,10 @@ module.exports = {
         title: 'About Photoshop API',
         path: '/'
       },
+       {
+        title: 'Getting Started',
+        path: '/getting_started/'
+      },
       {
         title: 'Getting Started',
         path: '/getting_started/'
@@ -33,24 +37,56 @@ module.exports = {
       {
         title: 'API Reference',
         path: '/api/index.md'
-      }
+          },
     ],
     subPages: [
       {
-        title: 'Get Started',
-        path: '/guides/',
+        title: 'Getting Started',
+        path: '/getting_started/',
+        header: true,
         pages: [
           {
-            title: 'Authorization',
-            path: '/guides/index.md'
+            title: 'Authentication',
+            path: '/getting_started/'
           },
           {
             title: 'Storage Solutions',
-            path: '/guides/storage_solutions/'
+            path: '/getting_started/storage_solutions'
+          },
+             {
+            title: 'Features',
+            path: '/getting_started/features'
           },
           {
-            title: 'Usage',
-            path: '/guides/usage/'
+            title: 'Technical Usage Notes',
+            path: '/getting_started/technical_usage_notes'
+          },
+        ]
+      },
+      {
+        title: 'Guides',
+        path: '/guides/',
+        header: true,
+        pages: [
+          {
+            title: 'Concepts',
+            path: '/guides/concepts/index.md'
+          },
+          {
+            title: 'Code Samples',
+            path: '/guides/code_sample/index.md'
+          },
+          {
+            title: 'Dummy Oauth',
+            path: '/guides/dummy_oauth_client/index.md'
+          },
+          {
+            title: 'Dummy Using Postman',
+            path: '/guides/dummy_using_postman/index.md'
+          },
+          {
+            title: 'Migrating',
+            path: '/guides/migrating/index.md'
           }
         ]
       }
