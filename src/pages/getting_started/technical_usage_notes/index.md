@@ -72,7 +72,7 @@ As the names indicate, these event types represent events triggered by the indiv
 #### Prerequisites needed to use the Event Provider
 
 1. In order to use the Adobe I/O Events you will need to create a project on Adobe I/O Console.
-2. You can follow the steps listed in [Getting Started](../../guides/get-started.md) page if you haven't created one yet.
+2. You can follow the steps listed in [Getting Started](../../getting_started/index.md) page if you haven't created one yet.
 3. Create a [Webhook application](https://www.adobe.io/apis/experienceplatform/events/docs.html#!adobedocs/adobeio-events/master/intro/webhooks_intro.md)
 
 You can find a sample NodeJS application [here](https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/webhook-sample-app).

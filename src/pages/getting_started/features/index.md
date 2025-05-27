@@ -85,7 +85,7 @@ curl -X POST \
 }'
 ```
 
-For another example, see [Execute Individual Photoshop Action](..//guides/code_sample/index.md#photoshop-actions-play-a-specific-action)
+For another example, see [Execute Individual Photoshop Action](../../guides/code_sample/index.md#photoshop-actions-play-a-specific-action)
 
 ## ActionJSON Endpoint
 
@@ -170,7 +170,7 @@ curl -X POST \
 }'
 ```
 
-The actionJSON endpoint does support multiple inputs. If you would like to learn more about using multiple inputs with actionJSON, you can find this: [Multiple Inputs ActionJSON Example](..//guides/code_sample/index.md#executing-an-actionjson-with-multiple-inputs).
+The actionJSON endpoint does support multiple inputs. If you would like to learn more about using multiple inputs with actionJSON, you can find this: [Multiple Inputs ActionJSON Example](../../guides/code_sample/index.md#executing-an-actionjson-with-multiple-inputs).
 
 Take a look at this tutorial of this endpoint to learn more. Alternately you can read on in this section to walk through the process.
 
@@ -343,7 +343,7 @@ curl -X POST \
 ]}'
 ```
 
-A call to this API initiates an asynchronous job and returns a response containing an href. Use the value in the href to poll for the status of the job. This is illustrated in [Example, Fetch API Status](..//guides/code_sample/index.md#fetch-the-status-of-an-api) and [Example, Poll Job Status](..//guides/code_sample/index.md#poll-for-job-status-for-all-other-apis).
+A call to this API initiates an asynchronous job and returns a response containing an href. Use the value in the href to poll for the status of the job. This is illustrated in [Example, Fetch API Status](../../guides/code_sample/index.md#fetch-the-status-of-an-api) and [Example, Poll Job Status](../../guides/code_sample/index.md#poll-for-job-status-for-all-other-apis).
 
 ### Known Limitations
 

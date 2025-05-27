@@ -6,7 +6,7 @@ description: Code Examples.
 
 ## Photoshop
 
-The code snippets are using one of our [sample psd](https://github.com/AdobeDocs/cis-photoshop-api-docs/blob/main/sample_files/Example.psd) files. Please feel free to download and use it for testing. Just remember you will need to have this file stored in one of the accepted external storages. For more information on storage please refer to the [File Storage](../general-workflow/index.md#input-and-output-file-storage).
+The code snippets are using one of our [sample psd](https://github.com/AdobeDocs/cis-photoshop-api-docs/blob/main/sample_files/Example.psd) files. Please feel free to download and use it for testing. Just remember you will need to have this file stored in one of the accepted external storages. For more information on storage please refer to the [File Storage](../../getting_started/storage_solutions/index.md).
 
 For each of these examples to run. You first have to get your Bearer token and apikey. For ease of use, you can export your token and api key before running the examples.
 
@@ -645,7 +645,7 @@ curl -X GET \
 
 ### Poll for job status for documentManifest
 
-Once your job completes successfully (no errors/failures reported), the status response will contain your document's JSON manifest along with other metadata about the input document. The JSON Manifest is further described in the [api docs](../api/photoshop_status.md)
+Once your job completes successfully (no errors/failures reported), the status response will contain your document's JSON manifest along with other metadata about the input document. The JSON Manifest is further described in the [api docs](../../api/index.md)
 
 ```json
 {
@@ -687,7 +687,7 @@ Once your job completes successfully (no errors/failures reported), the status r
                 "width":252
               },
               "text": {
-                "content":"Reset your customers’ expectations.",
+                "content":"Reset your customers' expectations.",
                 "paragraphStyles":[
                   {   
                     "alignment":"left"
@@ -703,7 +703,7 @@ Once your job completes successfully (no errors/failures reported), the status r
               "id":412,
               "index":6,
               "locked":false,
-              "name":"Reset your customers’ expectations.",
+              "name":"Reset your customers' expectations.",
               "type":"textLayer",
               "visible":true
             },
@@ -1048,7 +1048,7 @@ curl -X POST \
 }'
 ```
 
-First, be sure to follow the instructions in the [Getting Started](../../guides/get-started.md) guide to get your token.
+First, be sure to follow the instructions in the [Getting Started](../../getting_started/index.md) guide to get your token.
 
 ### Remove Background
 

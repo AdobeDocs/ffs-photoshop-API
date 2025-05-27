@@ -44,7 +44,7 @@ Get started with the Adobe Photoshop Firefly Services.
 
 <DiscoverBlock slots="link, text"/>
 
-[Tutorials](../guides/tutorials/index.md)
+[Tutorials](../pages/guides/)
 
 Explore our tutorials page for comprehensive guidance.  
 
