@@ -92,7 +92,7 @@ For another example, see [Execute Individual Photoshop Action](..//guides/code_s
 Similar to the Photoshop Actions endpoint, this endpoint also helps you to apply the contents of ATN file to an image programmatically. However, there are a few key differences which give you added flexibility.
 
 * You can modify the payload, such as adding an action.
-* You don’t need to upload and store your ATN file at Firefly Services as you do with the Photoshop Actions endpoint.
+* You don't need to upload and store your ATN file at Firefly Services as you do with the Photoshop Actions endpoint.
 
 ![alt image](/images_features/spanielsBW.png?raw=true "Original Image")
 
@@ -300,7 +300,6 @@ Remove everything else from the javascript file and copy the array containing `_
 ```
 
 You can find details about actionJSON at [Photoshop API, `batchPlay`](https://developer.adobe.com/photoshop/uxp/2022/ps_reference/media/batchplay/).
-
 
 ## Smart Objects and the API
 
