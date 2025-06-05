@@ -27,10 +27,6 @@ module.exports = {
         path: '/getting_started/'
       },
       {
-        title: 'Getting Started',
-        path: '/getting_started/'
-      },
-      {
         title: 'Guides',
         path: '/guides/'
       },
@@ -53,10 +49,6 @@ module.exports = {
             title: 'Storage Solutions',
             path: '/getting_started/storage_solutions'
           },
-             {
-            title: 'Features',
-            path: '/getting_started/features'
-          },
           {
             title: 'Technical Usage Notes',
             path: '/getting_started/technical_usage_notes'
@@ -75,18 +67,6 @@ module.exports = {
           {
             title: 'Code Samples',
             path: '/guides/code_sample/index.md'
-          },
-          {
-            title: 'Dummy Oauth',
-            path: '/guides/dummy_oauth_client/index.md'
-          },
-          {
-            title: 'Dummy Using Postman',
-            path: '/guides/dummy_using_postman/index.md'
-          },
-          {
-            title: 'Migrating',
-            path: '/guides/migrating/index.md'
           }
         ]
       }
