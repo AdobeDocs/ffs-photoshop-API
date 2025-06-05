@@ -5,6 +5,7 @@ hideBreadcrumbNav: true
 contributors:
   - https://github.com/khound
   - https://github.com/archyposada
+  - https://github.com/AEAbreu-hub
 keywords:
   - storage
   - S3
@@ -51,44 +52,59 @@ Refer to the [Frame.io API guide][1] to create assets and get pre-signed URLs.
 
 You can use [Google's direct link service][2] to generate downloadable public links for your files. Before generating the links, set your file's visibility in Google Drive to **Anyone with the link**.
 
-## General workflow
+## Ready-to-use workflows
 
-The typical workflow involves making one or more calls to the Photoshop API to edit PSD or other image files and generate new image variations.
+A typical workflow makes calls to the Photoshop API to edit *.psd* or other image files and generate new image variations. The Photoshop API works with any public or signed URL. 
 
-As you begin integrating the Photoshop API into your workflow, keep these considerations in mind:
+We've documented the most common storage services and how to generate URLs programmatically.
 
-### Input and Output file storage
+### AWS S3
 
-The Photoshop API works with any public or signed URL. We've documented the most common storage services and how to generate URLs programmatically:
+A pre-signed GET/PUT URL. See the docs for [more information about pre-signed URLs on S3][3].
 
-**AWS S3:** Pre-signed GET/PUT URL. For more information about pre-signed URLs on S3, see the [AWS documentation][3]. Here are some code samples for generating pre-signed URLs programmatically:
+Workflow samples:
 
-- [Node.js][4] - Note that creating pre-signed URLs for AWS S3 requires signature version S3V4
+- [Node.js][4] - Note that creating pre-signed URLs for AWS S3 requires signature version S3V4.
 - [Python][5]
+- [Python application][6] that demonstrates how to call the API using assets stored in AWS S3.
 
-We've also created a Python [application][6] that demonstrates how to call the API using assets stored in AWS S3.
+### Google Drive
 
-**Google Drive:** Signed GET/PUT URL. For information on setting up your Google Drive account for signed URLs, see [this guide][7]. Here are some code samples for getting signed URLs:
+A signed GET/PUT URL. See the docs for [setting up your Google Drive account for signed URLs][7].
+
+Workflow samples:
 
 - [Node.js][8]
 
-**Azure:** SAS (Shared Access Signature) for upload/download. For information on generating a Shared Access Signature, see the [Azure documentation][9]. Here are some code samples:
+### Azure
+
+A SAS (Shared Access Signature) for upload/download. See the docs for [generating a Shared Access Signature][9].
+
+Workflow samples:
 
 - [Node.js][10]
 - [Python][11]
 
-**Dropbox:** Temporary upload/download URLs. For information on generating upload/download URLs, see the [Dropbox documentation][12]. You can also create a file upload link for Dropbox [here][13].
+### Dropbox
 
-**Note:** You can test if your public URL or pre-signed URL is working:
+Temporary upload/download URLs. See the docs for [generating upload/download URLs][12]. You can also [create a file upload link for Dropbox][13].
+
+### Test your URLs
+
+Test if your public URL or pre-signed URL is working with the following commands.
 
 Test your input file path:
+
 ```bash
-curl -X GET "<your_file_path>" --output <some-file.jpg>
+curl -X GET "<your_file_path>" \
+--output <some-file.jpg>
 ```
 
 Test your output file path:
+
 ```bash
-curl -X PUT "<your_file_path>" -d <some-file.txt>
+curl -X PUT "<your_file_path>" \
+-d <some-file.txt>
 ```
 
 <!-- Links -->
