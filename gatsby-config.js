@@ -52,7 +52,18 @@ module.exports = {
           {
             title: 'Technical Usage Notes',
             path: '/getting_started/technical_usage_notes'
-          },
+          }
+        ]
+      },
+      {
+        title: 'Learn More',
+        path: '/getting_started/concepts/',
+        header: true,
+        pages: [
+          {
+            title: 'Concepts',
+            path: '/getting_started/concepts/'
+          }
         ]
       },
       {
@@ -61,8 +72,8 @@ module.exports = {
         header: true,
         pages: [
           {
-            title: 'Concepts',
-            path: '/guides/concepts/index.md'
+            title: 'Features',
+            path: '/guides/features/'
           },
           {
             title: 'Code Samples',
