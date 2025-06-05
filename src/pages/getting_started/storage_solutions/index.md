@@ -54,7 +54,7 @@ You can use [Google's direct link service][2] to generate downloadable public li
 
 ## Ready-to-use workflows
 
-A typical workflow makes calls to the Photoshop API to edit *.psd* or other image files and generate new image variations. The Photoshop API works with any public or signed URL. 
+A typical workflow makes calls to the Photoshop API to edit *.psd* or other image files and generate new image variations. The Photoshop API works with any public or signed URL.
 
 We've documented the most common storage services and how to generate URLs programmatically.
 
