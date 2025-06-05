@@ -11,15 +11,24 @@ contributors:
 
 Server-to-server authentication credentials let your application's server generate access tokens and make API calls on behalf of your application.
 
-For your application to generate an access token, an end user does not need to sign in or provide consent to your application. Instead, your application can use its credentials (client ID and secrets) to authenticate itself and generate access tokens. Your application can then use these to call Adobe APIs and services on its behalf.
+For your application to generate an access token, an end user doesn't need to sign in or provide consent to your application. Instead, your application can use its credentials (client ID and secrets) to authenticate itself and generate access tokens. Your application can then use these to call Adobe APIs and services on its behalf.
 
 This is sometimes referred to as "two-legged OAuth".
 
-## Access tokens
+## Prerequisites
 
-Each access token is valid for 24 hours. To adhere to OAuth best practices, you should generate a new token every 23 hours.
+Work with your Adobe Representative to get the following:
 
-Generate access tokens programmatically by sending a POST request:
+- An [Adobe Developer Console][2] account.
+- A [project][3] with Substance 3D API [OAuth Server-to-Server credentials set up][4].
+- Access to your **Client ID** and **Client Secret** from the [Adobe Developer Console project][5]. Securely store these credentials and never expose them in client-side or public code.
+
+## Retrieve an access token
+
+A temporary access token validates calls to the API. [This token can be generated directly in the Developer Console][8],
+or it can be generated programmatically by following the steps below.
+
+Generate access tokens programmatically by sending a POST request. Each access token is valid for 24 hours. To adhere to OAuth best practices, generate a new token every 23 hours:
 
 ```bash
 curl -X POST 'https://ims-na1.adobelogin.com/ims/token/v3' \
@@ -62,3 +71,10 @@ curl --request GET --url https://image.adobe.io/pie/psdService/hello --header "A
 ```
 
 Congratulations! You just made your first request to the Photoshop API.
+
+<!-- Links -->
+[2]: https://developer.adobe.com/
+[3]: https://developer.adobe.com/developer-console/docs/guides/projects/projects-empty/
+[4]: https://developer.adobe.com/developer-console/docs/guides/services/services-add-api-oauth-s2s/
+[5]: https://developer.adobe.com/developer-console/docs/guides/services/services-add-api-oauth-s2s/#api-overview
+[8]: https://developer.adobe.com/developer-console/docs/guides/services/services-add-api-oauth-s2s#generate-token
