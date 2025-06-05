@@ -1,64 +1,108 @@
 ---
 title: Authentication
-description: Page for Authentication
+description: Page for Authentication and instructins for using server-to-server authentication credentials to let your application's server generate access tokens.
+hideBreadcrumbNav: true
+keywords:
+  - authentication
+  - OAuth
+  - server-to-server
+  - access token
+  - client credentials
 contributors:
   - https://github.com/khound
   - https://github.com/archyposada
-
+  - https://github.com/AEAbreu-hub
 ---
 
 # Authentication
 
-Server-to-server authentication credentials let your application's server generate access tokens and make API calls on behalf of your application.
+Use server-to-server authentication credentials that allow your application's server to generate access tokens and make API calls.
 
-For your application to generate an access token, an end user does not need to sign in or provide consent to your application. Instead, your application can use its credentials (client ID and secrets) to authenticate itself and generate access tokens. Your application can then use these to call Adobe APIs and services on its behalf.
+## Overview
+
+For your application to generate an access token, an end user doesn't need to sign in or provide consent to your application. Instead, your application can use its credentials (Client ID and Secret) to authenticate itself and generate access tokens. Your application can then use these to call Adobe APIs and services on its behalf.
 
 This is sometimes referred to as "two-legged OAuth".
 
-## Access tokens
+Automate your token generation by calling the endpoint using standard OAuth2 libraries. Using industry-standard libraries is the quickest and most secure way of integrating with OAuth. Be diligent when choosing the OAuth 2.0 library that works best for your application. Your teams' projects likely leverage OAuth libraries already to connect with other APIs. It's recommended to use these libraries to automatically generate tokens when they expire.
 
-Each access token is valid for 24 hours. To adhere to OAuth best practices, you should generate a new token every 23 hours.
+## Prerequisites
 
-Generate access tokens programmatically by sending a POST request:
+Work with your Adobe representative to get the following:
+
+- An [Adobe Developer Console][1] account.
+- A [project][2] with Photoshop API [OAuth Server-to-Server credentials set up][3].
+- Access to your **Client ID** and **Client Secret** from the [Adobe Developer Console project][4]. Securely store these credentials and never expose them in client-side or public code.
+
+## Retrieve an access token
+
+A temporary access token validates calls to the API. [This token can be generated directly in the Developer Console][5],
+or by following the steps below.
+
+1. First, open a secure terminal and export your **Client ID** and **Client Secret** as environment variables so that later commands can access them:
+
+```bash
+export PS_FF_SERVICES_CLIENT_ID=<Your_Client_ID>
+export PS_FF_SERVICES_CLIENT_SECRET=<Your_Client_Secret>
+```
+
+2. Generate access tokens programmatically by sending a POST request:
 
 ```bash
 curl -X POST 'https://ims-na1.adobelogin.com/ims/token/v3' \
 -H 'Content-Type: application/x-www-form-urlencoded' \
--d 'grant_type=client_credentials&client_id={client_id}&client_secret={client_secret}&scope=openid,AdobeID,firefly_api,ff_apis'
+-d 'grant_type=client_credentials' \
+-d "client_id=$PS_FF_SERVICES_CLIENT_ID" \
+-d "client_secret=$PS_FF_SERVICES_CLIENT_SECRET" \
+-d 'scope=openid,AdobeID,read_organizations'
 ```
 
 The required parameters are:
 
 - `client_id`: The Client ID.
 - `client_secret`: The Client secret.
-- `scope`: The scopes are `openid`, `AdobeID`, `firefly_api`, `ff_apis`.
+- `scope`: The scopes are `openid`, `AdobeID`, `read_organizations`.
 
-Automate your token generation by calling the IMS endpoint above using standard OAuth2 libraries. Using industry-standard libraries is the quickest and most secure way of integrating with OAuth.
+The response will look like this:
 
-Be diligent when choosing the OAuth 2.0 library that works best for your application. Your teams' projects likely leverage OAuth libraries already to connect with other APIs. It's recommended to use these libraries to automatically generate tokens when they expire.
+```json
+{
+    "access_token": "exampleAccessTokenAsdf123",
+    "token_type": "bearer",
+    "expires_in": 86399
+}
+```
 
-The token endpoint also returns an expiry date, and the token itself (when decoded) contains the expiry time.
+Each access token is valid for 24 hours. To adhere to OAuth best practices, generate a new token every 23 hours.
 
-## Hello World
+3. Export your access token as an environment variable:
 
-Once you've created your token, you can follow the steps below to make your first API call:
+```bash
+export PS_FF_SERVICES_ACCESS_TOKEN=<Your_Access_Token>
+```
 
-1. Open your terminal and paste the code below.
-2. Replace the variables "YOUR_ACCESS_TOKEN" with the token you generated on Adobe I/O Console.
-3. Replace <YOUR_CLIENT_ID>. You can find this on the same page you generated your token on.
-4. Once all variables have been replaced you can run the command.
+## Execute an API call
+
+Once you've created your token, you can make your first API call:
 
 ``` shell
 curl --request GET \
   --url https://image.adobe.io/pie/psdService/hello \
-  --header "Authorization: Bearer <YOUR_ACCESS_TOKEN>" \
-  --header "x-api-key: <YOUR_CLIENT_ID>"
+  --header "Authorization: Bearer $PS_FF_SERVICES_ACCESS_TOKEN" \
+  --header "x-api-key: $PS_FF_SERVICES_CLIENT_ID"
 ```
 
-If you are using Windows machine don't use the backslash for the cURL commands:
+You'll see the response:
 
-``` shell
-curl --request GET --url https://image.adobe.io/pie/psdService/hello --header "Authorization: Bearer <YOUR_ACCESS_TOKEN>" --header "x-api-key: <YOUR_CLIENT_ID>"
+```bash
+Welcome to the Photoshop API!
 ```
 
-Congratulations! You just made your first request to the Photoshop API.
+Congratulations! You made your first request to the Photoshop API.
+
+<!-- Links -->
+[1]: https://developer.adobe.com/
+[2]: https://developer.adobe.com/developer-console/docs/guides/projects/projects-empty/
+[3]: https://developer.adobe.com/developer-console/docs/guides/services/services-add-api-oauth-s2s/
+[4]: https://developer.adobe.com/developer-console/docs/guides/services/services-add-api-oauth-s2s/#api-overview
+[5]: https://developer.adobe.com/developer-console/docs/guides/services/services-add-api-oauth-s2s#generate-token
