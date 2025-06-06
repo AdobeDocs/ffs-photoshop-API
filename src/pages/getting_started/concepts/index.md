@@ -58,11 +58,10 @@ To learn more, see [Photoshop, Getting started with selections](https://helpx.ad
 
 ## About masks
 
- 
-
 In the Photoshop app, **masks** selectively control the visibility of a layer's content without permanently deleting or altering that content. They determine which parts of a layer are shown or hidden, offering more editing flexibility than deleting pixels.
 
 You can define a mask in your Photoshop app and later manipulate that part of the image with Photoshop API. Masking is a great way to:
+
 - Make image composites.
 - Modify background colors.
 - Remove or cut out objects.
