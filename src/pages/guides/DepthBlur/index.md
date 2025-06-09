@@ -1,19 +1,32 @@
 ---
-title: DepthBlur
-description: DepthBlur documentation
+title: Depth Blur
+description: Learn how to apply depth blur effects to images using the Depth Blur API endpoint with neural filter technology
+hideBreadcrumbNav: true
+keywords:
+  - depth blur
+  - neural filters
+  - depth of field
+  - focal point
+  - image blur
+contributors:
+  - https://github.com/AEAbreu-hub
 ---
 
-# DepthBlur
+# Depth Blur
 
-The DepthBlur API supports applying depth blur to your image. Depth Blur is part of the Neural Filters gallery in Photoshop. It allows you to target the area and range of blur in photos, creating wide-aperture depth of field blur effects. You may choose different focal points or remove the focal point and control the depth blur through manipulating the focal range slider. Setting focusSubject to true will select the most prominent subject in the image and apply depth blur around that subject.
+The Depth Blur API supports applying depth blur to your image. Depth Blur is part of the Neural Filters gallery in Photoshop. It allows you to target the area and range of blur in photos, creating wide-aperture depth of field blur effects.
 
-You can find a code sample [here.](/guides/code_sample/index.md#applying-depth-blur-neural-filter) 
+## Getting started with depth blur
 
-### Applying Depth Blur Neural Filter
+The Depth Blur API supports applying depth blur to your image. Depth Blur is part of the Neural Filters gallery in Photoshop. It allows you to target the area and range of blur in photos, creating wide-aperture depth of field blur effects. You may choose different focal points or remove the focal point and control the depth blur through manipulating the focal range slider. Setting focusSubject to true will select the most prominent subject in the image and apply depth blur around that subject.
+
+You can find a code sample [here][1].
+
+### Applying depth blur neural filter
 
 The `depthBlur` endpoint can take an input file and apply the depth blur neural filter.
 
-This example shows how you can apply depth blur with the appropriate parameters.
+This example shows how you can apply depth blur with the appropriate parameters:
 
 ```shell
 curl -X POST \
@@ -24,8 +37,8 @@ curl -X POST \
   -d '{
   "inputs": [
     {
-      "href": "<SIGNED_GET_URL>",
-      "storage": "<storage>"
+      "href": "<your_signed_get_url>",
+      "storage": "<your_storage>"
     }
   ],
   "options": {
@@ -38,12 +51,16 @@ curl -X POST \
   },
   "outputs": [
     {
-      "storage": "<storage>",
+      "storage": "<your_storage>",
       "type": "image/jpeg",
-      "href": "<SIGNED_POST_URL>"
+      "href": "<your_signed_post_url>"
     }
   ]
 }'
 ```
 
-First, be sure to follow the instructions in the [Getting Started](../../getting_started/index.md) guide to get your token.
+First, be sure to follow the instructions in the [Getting Started][2] guide to get your token.
+
+<!-- Links -->
+[1]: /guides/code_sample/index.md#applying-depth-blur-neural-filter
+[2]: ../../getting_started/index.md
