@@ -132,6 +132,14 @@ module.exports = {
             path: '/guides/triggering_an_event/'
           },
           {
+            title: 'Get Job Status',
+            path: '/guides/get_job_status/'
+          },
+          {
+            title: 'Retrieve a PSD Manifest',
+            path: '/guides/retrieve_manifest/'
+          },
+          {
             title: 'Create Mask',
             path: '/guides/create_mask/'
           }
