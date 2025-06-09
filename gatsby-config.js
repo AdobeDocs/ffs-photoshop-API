@@ -76,7 +76,7 @@ module.exports = {
             path: '/guides/'
           },
           {
-            title: 'Code Samples',
+            title: 'Using our Guides',
             path: '/guides/code_sample/index.md'
           },
           {
