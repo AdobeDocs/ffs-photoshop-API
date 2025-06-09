@@ -128,6 +128,10 @@ module.exports = {
             path: '/guides/remove_background/'
           },
           {
+            title: 'Triggering an Event from the APIs',
+            path: '/guides/triggering_an_event/'
+          },
+          {
             title: 'Create Mask',
             path: '/guides/create_mask/'
           }
