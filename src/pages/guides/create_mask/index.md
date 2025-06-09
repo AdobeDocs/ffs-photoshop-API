@@ -1,16 +1,30 @@
 ---
 title: Create Mask
-description: Create Mask documentation
+description: Learn how to create grayscale mask PNG files using the Create Mask API endpoint for image compositing and editing
+hideBreadcrumbNav: true
+keywords:
+  - create mask
+  - image mask
+  - grayscale mask
+  - mask generation
+  - image compositing
+contributors:
+  - https://github.com/AEAbreu-hub
 ---
 
 # Create Mask
 
-This endpoint allows you create a greyscale mask png file that you can composite onto the original image (or any other). 
+This endpoint allows you to create a grayscale mask PNG file that you can composite onto the original image (or any other). The mask provides precise control over which parts of an image are affected by subsequent operations.
 
-Example of Image mask with a sample image.
+## Getting started with mask creation
+
+This endpoint allows you to create a grayscale mask PNG file that you can composite onto the original image (or any other).
+
+Example of Image mask with a sample image:
+
 ![alt image](imagecutout_mask_example.png?raw=true "Original Image")
 
-The `/mask` api accepts a single input image to generate your mask. Using [Example.jpg](https://github.com/AdobeDocs/cis-photoshop-api-docs/blob/main/sample_files/Example.jpg), a typical cURL call might look like this:
+The `/mask` API accepts a single input image to generate your mask. Using [Example.jpg][1], a typical cURL call might look like this:
 
 ```shell
 curl -X POST \
@@ -20,11 +34,11 @@ curl -X POST \
   -H "Content-Type: application/json" \
   -d '{
    "input":{
-      "storage":"<storage>",
+      "storage":"<your_storage>",
       "href":"<SIGNED_GET_URL>"
    },
    "output":{
-      "storage":"<storage>",
+      "storage":"<your_storage>",
       "href":"<SIGNED_POST_URL>",
       "mask":{
          "format":"soft"
@@ -45,7 +59,7 @@ This initiates an asynchronous job and returns a response containing the href to
 }
 ```
 
-Using the job id returned from the previous call you can poll on the returned `/status` href to get the job status
+Using the job ID returned from the previous call you can poll on the returned `/status` href to get the job status:
 
 ```shell
 curl -X GET \
@@ -55,7 +69,7 @@ curl -X GET \
   -H "Content-Type: application/json"
 ```
 
-Once the job is complete your successful `/status` response will look similar to the response below; The output will have been placed in your requested location. In the event of failure the errors will be shown instead
+Once the job is complete your successful `/status` response will look similar to the response below. The output will have been placed in your requested location. In the event of failure the errors will be shown instead:
 
 ```json
 {
@@ -70,7 +84,7 @@ Once the job is complete your successful `/status` response will look similar to
         }
     },
     "output": {
-        "storage": "<storage>",
+        "storage": "<your_storage>",
         "href": "<SIGNED_POST_URL>",
         "mask": {
             "format": "soft"
@@ -78,3 +92,6 @@ Once the job is complete your successful `/status` response will look similar to
     }
 }
 ```
+
+<!-- Links -->
+[1]: https://github.com/AdobeDocs/cis-photoshop-api-docs/blob/main/sample_files/Example.jpg
