@@ -60,6 +60,63 @@ curl -X POST \
 
 A call to this API initiates an asynchronous job and returns a response containing an href. Use the value in the href to poll for the status of the job. This is illustrated in [Example, Fetch API Status][1] and [Example, Poll Job Status][2].
 
+### Swapping the image in a smart object layer
+
+In this example we are replacing the smartObject using `documentOperations` API
+
+```shell
+curl -X POST \
+  https://image.adobe.io/pie/psdService/documentOperations \
+  -H "Authorization: Bearer $token"  \
+  -H "x-api-key: $apiKey" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "inputs":[
+    {
+      "href":"<SIGNED_GET_URL>",
+      "storage":"<storage>"
+    }
+  ],
+  "options":{
+    "layers":[
+      {
+        "edit":{},     
+        "input":{                                       
+          "href":"<SIGNED_GET_URL>",  
+          "storage":"<storage>"
+        },
+        "smartObject" : {                
+          "type" : "image/png"
+        },
+        "attributes":{
+          "bounds":{
+            "height":515,
+            "left":-385,
+            "top":-21,
+            "width":929
+          }
+        },
+        "id":750,
+        "index":1,
+        "locked":false,
+        "name":"HeroImage",
+        "type":"smartObject",
+        "visible":true
+      }
+    ]
+  },
+  "outputs":[
+    {
+      "href":"<SIGNED_POST_URL>",
+      "storage":"<storage>",
+      "type":"vnd.adobe.photoshop"
+    }
+  ]
+}'
+```
+
+A call to this API initiates an asynchronous job and returns a response containing an href. Use the value in the href to poll for the status of the job. This is illustrated in [Example 12](/guides/code_sample/index.md#fetch-the-status-of-an-api) and [Example 14](/guides/code_sample/index.md#poll-for-job-status-for-all-other-apis)
+
 ### Known limitations
 
 * If your document contains transparent pixels, (e.g some .png), you may not get consistent bounds.
