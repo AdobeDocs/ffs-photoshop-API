@@ -76,3 +76,39 @@ curl -X POST \
 ```
 
 For another example, see [Execute Individual Photoshop Action](../../guides/code_sample/index.md#photoshop-actions-play-a-specific-action) 
+
+### Photoshop Actions Play a specific action
+
+By default, Photoshop API will attempt to play all actions in an action set.  If you would like to only playback a specific action, you can specify `actionName` and the name of the action you want to invoke (see example below).
+
+```shell
+curl -X POST \
+  https://image.adobe.io/pie/psdService/photoshopActions \
+  -H "Authorization: Bearer $token"  \
+  -H "x-api-key: $apiKey" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "inputs": [
+    {
+      "href": "https://as2.ftcdn.net/jpg/02/49/48/49/500_F_249484911_JifPIzjUqzkRhcdMkF9GnsUI9zaqdAsn.jpg",
+      "storage": "external"
+    }
+  ],
+  "options": {
+    "actions": [
+      {
+        "href": "https://raw.githubusercontent.com/johnleetran/ps-actions-samples/master/actions/Oil-paint.atn",
+        "storage": "external",
+        "actionName": "Action 51"
+      }
+    ]
+  },
+  "outputs": [
+    {
+      "storage": "<storage>",
+      "type": "image/jpeg",
+      "href": "https://some-presigned-url/output.jpeg"
+    }
+  ]
+}'
+```
