@@ -232,6 +232,147 @@ Remove everything else from the javascript file and copy the array containing `_
 
 You can find details about actionJSON at [Photoshop API, `batchPlay`][2].
 
+### Executing an actionJSON with multiple inputs
+
+With `/actionJSON` endpoint you can use multiple images to do compositing on the actionJSON.
+
+In order to supply multiple images and have it specified in the actionJSON, you need to create a Placeholder Value in your actionJSON.   The placeholder value must be "ACTION_JSON_OPTIONS_ADDITIONAL_IMAGES_X" where "X" is the index of the "additionalImages" array.
+
+For example, say you have an actionJSON that requires 2 additional Images.  
+
+ACTION_JSON_OPTIONS_ADDITIONAL_IMAGES_0 == options.additionalImages[0]
+ACTION_JSON_OPTIONS_ADDITIONAL_IMAGES_1 == options.additionalImages[1]
+
+```shell
+curl -X POST \
+  https://image.adobe.io/pie/psdService/actionJSON \
+  -H "Authorization: Bearer $token"  \
+  -H "x-api-key: $apiKey" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "inputs": [
+    {
+      "href": "<SIGNED_GET_URL>",
+      "storage": "<storage>"
+    }
+  ],
+  "options": {
+    "additionalImages": [
+      {
+        "href": "<SIGNED_GET_URL>",
+        "storage": "<storage>"
+      }
+    ],
+    "actionJSON": [
+    {
+      "ID": 3,
+      "_obj": "placeEvent",
+      "freeTransformCenterState": {
+        "_enum": "quadCenterState",
+        "_value": "QCSAverage"
+      },
+      "null": {
+        "_kind": "local",
+        "_path": "ACTION_JSON_OPTIONS_ADDITIONAL_IMAGES_0"
+      },
+      "offset": {
+        "_obj": "offset",
+        "horizontal": {
+          "_unit": "pixelsUnit",
+          "_value": 0
+        },
+        "vertical": {
+          "_unit": "pixelsUnit",
+          "_value": 0
+        }
+      }
+    },
+    {
+      "_obj": "autoCutout",
+      "sampleAllLayers": false
+    },
+    {
+      "_obj": "make",
+      "at": {
+        "_enum": "channel",
+        "_ref": "channel",
+        "_value": "mask"
+      },
+      "new": {
+        "_class": "channel"
+      },
+      "using": {
+        "_enum": "userMaskEnabled",
+        "_value": "revealSelection"
+      }
+    },
+    {
+      "_obj": "set",
+      "_target": [
+        {
+          "_property": "selection",
+          "_ref": "channel"
+        }
+      ],
+      "to": {
+        "_enum": "ordinal",
+        "_value": "allEnum"
+      }
+    },
+    {
+      "_obj": "align",
+      "_target": [
+        {
+          "_enum": "ordinal",
+          "_ref": "layer"
+        }
+      ],
+      "alignToCanvas": false,
+      "using": {
+        "_enum": "alignDistributeSelector",
+        "_value": "ADSBottoms"
+      }
+    },
+    {
+      "_obj": "align",
+      "_target": [
+        {
+          "_enum": "ordinal",
+          "_ref": "layer"
+        }
+      ],
+      "alignToCanvas": false,
+      "using": {
+        "_enum": "alignDistributeSelector",
+        "_value": "ADSRights"
+      }
+    },
+    {
+      "_obj": "set",
+      "_target": [
+        {
+          "_property": "selection",
+          "_ref": "channel"
+        }
+      ],
+      "to": {
+        "_enum": "ordinal",
+        "_value": "none"
+      }
+    }
+  ]
+
+  },
+  "outputs": [
+    {
+      "type": "image/jpeg",
+      "href": "<SIGNED_PUT_URL>",
+      "storage": "<storage>"
+    }
+  ]
+}'
+```
+
 <!-- Links -->
 [1]: ../../guides/code_sample/index.md#executing-an-actionjson-with-multiple-inputs
 [2]: https://developer.adobe.com/photoshop/uxp/2022/ps_reference/media/batchplay/ 
