@@ -36,5 +36,145 @@ The `add` and `move` blocks must also supply one of the attributes `insertAbove`
 Here are some examples of making various layer level edits.
 
 * [Layer level editing](/guides/code_sample/index.md#making-a-simple-edit)
+### Making a simple edit
+
+```shell
+curl -X POST \
+  https://image.adobe.io/pie/psdService/documentOperations \
+  -H "Authorization: Bearer $token"  \
+  -H "x-api-key: $apiKey" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "inputs":[
+    {
+      "href":"<SIGNED_GET_URL>",
+      "storage":"<storage>"
+    }
+  ],
+  "options":{
+    "layers":[
+      {
+        "edit":{},     
+        "id":750,
+        "index":1,
+        "locked":true,
+        "name":"HeroImage",
+        "type":"smartObject",
+        "visible":true
+      }
+    ]
+  },
+  "outputs":[
+    {
+      "href":"<SIGNED_POST_URL>",
+      "storage":"<storage>",
+      "type":"vnd.adobe.photoshop"
+    }
+  ]
+}'
+```
+
 * [Adding a new Adjustment Layer](/guides/code_sample/index.md#adding-a-new-adjustment-layer)
+
+### Adding a new adjustment layer
+
+This example shows how you can add a new brightnessContrast adjustment layer to the top of your PSD.
+
+```shell
+curl -X POST \
+  https://image.adobe.io/pie/psdService/documentOperations \
+  -H "Authorization: Bearer $token"  \
+  -H "x-api-key: $apiKey" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "inputs":[
+    {
+      "href":"<SIGNED_GET_URL>",
+      "storage":"<storage>"
+    }
+  ],
+  "options":{
+    "layers":[
+      {                                        
+        "add":{                              
+          "insertAbove": {
+            "id": 549
+          }                    
+        },
+        "adjustments":{
+          "brightnessContrast":{
+            "brightness":25,
+            "contrast":-40
+          }
+        },
+        "name":"NewBrightnessContrast",
+        "type":"adjustmentLayer"              
+      }
+    ]
+  },
+  "outputs":[
+    {
+      "href":"<SIGNED_POST_URL>",
+      "storage":"<storage>",
+      "type":"image/jpeg"
+    }
+  ]
+}'
+```
+
+A call to this API initiates an asynchronous job and returns a response containing an href. Use the value in the href to poll for the status of the job. This is illustrated in [Example 12](/guides/code_sample/index.md#fetch-the-status-of-an-api) and [Example 14](/guides/code_sample/index.md#poll-for-job-status-for-all-other-apis)
+
+
 * [Editing Image in a Pixel Layer](/guides/code_sample/index.md#editing-a-pixel-layer) 
+### Editing a pixel layer
+
+In this example we want to replace the image in an existing pixel layer, the Hero Image layer in Example.psd.
+
+```shell
+curl -X POST \
+  https://image.adobe.io/pie/psdService/documentOperations \
+  -H "Authorization: Bearer $token"  \
+  -H "x-api-key: $apiKey" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "inputs":[
+    {
+      "href":"<SIGNED_GET_URL>",
+      "storage":"<storage>"
+    }
+  ],
+  "options":{
+    "layers":[
+      {
+        "edit":{},                    
+        "input":{                                       
+          "href":"<SIGNED_GET_URL>",
+          "storage":"<storage>"
+        },
+        "bounds":{
+          "height":405,
+          "left":0,
+          "top":237,
+          "width":300
+        },
+        "id":751,
+        "index":2,
+        "locked":false,
+        "name":"BackgroundGradient",
+        "type":"layer",
+        "visible":true
+      }
+    ]
+  },
+  "outputs":[
+    {
+      "href":"<SIGNED_POST_URL>",
+      "storage":"<storage>",
+      "type":"vnd.adobe.photoshop"
+    }
+  ]
+}
+'
+```
+
+A call to this API initiates an asynchronous job and returns a response containing an href. Use the value in the href to poll for the status of the job. This is illustrated in [Example 12](/guides/code_sample/index.md#fetch-the-status-of-an-api) and [Example 14](/guides/code_sample/index.md#poll-for-job-status-for-all-other-apis)
