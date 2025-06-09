@@ -1,14 +1,27 @@
 ---
-title: Text layers Edits
-description: Text layers Edits documentation
+title: Text Layers Edits
+description: Learn how to create and edit text layers in Photoshop files using the Text API endpoint with support for custom fonts, character styles, and paragraph formatting
+hideBreadcrumbNav: true
+keywords:
+  - text layers
+  - text editing
+  - font handling
+  - character styles
+  - paragraph styles
+  - custom fonts
+contributors:
 ---
 
-# Text layers Edits
+# Text Layers Edits
+
+The Photoshop API supports creating and editing text layers with different fonts, character styles, and paragraph styles. You can modify text content, apply various formatting options, and use custom fonts to create dynamic text modifications in your Photoshop files.
+
+## Getting started with text layer editing
 
 The Photoshop API currently supports creating and editing of Text Layer with different fonts, character styles and paragraph styles. The set of text attributes that can be edited is listed below:
 
 * Edit the text contents
-* Change the font. See the `Fonts` section for more information.
+* Change the font. See the [Font handling][1] section for more information.
 * Edit the font size
 * Change the font color in the following formats: RGB, CMYK, grayscale, or lab
 * Edit the text orientation (horizontal/vertical)
@@ -98,18 +111,18 @@ curl -X POST \
 }'
 ```
 
-### Font handling
+## Font handling
 
 In order to be able to correctly operate on text layers in the PSD, the corresponding fonts needed for these layers will need to be available when the server is processing the PSD. These include fonts from the following cases:
 
-1. The font that is in the text layer being edited, but the font itself is not being changed
+1. The font that's in the text layer being edited, but the font itself isn't being changed
 2. If the font in a text layer is being changed to a new font
 
 While referencing fonts in the API request, please ensure that the correct Postscript name for that font is used. Referencing to that font with any other name will result in the API treating this as a missing font.
 
 The Photoshop API supports using the following category of fonts:
 
-* You can find a list of currently supported fonts [here](#photoshop-cc)
+* You can find a list of currently supported fonts [here][2]
 * Custom/Other Fonts: These are the fonts that are either owned by you or the ones that only you are authorized to use.
   To use a custom font you must include an href to the font in your request. Look at the `options.fonts` section of the API docs for more information.
   For including an href to the font in your request, please ensure the font file name to be in this format: `<font_postscript_name>.<ext>`, when it is being uploaded in your choice of storage. A sample `options.fonts` section will look like so:
@@ -117,11 +130,11 @@ The Photoshop API supports using the following category of fonts:
   ```js
   {
     "storage": "external",
-    "href": "<Storage URL to OpenSansCondensed-Light.ttf>"
+    "href": "<STORAGE_URL_TO_OPEN_SANS_CONDENSED_LIGHT_TTF>"
   }
   ```
 
-This applies to any other font present in the document which is not to be found in the first 2 categories above.
+This applies to any other font present in the document which isn't to be found in the first 2 categories above.
 
 This example changes the font in a text layer named `My Text Layer` to a custom font `VeganStylePersonalUse`. The value for the `fontName` field in the `text.characterStyles` section is the full postscript name of the custom font:
 
@@ -177,7 +190,7 @@ curl -X POST \
 }'
 ```
 
-#### Handle missing fonts in the document.
+### Handling missing fonts in the document
 
 The API provides two options to control the behavior when there are missing fonts, as the request is being processed:
 
@@ -193,11 +206,11 @@ Specify the action to be taken if one or more fonts required for the add/edit op
 
 In this example we show you how to handle missing fonts using the `manageMissingFonts` and `globalFont` options.
 
-### Limitations
+## Limitations
 
-Most of the text attributes retain their respective original values. There are some attributes however that do not retain their original values. For example (and not limited to): tracking, leading, kerning.
+Most of the text attributes retain their respective original values. There are some attributes however that don't retain their original values. For example (and not limited to): tracking, leading, kerning.
 
-### Supported Fonts
+## Supported fonts
 
 This is a list of all of the supported Postscript fonts for Photoshop API.
 
@@ -266,4 +279,8 @@ This is a list of all of the supported Postscript fonts for Photoshop API.
 | SourceSansVariable-Italic         |
 | SourceSansVariable-Roman          |
 | SourceSerifVariable-Roman         |
-| TrajanColor-Concept               | 
+| TrajanColor-Concept               |
+
+<!-- Links -->
+[1]: #font-handling
+[2]: #photoshop-cc 
