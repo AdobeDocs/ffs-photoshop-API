@@ -73,7 +73,7 @@ module.exports = {
         pages: [
           {
             title: 'Features',
-            path: '/guides/features/'
+            path: '/guides/'
           },
           {
             title: 'Code Samples',
