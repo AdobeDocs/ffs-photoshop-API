@@ -78,6 +78,58 @@ module.exports = {
           {
             title: 'Code Samples',
             path: '/guides/code_sample/index.md'
+          },
+          {
+            title: 'Photoshop Actions',
+            path: '/guides/photoshop_actions/'
+          },
+          {
+            title: 'ActionJSON Endpoint',
+            path: '/guides/actionjson_endpoint/'
+          },
+          {
+            title: 'Smart Objects and the API',
+            path: '/guides/smart_objects_and_the_api/'
+          },
+          {
+            title: 'Edit Text',
+            path: '/guides/edit_text/'
+          },
+          {
+            title: 'Text layers Edits',
+            path: '/guides/text_layers_edits/'
+          },
+          {
+            title: 'Product Crop',
+            path: '/guides/product_crop/'
+          },
+          {
+            title: 'DepthBlur',
+            path: '/guides/depthblur/'
+          },
+          {
+            title: 'Rendering and Conversions',
+            path: '/guides/rendering_and_conversions/'
+          },
+          {
+            title: 'Layer level edits',
+            path: '/guides/layer_level_edits/'
+          },
+          {
+            title: 'Document level edits',
+            path: '/guides/document_level_edits/'
+          },
+          {
+            title: 'Artboards',
+            path: '/guides/artboards/'
+          },
+          {
+            title: 'Remove Background',
+            path: '/guides/remove_background/'
+          },
+          {
+            title: 'Create Mask',
+            path: '/guides/create_mask/'
           }
         ]
       }
