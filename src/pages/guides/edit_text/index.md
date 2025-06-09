@@ -1,26 +1,39 @@
 ---
 title: Edit Text
-description: Edit Text documentation
+description: Learn how to edit text layers in Photoshop files using the Edit Text API endpoint to modify text content, formatting, and styling
+hideBreadcrumbNav: true
+keywords:
+  - edit text
+  - text layers
+  - text formatting
+  - font handling
+  - PSD files
+contributors:
+  - https://github.com/AEAbreu-hub
 ---
 
 # Edit Text
+
+The Edit Text endpoint allows you to modify text layers within Photoshop files (PSD files). You can edit text content, apply character and paragraph styling, and use custom fonts to create dynamic text modifications programmatically.
+
+## Getting started with text editing
 
 The Edit Text endpoint supports editing one or more text layers within a PSD.
 
 It enables users to:
 
-* Format text properties such as anti-alias, orientation and be able to edit text contents. Changing only the text properties will not change any character paragraph styling.
-* Some of the key character properties that can be formatted include (but not limited to):
+* Format text properties such as anti-alias, orientation and be able to edit text contents. Changing only the text properties won't change any character paragraph styling.
+* Some of the key character properties that can be formatted include (but aren't limited to):
   * Text treatments such as strike-through, underline, capitalization.
   * Character size and color.
   * Line and character spacing through leading, tracking, autoKern settings.
 * All the paragraph properties are supported.
 * Use custom fonts when specified through the `options.fonts` section in the API request body.
 
-### Usage Recommendations
+### Usage recommendations
 
 * Ensure that the input file is a PSD and that it contains one or more text layers.
-* Refer to [Font Handling](#font-handling) and [Handle Missing Fonts](#handle-missing-fonts-in-the-document) more information.
+* Refer to [Font handling][1] and [Handle missing fonts][2] for more information.
 
 You can find a code sample for making a text layer edit here:
 
@@ -70,9 +83,14 @@ curl -X POST \
 }'
 ```
 
-### Known Limitations
+### Known limitations
 
-The API cannot automatically detect missing fonts in the layers. To prevent potential missing fonts from being replaced, please provide a `href` to the font in the `options.fonts` section of the API. For more details on specifying custom fonts, please refer to the example section below.
+The API can't automatically detect missing fonts in the layers. To prevent potential missing fonts from being replaced, please provide a `href` to the font in the `options.fonts` section of the API. For more details on specifying custom fonts, please refer to the example section below.
 
 In this example, the font on the original image was altered using the Text API, as depicted in the image on the left:
-![alt image](textlayer_example.png?raw=true "Original Image"). 
+
+![alt image](textlayer_example.png?raw=true "Original Image")
+
+<!-- Links -->
+[1]: #font-handling
+[2]: #handle-missing-fonts-in-the-document 
