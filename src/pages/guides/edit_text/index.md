@@ -361,4 +361,4 @@ This is a list of all of the supported Postscript fonts for Photoshop API.
 <!-- Links -->
 [1]: #font-handling
 [2]: #supported-fonts
-[3]: #handle-missing-fonts-in-the-document
+[3]: #handling-missing-fonts-in-the-document
