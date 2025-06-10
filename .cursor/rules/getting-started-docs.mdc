@@ -320,6 +320,12 @@ For troubleshooting documentation, ensure:
      - HTTP status codes
      - cURL (when not in code blocks; use lowercase in code blocks)
      - pre-signed URL (when in text; use "presigned" in code/URLs)
+   - **ID Capitalization**: When referring to identification in regular text (outside of code blocks), always capitalize "ID"
+     - ✅ "Using the job ID returned from the previous call"
+     - ✅ "The client ID and client secret"
+     - ✅ "The user ID for authentication"
+     - ❌ "Using the job id returned from the previous call"
+     - ❌ "The client id and client secret"
    - Example:
      ```markdown
      An **access token** is a temporary credential that validates your API requests.
@@ -467,6 +473,7 @@ Before publishing or when I ask to "check the doc", ensure your documentation:
 - [ ] Spelling and grammar is correct
 - [ ] Uses appropriate contractions (Microsoft.Contractions)
 - [ ] Preserves technical terms (OAuth, JWT, etc.)
+- [ ] **ID capitalization**: All instances of "id" referring to identification in regular text are capitalized as "ID"
 - [ ] Uses UI components consistently
 - [ ] Sections are formatted correctly based on their type
 - [ ] Uses consistent formatting

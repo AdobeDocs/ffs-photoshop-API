@@ -73,11 +73,75 @@ module.exports = {
         pages: [
           {
             title: 'Features',
-            path: '/guides/features/'
+            path: '/guides/'
           },
           {
-            title: 'Code Samples',
+            title: 'Using our Guides',
             path: '/guides/code_sample/index.md'
+          },
+          {
+            title: 'Photoshop Actions',
+            path: '/guides/photoshop_actions/'
+          },
+          {
+            title: 'ActionJSON Endpoint',
+            path: '/guides/actionjson_endpoint/'
+          },
+          {
+            title: 'Smart Objects and the API',
+            path: '/guides/smart_objects_and_the_api/'
+          },
+          {
+            title: 'Edit Text',
+            path: '/guides/edit_text/'
+          },
+          {
+            title: 'Text layers Edits',
+            path: '/guides/text_layers_edits/'
+          },
+          {
+            title: 'Product Crop',
+            path: '/guides/product_crop/'
+          },
+          {
+            title: 'DepthBlur',
+            path: '/guides/depthblur/'
+          },
+          {
+            title: 'Rendering and Conversions',
+            path: '/guides/rendering_and_conversions/'
+          },
+          {
+            title: 'Layer level edits',
+            path: '/guides/layer_level_edits/'
+          },
+          {
+            title: 'Document level edits',
+            path: '/guides/document_level_edits/'
+          },
+          {
+            title: 'Artboards',
+            path: '/guides/artboards/'
+          },
+          {
+            title: 'Remove Background',
+            path: '/guides/remove_background/'
+          },
+          {
+            title: 'Triggering an Event from the APIs',
+            path: '/guides/triggering_an_event/'
+          },
+          {
+            title: 'Get Job Status',
+            path: '/guides/get_job_status/'
+          },
+          {
+            title: 'Retrieve a PSD Manifest',
+            path: '/guides/retrieve_manifest/'
+          },
+          {
+            title: 'Create Mask',
+            path: '/guides/create_mask/'
           }
         ]
       }
