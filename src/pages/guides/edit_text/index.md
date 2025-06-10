@@ -93,4 +93,4 @@ In this example, the font on the original image was altered using the Text API, 
 
 <!-- Links -->
 [1]: #font-handling
-[2]: #handle-missing-fonts-in-the-document 
+[2]: #handle-missing-fonts-in-the-document

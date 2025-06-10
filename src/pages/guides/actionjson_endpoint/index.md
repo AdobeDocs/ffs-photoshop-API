@@ -127,7 +127,7 @@ If you haven't already enabled developer mode in your Photoshop app, follow thes
   ```
 
   For Windows Powershell
-  
+
   ```bash
   echo  "UXPEnableScriptingUtilities 1" >> "C:\Users\$env:USERNAME\AppData\Roaming\Adobe\Adobe Photoshop 2021\Adobe Photoshop 2021 Settings\PSUserConfig.txt"
   ```
@@ -218,7 +218,7 @@ Modify the javascript file to trim out the actions.
 Remove everything else from the javascript file and copy the array containing `_obj` from the `command` variable which will look something like below
 
 ```js
-[      
+[    
  {"_obj":"make","_target":[{"_ref":"snapshotClass"}],"from":{"_property":"currentHistoryState","_ref":"historyState"},
  "using":{"_enum":"historyState","_value":"fullDocument"}},
  {"_obj":"feather","radius":{"_unit":"pixelsUnit","_value":5.0}},
@@ -238,7 +238,7 @@ With `/actionJSON` endpoint you can use multiple images to do compositing on the
 
 In order to supply multiple images and have it specified in the actionJSON, you need to create a Placeholder Value in your actionJSON.   The placeholder value must be "ACTION_JSON_OPTIONS_ADDITIONAL_IMAGES_X" where "X" is the index of the "additionalImages" array.
 
-For example, say you have an actionJSON that requires 2 additional Images.  
+For example, say you have an actionJSON that requires 2 additional Images.
 
 ACTION_JSON_OPTIONS_ADDITIONAL_IMAGES_0 == options.additionalImages[0]
 ACTION_JSON_OPTIONS_ADDITIONAL_IMAGES_1 == options.additionalImages[1]
@@ -375,4 +375,4 @@ curl -X POST \
 
 <!-- Links -->
 [1]: ../../guides/code_sample/index.md#executing-an-actionjson-with-multiple-inputs
-[2]: https://developer.adobe.com/photoshop/uxp/2022/ps_reference/media/batchplay/ 
+[2]: https://developer.adobe.com/photoshop/uxp/2022/ps_reference/media/batchplay/

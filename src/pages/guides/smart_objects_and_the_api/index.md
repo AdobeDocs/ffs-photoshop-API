@@ -80,12 +80,12 @@ curl -X POST \
   "options":{
     "layers":[
       {
-        "edit":{},     
-        "input":{                                       
-          "href":"<SIGNED_GET_URL>",  
+        "edit":{},    
+        "input":{                                      
+          "href":"<SIGNED_GET_URL>", 
           "storage":"<storage>"
         },
-        "smartObject" : {                
+        "smartObject" : {               
           "type" : "image/png"
         },
         "attributes":{
@@ -165,4 +165,4 @@ In this example, we generated a Smart Object within the "socks" layer and utiliz
 
 <!-- Links -->
 [1]: ../../guides/code_sample/index.md#fetch-the-status-of-an-api
-[2]: ../../guides/code_sample/index.md#poll-for-job-status-for-all-other-apis 
+[2]: ../../guides/code_sample/index.md#poll-for-job-status-for-all-other-apis

@@ -62,4 +62,4 @@ The current model is trained to return a crop that respects the salient object w
 We intend to correct this issue in future releases.
 
 <!-- Links -->
-[1]: /guides/code_sample/index.md#applying-product-crop 
+[1]: /guides/code_sample/index.md#applying-product-crop

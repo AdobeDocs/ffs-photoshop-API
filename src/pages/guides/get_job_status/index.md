@@ -40,7 +40,6 @@ curl -X GET \
   -H "Content-Type: application/json"
 ```
 
-
 ## Poll for job status for all Other APIs
 
 Once your job completes successfully (no errors/failures reported), this will return a response body containing the job status for each requested output. For the `/renditionCreate` API call in [Example 10](/guides/code_sample/index.md#create-a-document-rendition) as illustrated above, a sample response containing the job status is as shown below:
@@ -57,10 +56,10 @@ Once your job completes successfully (no errors/failures reported), this will re
       "_links":{
         "renditions":[
           {
-            "href":"<SIGNED_GET_URL>",          
+            "href":"<SIGNED_GET_URL>",         
             "width": 512,
             "storage":"<storage>",
-            "type":"image/jpeg"    
+            "type":"image/jpeg"   
           },
           {
             "href":"<SIGNED_GET_URL>",
@@ -77,4 +76,4 @@ Once your job completes successfully (no errors/failures reported), this will re
     }
   }
 }
-``` 
+```

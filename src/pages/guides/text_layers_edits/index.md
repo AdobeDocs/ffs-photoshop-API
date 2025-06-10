@@ -283,4 +283,4 @@ This is a list of all of the supported Postscript fonts for Photoshop API.
 
 <!-- Links -->
 [1]: #font-handling
-[2]: #photoshop-cc 
+[2]: #photoshop-cc

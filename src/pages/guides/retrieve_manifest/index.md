@@ -34,7 +34,7 @@ curl -X POST \
 }'
 ```
 
-A call to this API initiates an asynchronous job and returns a response containing an href. Use the value in the href to poll for the status of the job and the same response will also contain the JSON manifest. This is illustrated in [Example 12](/guides/code_sample/index.md#fetch-the-status-of-an-api) and [Example 14](/guides/code_sample/index.md#poll-for-job-status-for-all-other-apis) 
+A call to this API initiates an asynchronous job and returns a response containing an href. Use the value in the href to poll for the status of the job and the same response will also contain the JSON manifest. This is illustrated in [Example 12](/guides/code_sample/index.md#fetch-the-status-of-an-api) and [Example 14](/guides/code_sample/index.md#poll-for-job-status-for-all-other-apis)
 
 ## Poll for job status for documentManifest
 
@@ -82,7 +82,7 @@ Once your job completes successfully (no errors/failures reported), the status r
               "text": {
                 "content":"Reset your customers' expectations.",
                 "paragraphStyles":[
-                  {   
+                  {  
                     "alignment":"left"
                   }
                 ],
@@ -91,7 +91,7 @@ Once your job completes successfully (no errors/failures reported), the status r
                   "fontName":"AdobeClean-Bold",
                   "fontSize":36,
                   "orientation":"horizontal"
-                }]               
+                }]              
               },
               "id":412,
               "index":6,
