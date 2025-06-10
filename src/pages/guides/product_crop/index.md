@@ -9,6 +9,7 @@ keywords:
   - subject detection
   - automatic cropping
 contributors:
+  - https://github.com/AEAbreu-hub
 ---
 
 # Product Crop
