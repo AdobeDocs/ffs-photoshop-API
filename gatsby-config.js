@@ -72,7 +72,7 @@ module.exports = {
         header: true,
         pages: [
           {
-            title: 'Features',
+            title: 'Using these guides',
             path: '/guides/'
           },
           {
