@@ -1,5 +1,5 @@
 ---
-title: Get Job Status
+title: Get the status of a job
 description: Learn how to fetch and poll for job status from the Photoshop API to monitor asynchronous operations
 hideBreadcrumbNav: true
 keywords:
@@ -12,37 +12,29 @@ contributors:
   - https://github.com/AEAbreu-hub
 ---
 
-# Get Job Status
+# Get job status
 
-Each of our Photoshop API endpoints, when invoked, initiates an asynchronous job and returns a response body that contains the href to poll for status of the job.
+Photoshop API endpoints initiate an asynchronous job and return a response body that contains the URL to poll for the status of the job.
 
-## Fetch the status of an API
+## Fetch the status of a job
 
-Each of our Photoshop API endpoints, when invoked, initiates an asynchronous job and returns a response body that contains the href to poll for status of the job.
+Each of our Photoshop API endpoints, when invoked, initiates an asynchronous job and returns a response body that contains the URL to poll for the status of the job.
 
-```json
-{
-    "_links": {
-        "self": {
-            "href": "https://image.adobe.io/pie/psdService/status/de2415fb-82c6-47fc-b102-04ad651c5ed4"
-        }
-    }
-}
-```
-
-Using the job id returned from the response (as above) of a successfully submitted API call, you can poll on the corresponding value in the `href` field, to get the status of the job.
+Using the job ID returned in the response of a successfully submitted API call, you can poll on the corresponding value in the `href` field, to get the status of the job:
 
 ```shell
 curl -X GET \
-  https://image.adobe.io/pie/psdService/status/de2415fb-82c6-47fc-b102-04ad651c5ed4 \
+  https://image.adobe.io/pie/psdService/status/<JOB_ID> \
   -H "Authorization: Bearer $token"  \
   -H "x-api-key: $apiKey" \
   -H "Content-Type: application/json"
 ```
 
-## Poll for job status for all Other APIs
+## Poll for job status for all other APIs
 
-Once your job completes successfully (no errors/failures reported), this will return a response body containing the job status for each requested output. For the `/renditionCreate` API call in [Example 10](/guides/code_sample/index.md#create-a-document-rendition) as illustrated above, a sample response containing the job status is as shown below:
+Once your job completes successfully, a response body containing the job status for each requested output is returned.
+
+**Example response**
 
 ```json
 {
@@ -77,4 +69,3 @@ Once your job completes successfully (no errors/failures reported), this will re
   }
 }
 ```
- 
