@@ -1,5 +1,5 @@
 ---
-title: ActionJSON Endpoint
+title: Using the ActionJSON Endpoint
 description: Learn how to use the ActionJSON endpoint to apply and modify Photoshop Actions programmatically with enhanced flexibility.
 hideBreadcrumbNav: true
 keywords:
@@ -12,20 +12,30 @@ contributors:
   - https://github.com/AEAbreu-hub
 ---
 
-# ActionJSON Endpoint
+# Getting started with ActionJSON
 
-The ActionJSON endpoint allows you to apply Photoshop Actions to images programmatically with enhanced flexibility compared to the standard Photoshop Actions endpoint. You can modify action payloads dynamically and work with ATN files without uploading them to Firefly Services.
+ActionJSON is similar to the Photoshop Actions endpoint, allowing you to apply the contents of an ATN file to an image programmatically. However, there is added flexibility when you use ActionJSON.
 
-## Getting started with ActionJSON
+The `/actionJSON` endpoint accepts an input file, applies any Photoshop Action file to it, and edits the steps within the original action file to create dynamic changes to an otherwise static Action file.
 
-Similar to the Photoshop Actions endpoint, this endpoint also helps you to apply the contents of ATN file to an image programmatically. However, there are a few key differences which give you added flexibility.
+These changes can include:
 
-* You can modify the payload, such as adding an action.
-* You don't need to upload and store your ATN file at Firefly Services as you do with the Photoshop Actions endpoint.
+* Modifying the payload, such as adding an action.
+* Applying an ATN file to an image without uploading and storing your ATN file at Firefly Services as you do with the Photoshop Actions endpoint.
+
+Watch this tutorial video and read on to learn more about ActionJSON.
+
+<Media slots="video" width="750" height="500"/>
+
+<https://youtu.be/giFJ6qbez_I?feature=shared>
+
+## Implementation example
 
 ![alt image](spanielsBW.png?raw=true "Original Image")
 
-The `/actionJSON` endpoint can take an input file and apply any Photoshop Action file on it and edit the steps within the original action file. This gives you a lot of flexibility to create dynamic changes to an otherwise static Action file. In this example we are going to use a familiar asset and action file and we are going to modify the payload to return an output that executes all of the steps of the original action with one modification, instead of color we are going to use actionJSON to return a black and white image. This action file contains over 70 steps so we won't show the entire JSON payload but will share the part we modified to achieve the output.
+In this example, we use a familiar asset and action file and modify the payload to return an output that executes all of the steps of the original action with one modification. Instead of color, we're going to use ActionJSON to return a black and white image. 
+
+This full action file contains over 70 steps, so we don't show the entire JSON payload here. But you can see the part we modified to achieve the output below.
 
 ```shell
 curl -X POST \
@@ -99,58 +109,49 @@ curl -X POST \
 }'
 ```
 
-The actionJSON endpoint does support multiple inputs. If you'd like to learn more about using multiple inputs with actionJSON, you can find this: [Multiple Inputs ActionJSON Example][1].
+## Creating actionJSON files
 
-Take a look at this tutorial of this endpoint to learn more. Alternatively you can read on in this section to walk through the process.
+### Setting up developer mode
 
-<Media slots="video" width="750" height="500"/>
+To enable developer mode in your Photoshop app, follow these steps:
 
-<https://youtu.be/giFJ6qbez_I?feature=shared>
+1. Navigate to:
+    * Photoshop → Preferences → Plugins... (For Mac).
+    * Edit → Preferences → Plugins... (For Windows).
+  
+2. Select *Enable Developer Mode*.
+3. Quit Photoshop.
+4. Reopen your Photoshop app with developer mode enabled.
 
-## Setting up developer mode
+If you're using Photoshop 23.4 (July 2022) or earlier, enable developer mode as a hidden feature by executing the command below.
 
-If you haven't already enabled developer mode in your Photoshop app, follow these steps:
-
-  * Select:
-    * `Photoshop → Preferences → Plugins...` (For Mac)
-   Or
-    * `Edit → Preferences → Plugins...` (For Windows)
-  * Select `Enable Developer Mode`
-  * Quit Photoshop
-
-  Enable this as a hidden feature if you are using Photoshop 23.4 (July 2022) or earlier. Execute the command below:
-
-  For Mac
+For Mac:
 
   ```bash
   echo "UXPEnableScriptingUtilities 1" >>  "/Users/$USER/Library/Preferences/Adobe Photoshop 2021 Settings/PSUserConfig.txt"
   ```
 
-  For Windows Powershell
+For Windows Powershell:
 
   ```bash
   echo  "UXPEnableScriptingUtilities 1" >> "C:\Users\$env:USERNAME\AppData\Roaming\Adobe\Adobe Photoshop 2021\Adobe Photoshop 2021 Settings\PSUserConfig.txt"
   ```
 
- At this point you can reopen your Photoshop app with developer mode enabled.
-
-## Creating actionJSON files
-
 ### Creating new actionJSON
 
 If you have developer mode enabled in Photoshop follow the instructions below. If you don't have developer mode enabled below please see the previous section.
 
-* Open the Photoshop app
-* Select `Settings | Plugins`
-* Select `Development`
-* Select `Record Action Commands...`
-* Name your file and click `Save`. You can now make select actions in Photoshop such as resizing an image, adjusting hue and saturation and so on. Photoshop saves all of your actions in your new file.
+1. Open the Photoshop app.
+2. Select Settings → Plugins.
+3. Select Development.
+4. Select Record Action Commands....
+5. Name your file and click **Save**. You can now make select actions in Photoshop such as resizing an image, adjusting hue and saturation and so on. Photoshop saves all of your actions in your new file.
 
 Once you're done recording your action, you can stop recording and save:
 
-* Select `Settings | Plugins`
-* Select `Development`
-* Click `Stop Action Recording`
+1. Select Settings → Plugins.
+2. Select Development.
+3. Click **Stop Action Recording**.
 
 Photoshop app saves your actions to the directory you chose when you named your file.
 
@@ -158,30 +159,32 @@ Photoshop app saves your actions to the directory you chose when you named your 
 
 You can alternatively create a new file in your Photoshop app's Action Panel:
 
-* Go to `Windows | Actions`. The action panel opens.
-* Select `New Action` to create a new action. You can alternatively click `+` in the panel.
+1. Go to Windows → Actions. The action panel opens.
+2. Select **New Action...** to create a new action, or click `+` in the panel.
   ![alt image](actions_panel_menu.png?raw=true "Original Image")
-* Select your action from action set
-* Select `Copy as Javascript`
-* Paste it in any text editor.
-* Modify the file to trim out the actions. An example is shown below in the code sample.
+1. Select your action from the action set.
+2. Select **Copy as Javascript**.
+3. Paste the contents in any text editor.
+4. Modify the file to trim out the actions.
 
 Now you can use the action in your Photoshop API payload.
 
 ### Converting ATN files into actionJSON
 
-This endpoint enables you to convert an .atn file to actionJSON format. This is the simplest and easiest way to create an actionJSON file.
+This endpoint enables you to convert an *.atn* file to actionJSON format. This is the simplest and easiest way to create an actionJSON file.
 
 ### Converting ATN files into actionJSON with Photoshop
 
-* Go to `Windows | Actions`. The action panel opens.
-* Select `Load action`
-* Choose the action you would like to convert to actionJSON
-* Click on `copy as Javascript`
-* Paste it in any text editor
-* Modify the file to trim out the actions obj blocks An example is shown below in the code sample.
+1. Go to Windows → Actions. The action panel opens.
+2. Select **Load action**.
+3. Choose the action you would like to convert to actionJSON.
+4. Click on **Copy as Javascript**.
+5. Paste the contents in any text editor.
+6. Modify the file to trim out the actions obj blocks. An example is shown below in the code sample.
 
-You can now use the action in your payload. Here is a code sample of Action JSON when you copy actions as Javascript from Photoshop:
+You can now use the action in your payload. 
+
+Here is a code sample of Action JSON when you copy actions as Javascript from Photoshop:
 
 ```js
 async function vignetteSelection() {
@@ -214,8 +217,7 @@ async function runModalFunction() {
 await runModalFunction();
 ```
 
-Modify the javascript file to trim out the actions.
-Remove everything else from the javascript file and copy the array containing `_obj` from the `command` variable which will look something like below
+Modify the JavaScript file to trim out the actions. Remove everything else from the JavaScript file and copy the array containing `_obj` from the `command` variable, which will look similar to what's shown  below.
 
 ```js
 [    
@@ -230,18 +232,18 @@ Remove everything else from the javascript file and copy the array containing `_
 ]
 ```
 
-You can find details about actionJSON at [Photoshop API, `batchPlay`][2].
+Find [details about actionJSON at Photoshop API, `batchPlay`][2].
 
 ### Executing an actionJSON with multiple inputs
 
-With `/actionJSON` endpoint you can use multiple images to do compositing on the actionJSON.
+With `/actionJSON` endpoint you can use multiple images to do compositing.
 
-In order to supply multiple images and have it specified in the actionJSON, you need to create a Placeholder Value in your actionJSON.   The placeholder value must be "ACTION_JSON_OPTIONS_ADDITIONAL_IMAGES_X" where "X" is the index of the "additionalImages" array.
+To supply multiple images and have it specified in the actionJSON, create a Placeholder Value in your actionJSON. The placeholder value must be `ACTION_JSON_OPTIONS_ADDITIONAL_IMAGES_X` where `X` is the index of the `additionalImages` array.
 
-For example, say you have an actionJSON that requires 2 additional Images.
+For example, say an actionJSON requires two additional images:
 
-ACTION_JSON_OPTIONS_ADDITIONAL_IMAGES_0 == options.additionalImages[0]
-ACTION_JSON_OPTIONS_ADDITIONAL_IMAGES_1 == options.additionalImages[1]
+* `ACTION_JSON_OPTIONS_ADDITIONAL_IMAGES_0` == `options.additionalImages[0]`
+* `ACTION_JSON_OPTIONS_ADDITIONAL_IMAGES_1` == `options.additionalImages[1]`
 
 ```shell
 curl -X POST \
