@@ -76,10 +76,6 @@ module.exports = {
             path: '/guides/'
           },
           {
-            title: 'Using our Guides',
-            path: '/guides/code_sample/index.md'
-          },
-          {
             title: 'Photoshop Actions',
             path: '/guides/photoshop_actions/'
           },
