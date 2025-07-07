@@ -376,5 +376,4 @@ curl -X POST \
 ```
 
 <!-- Links -->
-[1]: ../../guides/code_sample/index.md#executing-an-actionjson-with-multiple-inputs
 [2]: https://developer.adobe.com/photoshop/uxp/2022/ps_reference/media/batchplay/
