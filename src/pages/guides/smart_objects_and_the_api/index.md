@@ -1,5 +1,5 @@
 ---
-title: Smart Objects and the API
+title: Getting started with Smart Objects
 description: Learn how to create and edit embedded Smart Objects in Photoshop files using the Smart Object API endpoint
 hideBreadcrumbNav: true
 keywords:
