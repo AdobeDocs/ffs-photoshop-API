@@ -1,5 +1,5 @@
 ---
-title: Renditions and Conversions
+title: PSD Renditions and Conversions
 description: Learn how to create PSD documents and convert between different image formats using the Rendering and Conversions API endpoint
 hideBreadcrumbNav: true
 keywords:
@@ -13,7 +13,7 @@ contributors:
   - https://github.com/AEAbreu-hub
 ---
 
-# Rendering and Conversions
+# PSD Renditions and Conversions
 
 This endpoint allows you to create a new PSD document and renditions in different sizes.
 

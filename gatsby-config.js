@@ -80,11 +80,11 @@ module.exports = {
             path: '/guides/photoshop_actions/'
           },
           {
-            title: 'ActionJSON Endpoint',
+            title: 'Using the ActionJSON endpoint',
             path: '/guides/actionjson_endpoint/'
           },
           {
-            title: 'Smart Objects and the API',
+            title: 'Using Smart Objects',
             path: '/guides/smart_objects_and_the_api/'
           },
           {
@@ -96,11 +96,11 @@ module.exports = {
             path: '/guides/product_crop/'
           },
           {
-            title: 'DepthBlur',
+            title: 'UsingDepth Blur',
             path: '/guides/depthblur/'
           },
           {
-            title: 'Rendering and Conversions',
+            title: 'PSD Renditions and Conversions',
             path: '/guides/rendering_and_conversions/'
           },
           {
@@ -120,19 +120,19 @@ module.exports = {
             path: '/guides/remove_background/'
           },
           {
-            title: 'Triggering an Event from the APIs',
+            title: 'Triggering an event',
             path: '/guides/triggering_an_event/'
           },
           {
-            title: 'Get Job Status',
+            title: 'Get job status',
             path: '/guides/get_job_status/'
           },
           {
-            title: 'Retrieve a PSD Manifest',
+            title: 'Retrieve a PSD manifest',
             path: '/guides/retrieve_manifest/'
           },
           {
-            title: 'Create Mask',
+            title: 'Create a mask',
             path: '/guides/create_mask/'
           }
         ]
