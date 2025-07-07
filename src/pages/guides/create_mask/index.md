@@ -1,5 +1,5 @@
 ---
-title: Create Mask
+title: Create a mask
 description: Learn how to create grayscale mask PNG files using the Create Mask API endpoint for image compositing and editing
 hideBreadcrumbNav: true
 keywords:
@@ -14,17 +14,17 @@ contributors:
 
 # Create Mask
 
-This endpoint allows you to create a grayscale mask PNG file that you can composite onto the original image (or any other). The mask provides precise control over which parts of an image are affected by subsequent operations.
+Create a grayscale mask that you can composite onto the original image.
 
 ## Getting started with mask creation
 
-This endpoint allows you to create a grayscale mask PNG file that you can composite onto the original image (or any other).
-
-Example of Image mask with a sample image:
-
 ![alt image](imagecutout_mask_example.png?raw=true "Original Image")
 
-The `/mask` API accepts a single input image to generate your mask. Using [Example.jpg][1], a typical cURL call might look like this:
+The `/mask` endpoint allows you to create a grayscale mask PNG file that you can composite onto the original image (or any other). The mask provides precise control over which parts of an image are affected by any subsequent operations.
+
+The endpoint accepts a single input image to generate your mask.
+
+Using [Example.jpg][1], a typical cURL call might look like this:
 
 ```shell
 curl -X POST \
@@ -47,7 +47,7 @@ curl -X POST \
 }'
 ```
 
-This initiates an asynchronous job and returns a response containing the href to poll for job status and the JSON manifest.
+This initiates an asynchronous job and returns a response containing the URL to poll for job status and the JSON manifest.
 
 ```json
 {
