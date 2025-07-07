@@ -1,5 +1,5 @@
 ---
-title: Rendering and Conversions
+title: Renditions and Conversions
 description: Learn how to create PSD documents and convert between different image formats using the Rendering and Conversions API endpoint
 hideBreadcrumbNav: true
 keywords:
@@ -15,23 +15,18 @@ contributors:
 
 # Rendering and Conversions
 
-This endpoint allows you to create a new PSD document and various renditions of different sizes. You can also convert any supported input file format to PSD, JPEG, TIFF, or PNG.
+This endpoint allows you to create a new PSD document and renditions in different sizes.
 
-## Getting started with rendering and conversions
-
-This endpoint allows you to create a new PSD document and various renditions of different sizes. You can also convert any supported input file format to PSD, JPEG, TIFF, or PNG.
+Use this endpoint to:
 
 * Create a new PSD document.
-* Create a JPEG, TIFF or PNG rendition of various sizes.
+* Create JPEG, TIFF or PNG renditions, with various sizes.
 * Request thumbnail previews of all renderable layers.
-* Convert between any of the supported filetypes (PSD, JPEG, TIFF, PNG).
+* Convert files between any of the supported file types (PSD, JPEG, TIFF, PNG).
 
-Here is an example of creating JPEG and PNG renditions of a PSD document:
-[Render PSD document][1]
+## Creating a document rendition
 
-### Creating a document rendition
-
-Generate multiple output renditions with the API `renditionCreate`:
+This implementation example generates multiple output renditions with the API `/renditionCreate`:
 
 ```shell
 curl -X POST \
@@ -62,9 +57,4 @@ curl -X POST \
 }'
 ```
 
-A call to this API initiates an asynchronous job and returns a response containing an href. Use the value in the href to poll for the status of the job. This is illustrated in [Example 12][2] and [Example 14][3].
-
-<!-- Links -->
-[1]: /guides/code_sample/index.md#create-a-document-rendition
-[2]: /guides/code_sample/index.md#fetch-the-status-of-an-api
-[3]: /guides/code_sample/index.md#poll-for-job-status-for-all-other-apis
+A call to this API initiates an asynchronous job and returns a response containing an href. Use the value in the href to [poll for the status of the job](/guides/get_job_status/).
