@@ -96,10 +96,6 @@ module.exports = {
             path: '/guides/edit_text/'
           },
           {
-            title: 'Text layers Edits',
-            path: '/guides/text_layers_edits/'
-          },
-          {
             title: 'Product Crop',
             path: '/guides/product_crop/'
           },
