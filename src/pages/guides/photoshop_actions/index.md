@@ -39,8 +39,8 @@ We support the following file formats for Photoshop API with Photoshop Actions:
 ### Best practices and limitations
 
 * We support all Photoshop app dialogs, however we don't support interactions with operating system dialogs. This means you can't use Photoshop API to programmatically open a system-level print settings dialog.
-* We recommend creating Actions that don't require user intervention such as confirming a selection or providing file paths.
-* Make sure to test your actions on Photoshop, with several different input/images. If it has any errors in Photoshop, it won't run successfully on our servers either.
+* We recommend creating Actions that don't require user intervention, such as confirming a selection or providing file paths.
+* Make sure to test your actions on Photoshop with several different input/images. If it has any errors in Photoshop, it won't run successfully on our servers either.
 
 The following are known limitations which Photoshop API doesn't support:
 
@@ -48,9 +48,9 @@ The following are known limitations which Photoshop API doesn't support:
 * Custom presets, for example color swatches and brushes.
 * This endpoint doesn't currently support multiple file inputs.
 
-You can choose to playback all of the tasks recorded in an Action or you can selectively choose a particular task from an Actions file and exclude the rest.
+You can choose to playback all of the tasks recorded in an Action, or you can selectively choose a particular task from an Actions file and exclude the rest.
 
-## Examples
+## Implementation examples
 
 In this example we applied a custom Action called Posterize. This ATN file had multiple recorded Photoshop tasks including Select Subject, Remove Background, Posterize, and Export as PNG.
 
@@ -87,11 +87,9 @@ curl -X POST \
 }'
 ```
 
-For another example, see [Execute Individual Photoshop Action][2].
+### Playing a specific action
 
-## Playing a specific action
-
-By default, Photoshop API will attempt to play all actions in an action set. If you'd like to only playback a specific action, you can specify `actionName` and the name of the action you want to invoke (see example below).
+By default, Photoshop API will attempt to play all actions in an action set. If you'd like to only playback a specific action, you can specify `actionName` and the name of the action you want to invoke (see below).
 
 ```shell
 curl -X POST \
@@ -127,4 +125,3 @@ curl -X POST \
 
 <!-- Links -->
 [1]: https://helpx.adobe.com/photoshop/using/actions-actions-panel.html
-[2]: ../../guides/code_sample/index.md#photoshop-actions-play-a-specific-action
