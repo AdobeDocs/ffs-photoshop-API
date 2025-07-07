@@ -1,122 +1,124 @@
 ---
-title: Storage Solutions Concept Page
-description: This page explains the storage solutions that are acceptable for use with video services.
+title: Storage Solutions
+description: Learn how to set up and use storage solutions with the Photoshop API.,
+hideBreadcrumbNav: true
 contributors:
   - https://github.com/khound
   - https://github.com/archyposada
+  - https://github.com/AEAbreu-hub
+keywords:
+  - storage
+  - S3
+  - pre-signed URL
+  - Frame.io
+  - Google Drive
+  - Azure
+  - Dropbox
 ---
 
 # Storage Solutions
 
-Explore more about the storage solutions you'll need when you're using these APIs.
+Learn about the storage solutions you'll need when using the Photoshop API.
 
-Some form of user-owned storage (like Amazon S3 buckets) is necessary with these audio and video APIs. Media files (audio or video) and edited transcripts kept in your storage are targeted with pre-signed URLs and used as input for the API.
+## Set up your storage
 
-Learn how to set up your files in these storage solutions to use with the API:
+You'll need some form of user-owned storage (like Amazon S3 buckets) to use with the Photoshop API. Your media files and edited transcripts are stored in your storage and accessed via pre-signed URLs for API input.
 
-## Using Amazon S3 buckets
+### Using Amazon S3 buckets
 
-  1. Log in to your AWS account.
-  2. Go to s3.
-  3. Create a new bucket, with any name (for example, *AdobeApiTesting*).
-  4. Drag and drop the media file (audio/video) or edited transcript file that you want to provide to the API in the bucket you've created.
-  5. Once the upload is complete, select the file and go to **Actions**.
-  6. Select the **Share with pre-signed URL** option and enter a duration for the pre-signed URL to be valid.
-  7. Copy the generated pre-signed URL to use in the API (it may also copy automatically when you create it).
+1. Log in to your AWS account.
+2. Go to S3.
+3. Create a new bucket (for example, *AdobeApiTesting*).
+4. Upload your media file to the bucket.
+5. Once the upload is complete, select the file and go to **Actions**.
+6. Select **Share with pre-signed URL** and set the URL duration.
+7. Copy the generated pre-signed URL for use with the API.
 
-## Using an Frame.io account
+### Using a Frame.io account
 
-  1. Log in to your Frame.io account.
-  2. Create a project (for example, *AdobeApiTesting*).
-  3. Open the **Inspect** view of your browser (using Chrome, press f12 and go to the **Network** tab).
-  4. Drag and drop the media file (audio/video) or edited transcript file that you want to provide to the API in the bucket.
-  5. Select the file, and click **Download**.
-  6. In the **Network** tab, you'll see a GET call using a pre-signed URL to use to download the file.
-  7. Copy that URL to use in the API.
+1. Log in to your Frame.io account.
+2. Create a project (for example, *AdobeApiTesting*).
+3. Open your browser's **Inspect** view (in Chrome, press F12 and go to the **Network** tab).
+4. Upload your media file.
+5. Select the file and click **Download**.
+6. In the **Network** tab, you'll see a GET request using a pre-signed URL.
+7. Copy that URL for use with the API.
 
-## Using Frame.io Developer APIs
+### Using Frame.io Developer API
 
-Refer to [Frame.io API guide](https://developer.frame.io/api/reference/) to create assets and get their pre-signed URL.
+Refer to the [Frame.io API guide][1] to create assets and get pre-signed URLs.
 
-## Using Google's direct link service
+### Using Google's direct link service
 
-You can use [Google's direct link service](https://sites.google.com/site/gdocs2direct/?authuser=1&pli=1) to generate downloadable public links for your files by following the instructions on the page.
+You can use [Google's direct link service][2] to generate downloadable public links for your files. Before generating the links, set your file's visibility in Google Drive to **Anyone with the link**.
 
-Before generating the links, be sure your file's visibility in your Google Drive is set to **Anyone with the link**.
+## Ready-to-use workflows
 
-# General Workflow
+A typical workflow makes calls to the Photoshop API to edit *.psd* or other image files and generate new image variations. The Photoshop API works with any public or signed URL.
 
-The typical workflow involves making one or more calls to our API, to edit PSD or other image files, and to create new image renditions.
+We've documented the most common storage services and how to generate URLs programmatically.
 
-As you begin integrating the Ps APIs into your workflow, there are a few considerations to keep in mind which we've outlined below:
+### AWS S3
 
-## Input and Output file storage
+A pre-signed GET/PUT URL. See the docs for [more information about pre-signed URLs on S3][3].
 
-The Photoshop API works with any public or signed URL. We have documented a few of the most common storage services and how to generate the urls programmatically.
+Workflow samples:
 
-**AWS S3:** Pre-signed GET/PUT URL. For more information about pre-signed urls on S3 you can go [here](https://docs.aws.amazon.com/AmazonS3/latest/userguide/PresignedUrlUploadObject.html). Here are some code samples that show you how to generate your pre-signed urls programmatically:
+- [Node.js][4] - Note that creating pre-signed URLs for AWS S3 requires signature version S3V4.
+- [Python][5]
+- [Python application][6] that demonstrates how to call the API using assets stored in AWS S3.
 
-  - [Node.js](https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/storage-app/aws-s3/presignedURLs.js) <br />Please note that creating pre-signed urls for AWS S3 requires signature version S3V4, as demonstrated in the sample code.
-  - [Python](https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/storage-app/azure/presignedURLs.py)
+### Google Drive
 
-We also have a python [application](https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/storage-app/aws-s3/example.py) that provides a working example of how to call our API using assets stored in AWS S3.
+A signed GET/PUT URL. See the docs for [setting up your Google Drive account for signed URLs][7].
 
-**Google Drive:**: Signed GET/PUT URL. For more information on how to setup your Google drive account for access to creating a signed URL [here](https://www.labnol.org/google-api-service-account-220404). Here are some code samples for getting signed URLs.
+Workflow samples:
 
-  - [Node.js](https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/storage-app/googledrive/presignedURLs.js)
+- [Node.js][8]
 
-**Azure:** SAS (Shared Access Signature) for upload/download. For more information on how to generate a Shared Access Signature you can go [here](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-storage-blob/12.9.0/index.html). Here are some code samples for generating a url with Shared Access Signature.
+### Azure
 
-  - [Node.js](https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/storage-app/azure/presignedURLs.js)
-  - [Python](https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/storage-app/azure/presignedURLs.py)
+A SAS (Shared Access Signature) for upload/download. See the docs for [generating a Shared Access Signature][9].
 
-**Dropbox:** Temporary upload/download URLs.  For more information on how to generate an upload/download you can go [here](https://www.dropbox.com/developers/documentation). You can also create a file upload link for dropbox [here](https://www.dropbox.com/developers/documentation/http/documentation#files-get_temporary_upload_link).  
+Workflow samples:
 
-**Note :** You can test to see if your public url or presigned url is working.
+- [Node.js][10]
+- [Python][11]
 
-Run the curl command below to see if your input file path is working
+### Dropbox
+
+Temporary upload/download URLs. See the docs for [generating upload/download URLs][12]. You can also [create a file upload link for Dropbox][13].
+
+### Test your URLs
+
+Test if your public URL or pre-signed URL is working with the following commands.
+
+Test your input file path:
 
 ```bash
-curl -X GET <Your file path> --output <some-file.jpg>
+curl -X GET "<your_file_path>" \
+--output <some-file.jpg>
 ```
 
-  If you're using a pre-signed URL, put your file path within quotes (""):
+Test your output file path:
 
 ```bash
-curl -X GET "<Your file path>" --output <some-file.jpg>
+curl -X PUT "<your_file_path>" \
+-d <some-file.txt>
 ```
 
-Run the cURL command below to see if your output file path is working:
-
-```bash
-curl -X PUT <Your file path> -d <some-file.txt>
-```
-
-  If you're using a pre-signed URL, put your file path within quotes (""):
-
-```bash
-curl -X PUT "<Your file path>" -d <some-file.txt>
-```  
-
-## Current limitations
-
-There are a few limitations to the APIs you should be aware of ahead of time.  
-
-- Multi-part uploads and downloads are not yet supported.
-- All the endpoints only support a single file input.
-- Error handling is a work in progress. Sometimes you may not see the most helpful of messages.
-
-## Retries
-
-For increased reliability and stability we have added a retry mechanism for all API calls, and have some recommendations on how to handle these:
-
-- The service will retry status codes of 429, 502, 503, 504 three times.
-- You should only retry requests that have a 5xx response code. A 5xx error response indicates there was a problem processing the request on the server.
-- You should implement an exponential back-off retry strategy with 3 retry attempts.
-- You should not retry requests for any other response code.
-
-## Compatibility with Photoshop versions
-
-- The APIs will open any PSD created with Photoshop 1.0 or later.
-- When saving as PSD, the APIs will create PSDs compatible with the current shipping Photoshop.
-- In regards to "maximize compatibility" referenced in https://helpx.adobe.com/photoshop/using/file-formats.html#maximize_compatibility_for_psd_and_psb_files  the API's default to "yes"
+<!-- Links -->
+[1]: https://developer.frame.io/api/reference/
+[2]: https://sites.google.com/site/gdocs2direct/?authuser=1&pli=1
+[3]: https://docs.aws.amazon.com/AmazonS3/latest/userguide/PresignedUrlUploadObject.html
+[4]: https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/storage-app/aws-s3/presignedURLs.js
+[5]: https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/storage-app/azure/presignedURLs.py
+[6]: https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/storage-app/aws-s3/example.py
+[7]: https://www.labnol.org/google-api-service-account-220404
+[8]: https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/storage-app/googledrive/presignedURLs.js
+[9]: https://azuresdkdocs.blob.core.windows.net/$web/python/azure-storage-blob/12.9.0/index.html
+[10]: https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/storage-app/azure/presignedURLs.js
+[11]: https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/storage-app/azure/presignedURLs.py
+[12]: https://www.dropbox.com/developers/documentation
+[13]: https://www.dropbox.com/developers/documentation/http/documentation#files-get_temporary_upload_link
+[14]: https://helpx.adobe.com/photoshop/using/file-formats.html#maximize_compatibility_for_psd_and_psb_files
