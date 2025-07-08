@@ -33,7 +33,7 @@
         "tags": [
           "Masking"
         ],
-        "summary": "Get Status - Mask",
+        "summary": "Get status - mask",
         "description": "This endpoint returns the status of a job for Remove Background and Create Mask. Please expand `200 Successful operation` under `Responses` to know details of the status returned.",
         "operationId": "senseiJobStatus",
         "parameters": [
@@ -77,7 +77,7 @@
         "tags": [
           "Remove background"
         ],
-        "summary": "Remove background V1",
+        "summary": "Remove background v1",
         "description":  "This endpoint will identify the main subject of your image and removes the background automatically. It also provides options to return a PNG file in 4 channel RGBA or 3 channel RGB format. To check the status of this process, utilize the `Get Status - Mask` endpoint.",
         "operationId": "removeBackgroundAsync",
         "parameters": [
@@ -230,7 +230,7 @@
           "Remove background"
         ],
         "operationId": "removeBackground",
-        "summary": "Remove background V2 (beta)",
+        "summary": "Remove background v2 (beta)",
         "description": "This endpoint allows you to remove the background from an image. The request is processed asynchronously and the status of the running job can be checked with the Get Status endpoint.",
         "x-ffs-async-job": true,
         "x-ffs-job-status-fetcher": "facadeJobStatus",
@@ -426,7 +426,7 @@
         "tags": [
           "Masking"
         ],
-        "summary": "Create Mask",
+        "summary": "Create mask",
         "description": "This endpoint uses the Remove Background AI/ML model to returrn a PNG file with a mask applied around the subject. To check the status of this process, utilize the `Get Status - Mask` endpoint.",
         "operationId": "createMaskAsync",
         "parameters": [
@@ -576,7 +576,7 @@
     "/pie/psdService/status/{jobId}": {
       "get": {
         "tags": [],
-        "summary": "Get Status",
+        "summary": "Get status",
         "description": "Get job status of a Photoshop job",
         "operationId": "psJobStatus",
         "parameters": [
@@ -618,7 +618,7 @@
     "/pie/psdService/documentManifest": {
       "post": {
         "tags": [],
-        "summary": "Extract Document Manifest API.",
+        "summary": "Extract document manifest",
         "description": "Extract metadata from PSD document, including general file and layer information.",
         "operationId": "getDocumentManifestAsync",
         "parameters": [
@@ -724,7 +724,7 @@
     "/pie/psdService/documentCreate": {
       "post": {
         "tags": [],
-        "summary": "Create PSD API",
+        "summary": "Create PSD",
         "description": "Create new PSD with layers",
         "operationId": "createDocumentAsync",
         "parameters": [
@@ -852,7 +852,7 @@
     "/pie/psdService/documentOperations": {
       "post": {
         "tags": [],
-        "summary": "Apply Photoshop Edits API",
+        "summary": "Apply photoshop edits",
         "description": "Apply basic layer edits (name, state, etc), add/edit adjustment, pixel, and shape layers.",
         "operationId": "modifyDocumentAsync",
         "parameters": [
@@ -980,7 +980,7 @@
     "/pie/psdService/renditionCreate": {
       "post": {
         "tags": [],
-        "summary": "Create Renditions API",
+        "summary": "Create renditions",
         "description": "Create flat image representations of a PSD in multiple formats",
         "operationId": "createRenditionAsync",
         "parameters": [
@@ -1108,7 +1108,7 @@
     "/pie/psdService/smartObject": {
       "post": {
         "tags": [],
-        "summary": "Replace Smart Object API.",
+        "summary": "Replace smart object",
         "description": "Replace Smart Object in a PSD .",
         "operationId": "replaceSmartObjectAsync",
         "parameters": [
@@ -1236,7 +1236,7 @@
     "/pie/psdService/photoshopActions": {
       "post": {
         "tags": [],
-        "summary": "Run Photoshop Actions API",
+        "summary": "Run photoshop actions",
         "description": "Executes Photoshop Action file against a PSD, JPEG, PNG, or TIFF ",
         "operationId": "playPhotoshopActionsAsync",
         "parameters": [
@@ -1364,7 +1364,7 @@
     "/pie/psdService/actionJSON": {
       "post": {
         "tags": [],
-        "summary": "Run Action JSON API",
+        "summary": "Run action JSON",
         "description": "Execute given Photoshop Action specified in actionJSON format.",
         "operationId": "playPhotoshopActionsJsonAsync",
         "parameters": [
@@ -1507,7 +1507,7 @@
     "/pie/psdService/actionJsonCreate": {
       "post": {
         "tags": [],
-        "summary": "Convert to Action JSON API",
+        "summary": "Convert to action JSON",
         "description": "Convert .atn file to an actionJSON format ",
         "operationId": "convertToActionsJsonAsync",
         "parameters": [
@@ -1624,7 +1624,7 @@
     "/pie/psdService/productCrop": {
       "post": {
         "tags": [],
-        "summary": "Prodct Crop",
+        "summary": "Product crop",
         "description": "This endpoint identifies the subject of the input file and automatically crops the image to keep the subject in the center. Check the status of this process with the `Get Status` endpoint.",
         "operationId": "applyAutoCropAsync",
         "parameters": [
@@ -1767,7 +1767,7 @@
     "/pie/psdService/depthBlur": {
       "post": {
         "tags": [],
-        "summary": "Depth Blur",
+        "summary": "Depth blur",
         "description": "Apply depth blur to an image input",
         "operationId": "applyDepthBlurAsync",
         "parameters": [
@@ -1910,7 +1910,7 @@
     "/pie/psdService/text": {
       "post": {
         "tags": [],
-        "summary": "Edit Text Layer API",
+        "summary": "Edit text layer",
         "description": "Change the contents of a text layer in a PSD, eg for localization ",
         "operationId": "editTextLayerAsync",
         "parameters": [
@@ -2053,7 +2053,7 @@
     "/pie/psdService/artboardCreate": {
       "post": {
         "tags": [],
-        "summary": "Create Arboards API",
+        "summary": "Create artboards",
         "description": "Create artboards from multiple PSD inputs ",
         "operationId": "createArtboardAsync",
         "parameters": [
