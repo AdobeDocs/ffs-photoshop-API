@@ -14,14 +14,16 @@ This rule defines the process for running and fixing linting issues in documenta
    yarn lint
    ```
 
-2. Review the output for markdown linting errors. Common issues include:
+2. If the linter fails because Docker is not running, ask the user if they would like to continue (Y/N) before proceeding. Only continue if the user confirms.
+
+3. Review the output for markdown linting errors. Common issues include:
    - MD047/single-trailing-newline: Missing newline at end of file
    - MD009/no-trailing-spaces: Trailing spaces in lines
    - MD013/line-length: Lines exceeding maximum length
    - MD041/first-line-heading: Missing heading at start of file
    - MD022/headings: Headings not following sentence case
 
-3. Fix identified issues:
+4. Fix identified issues:
    - For missing newlines: Add a newline at the end of the file using:
      ```sh
      echo "" >> <file_path>
@@ -34,7 +36,7 @@ This rule defines the process for running and fixing linting issues in documenta
    - For line length issues: Break long lines at appropriate points
    - For missing headings: Add appropriate heading at start of file
 
-4. Verify fixes:
+5. Verify fixes:
    ```sh
    yarn lint
    ```
@@ -69,6 +71,7 @@ sed -i '' 's/ $//' <file_path> && echo "" >> <file_path>
 ## Checklist
 
 - [ ] Run `yarn lint`
+- [ ] If Docker is not running and the linter fails, ask the user if they would like to continue (Y/N)
 - [ ] Review and document all linting errors
 - [ ] Fix each identified issue
 - [ ] Run `yarn lint` again to verify fixes

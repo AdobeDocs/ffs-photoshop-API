@@ -14,13 +14,15 @@ contributors:
 
 # Triggering an Event from the APIs
 
-In order to start receiving the events in your Webhook Application, the additional thing that needs to be done is to pass in your IMS ORG ID in a header: `x-gw-ims-org-id: <YOUR_IMS_ORG_ID>`, when you make an API call to initiate a job. Please have a look at the example below that demonstrates the usage of the new header and a sample event received for that job.
+You can trigger webhook events from the Photoshop API by including your IMS ORG ID in API calls.
 
-## Example 1: Retrieving a PSD manifest from the Photoshop API
+To receive events in your webhook application, pass the IMS ORG ID in a header: `x-gw-ims-org-id: <YOUR_IMS_ORG_ID>`, when you make an API call to initiate a job.
 
-### Step 1: Initiate a job to retrieve a PSD's JSON manifest
+## Retrieving a PSD manifest
 
-The `/documentManifest` api can take one or more input PSD's to generate JSON manifest files from. The JSON manifest is the tree representation of all of the layer objects contained in the PSD document. Using Example.psd, with the use case of a document stored in your external storage, a typical curl call might look like this:
+The `/documentManifest` API can take one or more input PSD's and generate JSON manifest files from them. The JSON manifest provides a representation of all the layer objects contained in the PSD document.
+
+Using `Example.psd`, with the use case of a document stored in your external storage, a typical cURL call might look like this:
 
 ```shell
 curl -X POST \
@@ -39,7 +41,9 @@ curl -X POST \
 }'
 ```
 
-This initiates an asynchronous job and returns a response containing the href to poll for job status and the JSON manifest.
+This initiates an asynchronous job and returns a response containing the href to [poll for job status and the JSON manifest](/guides/get_job_status/).
+
+**Example response:**
 
 ```json
 {
@@ -51,9 +55,11 @@ This initiates an asynchronous job and returns a response containing the href to
 }
 ```
 
-### Step 2: Receive the Job's status on the Webhook application when the job is complete
+## Receive the job's status on the webhook application
 
-The value in the key `body` inside the event JSON contains the result of the job. Here is a sample event received from the job initiated above:
+The value in the `body` field contains the result of the job.
+
+**Example response:**
 
 ```json
 {

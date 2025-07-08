@@ -16,15 +16,15 @@ contributors:
 
 The Product Crop endpoint facilitates smart cropping for images, automatically detecting the subject and ensuring it remains the focal point of the cropped image. You can identify the product and specify the desired padding for your cropped image.
 
-## Getting started with product cropping
+The `/productCrop` endpoint can take an input file and apply a crop to it. It doesn't support multilayered PSD files.
 
-The Product Crop endpoint facilitates smart cropping for images, automatically detecting the subject and ensuring it remains the focal point of the cropped image. You can identify the product and specify the desired padding for your cropped image. You can see some sample code [here][1].
+### Known limitations
 
-### Applying product crop
+There is a known issue that when a figure or portrait is present in the design on a salient object (like a t-shirt, collectible or artwork), the model will perform a crop with the person as the focal area rather than the object itself.
 
-The `productCrop` endpoint can take an input file and apply right crop to it. We don't support multilayered PSD.
+## Implementation example
 
-This example shows how you can apply the crop with required padding to an input file:
+This example shows how to apply the crop with the required padding to an input file:
 
 ```shell
 curl -X POST \
@@ -56,11 +56,4 @@ curl -X POST \
 }'
 ```
 
-### Known limitations
-
-The current model is trained to return a crop that respects the salient object within an image. There is a current known issue that when a person or portrait is contained within a salient object, the model will crop with the person as the focal area rather than the salient object that contains it. This is problematic in the case of an item where an image of a person is contained within a design (i.e. a t-shirt, collectible or art). Rather than crop to the intended item, the service will crop to the person within the item.
-
-We intend to correct this issue in future releases.
-
 <!-- Links -->
-[1]: /guides/code_sample/index.md#applying-product-crop

@@ -14,9 +14,13 @@ contributors:
 
 # Retrieve a PSD's JSON Manifest
 
-The `/documentManifest` API can take one input PSD to generate a JSON manifest file. The JSON manifest is the tree representation of all of the layer objects contained in the PSD document.
+Generate a JSON manifest file from a PSD document.
 
-Using Example.psd, with the use case of a document stored in your external storage (ie. azure, aws, dropbox), a typical curl call might look like this:
+The `/documentManifest` API can take one input PSD to generate a JSON manifest file. The JSON manifest is the representation of all the layer objects contained in the PSD document.
+
+## Implementation example
+
+Using Example.psd as a document stored in external storage (like Azure, AWS, Dropbox), a typical cURL call might look like this:
 
 ```shell
 curl -X POST \
@@ -34,11 +38,13 @@ curl -X POST \
 }'
 ```
 
-A call to this API initiates an asynchronous job and returns a response containing an href. Use the value in the href to poll for the status of the job and the same response will also contain the JSON manifest. This is illustrated in [Example 12](/guides/code_sample/index.md#fetch-the-status-of-an-api) and [Example 14](/guides/code_sample/index.md#poll-for-job-status-for-all-other-apis)
+A call to this API initiates an asynchronous job and returns a response containing a URL. Use the value in the `href` field to [poll for the status of the job](/guides/get_job_status/) and the same response will also contain the JSON manifest.
 
-## Poll for job status for documentManifest
+## Poll for job status
 
-Once your job completes successfully (no errors/failures reported), the status response will contain your document's JSON manifest along with other metadata about the input document. The JSON Manifest is further described in the [api docs](../../api/index.md)
+Once your job successfully completes, the status response will contain your document's JSON manifest along with other metadata about the input document.
+
+**Example response:**
 
 ```json
 {
