@@ -31,7 +31,7 @@
       "description": "Operations for working with Photoshop actions in JSON format"
     },
     {
-      "name": "Status",
+      "name": "Get status",
       "description": "Utility endpoints for checking job status and system health"
     }
   ],
@@ -39,7 +39,7 @@
     "/sensei/status/{jobId}": {
       "get": {
         "tags": [
-          "Status"
+          "Get status"
         ],
         "summary": "Get status - mask",
         "description": "This endpoint returns the status of a job for Remove Background and Create Mask. Please expand `200 Successful operation` under `Responses` to know details of the status returned.",
@@ -371,7 +371,7 @@
       "get": {
         "operationId": "facadeJobStatus",
         "tags": [
-          "Status"
+          "Get status"
         ],
         "summary": "Retrieve job status v2",
         "description": "Retrieve the status of a running job by providing the job ID. The job ID is obtained from the response of the asynchronous API call.",
@@ -587,7 +587,7 @@
     "/pie/psdService/status/{jobId}": {
       "get": {
         "tags": [
-          "Status"
+          "Get status"
         ],
         "summary": "Get status",
         "description": "Get job status of a Photoshop job",
