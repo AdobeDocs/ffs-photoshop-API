@@ -282,7 +282,22 @@ For troubleshooting documentation, ensure:
      ❌ "The token has not expired"
      ```
 
-2. **Heading Case Standards**
+2. **Bullet Points**
+   - Use periods at the end of bullet points that are complete sentences
+   - Don't use periods for single words, phrases, or incomplete sentences
+   - Follow Microsoft Style Guide for bullet point punctuation
+   - Examples:
+     ```markdown
+     ✅ - The service will retry status codes of 429, 502, 503, 504 three times.
+     ✅ - Multi-part uploads and downloads aren't yet supported.
+     ✅ - All endpoints only support a single file input.
+     
+     ✅ - Authentication
+     ✅ - Rate limits
+     ✅ - Webhooks
+     ```
+
+3. **Heading Case Standards**
    - H1 (#): Title Case (e.g., "Authentication")
    - H2-H6 (##-######): Sentence case (e.g., "Getting started with authentication")
    - Examples:
@@ -332,7 +347,6 @@ For troubleshooting documentation, ensure:
      Use the [cURL][1] command-line tool to make API requests. In code blocks, use lowercase:
      ```bash
      curl --url https://api.example.com
-     ```
      ```
 
      When discussing URLs in text, use "pre-signed URL", but in code or actual URLs use "presigned":
