@@ -19,15 +19,19 @@
   ],
   "tags": [
     {
-      "name": "Photoshop",
-      "description": "Adobe Photoshop and Imaging APIs"
+      "name": "Masking",
+      "description": "Operations for creating and manipulating masks"
+    },
+    {
+      "name": "Remove background",
+      "description": "AI-powered background removal and subject isolation operations"
     }
   ],
   "paths": {
     "/sensei/status/{jobId}": {
       "get": {
         "tags": [
-          "Photoshop"
+          "masking"
         ],
         "summary": "Get Status - Mask",
         "description": "This endpoint returns the status of a job for Remove Background and Create Mask. Please expand `200 Successful operation` under `Responses` to know details of the status returned.",
@@ -71,7 +75,7 @@
     "/sensei/cutout": {
       "post": {
         "tags": [
-          "Photoshop"
+          "Remove background"
         ],
         "summary": "Remove Background",
         "description":  "This endpoint will identify the main subject of your image and removes the background automatically. It also provides options to return a PNG file in 4 channel RGBA or 3 channel RGB format. To check the status of this process, utilize the `Get Status - Mask` endpoint.",
@@ -223,7 +227,7 @@
     "/sensei/mask": {
       "post": {
         "tags": [
-          "Photoshop"
+          "masking"
         ],
         "summary": "Create Mask",
         "description": "This endpoint uses the Remove Background AI/ML model to returrn a PNG file with a mask applied around the subject. To check the status of this process, utilize the `Get Status - Mask` endpoint.",
