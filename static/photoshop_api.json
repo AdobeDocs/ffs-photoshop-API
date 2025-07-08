@@ -1364,7 +1364,7 @@
     "/pie/psdService/actionJSON": {
       "post": {
         "tags": [],
-        "summary": "Run action JSON",
+        "summary": "Run actionJSON",
         "description": "Execute given Photoshop Action specified in actionJSON format.",
         "operationId": "playPhotoshopActionsJsonAsync",
         "parameters": [
@@ -1507,8 +1507,8 @@
     "/pie/psdService/actionJsonCreate": {
       "post": {
         "tags": [],
-        "summary": "Convert to action JSON",
-        "description": "Convert .atn file to an actionJSON format ",
+        "summary": "Convert to actionJSON",
+        "description": "Convert an ATN file to actionJSON format. ",
         "operationId": "convertToActionsJsonAsync",
         "parameters": [
           {
@@ -1522,7 +1522,7 @@
           }
         ],
         "requestBody": {
-          "description": "The input atn file to convert to actionJSON",
+          "description": "The input ATN file to convert to actionJSON.",
           "content": {
             "application/json": {
               "schema": {
