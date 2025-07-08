@@ -33,7 +33,7 @@ Watch this tutorial video and read on to learn more about ActionJSON.
 
 ![alt image](spanielsBW.png?raw=true "Original Image")
 
-In this example, we use a familiar asset and action file and modify the payload to return an output that executes all of the steps of the original action with one modification. Instead of color, we're going to use ActionJSON to return a black and white image. 
+In this example, we use a familiar asset and action file and modify the payload to return an output that executes all of the steps of the original action with one modification. Instead of color, we're going to use ActionJSON to return a black and white image.
 
 This full action file contains over 70 steps, so we don't show the entire JSON payload here. But you can see the part we modified to achieve the output below.
 
@@ -118,7 +118,7 @@ To enable developer mode in your Photoshop app, follow these steps:
 1. Navigate to:
     * Photoshop → Preferences → Plugins... (For Mac).
     * Edit → Preferences → Plugins... (For Windows).
-  
+
 2. Select *Enable Developer Mode*.
 3. Quit Photoshop.
 4. Reopen your Photoshop app with developer mode enabled.
@@ -182,7 +182,7 @@ This endpoint enables you to convert an *.atn* file to actionJSON format. This i
 5. Paste the contents in any text editor.
 6. Modify the file to trim out the actions obj blocks. An example is shown below in the code sample.
 
-You can now use the action in your payload. 
+You can now use the action in your payload.
 
 Here is a code sample of Action JSON when you copy actions as Javascript from Photoshop:
 
@@ -220,7 +220,7 @@ await runModalFunction();
 Modify the JavaScript file to trim out the actions. Remove everything else from the JavaScript file and copy the array containing `_obj` from the `command` variable, which will look similar to what's shown  below.
 
 ```js
-[    
+[  
  {"_obj":"make","_target":[{"_ref":"snapshotClass"}],"from":{"_property":"currentHistoryState","_ref":"historyState"},
  "using":{"_enum":"historyState","_value":"fullDocument"}},
  {"_obj":"feather","radius":{"_unit":"pixelsUnit","_value":5.0}},

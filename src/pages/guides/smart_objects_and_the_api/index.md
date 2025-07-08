@@ -69,7 +69,7 @@ curl -X POST \
 ]}'
 ```
 
-A call to this API initiates an asynchronous job and returns a response containing an href. Use the value in the href to [poll for the status of the job][1]. 
+A call to this API initiates an asynchronous job and returns a response containing an href. Use the value in the href to [poll for the status of the job][1].
 
 ### Swapping the image in a smart object layer
 
@@ -91,12 +91,12 @@ curl -X POST \
   "options":{
     "layers":[
       {
-        "edit":{},    
-        "input":{                                      
-          "href":"<SIGNED_GET_URL>", 
+        "edit":{},   
+        "input":{                                     
+          "href":"<SIGNED_GET_URL>",
           "storage":"<storage>"
         },
-        "smartObject" : {               
+        "smartObject" : {              
           "type" : "image/png"
         },
         "attributes":{

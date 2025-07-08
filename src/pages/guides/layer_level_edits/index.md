@@ -19,7 +19,7 @@ Perform various operations on layers within Photoshop files, including adding, e
 
 ## Adding, editing and deleting layers
 
-Use the `/documentOperations` API to make layer and/or document level edits to your PSD and then generate new renditions with the changes. 
+Use the `/documentOperations` API to make layer and/or document level edits to your PSD and then generate new renditions with the changes.
 
 You can pass in a flat array of only the layers that you wish to act upon, in the `options.layers` argument of the request body. Use the layer ID to identify the correct layers in your PSD.
 
@@ -49,7 +49,7 @@ curl -X POST \
   "options":{
     "layers":[
       {
-        "edit":{},     
+        "edit":{},    
         "id":750,
         "index":1,
         "locked":true,
@@ -88,11 +88,11 @@ curl -X POST \
   ],
   "options":{
     "layers":[
-      {                                        
-        "add":{                              
+      {                                       
+        "add":{                             
           "insertAbove": {
             "id": 549
-          }                    
+          }                   
         },
         "adjustments":{
           "brightnessContrast":{
@@ -101,7 +101,7 @@ curl -X POST \
           }
         },
         "name":"NewBrightnessContrast",
-        "type":"adjustmentLayer"              
+        "type":"adjustmentLayer"             
       }
     ]
   },
@@ -137,8 +137,8 @@ curl -X POST \
   "options":{
     "layers":[
       {
-        "edit":{},                    
-        "input":{                                       
+        "edit":{},                   
+        "input":{                                      
           "href":"<SIGNED_GET_URL>",
           "storage":"<your_storage>"
         },
