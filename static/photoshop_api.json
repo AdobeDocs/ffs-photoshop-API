@@ -31,7 +31,7 @@
     "/sensei/status/{jobId}": {
       "get": {
         "tags": [
-          "masking"
+          "Masking"
         ],
         "summary": "Get Status - Mask",
         "description": "This endpoint returns the status of a job for Remove Background and Create Mask. Please expand `200 Successful operation` under `Responses` to know details of the status returned.",
@@ -77,7 +77,7 @@
         "tags": [
           "Remove background"
         ],
-        "summary": "Remove Background",
+        "summary": "Remove background V1",
         "description":  "This endpoint will identify the main subject of your image and removes the background automatically. It also provides options to return a PNG file in 4 channel RGBA or 3 channel RGB format. To check the status of this process, utilize the `Get Status - Mask` endpoint.",
         "operationId": "removeBackgroundAsync",
         "parameters": [
@@ -230,7 +230,7 @@
           "Remove background"
         ],
         "operationId": "removeBackground",
-        "summary": "Remove background",
+        "summary": "Remove background V2 (beta)",
         "description": "This endpoint allows you to remove the background from an image. The request is processed asynchronously and the status of the running job can be checked with the Get Status endpoint.",
         "x-ffs-async-job": true,
         "x-ffs-job-status-fetcher": "facadeJobStatus",
@@ -424,7 +424,7 @@
     "/sensei/mask": {
       "post": {
         "tags": [
-          "masking"
+          "Masking"
         ],
         "summary": "Create Mask",
         "description": "This endpoint uses the Remove Background AI/ML model to returrn a PNG file with a mask applied around the subject. To check the status of this process, utilize the `Get Status - Mask` endpoint.",
@@ -575,9 +575,7 @@
     },
     "/pie/psdService/status/{jobId}": {
       "get": {
-        "tags": [
-          "Photoshop"
-        ],
+        "tags": [],
         "summary": "Get Status",
         "description": "Get job status of a Photoshop job",
         "operationId": "psJobStatus",
@@ -619,9 +617,7 @@
     },
     "/pie/psdService/documentManifest": {
       "post": {
-        "tags": [
-          "Photoshop"
-        ],
+        "tags": [],
         "summary": "Extract Document Manifest API.",
         "description": "Extract metadata from PSD document, including general file and layer information.",
         "operationId": "getDocumentManifestAsync",
@@ -690,14 +686,7 @@
           },
           "403": {
             "description": "Unauthorized",
-            "headers": {
-              "X-Access-Applied-Until-Date": {
-                "$ref": "#/components/headers/X-Access-Applied-Until-Date"
-              },
-              "X-Access-Error": {
-                "$ref": "#/components/headers/X-Access-Error"
-              }
-            },
+            "headers": {},
             "content": {
               "application/json": {
                 "schema": {
@@ -734,9 +723,7 @@
     },
     "/pie/psdService/documentCreate": {
       "post": {
-        "tags": [
-          "Photoshop"
-        ],
+        "tags": [],
         "summary": "Create PSD API",
         "description": "Create new PSD with layers",
         "operationId": "createDocumentAsync",
@@ -805,14 +792,7 @@
           },
           "403": {
             "description": "Unauthorized",
-            "headers": {
-              "X-Access-Applied-Until-Date": {
-                "$ref": "#/components/headers/X-Access-Applied-Until-Date"
-              },
-              "X-Access-Error": {
-                "$ref": "#/components/headers/X-Access-Error"
-              }
-            },
+            "headers": {},
             "content": {
               "application/json": {
                 "schema": {
@@ -871,9 +851,7 @@
     },
     "/pie/psdService/documentOperations": {
       "post": {
-        "tags": [
-          "Photoshop"
-        ],
+        "tags": [],
         "summary": "Apply Photoshop Edits API",
         "description": "Apply basic layer edits (name, state, etc), add/edit adjustment, pixel, and shape layers.",
         "operationId": "modifyDocumentAsync",
@@ -942,14 +920,7 @@
           },
           "403": {
             "description": "Unauthorized",
-            "headers": {
-              "X-Access-Applied-Until-Date": {
-                "$ref": "#/components/headers/X-Access-Applied-Until-Date"
-              },
-              "X-Access-Error": {
-                "$ref": "#/components/headers/X-Access-Error"
-              }
-            },
+            "headers": {},
             "content": {
               "application/json": {
                 "schema": {
@@ -1008,9 +979,7 @@
     },
     "/pie/psdService/renditionCreate": {
       "post": {
-        "tags": [
-          "Photoshop"
-        ],
+        "tags": [],
         "summary": "Create Renditions API",
         "description": "Create flat image representations of a PSD in multiple formats",
         "operationId": "createRenditionAsync",
@@ -1079,14 +1048,7 @@
           },
           "403": {
             "description": "Unauthorized",
-            "headers": {
-              "X-Access-Applied-Until-Date": {
-                "$ref": "#/components/headers/X-Access-Applied-Until-Date"
-              },
-              "X-Access-Error": {
-                "$ref": "#/components/headers/X-Access-Error"
-              }
-            },
+            "headers": {},
             "content": {
               "application/json": {
                 "schema": {
@@ -1145,11 +1107,9 @@
     },
     "/pie/psdService/smartObject": {
       "post": {
-        "tags": [
-          "Photoshop"
-        ],
+        "tags": [],
         "summary": "Replace Smart Object API.",
-        "description": "Replace Smart Object in a PSD .",
+        "description": "Replace Smart Object in a PSD .",
         "operationId": "replaceSmartObjectAsync",
         "parameters": [
           {
@@ -1216,14 +1176,7 @@
           },
           "403": {
             "description": "Unauthorized",
-            "headers": {
-              "X-Access-Applied-Until-Date": {
-                "$ref": "#/components/headers/X-Access-Applied-Until-Date"
-              },
-              "X-Access-Error": {
-                "$ref": "#/components/headers/X-Access-Error"
-              }
-            },
+            "headers": {},
             "content": {
               "application/json": {
                 "schema": {
@@ -1282,11 +1235,9 @@
     },
     "/pie/psdService/photoshopActions": {
       "post": {
-        "tags": [
-          "Photoshop"
-        ],
+        "tags": [],
         "summary": "Run Photoshop Actions API",
-        "description": "Executes Photoshop Action file against a PSD, JPEG, PNG, or TIFF ",
+        "description": "Executes Photoshop Action file against a PSD, JPEG, PNG, or TIFF ",
         "operationId": "playPhotoshopActionsAsync",
         "parameters": [
           {
@@ -1353,14 +1304,7 @@
           },
           "403": {
             "description": "Unauthorized",
-            "headers": {
-              "X-Access-Applied-Until-Date": {
-                "$ref": "#/components/headers/X-Access-Applied-Until-Date"
-              },
-              "X-Access-Error": {
-                "$ref": "#/components/headers/X-Access-Error"
-              }
-            },
+            "headers": {},
             "content": {
               "application/json": {
                 "schema": {
@@ -1419,9 +1363,7 @@
     },
     "/pie/psdService/actionJSON": {
       "post": {
-        "tags": [
-          "Photoshop"
-        ],
+        "tags": [],
         "summary": "Run Action JSON API",
         "description": "Execute given Photoshop Action specified in actionJSON format.",
         "operationId": "playPhotoshopActionsJsonAsync",
@@ -1490,14 +1432,7 @@
           },
           "403": {
             "description": "Unauthorized",
-            "headers": {
-              "X-Access-Applied-Until-Date": {
-                "$ref": "#/components/headers/X-Access-Applied-Until-Date"
-              },
-              "X-Access-Error": {
-                "$ref": "#/components/headers/X-Access-Error"
-              }
-            },
+            "headers": {},
             "content": {
               "application/json": {
                 "schema": {
@@ -1571,11 +1506,9 @@
     },
     "/pie/psdService/actionJsonCreate": {
       "post": {
-        "tags": [
-          "Photoshop"
-        ],
+        "tags": [],
         "summary": "Convert to Action JSON API",
-        "description": "Convert .atn file to an actionJSON format ",
+        "description": "Convert .atn file to an actionJSON format ",
         "operationId": "convertToActionsJsonAsync",
         "parameters": [
           {
@@ -1642,14 +1575,7 @@
           },
           "403": {
             "description": "Unauthorized",
-            "headers": {
-              "X-Access-Applied-Until-Date": {
-                "$ref": "#/components/headers/X-Access-Applied-Until-Date"
-              },
-              "X-Access-Error": {
-                "$ref": "#/components/headers/X-Access-Error"
-              }
-            },
+            "headers": {},
             "content": {
               "application/json": {
                 "schema": {
@@ -1697,9 +1623,7 @@
     },
     "/pie/psdService/productCrop": {
       "post": {
-        "tags": [
-          "Photoshop"
-        ],
+        "tags": [],
         "summary": "Prodct Crop",
         "description": "This endpoint identifies the subject of the input file and automatically crops the image to keep the subject in the center. Check the status of this process with the `Get Status` endpoint.",
         "operationId": "applyAutoCropAsync",
@@ -1768,14 +1692,7 @@
           },
           "403": {
             "description": "Unauthorized",
-            "headers": {
-              "X-Access-Applied-Until-Date": {
-                "$ref": "#/components/headers/X-Access-Applied-Until-Date"
-              },
-              "X-Access-Error": {
-                "$ref": "#/components/headers/X-Access-Error"
-              }
-            },
+            "headers": {},
             "content": {
               "application/json": {
                 "schema": {
@@ -1849,9 +1766,7 @@
     },
     "/pie/psdService/depthBlur": {
       "post": {
-        "tags": [
-          "Photoshop"
-        ],
+        "tags": [],
         "summary": "Depth Blur",
         "description": "Apply depth blur to an image input",
         "operationId": "applyDepthBlurAsync",
@@ -1920,14 +1835,7 @@
           },
           "403": {
             "description": "Unauthorized",
-            "headers": {
-              "X-Access-Applied-Until-Date": {
-                "$ref": "#/components/headers/X-Access-Applied-Until-Date"
-              },
-              "X-Access-Error": {
-                "$ref": "#/components/headers/X-Access-Error"
-              }
-            },
+            "headers": {},
             "content": {
               "application/json": {
                 "schema": {
@@ -2001,11 +1909,9 @@
     },
     "/pie/psdService/text": {
       "post": {
-        "tags": [
-          "Photoshop"
-        ],
+        "tags": [],
         "summary": "Edit Text Layer API",
-        "description": "Change the contents of a text layer in a PSD, eg for localization ",
+        "description": "Change the contents of a text layer in a PSD, eg for localization ",
         "operationId": "editTextLayerAsync",
         "parameters": [
           {
@@ -2072,14 +1978,7 @@
           },
           "403": {
             "description": "Unauthorized",
-            "headers": {
-              "X-Access-Applied-Until-Date": {
-                "$ref": "#/components/headers/X-Access-Applied-Until-Date"
-              },
-              "X-Access-Error": {
-                "$ref": "#/components/headers/X-Access-Error"
-              }
-            },
+            "headers": {},
             "content": {
               "application/json": {
                 "schema": {
@@ -2153,9 +2052,7 @@
     },
     "/pie/psdService/artboardCreate": {
       "post": {
-        "tags": [
-          "Photoshop"
-        ],
+        "tags": [],
         "summary": "Create Arboards API",
         "description": "Create artboards from multiple PSD inputs ",
         "operationId": "createArtboardAsync",
@@ -2224,14 +2121,7 @@
           },
           "403": {
             "description": "Unauthorized",
-            "headers": {
-              "X-Access-Applied-Until-Date": {
-                "$ref": "#/components/headers/X-Access-Applied-Until-Date"
-              },
-              "X-Access-Error": {
-                "$ref": "#/components/headers/X-Access-Error"
-              }
-            },
+            "headers": {},
             "content": {
               "application/json": {
                 "schema": {
@@ -4016,7 +3906,7 @@
           "superScript"
         ],
         "type": "string",
-        "description": "Indicates if the text is raised or lowered in relation to a font’s baseline"
+        "description": "Indicates if the text is raised or lowered in relation to a font's baseline"
       },
       "BlendModeType": {
         "title": "BlendModeType",
