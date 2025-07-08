@@ -19,17 +19,29 @@
   ],
   "tags": [
     {
-      "name": "Photoshop",
-      "description": "Adobe Photoshop and Imaging APIs"
+      "name": "Masking",
+      "description": "Operations for creating and manipulating masks"
+    },
+    {
+      "name": "Remove background",
+      "description": "AI-powered background removal and subject isolation operations"
+    },
+    {
+      "name": "actionJSON",
+      "description": "Operations for working with Photoshop actions in JSON format"
+    },
+    {
+      "name": "Get status",
+      "description": "Utility endpoints for checking job status and system health"
     }
   ],
   "paths": {
     "/sensei/status/{jobId}": {
       "get": {
         "tags": [
-          "Photoshop"
+          "Get status"
         ],
-        "summary": "Get Status - Mask",
+        "summary": "Get status - mask",
         "description": "This endpoint returns the status of a job for Remove Background and Create Mask. Please expand `200 Successful operation` under `Responses` to know details of the status returned.",
         "operationId": "senseiJobStatus",
         "parameters": [
@@ -71,9 +83,9 @@
     "/sensei/cutout": {
       "post": {
         "tags": [
-          "Photoshop"
+          "Remove background"
         ],
-        "summary": "Remove Background",
+        "summary": "Remove background v1",
         "description":  "This endpoint will identify the main subject of your image and removes the background automatically. It also provides options to return a PNG file in 4 channel RGBA or 3 channel RGB format. To check the status of this process, utilize the `Get Status - Mask` endpoint.",
         "operationId": "removeBackgroundAsync",
         "parameters": [
@@ -220,12 +232,212 @@
         "deprecated": false
       }
     },
+    "/v2/remove-background": {
+      "post": {
+        "tags": [
+          "Remove background"
+        ],
+        "operationId": "removeBackground",
+        "summary": "Remove background v2 (beta)",
+        "description": "This endpoint allows you to remove the background from an image. The request is processed asynchronously and the status of the running job can be checked with the Get Status endpoint.",
+        "x-ffs-async-job": true,
+        "x-ffs-job-status-fetcher": "facadeJobStatus",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "description": " The bearer token for the user. This is the access token.",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-api-key",
+            "description": "The API key/Client ID.",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "description": "The content type of the request. The value is `application/json`.",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PhotoroomRemoveBackgroundRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobLinkResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
+                },
+                "examples": {
+                  "unauthorized": {
+                    "value": {
+                      "error_code": "unauthorized",
+                      "message": "User is not entitled to perform the requested operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
+                },
+                "examples": {
+                  "access_error": {
+                    "value": {
+                      "error_code": "access_error",
+                      "message": "User is not entitled to perform the requested operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
+                },
+                "examples": {
+                  "rate_limited": {
+                    "value": {
+                      "error_code": "rate_limited",
+                      "message": "Too many requests."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
+                },
+                "examples": {
+                  "runtime_error": {
+                    "value": {
+                      "error_code": "runtime_error",
+                      "message": "Internal Server Error."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/status/{jobId}": {
+      "get": {
+        "operationId": "facadeJobStatus",
+        "tags": [
+          "Get status"
+        ],
+        "summary": "Retrieve job status v2",
+        "description": "Retrieve the status of a running job by providing the job ID. The job ID is obtained from the response of the asynchronous API call.",
+        "x-ffs-status-fetcher": true,
+        "x-ffs-job-name": "FacadeAsyncJob",
+        "parameters": [
+          {
+            "name": "jobId",
+            "required": true,
+            "in": "path",
+            "description": "The job ID from the response of the Remove Background API call.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobStatusPollPayload"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown Job ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/sensei/mask": {
       "post": {
         "tags": [
-          "Photoshop"
+          "Masking"
         ],
-        "summary": "Create Mask",
+        "summary": "Create mask",
         "description": "This endpoint uses the Remove Background AI/ML model to returrn a PNG file with a mask applied around the subject. To check the status of this process, utilize the `Get Status - Mask` endpoint.",
         "operationId": "createMaskAsync",
         "parameters": [
@@ -375,9 +587,9 @@
     "/pie/psdService/status/{jobId}": {
       "get": {
         "tags": [
-          "Photoshop"
+          "Get status"
         ],
-        "summary": "Get Status",
+        "summary": "Get status",
         "description": "Get job status of a Photoshop job",
         "operationId": "psJobStatus",
         "parameters": [
@@ -418,10 +630,8 @@
     },
     "/pie/psdService/documentManifest": {
       "post": {
-        "tags": [
-          "Photoshop"
-        ],
-        "summary": "Extract Document Manifest API.",
+        "tags": [],
+        "summary": "Extract document manifest",
         "description": "Extract metadata from PSD document, including general file and layer information.",
         "operationId": "getDocumentManifestAsync",
         "parameters": [
@@ -489,14 +699,7 @@
           },
           "403": {
             "description": "Unauthorized",
-            "headers": {
-              "X-Access-Applied-Until-Date": {
-                "$ref": "#/components/headers/X-Access-Applied-Until-Date"
-              },
-              "X-Access-Error": {
-                "$ref": "#/components/headers/X-Access-Error"
-              }
-            },
+            "headers": {},
             "content": {
               "application/json": {
                 "schema": {
@@ -533,10 +736,8 @@
     },
     "/pie/psdService/documentCreate": {
       "post": {
-        "tags": [
-          "Photoshop"
-        ],
-        "summary": "Create PSD API",
+        "tags": [],
+        "summary": "Create PSD",
         "description": "Create new PSD with layers",
         "operationId": "createDocumentAsync",
         "parameters": [
@@ -604,14 +805,7 @@
           },
           "403": {
             "description": "Unauthorized",
-            "headers": {
-              "X-Access-Applied-Until-Date": {
-                "$ref": "#/components/headers/X-Access-Applied-Until-Date"
-              },
-              "X-Access-Error": {
-                "$ref": "#/components/headers/X-Access-Error"
-              }
-            },
+            "headers": {},
             "content": {
               "application/json": {
                 "schema": {
@@ -670,10 +864,8 @@
     },
     "/pie/psdService/documentOperations": {
       "post": {
-        "tags": [
-          "Photoshop"
-        ],
-        "summary": "Apply Photoshop Edits API",
+        "tags": [],
+        "summary": "Apply photoshop edits",
         "description": "Apply basic layer edits (name, state, etc), add/edit adjustment, pixel, and shape layers.",
         "operationId": "modifyDocumentAsync",
         "parameters": [
@@ -741,14 +933,7 @@
           },
           "403": {
             "description": "Unauthorized",
-            "headers": {
-              "X-Access-Applied-Until-Date": {
-                "$ref": "#/components/headers/X-Access-Applied-Until-Date"
-              },
-              "X-Access-Error": {
-                "$ref": "#/components/headers/X-Access-Error"
-              }
-            },
+            "headers": {},
             "content": {
               "application/json": {
                 "schema": {
@@ -807,10 +992,8 @@
     },
     "/pie/psdService/renditionCreate": {
       "post": {
-        "tags": [
-          "Photoshop"
-        ],
-        "summary": "Create Renditions API",
+        "tags": [],
+        "summary": "Create renditions",
         "description": "Create flat image representations of a PSD in multiple formats",
         "operationId": "createRenditionAsync",
         "parameters": [
@@ -878,14 +1061,7 @@
           },
           "403": {
             "description": "Unauthorized",
-            "headers": {
-              "X-Access-Applied-Until-Date": {
-                "$ref": "#/components/headers/X-Access-Applied-Until-Date"
-              },
-              "X-Access-Error": {
-                "$ref": "#/components/headers/X-Access-Error"
-              }
-            },
+            "headers": {},
             "content": {
               "application/json": {
                 "schema": {
@@ -944,11 +1120,9 @@
     },
     "/pie/psdService/smartObject": {
       "post": {
-        "tags": [
-          "Photoshop"
-        ],
-        "summary": "Replace Smart Object API.",
-        "description": "Replace Smart Object in a PSD .",
+        "tags": [],
+        "summary": "Replace smart object",
+        "description": "Replace Smart Object in a PSD .",
         "operationId": "replaceSmartObjectAsync",
         "parameters": [
           {
@@ -1015,14 +1189,7 @@
           },
           "403": {
             "description": "Unauthorized",
-            "headers": {
-              "X-Access-Applied-Until-Date": {
-                "$ref": "#/components/headers/X-Access-Applied-Until-Date"
-              },
-              "X-Access-Error": {
-                "$ref": "#/components/headers/X-Access-Error"
-              }
-            },
+            "headers": {},
             "content": {
               "application/json": {
                 "schema": {
@@ -1081,11 +1248,9 @@
     },
     "/pie/psdService/photoshopActions": {
       "post": {
-        "tags": [
-          "Photoshop"
-        ],
-        "summary": "Run Photoshop Actions API",
-        "description": "Executes Photoshop Action file against a PSD, JPEG, PNG, or TIFF ",
+        "tags": [],
+        "summary": "Run photoshop actions",
+        "description": "Executes Photoshop Action file against a PSD, JPEG, PNG, or TIFF ",
         "operationId": "playPhotoshopActionsAsync",
         "parameters": [
           {
@@ -1152,14 +1317,7 @@
           },
           "403": {
             "description": "Unauthorized",
-            "headers": {
-              "X-Access-Applied-Until-Date": {
-                "$ref": "#/components/headers/X-Access-Applied-Until-Date"
-              },
-              "X-Access-Error": {
-                "$ref": "#/components/headers/X-Access-Error"
-              }
-            },
+            "headers": {},
             "content": {
               "application/json": {
                 "schema": {
@@ -1219,9 +1377,9 @@
     "/pie/psdService/actionJSON": {
       "post": {
         "tags": [
-          "Photoshop"
+          "actionJSON"
         ],
-        "summary": "Run Action JSON API",
+        "summary": "Run actionJSON",
         "description": "Execute given Photoshop Action specified in actionJSON format.",
         "operationId": "playPhotoshopActionsJsonAsync",
         "parameters": [
@@ -1289,14 +1447,7 @@
           },
           "403": {
             "description": "Unauthorized",
-            "headers": {
-              "X-Access-Applied-Until-Date": {
-                "$ref": "#/components/headers/X-Access-Applied-Until-Date"
-              },
-              "X-Access-Error": {
-                "$ref": "#/components/headers/X-Access-Error"
-              }
-            },
+            "headers": {},
             "content": {
               "application/json": {
                 "schema": {
@@ -1371,10 +1522,10 @@
     "/pie/psdService/actionJsonCreate": {
       "post": {
         "tags": [
-          "Photoshop"
+          "actionJSON"
         ],
-        "summary": "Convert to Action JSON API",
-        "description": "Convert .atn file to an actionJSON format ",
+        "summary": "Convert to actionJSON",
+        "description": "Convert an ATN file to actionJSON format. ",
         "operationId": "convertToActionsJsonAsync",
         "parameters": [
           {
@@ -1388,7 +1539,7 @@
           }
         ],
         "requestBody": {
-          "description": "The input atn file to convert to actionJSON",
+          "description": "The input ATN file to convert to actionJSON.",
           "content": {
             "application/json": {
               "schema": {
@@ -1441,14 +1592,7 @@
           },
           "403": {
             "description": "Unauthorized",
-            "headers": {
-              "X-Access-Applied-Until-Date": {
-                "$ref": "#/components/headers/X-Access-Applied-Until-Date"
-              },
-              "X-Access-Error": {
-                "$ref": "#/components/headers/X-Access-Error"
-              }
-            },
+            "headers": {},
             "content": {
               "application/json": {
                 "schema": {
@@ -1496,10 +1640,8 @@
     },
     "/pie/psdService/productCrop": {
       "post": {
-        "tags": [
-          "Photoshop"
-        ],
-        "summary": "Prodct Crop",
+        "tags": [],
+        "summary": "Product crop",
         "description": "This endpoint identifies the subject of the input file and automatically crops the image to keep the subject in the center. Check the status of this process with the `Get Status` endpoint.",
         "operationId": "applyAutoCropAsync",
         "parameters": [
@@ -1567,14 +1709,7 @@
           },
           "403": {
             "description": "Unauthorized",
-            "headers": {
-              "X-Access-Applied-Until-Date": {
-                "$ref": "#/components/headers/X-Access-Applied-Until-Date"
-              },
-              "X-Access-Error": {
-                "$ref": "#/components/headers/X-Access-Error"
-              }
-            },
+            "headers": {},
             "content": {
               "application/json": {
                 "schema": {
@@ -1648,10 +1783,8 @@
     },
     "/pie/psdService/depthBlur": {
       "post": {
-        "tags": [
-          "Photoshop"
-        ],
-        "summary": "Depth Blur",
+        "tags": [],
+        "summary": "Depth blur",
         "description": "Apply depth blur to an image input",
         "operationId": "applyDepthBlurAsync",
         "parameters": [
@@ -1719,14 +1852,7 @@
           },
           "403": {
             "description": "Unauthorized",
-            "headers": {
-              "X-Access-Applied-Until-Date": {
-                "$ref": "#/components/headers/X-Access-Applied-Until-Date"
-              },
-              "X-Access-Error": {
-                "$ref": "#/components/headers/X-Access-Error"
-              }
-            },
+            "headers": {},
             "content": {
               "application/json": {
                 "schema": {
@@ -1800,11 +1926,9 @@
     },
     "/pie/psdService/text": {
       "post": {
-        "tags": [
-          "Photoshop"
-        ],
-        "summary": "Edit Text Layer API",
-        "description": "Change the contents of a text layer in a PSD, eg for localization ",
+        "tags": [],
+        "summary": "Edit text layer",
+        "description": "Change the contents of a text layer in a PSD, eg for localization ",
         "operationId": "editTextLayerAsync",
         "parameters": [
           {
@@ -1871,14 +1995,7 @@
           },
           "403": {
             "description": "Unauthorized",
-            "headers": {
-              "X-Access-Applied-Until-Date": {
-                "$ref": "#/components/headers/X-Access-Applied-Until-Date"
-              },
-              "X-Access-Error": {
-                "$ref": "#/components/headers/X-Access-Error"
-              }
-            },
+            "headers": {},
             "content": {
               "application/json": {
                 "schema": {
@@ -1952,10 +2069,8 @@
     },
     "/pie/psdService/artboardCreate": {
       "post": {
-        "tags": [
-          "Photoshop"
-        ],
-        "summary": "Create Arboards API",
+        "tags": [],
+        "summary": "Create artboards",
         "description": "Create artboards from multiple PSD inputs ",
         "operationId": "createArtboardAsync",
         "parameters": [
@@ -2023,14 +2138,7 @@
           },
           "403": {
             "description": "Unauthorized",
-            "headers": {
-              "X-Access-Applied-Until-Date": {
-                "$ref": "#/components/headers/X-Access-Applied-Until-Date"
-              },
-              "X-Access-Error": {
-                "$ref": "#/components/headers/X-Access-Error"
-              }
-            },
+            "headers": {},
             "content": {
               "application/json": {
                 "schema": {
@@ -3815,7 +3923,7 @@
           "superScript"
         ],
         "type": "string",
-        "description": "Indicates if the text is raised or lowered in relation to a font’s baseline"
+        "description": "Indicates if the text is raised or lowered in relation to a font's baseline"
       },
       "BlendModeType": {
         "title": "BlendModeType",
@@ -5204,6 +5312,176 @@
         ],
         "type": "string",
         "description": "Indicates the relative vertical position of the layer with respect to the canvas of the document"
+      },
+      "UrlResource": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "The URL of the resource. Only these listed domains are accepted in the request:  \n  <ul><li><code>amazonaws.com</code></li><li><code>windows.net</code></li><li><code>dropboxusercontent.com</code></li><li><code>assets.frame.io</code></li><li><code>storage.googleapis.com</code></li></ul>"
+          }
+        },
+        "required": [
+          "url"
+        ]
+      },
+      "PhotoroomRemoveBgInputImage": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "description": "The source of the input image. Dimensions of the image should not be greater than 6000px X 6000px. The image media type must be `image/jpeg`, `image/png`, or `image/webp`.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UrlResource"
+              }
+            ]
+          }
+        },
+        "required": [
+          "source"
+        ]
+      },
+      "RemoveBgMode": {
+        "type": "string",
+        "description": "The mode of background removal.",
+        "default": "cutout",
+        "enum": [
+          "cutout",
+          "mask"
+        ]
+      },
+      "PhotoroomRemoveBgOutputImageMediaType": {
+        "type": "string",
+        "description": "The media type of the output image. By default this will match the input source file format.",
+        "enum": [
+          "image/jpeg",
+          "image/png",
+          "image/webp"
+        ]
+      },
+      "PhotoroomRemoveBgOutputImageOptions": {
+        "type": "object",
+        "properties": {
+          "mediaType": {
+            "$ref": "#/components/schemas/PhotoroomRemoveBgOutputImageMediaType"
+          }
+        }
+      },
+      "PhotoroomColor": {
+        "type": "object",
+        "properties": {
+          "red": {
+            "type": "number",
+            "description": "The red value of the color.",
+            "minimum": 0,
+            "maximum": 255
+          },
+          "green": {
+            "type": "number",
+            "description": "The green value of the color.",
+            "minimum": 0,
+            "maximum": 255
+          },
+          "blue": {
+            "type": "number",
+            "description": "The blue value of the color.",
+            "minimum": 0,
+            "maximum": 255
+          },
+          "alpha": {
+            "type": "number",
+            "description": "The transparency value. 0 is fully transparent and 1 is fully opaque.",
+            "minimum": 0,
+            "maximum": 1
+          }
+        },
+        "required": [
+          "red",
+          "green",
+          "blue",
+          "alpha"
+        ]
+      },
+      "PhotoroomRemoveBackgroundRequest": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "description": "The image to be processed.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PhotoroomRemoveBgInputImage"
+              }
+            ]
+          },
+          "mode": {
+            "$ref": "#/components/schemas/RemoveBgMode"
+          },
+          "output": {
+            "description": "The options for the output image.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PhotoroomRemoveBgOutputImageOptions"
+              }
+            ]
+          },
+          "trim": {
+            "type": "boolean",
+            "description": "If true, the image returned is cropped to the cutout border. Transparent pixels are removed.",
+            "default": false
+          },
+          "backgroundColor": {
+            "description": "The background color.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PhotoroomColor"
+              }
+            ]
+          },
+          "colorDecontamination": {
+            "type": "number",
+            "description": "If the value is greater than 0, automatically removes colored reflections that have been left on the main subject by the background.",
+            "minimum": 0,
+            "maximum": 1,
+            "default": 0,
+            "example": 0
+          }
+        },
+        "required": [
+          "image"
+        ]
+      },
+      "JobLinkResponse": {
+        "type": "object",
+        "properties": {
+          "jobId": {
+            "type": "string",
+            "description": "The job ID for the asynchronous job."
+          },
+          "statusUrl": {
+            "type": "string",
+            "description": "The URL to check the status of the asynchronous job."
+          }
+        },
+        "required": [
+          "jobId",
+          "statusUrl"
+        ]
+      },
+      "JobStatusPollPayload": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/JobStatus"
+          },
+          "jobId": {
+            "type": "string",
+            "description": "jobId"
+          }
+        },
+        "required": [
+          "status",
+          "jobId"
+        ]
       }
     },
     "headers":{
