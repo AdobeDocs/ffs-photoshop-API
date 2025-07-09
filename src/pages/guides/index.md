@@ -2,6 +2,7 @@
 title: Using these guides
 description: Learn how to set up your environment and get started with the Photoshop API guides and code samples
 hideBreadcrumbNav: true
+contributors:
 keywords:
   - photoshop api
   - code samples
@@ -10,9 +11,13 @@ keywords:
   - storage setup
 ---
 
-Review this page to get oriented before starting with the API guides.
+# Using these guides
 
-The code snippets and example implementations throughout these guides are using one of our [sample psd][4] files. Feel free to download and use it for testing.
+Review this page to get oriented before starting with the API guides. You'll learn about prerequisites, code samples, and how to set up your environment for working with the Photoshop API.
+
+## Overview
+
+The code snippets and example implementations throughout these guides are using one of our [sample PSD][4] files. Feel free to download and use it for testing.
 
 You'll need to have this file stored in accepted external storage. For more information on storage options, refer to the [File Storage][3] documentation.
 
@@ -41,7 +46,6 @@ Code samples in these guides include:
 Make sure to replace placeholder values with your actual credentials and file URLs before running any examples.
 
 <!-- Links -->
-[1]: https://developer.adobe.com/
 [2]: ../getting_started/
 [3]: ../getting_started/storage_solutions/
 [4]: https://github.com/AdobeDocs/cis-photoshop-api-docs/blob/main/sample_files/Example.psd
