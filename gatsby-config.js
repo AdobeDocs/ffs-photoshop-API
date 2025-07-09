@@ -96,7 +96,7 @@ module.exports = {
             path: '/guides/product_crop/'
           },
           {
-            title: 'UsingDepth Blur',
+            title: 'Using Depth Blur',
             path: '/guides/depthblur/'
           },
           {
