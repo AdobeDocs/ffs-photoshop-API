@@ -2,7 +2,6 @@
 title: Using these guides
 description: Learn how to set up your environment and get started with the Photoshop API guides and code samples
 hideBreadcrumbNav: true
-contributors:
 keywords:
   - photoshop api
   - code samples
