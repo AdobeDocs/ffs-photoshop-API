@@ -6,4 +6,4 @@ contributors:
   - https://github.com/archyposada
 ---
 
-<RedoclyAPIBlock src="/photoshop_api.json" scrollYOffset={64} generateCodeSamples="languages: [{lang: 'curl'}]" />
+<RedoclyAPIBlock src="/firefly-services/docs/photoshop/photoshop_api.json" scrollYOffset={64} generateCodeSamples="languages: [{lang: 'curl'}]" />
