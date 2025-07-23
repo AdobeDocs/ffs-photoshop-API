@@ -50,7 +50,7 @@ Explore our tutorials page for comprehensive guidance.
 
 <DiscoverBlock slots="link, text"/>
 
-[API Reference](/api-reference/index.md)
+[API Reference](/api/index.md)
 
 See the API reference page for detailed technical information about the API.
 
