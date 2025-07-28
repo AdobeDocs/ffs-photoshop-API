@@ -5442,8 +5442,8 @@
             "description": "If the value is greater than 0, automatically removes colored reflections that have been left on the main subject by the background.",
             "minimum": 0,
             "maximum": 1,
-            "default": 0,
-            "example": 0
+            "default": 1,
+            "example": 1
           }
         },
         "required": [
