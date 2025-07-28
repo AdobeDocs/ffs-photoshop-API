@@ -10,11 +10,6 @@
       "url": "https://image.adobe.io",
       "description": "Adobe Photoshop Production",
       "variables": {}
-    },
-    {
-      "url": "https://image-stage.adobe.io",
-      "description": "Adobe Photoshop Stage",
-      "variables": {}
     }
   ],
   "tags": [
