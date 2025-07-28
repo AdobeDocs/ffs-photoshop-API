@@ -134,6 +134,14 @@ module.exports = {
           {
             title: 'Create a mask',
             path: '/guides/create_mask/'
+          },
+          {
+            title: 'Inpainting with Fill Mask',
+            path: '/guides/using-fill-mask/'
+          },
+          {
+            title: 'Enhance image mask quality with Refine Mask',
+            path: '/guides/using-refine-mask/'
           }
         ]
       }
