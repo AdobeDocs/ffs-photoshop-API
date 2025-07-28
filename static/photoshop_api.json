@@ -373,7 +373,7 @@
         "tags": [
           "Get status"
         ],
-        "summary": "Retrieve job status v2",
+        "summary": "Get status - v2",
         "description": "Retrieve the status of a running job by providing the job ID. The job ID is obtained from the response of the asynchronous API call.",
         "x-ffs-status-fetcher": true,
         "x-ffs-job-name": "FacadeAsyncJob",
@@ -2193,6 +2193,543 @@
           }
         },
         "deprecated": false
+      }
+    },
+    "/v1/mask-objects": {
+      "post": {
+        "tags": [
+          "Masking"
+        ],
+        "operationId": "maskObjects",
+        "summary": "Generate object and background masks",
+        "description": "Given an image, this API generates semantic masks for the foreground objects and a list of background masks that segment the background elements of the image. Each mask includes a label and a URL for the mask image.",
+        "x-ffs-async-job": true,
+        "x-ffs-job-status-fetcher": "facadeJobStatus",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaskObjectsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobLinkResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InputValidationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InputValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InputValidationError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InputValidationError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InputValidationError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/mask-body-parts": {
+      "post": {
+        "tags": [
+          "Masking"
+        ],
+        "operationId": "maskBodyParts",
+        "summary": "Generate human item masks",
+        "description": "This endpoint processes an input image of a human, then identifies and creates masks for various items and sections on the body including sunglasses, hats, upper body apparel, lower body apparel, left arm, right arm, and more. The API returns an array of masks corresponding to each detected item and body part.",
+        "x-ffs-async-job": true,
+        "x-ffs-job-status-fetcher": "facadeJobStatus",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MaskBodyPartsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobLinkResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InputValidationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InputValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InputValidationError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InputValidationError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InputValidationError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/refine-mask": {
+      "post": {
+        "tags": [
+          "Masking"
+        ],
+        "operationId": "refineMask",
+        "summary": "Refine mask",
+        "description": "This endpoint allows you to refine and improve the quality of existing masks. The API will enhance the edges and details of the provided masks to create more precise and accurate results.",
+        "x-ffs-async-job": true,
+        "x-ffs-job-status-fetcher": "facadeJobStatus",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefineMaskRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobLinkResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InputValidationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InputValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InputValidationError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InputValidationError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InputValidationError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/fill-masked-areas": {
+      "post": {
+        "tags": [
+          "Masking"
+        ],
+        "operationId": "fillMaskedAreas",
+        "summary": "Fill masked areas",
+        "description": "This endpoint allows you to inpaint masked areas within an image. The API will remove the objects represented by these masks and inpaint the specified areas. Provide a list of masks corresponding to the regions you wish to modify.",
+        "x-ffs-async-job": true,
+        "x-ffs-job-status-fetcher": "facadeJobStatus",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FillMaskedAreasRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobLinkResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InputValidationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InputValidationError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InputValidationError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InputValidationError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InputValidationError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/status/{jobId}": {
+      "get": {
+        "tags": [
+          "Get status"
+        ],
+        "operationId": "getJobStatus",
+        "summary": "Get status - v1",
+        "description": "This endpoint allows you to check the status of an asynchronous job for a masking operation. The schema of a 200 response varies depending on the status of the job. A job with a `succeeded` status will include the results in the response and the result objects vary depending on the operation.",
+        "parameters": [
+          {
+            "name": "jobId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "The schema of a 200 response varies depending on the status of the job. A job with a `succeeded` status will include the results in the response. Result objects vary depending on the operation.",
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/JobStatusNotStarted"
+                    },
+                    {
+                      "$ref": "#/components/schemas/JobStatusRunning"
+                    },
+                    {
+                      "$ref": "#/components/schemas/JobStatusSucceeded"
+                    },
+                    {
+                      "$ref": "#/components/schemas/JobStatusFailed"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "status",
+                    "mapping": {
+                      "not_started": "#/components/schemas/JobStatusNotStarted",
+                      "running": "#/components/schemas/JobStatusRunning",
+                      "succeeded": "#/components/schemas/JobStatusSucceeded",
+                      "failed": "#/components/schemas/JobStatusFailed"
+                    }
+                  }
+                },
+                "examples": {
+                  "not_started": {
+                    "summary": "Job has not started",
+                    "value": {
+                      "jobId": "12345678-1234-1234-1234-123456789012",
+                      "status": "not_started"
+                    }
+                  },
+                  "running": {
+                    "summary": "Job is running",
+                    "value": {
+                      "jobId": "12345678-1234-1234-1234-123456789012",
+                      "status": "running"
+                    }
+                  },
+                  "succeeded": {
+                    "summary": "Job completed successfully",
+                    "value": {
+                      "jobId": "12345678-1234-1234-1234-123456789012",
+                      "status": "succeeded",
+                      "semanticMasks": [
+                        {
+                          "mediaType": "image/png",
+                          "destination": {
+                            "url": "https://example.com/semantic-mask-1.png"
+                          },
+                          "label": "person",
+                          "boundingBox": {
+                            "x": 100,
+                            "y": 150,
+                            "width": 200,
+                            "height": 300
+                          },
+                          "score": 0.95
+                        },
+                        {
+                          "mediaType": "image/png",
+                          "destination": {
+                            "url": "https://example.com/semantic-mask-2.png"
+                          },
+                          "label": "car",
+                          "boundingBox": {
+                            "x": 400,
+                            "y": 200,
+                            "width": 150,
+                            "height": 100
+                          },
+                          "score": 0.87
+                        }
+                      ],
+                      "backgroundMasks": [
+                        {
+                          "mediaType": "image/png",
+                          "destination": {
+                            "url": "https://example.com/background-mask-1.png"
+                          },
+                          "label": "sky",
+                          "boundingBox": {
+                            "x": 0,
+                            "y": 0,
+                            "width": 800,
+                            "height": 200
+                          },
+                          "score": 0.92
+                        },
+                        {
+                          "mediaType": "image/png",
+                          "destination": {
+                            "url": "https://example.com/background-mask-2.png"
+                          },
+                          "label": "road",
+                          "boundingBox": {
+                            "x": 0,
+                            "y": 400,
+                            "width": 800,
+                            "height": 200
+                          },
+                          "score": 0.89
+                        }
+                      ]
+                    }
+                  },
+                  "failed": {
+                    "summary": "Job failed",
+                    "value": {
+                      "jobId": "12345678-1234-1234-1234-123456789012",
+                      "status": "failed",
+                      "error_code": "processing_error",
+                      "message": "Failed to process image due to invalid format"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
+                }
+              }
+            }
+          }
+        }
       }
     }
   },
@@ -5481,6 +6018,609 @@
         "required": [
           "status",
           "jobId"
+        ]
+      },
+
+      "FillMaskedAreasInputImage": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "description": "The source of the input image. Dimensions of image should not be greater than (4000px X 4000px).",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UrlResource"
+              }
+            ]
+          }
+        },
+        "required": [
+          "source"
+        ]
+      },
+      "FillMaskedAreasRequest": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "description": "The image to be processed.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FillMaskedAreasInputImage"
+              }
+            ]
+          },
+          "masks": {
+            "description": "The areas of the image represented by this list of masks will be inpainted.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FillMaskedAreasInputImage"
+            }
+          }
+        },
+        "required": [
+          "image",
+          "masks"
+        ]
+      },
+      "MaskBodyPartsImageMediaType": {
+        "type": "string",
+        "description": "The media type of the input image.",
+        "enum": [
+          "image/jpeg",
+          "image/png"
+        ]
+      },
+      "MaskBodyPartsInputImage": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "description": "The source of the input image. Dimensions of image should not be greater than (4000px X 4000px).",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UrlResource"
+              }
+            ]
+          }
+        },
+        "required": [
+          "source"
+        ]
+      },
+      "MaskBodyPartsMaskMediaType": {
+        "type": "string",
+        "description": "The media type of the mask.",
+        "enum": [
+          "image/png"
+        ]
+      },
+      "MaskBodyPartsInputMask": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "description": "The URL of the mask. Dimensions of mask should not be greater than (4000px X 4000px).",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UrlResource"
+              }
+            ]
+          }
+        },
+        "required": [
+          "source"
+        ]
+      },
+      "MaskBodyPartsRequest": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "description": "The input image.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MaskBodyPartsInputImage"
+              }
+            ]
+          },
+          "mask": {
+            "description": "The mask of the subject in the input image.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MaskBodyPartsInputMask"
+              }
+            ]
+          }
+        },
+        "required": [
+          "image",
+          "mask"
+        ]
+      },
+      "MaskObjectsInputImageMediaType": {
+        "type": "string",
+        "description": "The media type of the input image.",
+        "enum": [
+          "image/jpeg",
+          "image/png"
+        ]
+      },
+      "MaskObjectsInputImage": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "description": "The source of the input image. Dimensions of image should not be greater than (4000px X 4000px).",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UrlResource"
+              }
+            ]
+          }
+        },
+        "required": [
+          "source"
+        ]
+      },
+      "MaskObjectsRequest": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "description": "The input image.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MaskObjectsInputImage"
+              }
+            ]
+          }
+        },
+        "required": [
+          "image"
+        ]
+      },
+      "RefineMaskImageMediaType": {
+        "type": "string",
+        "description": "The media type of the input image.",
+        "enum": [
+          "image/jpeg",
+          "image/png"
+        ]
+      },
+      "RefineMaskInputImage": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "description": "The source of the input image. Dimensions of image should not be greater than (4000px X 4000px).",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UrlResource"
+              }
+            ]
+          }
+        },
+        "required": [
+          "source"
+        ]
+      },
+      "RefineMaskRequest": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "description": "The input image.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RefineMaskInputImage"
+              }
+            ]
+          },
+          "mask": {
+            "description": "The mask in the input image that needs to be refined.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RefineMaskInputImage"
+              }
+            ]
+          },
+          "colorDecontamination": {
+            "type": "boolean",
+            "description": "When `true`, this returns an RGBA image where the masked area has been further refined with color decontamination. A `false` value (default) means that the output will simply be the refined mask.",
+            "default": false
+          }
+        },
+        "required": [
+          "image",
+          "mask"
+        ]
+      },
+
+      "OutputImageDetails": {
+        "type": "object",
+        "properties": {
+          "destination": {
+            "description": "Details of the location where the output image is located.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UrlResource"
+              }
+            ]
+          },
+          "mediaType": {
+            "type": "string",
+            "description": "Media type of the output image.",
+            "enum": [
+              "image/jpeg",
+              "image/png"
+            ]
+          }
+        },
+        "required": [
+          "destination",
+          "mediaType"
+        ]
+      },
+      "FillMaskedAreasJobApiResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/JobStatus"
+          },
+          "jobId": {
+            "type": "string",
+            "description": "jobId"
+          },
+          "image": {
+            "description": "The output image.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/OutputImageDetails"
+              }
+            ]
+          }
+        },
+        "required": [
+          "status",
+          "jobId",
+          "image"
+        ]
+      },
+      "ImageBoundingBox": {
+        "type": "object",
+        "properties": {
+          "x": {
+            "type": "number",
+            "description": "The x coordinate of the upper-left corner of the bounding box. The origin (0,0) is at the upper-left corner of the image."
+          },
+          "y": {
+            "type": "number",
+            "description": "The y coordinate of the upper-left corner of the bounding box. The origin (0,0) is at the upper-left corner of the image."
+          },
+          "width": {
+            "type": "number",
+            "description": "The width of the bounding box, starting from the x coordinate."
+          },
+          "height": {
+            "type": "number",
+            "description": "The height of the bounding box, starting from the y coordinate."
+          }
+        },
+        "required": [
+          "x",
+          "y",
+          "width",
+          "height"
+        ]
+      },
+      "MaskBodyPartsOutputImage": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "The label of the identified body part."
+          },
+          "boundingBox": {
+            "description": "The bounding box of the identified body part.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ImageBoundingBox"
+              }
+            ]
+          },
+          "score": {
+            "type": "number",
+            "description": "The probability or confidence score of the match."
+          },
+          "destination": {
+            "description": "Details of the location where the mask of identified body part is located at.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UrlResource"
+              }
+            ]
+          },
+          "mediaType": {
+            "type": "string",
+            "description": "Media type of the mask of identified body part.",
+            "enum": [
+              "image/png"
+            ]
+          }
+        },
+        "required": [
+          "label",
+          "boundingBox",
+          "score",
+          "destination",
+          "mediaType"
+        ]
+      },
+      "MaskBodyPartsJobApiResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/JobStatus"
+          },
+          "jobId": {
+            "type": "string",
+            "description": "jobId"
+          },
+          "masks": {
+            "description": "An array of output image masks.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MaskBodyPartsOutputImage"
+            }
+          }
+        },
+        "required": [
+          "status",
+          "jobId",
+          "masks"
+        ]
+      },
+      "MaskObjectsOutputImage": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "The label of the identified object or area of interest."
+          },
+          "boundingBox": {
+            "description": "The bounding box of the object or area of interest.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ImageBoundingBox"
+              }
+            ]
+          },
+          "score": {
+            "type": "number",
+            "description": "The probability or confidence score of the match."
+          },
+          "destination": {
+            "description": "Details of the location where the mask is located at.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UrlResource"
+              }
+            ]
+          },
+          "mediaType": {
+            "type": "string",
+            "description": "Media type of the mask.",
+            "enum": [
+              "image/png"
+            ]
+          }
+        },
+        "required": [
+          "label",
+          "boundingBox",
+          "score",
+          "destination",
+          "mediaType"
+        ]
+      },
+      "MaskObjectsJobApiResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/JobStatus"
+          },
+          "jobId": {
+            "type": "string",
+            "description": "jobId"
+          },
+          "semanticMasks": {
+            "description": "List of masks representing foreground objects.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MaskObjectsOutputImage"
+            }
+          },
+          "backgroundMasks": {
+            "description": "List of masks representing background regions.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MaskObjectsOutputImage"
+            }
+          }
+        },
+        "required": [
+          "status",
+          "jobId",
+          "semanticMasks",
+          "backgroundMasks"
+        ]
+      },
+      "RefineMaskOutputImage": {
+        "type": "object",
+        "properties": {
+          "destination": {
+            "description": "Details of the location where the refined mask or image is located at.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UrlResource"
+              }
+            ]
+          },
+          "mediaType": {
+            "type": "string",
+            "description": "Media type of the refined mask or image.",
+            "enum": [
+              "image/jpeg",
+              "image/png"
+            ]
+          },
+          "boundingBox": {
+            "description": "The bounding box of the refined mask or image.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ImageBoundingBox"
+              }
+            ]
+          }
+        },
+        "required": [
+          "destination",
+          "mediaType",
+          "boundingBox"
+        ]
+      },
+      "RefineMaskJobApiResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/JobStatus"
+          },
+          "jobId": {
+            "type": "string",
+            "description": "jobId"
+          },
+          "mask": {
+            "description": "The refined mask. This will only be attached to the response when mask is specified as an input. Only applicable when colorDecontamination is false.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RefineMaskOutputImage"
+              }
+            ]
+          },
+          "image": {
+            "description": "The image with color decontamination. This will only be attached to the response when mask is specified as an input. Only applicable when colorDecontamination is true.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RefineMaskOutputImage"
+              }
+            ]
+          }
+        },
+        "required": [
+          "status",
+          "jobId"
+        ]
+      },
+      "JobStatusResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/JobStatus"
+          },
+          "results": {
+            "type": "object",
+            "description": "The results of the job if completed."
+          }
+        },
+        "required": [
+          "status",
+          "results"
+        ]
+      },
+      "JobStatusRunning": {
+        "type": "object",
+        "description": "Response when a job is currently being processed. The job has started but is not yet complete.",
+        "properties": {
+          "jobId": {
+            "type": "string",
+            "description": "The job ID."
+          },
+          "status": {
+            "type": "string",
+            "description": "The status of the job.",
+            "enum": [
+              "running"
+            ]
+          }
+        },
+        "required": [
+          "jobId",
+          "status"
+        ]
+      },
+      "JobStatusSucceeded": {
+        "type": "object",
+        "description": "Response when a job has completed successfully. In addition to the jobId and status, the response includes the results of the job which vary depending on the operation.",
+        "properties": {
+          "jobId": {
+            "type": "string",
+            "description": "The job ID."
+          },
+          "status": {
+            "type": "string",
+            "description": "The status of the job.",
+            "enum": [
+              "succeeded"
+            ]
+          }
+        },
+        "required": [
+          "jobId",
+          "status"
+        ]
+      },
+      "JobStatusFailed": {
+        "type": "object",
+        "description": "Response when a job has failed during processing. Contains error details explaining what went wrong.",
+        "properties": {
+          "jobId": {
+            "type": "string",
+            "description": "The job ID."
+          },
+          "status": {
+            "type": "string",
+            "description": "The status of the job.",
+            "enum": [
+              "failed"
+            ]
+          },
+          "error_code": {
+            "type": "string",
+            "description": "The error code."
+          },
+          "message": {
+            "type": "string",
+            "description": "The error message."
+          }
+        },
+        "required": [
+          "jobId",
+          "status",
+          "error_code",
+          "message"
+        ]
+      },
+      "JobStatusNotStarted": {
+        "type": "object",
+        "description": "Response when a job has been created but processing has not yet begun. This status indicates the job is queued and waiting to start.",
+        "properties": {
+          "jobId": {
+            "type": "string",
+            "description": "The job ID."
+          },
+          "status": {
+            "type": "string",
+            "description": "The status of the job.",
+            "enum": [
+              "not_started"
+            ]
+          }
+        },
+        "required": [
+          "jobId",
+          "status"
         ]
       }
     },
