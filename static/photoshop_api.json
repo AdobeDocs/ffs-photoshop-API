@@ -373,7 +373,7 @@
         "tags": [
           "Get status"
         ],
-        "summary": "Get status - v2",
+        "summary": "Get status - V2",
         "description": "Retrieve the status of a running job by providing the job ID. The job ID is obtained from the response of the asynchronous API call.",
         "x-ffs-status-fetcher": true,
         "x-ffs-job-name": "FacadeAsyncJob",
@@ -2581,7 +2581,7 @@
           "Get status"
         ],
         "operationId": "getJobStatus",
-        "summary": "Get status - v1",
+        "summary": "Get status - V1",
         "description": "This endpoint allows you to check the status of an asynchronous job for a masking operation. The schema of a 200 response varies depending on the status of the job. A job with a `succeeded` status will include the results in the response and the result objects vary depending on the operation.",
         "parameters": [
           {
