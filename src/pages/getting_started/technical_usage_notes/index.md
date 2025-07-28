@@ -44,6 +44,14 @@ For increased reliability and stability, there's a retry mechanism for all API c
 
 ## Rate limits
 
+To ensure equitable peak performance with Firefly APIs, Adobe places limits on the volume, frequency, and concurrency of API calls, and monitors API usage to proactively contact you and resolve any risks.
+
+You may encounter an HTTP 429 "Too Many Requests" error if usage exceeds these limit. Use the 'retry-after' header to determine the number of seconds to wait before trying again.
+
+<InlineAlert variant="info" slots="text1" />
+
+Usage limits apply to **your entire organization**.
+
 These are the API usage limits:
 
 ### General service limits
@@ -69,6 +77,11 @@ These are the API usage limits:
 
 - POST: 2 requests/3 secs.
 - GET: 500 requests/3 secs.
+
+### Masking service limits
+
+- 60 requests/min.
+- 9000 requests/day.
 
 <!-- Links -->
 [1]: https://helpx.adobe.com/photoshop/using/file-formats.html#maximize_compatibility_for_psd_and_psb_files
