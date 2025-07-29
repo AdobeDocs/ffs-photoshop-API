@@ -27,7 +27,6 @@ These are known limitations to the Photoshop APIs:
 - Multi-part uploads and downloads aren't yet supported.
 - All endpoints only support a single file input.
 - Error handling is a work in progress; you may not always see the most helpful error messages. Apologies.
-- When using the Remove Background service, JPEG outputs can have a black background when no `backgroundColor` was specified. This is under investigation.
 
 ## Compatibility with Photoshop versions
 
