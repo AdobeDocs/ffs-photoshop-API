@@ -262,7 +262,7 @@
           },
           {
             "name": "Content-Type",
-            "description": "The content type of the request. The value is `application/json`",
+            "description": "The content type of the request. The value is `application/json`.",
             "in": "header",
             "required": true,
             "schema": {
@@ -381,7 +381,7 @@
             "name": "jobId",
             "required": true,
             "in": "path",
-            "description": "The job ID from the response of the Remove Background API call",
+            "description": "The job ID from the response of the Remove Background API call.",
             "schema": {
               "type": "string"
             }
@@ -631,7 +631,7 @@
       "post": {
         "tags": ["Common operations"],
         "summary": "Extract document manifest",
-        "description": "Extract metadata from PSD document, including general file and layer information",
+        "description": "Extract metadata from PSD document, including general file and layer information.",
         "operationId": "getDocumentManifestAsync",
         "parameters": [
           {
@@ -737,7 +737,7 @@
       "post": {
         "tags": ["Common operations"],
         "summary": "Create PSD",
-        "description": "Create new PSD with layers",
+        "description": "Create new PSD with layers.",
         "operationId": "createDocumentAsync",
         "parameters": [
           {
@@ -865,7 +865,7 @@
       "post": {
         "tags": ["Common operations"],
         "summary": "Apply photoshop edits",
-        "description": "Apply basic layer edits (name, state, etc), add/edit adjustment, pixel, and shape layers.",
+        "description": "Apply basic layer edits (name, state, etc.), add/edit adjustment, pixel, and shape layers.",
         "operationId": "modifyDocumentAsync",
         "parameters": [
           {
@@ -993,7 +993,7 @@
       "post": {
         "tags": ["Common operations"],
         "summary": "Create renditions",
-        "description": "Create flat image representations of a PSD in multiple formats",
+        "description": "Create flat image representations of a PSD in multiple formats.",
         "operationId": "createRenditionAsync",
         "parameters": [
           {
@@ -1121,7 +1121,7 @@
       "post": {
         "tags": ["Common operations"],
         "summary": "Replace smart object",
-        "description": "Replace Smart Object in a PSD",
+        "description": "Replace Smart Object in a PSD.",
         "operationId": "replaceSmartObjectAsync",
         "parameters": [
           {
@@ -1249,7 +1249,7 @@
       "post": {
         "tags": ["Common operations"],
         "summary": "Run photoshop actions",
-        "description": "Executes Photoshop Action file against a PSD, JPEG, PNG, or TIFF ",
+        "description": "Executes Photoshop Action file against a PSD, JPEG, PNG, or TIFF.",
         "operationId": "playPhotoshopActionsAsync",
         "parameters": [
           {
@@ -1524,7 +1524,7 @@
           "actionJSON"
         ],
         "summary": "Convert to actionJSON",
-        "description": "Convert an ATN file to actionJSON format",
+        "description": "Convert an ATN file to actionJSON format.",
         "operationId": "convertToActionsJsonAsync",
         "parameters": [
           {
@@ -1784,7 +1784,7 @@
       "post": {
         "tags": ["Common operations"],
         "summary": "Depth blur",
-        "description": "Apply depth blur to an image input",
+        "description": "Apply depth blur to an image input.",
         "operationId": "applyDepthBlurAsync",
         "parameters": [
           {
@@ -1927,7 +1927,7 @@
       "post": {
         "tags": ["Common operations"],
         "summary": "Edit text layer",
-        "description": "Change the contents of a text layer in a PSD, eg for localization ",
+        "description": "Change the contents of a text layer in a PSD, e.g. for localization.",
         "operationId": "editTextLayerAsync",
         "parameters": [
           {
@@ -2070,7 +2070,7 @@
       "post": {
         "tags": ["Common operations"],
         "summary": "Create artboards",
-        "description": "Create artboards from multiple PSD inputs ",
+        "description": "Create artboards from multiple PSD inputs.",
         "operationId": "createArtboardAsync",
         "parameters": [
           {
