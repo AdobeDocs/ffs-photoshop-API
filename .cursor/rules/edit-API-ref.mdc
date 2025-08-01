@@ -67,10 +67,11 @@ This rule provides comprehensive guidelines for editing and maintaining API refe
 - **Use Title Case for all response descriptions** (e.g., "Success", "Internal Server Error")
 - **Maintain consistency across all status codes** (2xx, 4xx, 5xx)
 - **Standardize common response descriptions** throughout the API
+- **No trailing periods** - response descriptions should not end with periods
 
 ### Response Description Examples
 ```json
-// Good examples - Title Case
+// Good examples - Title Case, no periods
 "description": "Success"
 "description": "Accepted"
 "description": "Unauthorized"
@@ -84,11 +85,12 @@ This rule provides comprehensive guidelines for editing and maintaining API refe
 "description": "Asset Link Invalid"
 "description": "Unable To Upload Asset"
 
-// Bad examples - Inconsistent casing
+// Bad examples - Inconsistent casing or periods
 "description": "success"           // Lowercase
 "description": "Internal server error"  // Mixed case
 "description": "Too many requests"      // Sentence case
 "description": "InputValidationError"   // No spaces
+"description": "Success."               // Has period
 ```
 
 ### Common Response Codes to Standardize
@@ -103,22 +105,31 @@ This rule provides comprehensive guidelines for editing and maintaining API refe
 ## Content Quality and Consistency
 
 ### Description Content Standards
-- **Remove trailing periods and extra spaces** from all descriptions
+- **Complete sentences require periods** - all endpoint descriptions, parameter descriptions, and request body descriptions should be complete sentences with periods
+- **Remove trailing spaces** from all descriptions
 - **Fix spelling errors** (e.g., "returrn" → "return")
 - **Use consistent terminology** across similar endpoints
 - **Maintain professional tone** in all descriptions
+- **Fix grammar issues** (e.g., "eg" → "e.g.", "etc" → "etc.")
 
 ### Parameter Description Standards
+- **Complete sentences with periods** - parameter descriptions should be complete sentences ending with periods
 - **Remove leading spaces** from parameter descriptions
-- **Remove trailing periods** from parameter descriptions
 - **Use consistent formatting** for similar parameters
 - **Provide clear, actionable descriptions**
 
+### Request Body Description Standards
+- **Complete sentences with periods** - request body descriptions should be complete sentences ending with periods
+- **Clear and descriptive** - explain what the request body contains
+- **Consistent formatting** across similar endpoints
+
 ### Content Review Checklist
-- [ ] All response descriptions use Title Case
-- [ ] No trailing periods in descriptions
+- [ ] All response descriptions use Title Case (no periods)
+- [ ] All non-response descriptions are complete sentences with periods
+- [ ] No trailing spaces in descriptions
 - [ ] No leading spaces in parameter descriptions
 - [ ] Spelling errors corrected
+- [ ] Grammar issues fixed (e.g., "eg" → "e.g.", "etc" → "etc.")
 - [ ] Consistent terminology used
 - [ ] All endpoints have appropriate tags
 - [ ] Summary formatting follows sentence case guidelines
@@ -228,8 +239,9 @@ Include these common error responses:
 4. **Review tag consistency** - ensure proper tagging across endpoints
 5. **Test summary formatting** - follow sentence case, no periods, no "API"
 6. **Validate OpenAPI specification** - use tools like Swagger Editor
-7. **Review response descriptions** - ensure Title Case consistency
-8. **Check for content formatting issues** - remove trailing periods, fix spacing
+7. **Review response descriptions** - ensure Title Case consistency (no periods)
+8. **Check for content formatting issues** - ensure complete sentences with periods for non-response descriptions
+9. **Verify grammar and spelling** - check for abbreviations and common errors
 
 ### Common Issues to Avoid
 - **Empty tag arrays** - assign appropriate tags or remove empty arrays
@@ -237,9 +249,10 @@ Include these common error responses:
 - **Missing descriptions** - provide clear descriptions for all elements
 - **Incomplete error handling** - include appropriate error responses
 - **Spelling errors** - proofread all text content
-- **Inconsistent response description casing** - use Title Case for all responses
-- **Trailing periods and spaces** - remove from all descriptions
+- **Inconsistent response description casing** - use Title Case for all responses (no periods)
+- **Incomplete sentences** - ensure all non-response descriptions are complete sentences with periods
 - **Mixed version formatting** - use consistent lowercase version numbers
+- **Grammar issues** - fix abbreviations like "eg" → "e.g." and "etc" → "etc."
 
 ## Documentation Standards
 
@@ -249,12 +262,12 @@ Include these common error responses:
 - **Include usage examples** where helpful
 - **Document limitations or requirements**
 - **Reference related endpoints** when applicable
-- **Remove trailing periods and extra spaces**
+- **Ensure complete sentences with periods** for all non-response descriptions
 - **Use consistent terminology**
 
 ### Example Description
 ```json
-"description": "This endpoint allows you to remove the background from an image. The request is processed asynchronously and the status of the running job can be checked with the Get Status endpoint"
+"description": "This endpoint allows you to remove the background from an image. The request is processed asynchronously and the status of the running job can be checked with the Get Status endpoint."
 ```
 
 ## Best Practices
@@ -268,8 +281,9 @@ Include these common error responses:
 6. **Review changes** before committing
 7. **Keep schemas DRY** - avoid duplication
 8. **Use proper data types** and constraints
-9. **Standardize response descriptions** to Title Case
+9. **Standardize response descriptions** to Title Case (no periods)
 10. **Organize tags logically** with core operations first
+11. **Ensure complete sentences** for all non-response descriptions
 
 ### Naming Conventions
 - **Endpoints**: Use descriptive paths (e.g., `/v2/remove-background`)
@@ -277,16 +291,21 @@ Include these common error responses:
 - **Properties**: Use camelCase
 - **Tags**: Use sentence case, descriptive names
 - **Summaries**: Use sentence case, no periods, no "API"
-- **Response descriptions**: Use Title Case
+- **Response descriptions**: Use Title Case, no periods
+- **Non-response descriptions**: Use complete sentences with periods
 - **Version numbers**: Use lowercase (v1, v2, v3)
 
 ### Lessons Learned from Photoshop API Updates
 - **Tag organization matters** - "Common operations" provides clear categorization for core endpoints
-- **Response description consistency** - Title Case standardization improves readability
-- **Content formatting** - Removing trailing periods and fixing spacing improves professionalism
+- **Response description consistency** - Title Case standardization improves readability (no periods)
+- **Content formatting** - Complete sentences with periods improve professionalism for non-response descriptions
 - **Version consistency** - Lowercase version numbers (v1, v2) are more readable
 - **Spelling accuracy** - Even minor typos (like "returrn") should be corrected
-- **Parameter description formatting** - Consistent spacing and punctuation improves clarity
+- **Parameter description formatting** - Complete sentences with periods improve clarity
+- **Grammar precision** - Abbreviations like "eg" should be "e.g." and "etc" should be "etc."
+- **Trailing space removal** - Clean formatting improves readability
+- **Complete sentence requirement** - All non-response descriptions should be complete sentences with periods
+- **Distinction between response and non-response descriptions** - Response descriptions use Title Case (no periods), while all other descriptions use complete sentences with periods
 
 ---
 description: API Reference editing guidelines with lessons learned from Photoshop API updates
