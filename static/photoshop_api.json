@@ -14,6 +14,10 @@
   ],
   "tags": [
     {
+      "name": "Common operations",
+      "description": "General Photoshop API operations and utilities"
+    },
+    {
       "name": "Masking",
       "description": "Operations for creating and manipulating masks"
     },
@@ -625,7 +629,7 @@
     },
     "/pie/psdService/documentManifest": {
       "post": {
-        "tags": [],
+        "tags": ["Common Operations"],
         "summary": "Extract document manifest",
         "description": "Extract metadata from PSD document, including general file and layer information.",
         "operationId": "getDocumentManifestAsync",
@@ -731,7 +735,7 @@
     },
     "/pie/psdService/documentCreate": {
       "post": {
-        "tags": [],
+        "tags": ["Common Operations"],
         "summary": "Create PSD",
         "description": "Create new PSD with layers",
         "operationId": "createDocumentAsync",
@@ -859,7 +863,7 @@
     },
     "/pie/psdService/documentOperations": {
       "post": {
-        "tags": [],
+        "tags": ["Common Operations"],
         "summary": "Apply photoshop edits",
         "description": "Apply basic layer edits (name, state, etc), add/edit adjustment, pixel, and shape layers.",
         "operationId": "modifyDocumentAsync",
@@ -987,7 +991,7 @@
     },
     "/pie/psdService/renditionCreate": {
       "post": {
-        "tags": [],
+        "tags": ["Common Operations"],
         "summary": "Create renditions",
         "description": "Create flat image representations of a PSD in multiple formats",
         "operationId": "createRenditionAsync",
@@ -1115,7 +1119,7 @@
     },
     "/pie/psdService/smartObject": {
       "post": {
-        "tags": [],
+        "tags": ["Common Operations"],
         "summary": "Replace smart object",
         "description": "Replace Smart Object in a PSD .",
         "operationId": "replaceSmartObjectAsync",
@@ -1243,7 +1247,7 @@
     },
     "/pie/psdService/photoshopActions": {
       "post": {
-        "tags": [],
+        "tags": ["Common Operations"],
         "summary": "Run photoshop actions",
         "description": "Executes Photoshop Action file against a PSD, JPEG, PNG, or TIFF ",
         "operationId": "playPhotoshopActionsAsync",
@@ -1635,7 +1639,7 @@
     },
     "/pie/psdService/productCrop": {
       "post": {
-        "tags": [],
+        "tags": ["Common Operations"],
         "summary": "Product crop",
         "description": "This endpoint identifies the subject of the input file and automatically crops the image to keep the subject in the center. Check the status of this process with the `Get Status` endpoint.",
         "operationId": "applyAutoCropAsync",
@@ -1778,7 +1782,7 @@
     },
     "/pie/psdService/depthBlur": {
       "post": {
-        "tags": [],
+        "tags": ["Common Operations"],
         "summary": "Depth blur",
         "description": "Apply depth blur to an image input",
         "operationId": "applyDepthBlurAsync",
@@ -1921,7 +1925,7 @@
     },
     "/pie/psdService/text": {
       "post": {
-        "tags": [],
+        "tags": ["Common Operations"],
         "summary": "Edit text layer",
         "description": "Change the contents of a text layer in a PSD, eg for localization ",
         "operationId": "editTextLayerAsync",
@@ -2064,7 +2068,7 @@
     },
     "/pie/psdService/artboardCreate": {
       "post": {
-        "tags": [],
+        "tags": ["Common Operations"],
         "summary": "Create artboards",
         "description": "Create artboards from multiple PSD inputs ",
         "operationId": "createArtboardAsync",
