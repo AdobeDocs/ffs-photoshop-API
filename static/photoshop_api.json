@@ -3947,27 +3947,27 @@
       },
       "Bounds": {
         "title": "Bounds",
-        "description": "The bounds of the layer",
+        "description": "The bounds of the layer.",
         "type": "object",
         "properties": {
           "top": {
             "type": "integer",
-            "description": "in pixels",
+            "description": "The top position in pixels.",
             "format": "int32"
           },
           "left": {
             "type": "integer",
-            "description": "in pixels",
+            "description": "The left position in pixels.",
             "format": "int32"
           },
           "width": {
             "type": "integer",
-            "description": "in pixels",
+            "description": "The width in pixels.",
             "format": "int32"
           },
           "height": {
             "type": "integer",
-            "description": "in pixels",
+            "description": "The height in pixels.",
             "format": "int32"
           }
         }
@@ -3981,11 +3981,11 @@
             "maximum": 5400.0,
             "minimum": 0.04,
             "type": "number",
-            "description": "The font size, in pixels"
+            "description": "The font size, in pixels."
           },
           "fontPostScriptName": {
             "type": "string",
-            "description": "the font's postscript name to be used to set the font for this layer."
+            "description": "The font's PostScript name to be used to set the font for this layer."
           },
           "color": {
             "$ref": "#/components/schemas/ColorDetails"
@@ -4009,85 +4009,82 @@
           },
           "strikethrough": {
             "type": "boolean",
-            "description": "Toggle strikethrough for selected text"
+            "description": "Toggle strikethrough for selected text."
           },
           "syntheticBold": {
             "type": "boolean",
-            "description": "Toggle bold for selected text"
+            "description": "Toggle bold for selected text."
           },
           "syntheticItalic": {
             "type": "boolean",
-            "description": "Toggle italic for selected text"
+            "description": "Toggle italic for selected text."
           },
           "underline": {
             "type": "boolean",
-            "description": "Toggle underlining of text"
+            "description": "Toggle underlining of text."
           },
           "ligature": {
             "type": "boolean",
-            "description": "Toggle text ligature, which are special characters in a font that combine two (or more)"
+            "description": "Toggle text ligature, which are special characters in a font that combine two (or more)."
           },
           "fractions": {
             "type": "boolean",
-            "description": "Toggle automatic formatting of fractions: numbers separated by a slash (such as 1/2)"
+            "description": "Toggle automatic formatting of fractions: numbers separated by a slash (such as 1/2)."
           },
           "stylisticAlternates": {
             "type": "boolean",
-            "description": "Toggle stylisticAlternates, which formats stylized characters that create a purely aesthetic effect"
+            "description": "Toggle stylistic alternates, which formats stylized characters that create a purely aesthetic effect."
           },
           "verticalScale": {
             "maximum": 1000.0,
             "minimum": 0.0,
             "type": "number",
-            "description": "The amount of vertical scaling to apply to the font"
+            "description": "The amount of vertical scaling to apply to the font."
           },
           "horizontalScale": {
             "maximum": 1000.0,
             "minimum": 0.0,
             "type": "number",
-            "description": "The amount of horizontal scaling to apply to the font"
+            "description": "The amount of horizontal scaling to apply to the font."
           }
         },
-        "description": "character style settings"
+        "description": "Character style settings."
       },
       "ParagraphStyleDetails": {
         "title": "ParagraphStyleDetails",
         "minProperties": 1,
         "type": "object",
         "properties": {
-          "align": {
-            "$ref": "#/components/schemas/ParagraphStyleAlignmentType",
-            "description": "The paragraph alignment (deprecated, please use alignment)"
-          },
           "alignment": {
-            "$ref": "#/components/schemas/ParagraphStyleAlignmentType"
+            "$ref": "#/components/schemas/ParagraphStyleAlignmentType",
+            "description": "The paragraph alignment."
           },
           "startIndent": {
             "type": "number",
-            "description": "The amount of indent to add to the left margin"
+            "description": "The amount of indent to add to the left margin."
           },
           "endIndent": {
             "type": "number",
-            "description": "The amount of indent to add to the right margin"
+            "description": "The amount of indent to add to the right margin."
           },
           "hyphenate": {
             "type": "boolean",
-            "description": "Toggle hyphenate for paragraph text"
+            "description": "Toggle hyphenate for paragraph text."
           },
           "firstLineIndent": {
             "type": "number",
-            "description": "The amount of indent to add to the first line of the paragraph"
+            "description": "The amount of indent to add to the first line of the paragraph."
           },
           "spaceBefore": {
             "type": "number",
-            "description": "The amount of space to add before the paragraph"
+            "description": "The amount of space to add before the paragraph."
           },
           "spaceAfter": {
             "type": "number",
-            "description": "The amount of inspace to add after the paragraph"
+            "description": "The amount of space to add after the paragraph."
           }
         },
-        "description": "Paragraph style settings"
+        "description": "Paragraph style settings."
       },
       "LayerMaskDetails": {
         "title": "LayerMaskDetails",
@@ -4095,64 +4092,64 @@
         "properties": {
           "clip": {
             "type": "boolean",
-            "description": "Indicates if this is a clipped layer"
+            "description": "Indicates if this is a clipped layer."
           },
           "enabled": {
             "type": "boolean",
-            "description": "Indicates a mask is enabled on that layer or not"
+            "description": "Indicates whether a mask is enabled on that layer."
           },
           "linked": {
             "type": "boolean",
-            "description": "Indicates a mask is linked to the layer or not"
+            "description": "Indicates whether a mask is linked to the layer."
           },
           "offset": {
             "$ref": "#/components/schemas/Offset"
           }
         },
-        "description": "An object describing the input mask added or replaced to the layer"
+        "description": "An object describing the input mask replaced or added to the layer."
       },
       "Offset": {
         "title": "Offset",
-        "description": "Offset details",
+        "description": "Offset details.",
         "type": "object",
         "properties": {
           "x": {
             "type": "integer",
-            "description": "Offset to indicate horizontal move of the mask",
+            "description": "Offset to indicate horizontal move of the mask.",
             "format": "int32"
           },
           "y": {
             "type": "integer",
-            "description": "Offset to indicate vertical move of the mask",
+            "description": "Offset to indicate vertical move of the mask.",
             "format": "int32"
           }
         }
       },
       "SmartObjectDetails": {
         "title": "SmartObjectDetails",
-        "description": "Smart object details",
+        "description": "Smart object details.",
         "type": "object",
         "properties": {
           "type": {
             "type": "string",
-            "description": "Desired image format for the smart object"
+            "description": "Desired image format for the smart object."
           },
           "linked": {
             "type": "boolean",
-            "description": "Indicates if this Smart Object is linked. Currently we support Embedded Smart Object only which means \"linked = false\"",
+            "description": "Indicates if the smart object is linked. Currently we support embedded smart object only, which means \"linked = false\".",
             "default": false
           },
           "name": {
             "type": "string",
-            "description": "Name of the embedded or linked smart object. Currently we support Embedded Smart Object only"
+            "description": "Name of the embedded or linked smart object. Currently we support embedded smart object only."
           },
           "path": {
             "type": "string",
-            "description": "Attribute for only Linked Smart Object. Indicates the relative path for the Linked Smart Object"
+            "description": "Only for a linked smart object. Indicates the relative path for the linked smart object."
           },
           "instanceId": {
             "type": "string",
-            "description": "Attribute for only Embedded Smart Object. Indicates instance id of this embedded smart object. This id is unique for different smart object instances. InstanceId may have value as unknown, if the embedded smart object is generated using any other application than adobe applications like PS, Lr etc. We are deriving the value 'InstanceID' from the RAW Data of the document."
+            "description": "Only for an embedded smart object. Indicates the instance ID of the embedded smart object. This ID is unique and the value is derived from the RAW data of the document. `instanceId` may show a value as unknown, if the embedded smart object is generated using a non-Adobe application."
           }
         }
       },
@@ -4200,7 +4197,7 @@
             "format": "int32"
           }
         },
-        "description": "An object describing the rgb color format in 8 bits"
+        "description": "An object describing the RGB color format in 8 bits."
       },
       "FontColorRgb": {
         "title": "FontColorRgb",
@@ -4225,7 +4222,7 @@
             "format": "int32"
           }
         },
-        "description": "An object describing the rgb color format in 16 bits"
+        "description": "An object describing the RGB color format in 16 bits."
       },
       "FontColorCmyk": {
         "title": "FontColorCmyk",
@@ -4256,7 +4253,7 @@
             "format": "int32"
           }
         },
-        "description": "the font color settings for cmyk mode in 16bit representation"
+        "description": "The font color settings for CMYK mode in 16-bit representation."
       },
       "FontColorGray": {
         "title": "FontColorGray",
@@ -4269,7 +4266,7 @@
             "format": "int32"
           }
         },
-        "description": "the font color settings for gray mode in 16bit representation"
+        "description": "The font color settings for gray mode in 16-bit representation."
       },
       "FontColorLab": {
         "title": "FontColorLab",
@@ -4294,7 +4291,7 @@
             "format": "int32"
           }
         },
-        "description": "the font color settings for lab mode in 16bit representation."
+        "description": "The font color settings for Lab mode in 16-bit representation."
       },
       "TextLayerDetails": {
         "title": "TextLayerDetails",
@@ -4302,24 +4299,24 @@
         "properties": {
           "content": {
             "type": "string",
-            "description": "the text string"
+            "description": "The text string."
           },
           "characterStyles": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/TextLayerCharacterStyleDetails"
             },
-            "description": "characterStyle settings. If the same supported attributes apply to all characters in the layer than this will be an array of one item, otherwise each characterStyle object will have a 'from' and 'to' value indicating the range of characters that the style applies to."
+            "description": "Character style settings. If the same supported attributes apply to all characters in the layer, then this will be an array of one item. Otherwise, each `characterStyle` object will have a 'from' and 'to' value indicating the range of characters that style applies to."
           },
           "paragraphStyles": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/TextLayerParagraphStyleDetails"
             },
-            "description": "paragraphStyles settings. If the same supported attributes apply to all characters in the layer than this will be an array of one item, otherwise each paragraphStyle object will have a 'from' and 'to' value indicating the range of characters that the style applies to."
+            "description": "Paragraph style settings. If the same supported attributes apply to all characters in the layer then this will be an array of one item, otherwise each paragraph style object will have a 'from' and 'to' value indicating the range of characters that the style applies to."
           }
         },
-        "description": "text settings"
+        "description": "Text settings."
       },
       "TextLayerCharacterStyleDetails": {
         "title": "TextLayerCharacterStyleDetails",
@@ -4328,22 +4325,22 @@
           "from": {
             "minimum": 0.0,
             "type": "integer",
-            "description": "The beginning of the range of characters that this characterStyle applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1",
+            "description": "The beginning of the range of characters that this character style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.",
             "format": "int32"
           },
           "to": {
             "minimum": 0.0,
             "type": "integer",
-            "description": "The ending of the range of characters that this characterStyle applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1",
+            "description": "The ending of the range of characters that this character style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.",
             "format": "int32"
           },
           "fontSize": {
             "type": "number",
-            "description": "in points"
+            "description": "The font size in points."
           },
           "fontName": {
             "type": "string",
-            "description": "the font's postscript name. The list of supported fonts is at https://github.com/AdobeDocs/photoshop-api-docs/blob/master/SupportedFonts.md"
+            "description": "The font's PostScript name from the [list of supported fonts](../../getting_started/technical_usage_notes/index.md#photoshop-api-supported-fonts)."
           },
           "orientation": {
             "$ref": "#/components/schemas/OrientationType"
@@ -4360,20 +4357,20 @@
           "from": {
             "minimum": 0.0,
             "type": "integer",
-            "description": "The beginning of the range of characters that this paragraphStyle applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1",
+            "description": "The beginning of the range of characters that this paragraph style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.",
             "format": "int32"
           },
           "to": {
             "minimum": 0.0,
             "type": "integer",
-            "description": "The ending of the range of characters that this paragraphStyle applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1",
+            "description": "The ending of the range of characters that this paragraph style applies to. Based on initial index of 0. For example a style applied to only the first two characters would be from=0 and to=1.",
             "format": "int32"
           },
           "alignment": {
             "$ref": "#/components/schemas/AlignmentType"
           }
         },
-        "description": "If the same supported attributes apply to all characters in the layer than this will be an array of one item, otherwise each paragraphStyle object will have a 'from' and 'to' value indicating the range of characters that the style applies to."
+        "description": "If the same supported attributes apply to all characters in the layer then this will be an array of one item, otherwise each paragraph style object will have a 'from' and 'to' value indicating the range of characters that the style applies to."
       },
       "BlendDetails": {
         "title": "BlendDetails",
@@ -4383,14 +4380,14 @@
             "maximum": 100.0,
             "minimum": 0.0,
             "type": "integer",
-            "description": "Indicates the opacity value of a layer",
+            "description": "Indicates the opacity value of a layer.",
             "format": "int32"
           },
           "blendMode": {
             "$ref": "#/components/schemas/BlendModeType"
           }
         },
-        "description": "Blend options of a layer, including opacity and blend mode"
+        "description": "Blend options of a layer, including opacity and blend mode."
       },
       "AlignmentType": {
         "title": "AlignmentType",
@@ -4404,7 +4401,7 @@
           "justifyRight"
         ],
         "type": "string",
-        "description": "the paragraph alignment"
+        "description": "The paragraph alignment."
       },
       "ParagraphStyleAlignmentType": {
         "title": "ParagraphStyleAlignmentType",
