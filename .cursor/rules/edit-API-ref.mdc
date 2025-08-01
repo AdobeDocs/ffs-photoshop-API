@@ -10,9 +10,19 @@ This rule provides comprehensive guidelines for editing and maintaining API refe
 - **Follow consistent naming conventions** (e.g., "Remove background", "Masking")
 - **Avoid generic tags** like "API" or "Photoshop" - use specific functional tags instead
 
+### Tag Organization and Ordering
+- **Order tags logically** - place most commonly used or core functionality first
+- **Use "Common operations" or similar** for general/core endpoints that don't fit specialized categories
+- **Group related functionality** under descriptive tag names
+- **Ensure all endpoints have appropriate tags** - avoid empty tag arrays
+
 ### Tag Examples
 ```json
 "tags": [
+  {
+    "name": "Common operations",
+    "description": "General Photoshop API operations and utilities"
+  },
   {
     "name": "Masking",
     "description": "Operations for creating and manipulating masks"
@@ -32,6 +42,7 @@ This rule provides comprehensive guidelines for editing and maintaining API refe
 - **Remove "API" suffix** from summaries
 - **Correct spelling and grammar**
 - **Clear and descriptive** - should explain what the endpoint does
+- **Consistent version formatting** - use lowercase for version numbers (e.g., "v1", "v2")
 
 ### Summary Examples
 ```json
@@ -41,12 +52,76 @@ This rule provides comprehensive guidelines for editing and maintaining API refe
 "summary": "Extract document manifest"
 "summary": "Apply photoshop edits"
 "summary": "Product crop"
+"summary": "Get status - v2"
 
 // Bad examples
 "summary": "Remove Background V1"  // Title case
 "summary": "Create Mask API."      // Has "API" and period
 "summary": "Prodct Crop"           // Spelling error
+"summary": "Get status - V2"       // Inconsistent version capitalization
 ```
+
+## Response Description Standards
+
+### Formatting Requirements
+- **Use Title Case for all response descriptions** (e.g., "Success", "Internal Server Error")
+- **Maintain consistency across all status codes** (2xx, 4xx, 5xx)
+- **Standardize common response descriptions** throughout the API
+
+### Response Description Examples
+```json
+// Good examples - Title Case
+"description": "Success"
+"description": "Accepted"
+"description": "Unauthorized"
+"description": "Forbidden"
+"description": "Bad Request"
+"description": "Requested Resource Was Not Found"
+"description": "Too Many Requests"
+"description": "Internal Server Error"
+"description": "Input Validation Error"
+"description": "Trial Limit Exceeded Error"
+"description": "Asset Link Invalid"
+"description": "Unable To Upload Asset"
+
+// Bad examples - Inconsistent casing
+"description": "success"           // Lowercase
+"description": "Internal server error"  // Mixed case
+"description": "Too many requests"      // Sentence case
+"description": "InputValidationError"   // No spaces
+```
+
+### Common Response Codes to Standardize
+- **200/202**: "Success", "Accepted"
+- **400**: "Bad Request", "Input Validation Error"
+- **401**: "Unauthorized"
+- **403**: "Forbidden"
+- **404**: "Requested Resource Was Not Found"
+- **429**: "Too Many Requests"
+- **500**: "Internal Server Error"
+
+## Content Quality and Consistency
+
+### Description Content Standards
+- **Remove trailing periods and extra spaces** from all descriptions
+- **Fix spelling errors** (e.g., "returrn" → "return")
+- **Use consistent terminology** across similar endpoints
+- **Maintain professional tone** in all descriptions
+
+### Parameter Description Standards
+- **Remove leading spaces** from parameter descriptions
+- **Remove trailing periods** from parameter descriptions
+- **Use consistent formatting** for similar parameters
+- **Provide clear, actionable descriptions**
+
+### Content Review Checklist
+- [ ] All response descriptions use Title Case
+- [ ] No trailing periods in descriptions
+- [ ] No leading spaces in parameter descriptions
+- [ ] Spelling errors corrected
+- [ ] Consistent terminology used
+- [ ] All endpoints have appropriate tags
+- [ ] Summary formatting follows sentence case guidelines
 
 ## Schema Management
 
@@ -80,10 +155,10 @@ This rule provides comprehensive guidelines for editing and maintaining API refe
 
 ### Standard Error Responses
 Include these common error responses:
-- **400** - Bad Request (InputValidationError)
+- **400** - Bad Request (Input Validation Error)
 - **401** - Unauthorized
 - **403** - Forbidden
-- **404** - Not Found
+- **404** - Requested Resource Was Not Found
 - **429** - Too Many Requests
 - **500** - Internal Server Error
 
@@ -110,11 +185,13 @@ Include these common error responses:
 - **Use clear version indicators** in summaries (e.g., "v1", "v2 (beta)")
 - **Maintain backward compatibility** when possible
 - **Document version differences** in descriptions
+- **Use consistent version formatting** (lowercase "v1", "v2")
 
 ### Version Examples
 ```json
 "summary": "Remove background v1"
 "summary": "Remove background v2 (beta)"
+"summary": "Get status - v2"
 ```
 
 ## File Organization
@@ -130,7 +207,7 @@ Include these common error responses:
 {
   "openapi": "3.0.3",
   "info": { /* API metadata */ },
-  "servers": [ /* Server configurations */ ],
+  "servers": [ /* Server configurations */ },
   "tags": [ /* Tag definitions */ ],
   "paths": { /* Endpoint definitions */ },
   "components": {
@@ -151,6 +228,8 @@ Include these common error responses:
 4. **Review tag consistency** - ensure proper tagging across endpoints
 5. **Test summary formatting** - follow sentence case, no periods, no "API"
 6. **Validate OpenAPI specification** - use tools like Swagger Editor
+7. **Review response descriptions** - ensure Title Case consistency
+8. **Check for content formatting issues** - remove trailing periods, fix spacing
 
 ### Common Issues to Avoid
 - **Empty tag arrays** - assign appropriate tags or remove empty arrays
@@ -158,6 +237,9 @@ Include these common error responses:
 - **Missing descriptions** - provide clear descriptions for all elements
 - **Incomplete error handling** - include appropriate error responses
 - **Spelling errors** - proofread all text content
+- **Inconsistent response description casing** - use Title Case for all responses
+- **Trailing periods and spaces** - remove from all descriptions
+- **Mixed version formatting** - use consistent lowercase version numbers
 
 ## Documentation Standards
 
@@ -167,10 +249,12 @@ Include these common error responses:
 - **Include usage examples** where helpful
 - **Document limitations or requirements**
 - **Reference related endpoints** when applicable
+- **Remove trailing periods and extra spaces**
+- **Use consistent terminology**
 
 ### Example Description
 ```json
-"description": "This endpoint allows you to remove the background from an image. The request is processed asynchronously and the status of the running job can be checked with the Get Status endpoint."
+"description": "This endpoint allows you to remove the background from an image. The request is processed asynchronously and the status of the running job can be checked with the Get Status endpoint"
 ```
 
 ## Best Practices
@@ -184,6 +268,8 @@ Include these common error responses:
 6. **Review changes** before committing
 7. **Keep schemas DRY** - avoid duplication
 8. **Use proper data types** and constraints
+9. **Standardize response descriptions** to Title Case
+10. **Organize tags logically** with core operations first
 
 ### Naming Conventions
 - **Endpoints**: Use descriptive paths (e.g., `/v2/remove-background`)
@@ -191,7 +277,19 @@ Include these common error responses:
 - **Properties**: Use camelCase
 - **Tags**: Use sentence case, descriptive names
 - **Summaries**: Use sentence case, no periods, no "API"
-description:
-globs:
+- **Response descriptions**: Use Title Case
+- **Version numbers**: Use lowercase (v1, v2, v3)
+
+### Lessons Learned from Photoshop API Updates
+- **Tag organization matters** - "Common operations" provides clear categorization for core endpoints
+- **Response description consistency** - Title Case standardization improves readability
+- **Content formatting** - Removing trailing periods and fixing spacing improves professionalism
+- **Version consistency** - Lowercase version numbers (v1, v2) are more readable
+- **Spelling accuracy** - Even minor typos (like "returrn") should be corrected
+- **Parameter description formatting** - Consistent spacing and punctuation improves clarity
+
+---
+description: API Reference editing guidelines with lessons learned from Photoshop API updates
+globs: 
 alwaysApply: false
 ---
