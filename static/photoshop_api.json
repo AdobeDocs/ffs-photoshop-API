@@ -4416,7 +4416,7 @@
           "justifyAll"
         ],
         "type": "string",
-        "description": "The paragraph alignment"
+        "description": "The paragraph alignment."
       },
       "AntiAliasType": {
         "title": "AntiAliasType",
@@ -4439,7 +4439,7 @@
           "metricsKern"
         ],
         "type": "string",
-        "description": "The text's kerning setting. Optical: set based on the shape of the font. Metrics: uses kern pairs included in fonts"
+        "description": "The text's kerning setting. Optical: set based on the shape of the font. Metrics: uses kern pairs included in fonts."
       },
       "BasedOnType": {
         "title": "BasedOnType",
@@ -4447,7 +4447,7 @@
           "transparentPixels"
         ],
         "type": "string",
-        "description": "Based on type"
+        "description": "Based on type."
       },
       "BaselineType": {
         "title": "BaselineType",
@@ -4456,7 +4456,7 @@
           "superScript"
         ],
         "type": "string",
-        "description": "Indicates if the text is raised or lowered in relation to a font's baseline"
+        "description": "Indicates if the text is raised or lowered in relation to a font's baseline."
       },
       "BlendModeType": {
         "title": "BlendModeType",
@@ -4490,7 +4490,7 @@
           "luminosity"
         ],
         "type": "string",
-        "description": "Blend mode of layer"
+        "description": "Blend mode of layer."
       },
       "CanvasSize": {
         "title": "CanvasSize",
@@ -4537,7 +4537,7 @@
           "master"
         ],
         "type": "string",
-        "description": "The channel type"
+        "description": "The channel type."
       },
       "ColorDetails": {
         "title": "ColorDetails",
@@ -4552,25 +4552,25 @@
             "maximum": 65535.0,
             "minimum": 0.0,
             "type": "integer",
-            "description": "The color red value",
+            "description": "The color red value.",
             "format": "int32"
           },
           "green": {
             "maximum": 65535.0,
             "minimum": 0.0,
             "type": "integer",
-            "description": "The color green value",
+            "description": "The color green value.",
             "format": "int32"
           },
           "blue": {
             "maximum": 65535.0,
             "minimum": 0.0,
             "type": "integer",
-            "description": "The color blue value",
+            "description": "The color blue value.",
             "format": "int32"
           }
         },
-        "description": "FontColor in rgb format"
+        "description": "Font color in RGB format."
       },
       "CompressionType": {
         "title": "CompressionType",
@@ -4590,7 +4590,7 @@
           32
         ],
         "type": "integer",
-        "description": "Bit depth, this is either 8, 16 or 32 bit"
+        "description": "Bit depth. This is either 8, 16 or 32 bit."
       },
       "OperationDocument": {
         "title": "OperationDocument",
@@ -4618,25 +4618,25 @@
                 "$ref": "#/components/schemas/TextStyleType"
               },
               {
-                "description": "Base line direction for text style"
+                "description": "Base line direction for text style."
               }
             ]
           }
         },
-        "description": "Text features specifically for eastAsian languages"
+        "description": "Text features specifically for East Asian languages."
       },
       "ErrorDetails": {
         "title": "ErrorDetails",
-        "description": "Error details",
+        "description": "Error details.",
         "type": "object",
         "properties": {
           "name": {
             "type": "string",
-            "description": "param name"
+            "description": "The parameter name."
           },
           "reason": {
             "type": "string",
-            "description": "error"
+            "description": "The error."
           }
         }
       },
@@ -4648,21 +4648,21 @@
           "transparent"
         ],
         "type": "string",
-        "description": "Type of fill for the background layer"
+        "description": "Type of fill for the background layer."
       },
       "FocalSelector": {
         "title": "FocalSelector",
-        "description": "Focal selector",
+        "description": "Focal selector.",
         "minProperties": 2,
         "type": "object",
         "properties": {
           "x": {
             "type": "number",
-            "description": "X co-ordinate"
+            "description": "X coordinate."
           },
           "y": {
             "type": "number",
-            "description": "Y co-ordinate"
+            "description": "Y coordinate."
           }
         }
       },
@@ -4673,7 +4673,7 @@
           "smallCaps"
         ],
         "type": "string",
-        "description": "The text's capitalization values"
+        "description": "The text's capitalization values."
       },
       "FontColorDetails": {
         "title": "FontColorDetails",
@@ -4685,7 +4685,7 @@
                 "$ref": "#/components/schemas/FontColorRgb"
               },
               {
-                "description": "An object describing the rgb color format in 16 bits"
+                "description": "An object describing the RGB color format in 16 bits."
               }
             ]
           },
@@ -4695,7 +4695,7 @@
                 "$ref": "#/components/schemas/FontColorCmyk"
               },
               {
-                "description": "the font color settings for cmyk mode in 16bit representation"
+                "description": "The font color settings for CMYK mode in 16-bit representation."
               }
             ]
           },
@@ -4705,7 +4705,7 @@
                 "$ref": "#/components/schemas/FontColorGray"
               },
               {
-                "description": "the font color settings for gray mode in 16bit representation"
+                "description": "The font color settings for gray mode in 16-bit representation."
               }
             ]
           },
@@ -4715,7 +4715,7 @@
                 "$ref": "#/components/schemas/FontColorLab"
               },
               {
-                "description": "the font color settings for lab mode in 16bit representation."
+                "description": "The font color settings for Lab mode in 16-bit representation."
               }
             ]
           }
@@ -4728,7 +4728,7 @@
           "soft"
         ],
         "type": "string",
-        "description": "soft mask or binary mask"
+        "description": "Soft mask or binary mask."
       },
       "ImageModeType": {
         "title": "ImageModeType",
@@ -4738,7 +4738,7 @@
           "cmyk"
         ],
         "type": "string",
-        "description": "the image mode"
+        "description": "The image mode."
       },
       "ImageSize": {
         "title": "ImageSize",
@@ -4814,7 +4814,7 @@
                 "$ref": "#/components/schemas/SmartObject"
               },
               {
-                "description": "An object describing the attributes specific to creating or editing a smartObject.\nSmartObject properties need the input smart object file to operate on, which can be obtained from Input block. Currently we support Embedded Smart Object only.So this block is optional. If you are creating a Linked Smart Object, this is a required block."
+                "description": "An object describing the attributes specific to creating or editing a smart object. `smartObject` properties operate on the input smart object file. This is required with a linked smart object and optional with an embedded smart object."
               }
             ]
           },
@@ -4853,7 +4853,7 @@
         "properties": {
           "edit": {
             "type": "object",
-            "description": "Indicates you want to edit the layer identified by it's id or name. Note the object is currently empty but leaves room for further enhancements. The layer block should than contain changes from the original manifest. If you apply it to a group layer you will be effecting the attributes of the group layer itself, not the child layers. Edit layer is supported for layer type \"smartObject\" and \"fillLayer\" only."
+            "description": "Indicates the layer to edit, by it's ID or name. Note the object is currently empty but leaves room for further enhancements. The layer block should contain changes from the original manifest. If you apply it to a group layer, you will be affecting the attributes of the group layer itself, not the child layers. This edit is supported for layer type `smartObject` and `fillLayer` only."
           },
           "move": {
             "$ref": "#/components/schemas/MoveDetails"
@@ -4866,12 +4866,12 @@
           },
           "id": {
             "type": "integer",
-            "description": "the layer id",
+            "description": "The layer ID.",
             "format": "int32"
           },
           "index": {
             "type": "integer",
-            "description": "the layer index.  Required when deleting a layer, otherwise not used",
+            "description": "The layer index. Required when deleting a layer, otherwise not used.",
             "format": "int32"
           },
           "children": {
@@ -4879,7 +4879,7 @@
             "items": {
               "$ref": "#/components/schemas/ChildrenLayerDetails"
             },
-            "description": "a tree of layer objects representing the PSD layer structure extracted from the psd document"
+            "description": "A tree of layer objects representing the PSD layer structure extracted from the PSD document."
           },
           "type": {
             "$ref": "#/components/schemas/LayerType"
@@ -4950,7 +4950,7 @@
           },
           "fillToCanvas": {
             "type": "boolean",
-            "description": "Indicates if the pixels need to proportionally fill into the entire canvas of the document"
+            "description": "Indicates if the pixels need to proportionally fill into the entire canvas of the document."
           }
         }
       },
@@ -4996,11 +4996,11 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "The name of the layer you want to insert. Use either id OR name"
+            "description": "The name of the layer you want to insert. Use either ID or name."
           },
           "id": {
             "type": "integer",
-            "description": "The id of the layer you want to insert. Use either id OR name.",
+            "description": "The ID of the layer you want to insert. Use either ID or name.",
             "format": "int32"
           },
           "bounds": {
@@ -5008,11 +5008,11 @@
           },
           "locked": {
             "type": "boolean",
-            "description": "Is the layer editable"
+            "description": "Is the layer editable."
           },
           "visible": {
             "type": "boolean",
-            "description": "Is the layer visible"
+            "description": "Is the layer visible."
           },
           "text": {
             "allOf": [
@@ -5035,10 +5035,10 @@
             "items": {
               "$ref": "#/components/schemas/RenditionLinkDetails"
             },
-            "description": "array off rendition objects"
+            "description": "Array of rendition objects."
           }
         },
-        "description": "the rendition links"
+        "description": "The rendition links."
       },
       "ManageMissingFonts": {
         "title": "ManageMissingFonts",
@@ -5047,7 +5047,7 @@
           "fail"
         ],
         "type": "string",
-        "description": "action to take if there are one or more missing fonts in the document\n\n* fail - The job will not succeed and the status will be set to \"failed\", with the details of the error provided in the \"details\" section in the status\n* useDefault - The job will succeed, however, by default all the missing fonts will be replaced with this font: ArialMT"
+        "description": "Action to take if there are one or more missing fonts in the document. Using `fail` - the job will not succeed and the status will be set to `failed` with the details of the error provided in the `details` section in the status. Using `useDefault` - the job will succeed, however all the missing fonts will use the font: ArialMT."
       },
       "MaskFormat": {
         "title": "MaskFormat",
@@ -5135,12 +5135,12 @@
                 "$ref": "#/components/schemas/Thumbnails"
               },
               {
-                "description": "Include presigned GET URLs to small preview thumbnails for any renderable layer"
+                "description": "Include pre-signed GET URLs to small preview thumbnails for any renderable layer."
               }
             ]
           }
         },
-        "description": "available options to apply to all input files"
+        "description": "Available options to apply to all input files."
       },
       "DocumentCreateOptions": {
         "title": "DocumentCreateOptions",
@@ -5161,7 +5161,7 @@
           },
           "globalFont": {
             "type": "string",
-            "description": "options.globalFont The full postscript name of the font to be used as the global default for the document. This font will be used for any text layer which has a missing font and no other font has been specifically provided for that layer.\nIf this font itself is missing, the option specified for manageMissingFonts from above will take effect."
+            "description": "The PostScript name of the font to be used as the global default for the document. If this font is also missing, the option specified in `manageMissingFonts` will take effect."
           },
           "fonts": {
             "type": "array",
@@ -5178,7 +5178,7 @@
             "items": {
               "$ref": "#/components/schemas/DocumentCreateLayer"
             },
-            "description": "array of layers to be created in the document"
+            "description": "Array of layers to be created in the document."
           }
         }
       },
