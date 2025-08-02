@@ -5155,7 +5155,7 @@
                 "$ref": "#/components/schemas/ManageMissingFonts"
               },
               {
-                "description": "action to take if there are one or more missing fonts in the document\n\n* fail - The job will not succeed and the status will be set to \"failed\", with the details of the error provided in the \"details\" section in the status\n* useDefault - The job will succeed, however, by default all the missing fonts will be replaced with this font: ArialMT"
+                "description": "Action to take if there are one or more missing fonts in the document. Using `fail` - the job will not succeed and the status will be set to `failed` with the details of the error provided in the `details` section in the status. Using `useDefault` - the job will succeed, however all the missing fonts will use the font: ArialMT."
               }
             ]
           },
@@ -5192,13 +5192,13 @@
                 "$ref": "#/components/schemas/ManageMissingFonts"
               },
               {
-                "description": "action to take if there are one or more missing fonts in the document\n\n* fail - The job will not succeed and the status will be set to \"failed\", with the details of the error provided in the \"details\" section in the status\n* useDefault - The job will succeed, however, by default all the missing fonts will be replaced with this font: ArialMT"
+                "description": "Action to take if there are one or more missing fonts. Using `fail` - the job will not succeed and the status will be set to `failed` with the details of the error provided in the `details` section in the status. Using `useDefault` - the job will succeed, however all the missing fonts will use the font: ArialMT."
               }
             ]
           },
           "globalFont": {
             "type": "string",
-            "description": "options.globalFont The full postscript name of the font to be used as the global default for the document. This font will be used for any text layer which has a missing font and no other font has been specifically provided for that layer.\nIf this font itself is missing, the option specified for manageMissingFonts from above will take effect."
+            "description": "The PostScript name of the font to be used as the global default. If this font is also missing, the option specified in `manageMissingFonts` will take effect"
           },
           "fonts": {
             "type": "array",
@@ -5479,7 +5479,7 @@
           },
           "globalFont": {
             "type": "string",
-            "description": "The full PostScript name of the font to be used as the global default for the document. This font will be used for any text layer which has a missing font and no other font has been specifically provided for that layer. If this font itself is missing, the option specified for manageMissingFonts from above will take effect."
+            "description": "The PostScript name of the font to be used as the global default. If this font is also missing, the option specified in `manageMissingFonts` will take effect"
           },
           "layers": {
             "minItems": 1,
