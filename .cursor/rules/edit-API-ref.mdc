@@ -307,6 +307,59 @@ Include these common error responses:
 - **Complete sentence requirement** - All non-response descriptions should be complete sentences with periods
 - **Distinction between response and non-response descriptions** - Response descriptions use Title Case (no periods), while all other descriptions use complete sentences with periods
 
+## Section-by-Section Review Process
+
+### Systematic Review Strategy
+- **Divide large files into logical sections** - group related schemas and endpoints together
+- **Review one section at a time** - focus on quality rather than speed
+- **Identify all issues before making changes** - create comprehensive lists of corrections needed
+- **Apply corrections systematically** - address each issue type in batches
+- **Verify changes after each section** - ensure no issues are missed
+
+### Section Organization Guidelines
+- **Group by functionality** - related schemas and endpoints should be reviewed together
+- **Logical progression** - start with core schemas, move to specialized ones
+- **Consistent scope** - each section should be manageable (typically 50-100 lines)
+- **Clear boundaries** - define section start/end points clearly
+
+### Quality Assurance Techniques
+- **Cross-reference against identified issues** - ensure all listed problems are addressed
+- **User feedback integration** - incorporate user preferences and corrections
+- **Preserve user improvements** - maintain any manual corrections made by users
+- **Verify against ruleset** - check that all changes align with established guidelines
+
+### Common Section Types
+1. **Core Schema Sections** - fundamental data models and properties
+2. **Endpoint Description Sections** - operation descriptions and parameters
+3. **Component Schema Sections** - reusable data structures
+4. **Options and Configuration Sections** - settings and preferences
+5. **Response and Status Sections** - job status and output schemas
+6. **Header and Security Sections** - authentication and metadata
+
+### User Preference Integration
+- **Document user preferences** - record specific phrasings and formatting choices
+- **Apply consistently** - use preferred descriptions across similar elements
+- **Maintain user corrections** - preserve any manual improvements made during review
+- **Consider context** - apply preferences appropriately based on element type
+
+### Error Prevention Strategies
+- **Unique string identification** - use sufficient context to avoid duplicate string issues
+- **Batch processing** - group similar corrections to reduce tool call overhead
+- **Verification steps** - confirm changes were applied correctly
+- **Rollback planning** - maintain ability to revert if needed
+
+### Review Completion Checklist
+- [ ] All identified issues addressed
+- [ ] User preferences applied consistently
+- [ ] No new issues introduced
+- [ ] Grammar and punctuation corrected
+- [ ] Capitalization standardized
+- [ ] Complete sentences with periods for non-response descriptions
+- [ ] Title Case maintained for response descriptions (no periods)
+- [ ] Technical terms properly capitalized
+- [ ] Trailing spaces removed
+- [ ] Section boundaries clearly defined
+
 ---
 description: API Reference editing guidelines with lessons learned from Photoshop API updates
 globs: 
