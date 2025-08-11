@@ -31,6 +31,7 @@ Automate your token generation by calling the endpoint using standard OAuth2 lib
 Work with your Adobe representative to get the following:
 
 - An [Adobe Developer Console][1] account.
+- An active Enterprise contract with Firefly services included.
 - A [project][2] with Photoshop API [OAuth Server-to-Server credentials set up][3].
 - Access to your **Client ID** and **Client Secret** from the [Adobe Developer Console project][4]. Securely store these credentials and never expose them in client-side or public code.
 
