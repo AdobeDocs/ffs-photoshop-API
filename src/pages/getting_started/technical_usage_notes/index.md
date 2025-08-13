@@ -44,6 +44,14 @@ For increased reliability and stability, there's a retry mechanism for all API c
 
 ## Rate limits
 
+To ensure equitable peak performance with Firefly APIs, Adobe places limits on the volume, frequency, and concurrency of API calls, and monitors API usage to proactively contact you and resolve any risks.
+
+You may encounter an HTTP 429 "Too Many Requests" error if usage exceeds these limit. Use the 'retry-after' header to determine the number of seconds to wait before trying again.
+
+<InlineAlert variant="info" slots="text1" />
+
+Usage limits apply to **your entire organization**.
+
 These are the API usage limits:
 
 ### General service limits
@@ -69,6 +77,80 @@ These are the API usage limits:
 
 - POST: 2 requests/3 secs.
 - GET: 500 requests/3 secs.
+
+### Masking service limits
+
+- 60 requests/min.
+- 9000 requests/day.
+
+## Photoshop API supported fonts
+
+This is a list of all of the currently supported Postscript fonts for Photoshop API's. Additionally the user can use any fonts they are authorized to access via [Adobe Fonts](https://fonts.adobe.com/fonts). (Currently only available for OAuth tokens, service token support is forthcoming...)
+
+|                           |
+|---------------------------------- |
+| AcuminVariableConcept             |
+| AdobeArabic-Bold                  |
+| AdobeArabic-BoldItalic            |
+| AdobeArabic-Italic                |
+| AdobeArabic-Regular               |
+| AdobeDevanagari-Bold              |
+| AdobeDevanagari-BoldItalic        |
+| AdobeDevanagari-Italic            |
+| AdobeDevanagari-Regular           |
+| AdobeFanHeitiStd-Bold             |
+| AdobeGothicStd-Bold               |
+| AdobeGurmukhi-Bold                |
+| AdobeGurmukhi-Regular             |
+| AdobeHebrew-Bold                  |
+| AdobeHebrew-BoldItalic            |
+| AdobeHebrew-Italic                |
+| AdobeHebrew-Regular               |
+| AdobeHeitiStd-Regular             |
+| AdobeMingStd-Light                |
+| AdobeMyungjoStd-Medium            |
+| AdobePiStd                        |
+| AdobeSongStd-Light                |
+| AdobeThai-Bold                    |
+| AdobeThai-BoldItalic              |
+| AdobeThai-Italic                  |
+| AdobeThai-Regular                 |
+| CourierStd                        |
+| CourierStd-Bold                   |
+| CourierStd-BoldOblique            |
+| CourierStd-Oblique                |
+| EmojiOneColor                     |
+| KozGoPr6N-Bold                    |
+| KozGoPr6N-Medium                  |
+| KozGoPr6N-Regular                 |
+| KozMinPr6N-Regular                |
+| MinionPro-Regular                 |
+| MinionVariableConcept-Italic      |
+| MinionVariableConcept-Roman       |
+| MyriadArabic-Bold                 |
+| MyriadArabic-BoldIt               |
+| MyriadArabic-It                   |
+| MyriadArabic-Regular              |
+| MyriadHebrew-Bold                 |
+| MyriadHebrew-BoldIt               |
+| MyriadHebrew-It                   |
+| MyriadHebrew-Regular              |
+| MyriadPro-Bold                    |
+| MyriadPro-BoldIt                  |
+| MyriadPro-It                      |
+| MyriadPro-Regular                 |
+| MyriadVariableConcept-Italic      |
+| MyriadVariableConcept-Roman       |
+| NotoSansKhmer-Regular             |
+| NotoSansLao-Regular               |
+| NotoSansMyanmar-Regular           |
+| NotoSansSinhala-Regular           |
+| SourceCodeVariable-Italic         |
+| SourceCodeVariable-Roman          |
+| SourceSansVariable-Italic         |
+| SourceSansVariable-Roman          |
+| SourceSerifVariable-Roman         |
+| TrajanColor-Concept               |
 
 <!-- Links -->
 [1]: https://helpx.adobe.com/photoshop/using/file-formats.html#maximize_compatibility_for_psd_and_psb_files
