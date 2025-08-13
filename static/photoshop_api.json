@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "Adobe Photoshop and Imaging APIs",
-    "description": "This section provides a comprehensive guide to all available API endpoints, including request formats, parameters, authentication requirements, and example responses. Use this as your source of truth when integrating with or building on top of our APIs.",
+    "title": "Adobe Photoshop API",
+    "description": "This is the comprehesive reference for the Adobe Photoshop API, including all available API endpoints, request formats, parameters, authentication requirements, and example responses to use when integrating with or building on top of our APIs.",
     "version": "1.1"
   },
   "servers": [
