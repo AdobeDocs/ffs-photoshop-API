@@ -237,7 +237,7 @@
           "Remove background"
         ],
         "operationId": "removeBackground",
-        "summary": "Remove background v2 (beta)",
+        "summary": "Remove background v2",
         "description": "This endpoint allows you to remove the background from an image. The request is processed asynchronously and the status of the running job can be checked with the Get Status endpoint.",
         "x-ffs-async-job": true,
         "x-ffs-job-status-fetcher": "facadeJobStatus",
