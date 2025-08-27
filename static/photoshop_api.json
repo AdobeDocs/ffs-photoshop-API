@@ -5886,7 +5886,9 @@
         "enum": [
           "image/jpeg",
           "image/png",
-          "image/webp"
+          "image/webp",
+          "image/vnd.adobe.photoshop",
+          "image/tiff"
         ]
       },
       "PhotoroomRemoveBgOutputImageOptions": {
