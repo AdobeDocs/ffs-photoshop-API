@@ -5887,8 +5887,7 @@
           "image/jpeg",
           "image/png",
           "image/webp",
-          "image/vnd.adobe.photoshop",
-          "image/tiff"
+          "image/vnd.adobe.photoshop"
         ]
       },
       "PhotoroomRemoveBgOutputImageOptions": {
