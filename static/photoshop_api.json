@@ -5858,7 +5858,7 @@
         "type": "object",
         "properties": {
           "source": {
-            "description": "The source of the input image. Dimensions of the image should not be greater than 6000px X 6000px. The image media type must be `image/jpeg`, `image/png`, or `image/webp`.",
+            "description": "The source path for the input image. Dimensions of the image should not be greater than 6000px X 6000px. The image media type must be `image/jpeg`, `image/png`, `image/webp`, or `image/tiff`.",
             "allOf": [
               {
                 "$ref": "#/components/schemas/UrlResource"
@@ -5876,7 +5876,8 @@
         "default": "cutout",
         "enum": [
           "cutout",
-          "mask"
+          "mask",
+          "psd"
         ]
       },
       "PhotoroomRemoveBgOutputImageMediaType": {
@@ -5885,7 +5886,8 @@
         "enum": [
           "image/jpeg",
           "image/png",
-          "image/webp"
+          "image/webp",
+          "image/vnd.adobe.photoshop"
         ]
       },
       "PhotoroomRemoveBgOutputImageOptions": {
