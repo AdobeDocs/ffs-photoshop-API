@@ -275,7 +275,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PhotoroomRemoveBackgroundRequest"
+                "$ref": "#/components/schemas/RemoveBackgroundV2Request"
               }
             }
           }
@@ -5854,7 +5854,7 @@
           "url"
         ]
       },
-      "PhotoroomRemoveBgInputImage": {
+      "RemoveBgInputImage": {
         "type": "object",
         "properties": {
           "source": {
@@ -5880,7 +5880,7 @@
           "psd"
         ]
       },
-      "PhotoroomRemoveBgOutputImageMediaType": {
+      "RemoveBgOutputImageMediaType": {
         "type": "string",
         "description": "The media type of the output image. By default this will match the input source file format.",
         "enum": [
@@ -5890,15 +5890,15 @@
           "image/vnd.adobe.photoshop"
         ]
       },
-      "PhotoroomRemoveBgOutputImageOptions": {
+      "RemoveBgOutputImageOptions": {
         "type": "object",
         "properties": {
           "mediaType": {
-            "$ref": "#/components/schemas/PhotoroomRemoveBgOutputImageMediaType"
+            "$ref": "#/components/schemas/RemoveBgOutputImageMediaType"
           }
         }
       },
-      "PhotoroomColor": {
+      "RemoveBgColor": {
         "type": "object",
         "properties": {
           "red": {
@@ -5933,14 +5933,14 @@
           "alpha"
         ]
       },
-      "PhotoroomRemoveBackgroundRequest": {
+      "RemoveBackgroundV2Request": {
         "type": "object",
         "properties": {
           "image": {
             "description": "The image to be processed.",
             "allOf": [
               {
-                "$ref": "#/components/schemas/PhotoroomRemoveBgInputImage"
+                "$ref": "#/components/schemas/RemoveBgInputImage"
               }
             ]
           },
@@ -5951,7 +5951,7 @@
             "description": "The options for the output image.",
             "allOf": [
               {
-                "$ref": "#/components/schemas/PhotoroomRemoveBgOutputImageOptions"
+                "$ref": "#/components/schemas/RemoveBgOutputImageOptions"
               }
             ]
           },
@@ -5964,7 +5964,7 @@
             "description": "The background color.",
             "allOf": [
               {
-                "$ref": "#/components/schemas/PhotoroomColor"
+                "$ref": "#/components/schemas/RemoveBgColor"
               }
             ]
           },
