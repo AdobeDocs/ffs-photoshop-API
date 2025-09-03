@@ -590,7 +590,7 @@
           "Get status"
         ],
         "summary": "Get status",
-        "description": "Get job status of a Photoshop job",
+        "description": "Get the job status of a Photoshop job.",
         "operationId": "psJobStatus",
         "parameters": [
           {
