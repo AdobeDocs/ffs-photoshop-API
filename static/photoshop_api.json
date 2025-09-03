@@ -41,7 +41,7 @@
           "Get status"
         ],
         "summary": "Get status - mask",
-        "description": "This endpoint returns the status of a job for Remove Background and Create Mask. Please expand `200 Successful operation` under `Responses` to know details of the status returned.",
+        "description": "This endpoint returns the status of a job for a Remove Background and Create Mask operation. The schema of a 200 response varies depending on the status of the job.",
         "operationId": "senseiJobStatus",
         "parameters": [
           {
