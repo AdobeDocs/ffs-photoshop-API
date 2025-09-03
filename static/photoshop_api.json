@@ -370,10 +370,11 @@
       "get": {
         "operationId": "facadeJobStatus",
         "tags": [
-          "Get status"
+          "Get status",
+          "Remove background"
         ],
         "summary": "Get status - v2",
-        "description": "Retrieve the status of a running job by providing the job ID. The job ID is obtained from the response of the asynchronous API call.",
+        "description": "Retrieve the status of a running Remove Background job by providing the job ID. The job ID is obtained from the response of the asynchronous Remove Background API call.",
         "x-ffs-status-fetcher": true,
         "x-ffs-job-name": "FacadeAsyncJob",
         "parameters": [
