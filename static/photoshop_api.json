@@ -2577,7 +2577,7 @@
     "/v1/status/{jobId}": {
       "get": {
         "tags": [
-          "Get status"
+          "Get status, Masking"
         ],
         "operationId": "getJobStatus",
         "summary": "Get status - V1",
