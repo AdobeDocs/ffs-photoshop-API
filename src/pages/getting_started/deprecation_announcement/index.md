@@ -9,10 +9,12 @@ keywords:
 
 # Deprecation Announcement
 
-The Remove Background V1 API will reach End of Life (EOL) on October 15, 2025. After this date, V1 will no longer be supported or accessible.
+The Remove Background V1 API is being deprecated in favor of the Remove Background V2 API.
+
+The Remove Background V1 API will reach End of Life (EOL) on *October 15, 2025*. After this date, V1 will no longer be supported or accessible.
 Please begin migration to Remove Background V2 as soon as possible to ensure uninterrupted service.
 
-For guidance, refer to the FAQs below.
+For guidance about this change, refer to the FAQs below.
 
 <Accordion>
 
