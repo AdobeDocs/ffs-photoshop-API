@@ -172,4 +172,3 @@ For support, contact your Adobe Customer Success Manager.
 [5]: https://github.com/AdobeDocs/cis-photoshop-api-docs/blob/main/sample_files/ic_customized_workflow/result_with_path.jpg
 [6]: https://github.com/AdobeDocs/cis-photoshop-api-docs/blob/main/sample_files/ic_customized_workflow/make-path.atn
 [7]: https://developer.adobe.com/firefly-services/docs/photoshop/api/#operation/removeBackground
-
