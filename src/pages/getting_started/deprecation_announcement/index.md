@@ -18,7 +18,7 @@ For guidance, refer to the FAQs below.
 
 <AccordionItem header="What Should I Do?" isChevronIcon position="right" iconColor="#1473E6">
 
-Migrate to the Remove Background V2 API before **October 15, 2025**, to avoid service disruptions.
+Migrate to the Remove Background V2 API before **October 15, 2025** to avoid service disruptions.
 
 </AccordionItem>
 
@@ -30,15 +30,15 @@ We're moving to the Remove Background V2 API because it delivers:
 
 * *Higher quality automation* - Outputs with V2 are optimized for production pipelines and automated workflows.
 
-* *Ongoing support* - V2 is the actively supported service for any updates and improvements going forward.
+* *Ongoing support* - V2 is the actively supported service that will receive updates and improvements.
 
 </AccordionItem>
 
 <AccordionItem header="When Is This Happening?" isChevronIcon position="right" iconColor="#1473E6">
 
-Deprecation Notice: September 2, 2025
+Deprecation Notice: September 2, 2025.
 
-End of Life (EOL): October 15, 2025
+End of Life (EOL): October 15, 2025.
 
 </AccordionItem>
 
