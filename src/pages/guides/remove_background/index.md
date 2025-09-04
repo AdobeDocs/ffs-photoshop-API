@@ -22,7 +22,7 @@ This API uses advanced AI to automatically detect and isolate the main subject o
 
 V1 is deprecated.
 
-The Remove Background V1 API (https://image.adobe.io/sensei/cutout) is deprecated. Although these workflow examples use the `/cutout` endpoint, any current implementations should migrate to Remove Background V2 API (https://image.adobe.io/v2/remove-background) by referring to [the V2 migration instructions below](#migrating-to-remove-background-v2) to avoid interruptions.
+The Remove Background V1 API (https://image.adobe.io/sensei/cutout) is deprecated. Although these workflow examples use the `/cutout` endpoint, any current implementations should migrate to Remove Background V2 API (https://image.adobe.io/v2/remove-background) by referring to [the V2 migration instructions below][1] to avoid interruptions.
 
 The `/cutout` endpoint can recognize the subject of an image and eliminate the background, providing the subject as the output.
 
@@ -51,7 +51,7 @@ curl -X POST \
 }'
 ```
 
-This initiates an asynchronous job and returns a response containing an href. Use the value in the href to [poll for the status of the job](/guides/get_job_status/).
+This initiates an asynchronous job and returns a response containing an href. Use the value in the href to [poll for the status of the job][2].
 
 ## Customized workflow
 
@@ -59,16 +59,16 @@ This customized workflow is for users who'd like to generate remove background r
 
 You'll need to open the result in the Photoshop Desktop application to see the path in the path panel.
 
-You can [download the sample end-to-end bash script][8] and follow the comments to try out this customized workflow.
+You can [download the sample end-to-end bash script][3] and follow the comments to try out this customized workflow.
 
 Sample input and output:
 
-* [Download the sample input file][5].
-* [Download the sample output file][6].
+* [Download the sample input file][4].
+* [Download the sample output file][5].
 
 ### Implementation steps
 
-1. [Download the make-file.atn file][7]. This file will be used in the Photoshop action API call.
+1. [Download the make-file.atn file][6]. This file will be used in the Photoshop action API call.
 2. Make the first API call to the Remove Background service to generate an intermediate result as RGBA remove background.
 3. Make the second API call to the Photoshop Action service to use the intermediate result as well as the make-file.atn file to generate a final JPEG format result with the desired Photoshop path embedded.
 4. Open the final result with the Photoshop Desktop app to check the generated path in the path panel.
@@ -156,21 +156,20 @@ To deploy the change:
 ### Notes for developers
 
 Be aware that the V2 endpoint uses a slightly different payload structure.
-Ensure that image.source.url and output.mediaType are set correctly.
+Ensure that `image.source.url` and `output.mediaType` are set correctly.
 
 Optional parameters like `trim` and `colorDecontamination` are available in V2 for enhanced output quality.
 
-The latest technical information is always available on [the API reference documentation](https://developer.adobe.com/firefly-services/docs/photoshop/api/#operation/removeBackground).
+The latest technical information is always available on [the API reference documentation][7].
 
 For support, contact your Adobe Customer Success Manager.
 
 <!-- Links -->
-[1]: /guides/code_sample/index.md#remove-background
-[2]: https://github.com/AdobeDocs/cis-photoshop-api-docs/blob/main/sample_files/Example.jpg
-[3]: /guides/code_sample/index.md#remove-background
-[4]: /guides/code_sample/index.md#generate-image-mask
-[5]: https://github.com/AdobeDocs/cis-photoshop-api-docs/blob/main/sample_files/ic_customized_workflow/input.jpg
-[6]: https://github.com/AdobeDocs/cis-photoshop-api-docs/blob/main/sample_files/ic_customized_workflow/result_with_path.jpg
-[7]: https://github.com/AdobeDocs/cis-photoshop-api-docs/blob/main/sample_files/ic_customized_workflow/make-path.atn
-[8]: https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/ic-customized-workflow-app
+[1]: #migrating-to-remove-background-v2
+[2]: /guides/get_job_status/
+[3]: https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/ic-customized-workflow-app
+[4]: https://github.com/AdobeDocs/cis-photoshop-api-docs/blob/main/sample_files/ic_customized_workflow/input.jpg
+[5]: https://github.com/AdobeDocs/cis-photoshop-api-docs/blob/main/sample_files/ic_customized_workflow/result_with_path.jpg
+[6]: https://github.com/AdobeDocs/cis-photoshop-api-docs/blob/main/sample_files/ic_customized_workflow/make-path.atn
+[7]: https://developer.adobe.com/firefly-services/docs/photoshop/api/#operation/removeBackground
 
