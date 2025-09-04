@@ -14,32 +14,46 @@ Please begin migration to Remove Background V2 as soon as possible to ensure uni
 
 For guidance, refer to the FAQs below.
 
-## What Should I Do?
+<Accordion>
 
-Migrate to the Remove Background V2 API before October 15, 2025, to avoid service disruptions.
+<AccordionItem header="What Should I Do?" isChevronIcon position="right" iconColor="#1473E6">
 
-## Why Is Adobe Making This Change?
+Migrate to the Remove Background V2 API before **October 15, 2025**, to avoid service disruptions.
+
+</AccordionItem>
+
+<AccordionItem header="Why Is Adobe Making This Change?" isChevronIcon position="right" iconColor="#1473E6">
 
 We're moving to the Remove Background V2 API because it delivers:
 
-* Cleaner cutouts - improved post-processing reduces matting and creates sharper edges.
+* *Cleaner cutouts* - The improved post-processing reduces matting and creates sharper edges.
 
-* Higher quality automation - outputs are optimized for production pipelines and automated workflows.
+* *Higher quality automation* - Outputs with V2 are optimized for production pipelines and automated workflows.
 
-* Ongoing support - V2 is the actively supported service, ensuring updates and improvements going forward.
+* *Ongoing support* - V2 is the actively supported service for any updates and improvements going forward.
 
-## When Is This Happening?
+</AccordionItem>
+
+<AccordionItem header="When Is This Happening?" isChevronIcon position="right" iconColor="#1473E6">
 
 Deprecation Notice: September 2, 2025
 
 End of Life (EOL): October 15, 2025
 
-## Where Can I Find Resources?
+</AccordionItem>
+
+<AccordionItem header="Where Can I Find Resources?" isChevronIcon position="right" iconColor="#1473E6">
 
 The latest comprehensive [information about all Photoshop APIs is available on the API Reference page](https://developer.adobe.com/firefly-services/docs/photoshop/api/#operation/removeBackground).
 
 For technical details specifically about the Remove Background V2 API, refer to the [Remove Background V2 endpoint](https://image.adobe.io/v2/remove-background).
 
-## Who Can Help Me With Migration?
+</AccordionItem>
+
+<AccordionItem header="Who Can Help Me With Migration?" isChevronIcon position="right" iconColor="#1473E6">
 
 Your Adobe Customer Success Manager and Support Team are available to answer questions and guide you through the transition.
+
+</AccordionItem>
+
+</Accordion>
