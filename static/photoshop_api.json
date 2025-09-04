@@ -85,7 +85,7 @@
           "Remove background"
         ],
         "summary": "Remove background v1 (Deprecated)",
-        "description":  "⚠️ **DEPRECATED**: This endpoint is deprecated and will no longer be accessible after Oct 15, 2025. Use `/v2/remove-background` instead. This endpoint will identify the main subject of your image and removes the background automatically. It also provides options to return a PNG file in 4 channel RGBA or 3 channel RGB format. To check the status of this process, utilize the `Get Status - Mask` endpoint.",
+        "description":  "⚠️ **DEPRECATED**: This endpoint is deprecated and will no longer be accessible after Oct 15, 2025. Use `/v2/remove-background` instead. For more information, see the [Deprecation Announcement](/getting_started/deprecation_announcement/). This endpoint will identify the main subject of your image and removes the background automatically. It also provides options to return a PNG file in 4 channel RGBA or 3 channel RGB format. To check the status of this process, utilize the `Get Status - Mask` endpoint.",
         "operationId": "removeBackgroundAsync",
         "parameters": [
           {
