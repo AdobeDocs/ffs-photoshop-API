@@ -42,4 +42,4 @@ Next, see [the guide on triggering an event from the APIs][4] to learn how to pu
 [1]: https://www.adobe.io/apis/experienceplatform/events/docs.html#!adobedocs/adobeio-events/master/intro/webhooks_intro.md
 [2]: https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/webhook-sample-app
 [3]: /getting_started/index.md
-[4]: /guides/code_sample/index.md#triggering-an-event-from-the-apis
+[4]: /guides/triggering_an_event/index.md
