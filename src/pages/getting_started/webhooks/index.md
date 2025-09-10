@@ -12,9 +12,11 @@ contributors:
   - https://github.com/AEAbreu-hub
 ---
 
-# Understanding Photoshop API webhooks through Adobe I/O Events
+# Photoshop API webhooks and Adobe I/O Events
 
-## Overview
+Understand Adobe I/O Events and how you can set up your application to receive events from Photoshop.
+
+## Registering your application and webhook
 
 Adobe I/O Events lets you build an event-driven application based on events originating from Photoshop.
 To start listening for events, your application needs to register a webhook URL, specifying the event types it expects to receive.
@@ -25,16 +27,13 @@ Event types represent events triggered by the individual APIs. The event provide
 * `Photoshop API events`
 * `Imaging API Events`
 
-## Registering your application and webhook
+For a comprehensive understanding of Adobe I/O Events:
 
-For an understanding of Adobe I/O Events:
-
-1. See Adobe's I/O Events documentation to [create a webhook application and register your first webhook][1]
+1. See Adobe's I/O Events documentation to [create a webhook application and register your first webhook][1].
 2. Explore the [sample Node.js application here][2].
-3. You'll need a project on the Adobe I/O Console. Follow the steps in the [Getting Started][3] guide.
+3. You'll need a project on the Adobe I/O Console. To create one, follow the steps in the [Getting Started][3] guide.
 
-After the webhook is successfully registered, you'll start receiving events for any submitted job that either succeeded or failed,
-from the event types you selected, so your application wont' need to poll for the status of the job using the job ID.
+After the webhook is successfully registered, you'll start receiving events from the event types you selected for any submitted job that has succeeded or failed so that your application won't need to poll for the status of the job using the job ID.
 
 Next, see [the guide on triggering an event from the APIs][4] to learn how to put this concept into practice.
 

@@ -1,6 +1,6 @@
 ---
-title: Triggering an Event from the APIs
-description: Learn how to trigger webhook events from the Photoshop API by including your IMS ORG ID in API calls
+title: Triggering an Event from the Photoshop API
+description: This guide explains how to trigger webhook events from the Photoshop API by including your IMS ORG ID in API calls.
 hideBreadcrumbNav: true
 keywords:
   - webhook events
@@ -12,15 +12,23 @@ contributors:
   - https://github.com/AEAbreu-hub
 ---
 
-# Triggering an Event from the APIs
+# Triggering an Event
 
-You can trigger webhook events from the Photoshop API by including your IMS ORG ID in API calls. To understand what webhook events are and how Photoshop uses them, start with [the page on using webhooks and events](../../getting_started/webhooks/).
+Trigger webhook events from the Photoshop API by including your IMS ORG ID in API calls.
 
-To receive events in your webhook application, pass the IMS ORG ID in a header: `x-gw-ims-org-id: <YOUR_IMS_ORG_ID>`, when you make an API call to initiate a job.
+## Receive events
+
+To understand what webhook events are and how to set up your application to use them, start with [the page on using webhooks and events](../../getting_started/webhooks/).
+
+To receive Photoshop events in your webhook application, pass the IMS ORG ID in a header when you make an API call to initiate a job:
+
+```shell
+-H 'x-gw-ims-org-id: <YOUR_IMS_ORG_ID>'
+```
 
 ## Retrieving a PSD manifest
 
-The `/documentManifest` API can take one or more input PSD's and generate JSON manifest files from them. The JSON manifest provides a representation of all the layer objects contained in the PSD document.
+The `/documentManifest` API can take one or more input PSDs and generate JSON manifest files from them. The JSON manifest provides a representation of all the layer objects contained in the PSD document.
 
 Using `Example.psd`, with the use case of a document stored in your external storage, a typical cURL call might look like this:
 
