@@ -63,6 +63,10 @@ module.exports = {
           {
             title: 'Technical Usage Notes',
             path: '/getting_started/technical_usage_notes'
+          },
+          {
+            title: 'Webhooks and Events',
+            path: '/getting_started/webhooks/'
           }
         ]
       },
@@ -72,7 +76,7 @@ module.exports = {
         header: true,
         pages: [
           {
-            title: 'Concepts',
+            title: 'Photoshop Concepts',
             path: '/getting_started/concepts/'
           }
         ]
