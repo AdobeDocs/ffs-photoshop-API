@@ -16,6 +16,7 @@ contributors:
 
 You can trigger webhook events from the Photoshop API by including your IMS ORG ID in API calls.
 
+
 To receive events in your webhook application, pass the IMS ORG ID in a header: `x-gw-ims-org-id: <YOUR_IMS_ORG_ID>`, when you make an API call to initiate a job.
 
 ## Retrieving a PSD manifest
