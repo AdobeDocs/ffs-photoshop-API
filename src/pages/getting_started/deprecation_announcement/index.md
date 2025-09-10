@@ -57,4 +57,66 @@ Your Adobe Customer Success Manager and Support Team are available to answer que
 
 </AccordionItem>
 
+<AccordionItem header="Example Requests" isChevronIcon position="right" iconColor="#1473E6">
+
+### Cutout Workflow
+
+<pre><code class="language-bash">
+curl -i -X POST \
+  https://image.adobe.io/v2/remove-background \
+  -H 'Authorization: string' \
+  -H 'Content-Type: application/json' \
+  -H 'x-api-key: YOUR_API_KEY_HERE' \
+  -d '{
+    "image": {
+      "source": {
+        "url": "string"
+      }
+    },
+    "mode": "cutout",  # Set to "cutout" for background removal
+    "output": {
+      "mediaType": "image/jpeg"
+    },
+    "trim": false,
+    "backgroundColor": {
+      "red": 255,
+      "green": 255,
+      "blue": 255,
+      "alpha": 1
+    },
+    "colorDecontamination": 1
+  }'
+</code></pre>
+
+### Mask Workflow
+
+<pre><code class="language-bash">
+curl -i -X POST \
+  https://image.adobe.io/v2/remove-background \
+  -H 'Authorization: string' \
+  -H 'Content-Type: application/json' \
+  -H 'x-api-key: YOUR_API_KEY_HERE' \
+  -d '{
+    "image": {
+      "source": {
+        "url": "string"
+      }
+    },
+    "mode": "mask",  # Set to "mask" to generate a mask of the subject
+    "output": {
+      "mediaType": "image/png"
+    },
+    "trim": false,
+    "backgroundColor": {
+      "red": 255,
+      "green": 255,
+      "blue": 255,
+      "alpha": 1
+    },
+    "colorDecontamination": 1
+  }'
+</code></pre>
+
+</AccordionItem>
+
 </Accordion>
