@@ -7,9 +7,9 @@ keywords:
   - photoshop api
 ---
 
-# Deprecation Announcement
+# Deprecation announcement
 
-The Remove Background V1 API (`https://image.adobe.io/sensei/cutout`) and the Mask API (`https://image.adobe.io/sensei/mask`) are being deprecated in favor of the Remove Background V2 API (`https://image.adobe.io/v2/remove-background`).
+The Remove Background V1 API (`/sensei/cutout`) and the Mask API (`/sensei/mask`) are being deprecated in favor of the Remove Background V2 API (`/v2/remove-background`).
 
 Remove Background V2 now supports both cutout and mask workflows through a single endpoint. The Remove Background V1 API and Mask API will reach End of Life (EOL) on *October 15, 2025*. After this date, they will no longer be supported or accessible.  
 Please begin migration to Remove Background V2 as soon as possible to ensure uninterrupted service.
@@ -57,11 +57,11 @@ Your Adobe Customer Success Manager and Support Team are available to answer que
 
 </AccordionItem>
 
-<AccordionItem header="Example Requests" isChevronIcon position="right" iconColor="#1473E6">
+<AccordionItem header="Can I see any newer example requests?" isChevronIcon position="right" iconColor="#1473E6">
 
-### Cutout Workflow
+**Cutout workflow**
 
-<pre><code class="language-bash">
+```shell
 curl -i -X POST \
   https://image.adobe.io/v2/remove-background \
   -H 'Authorization: string' \
@@ -73,7 +73,8 @@ curl -i -X POST \
         "url": "string"
       }
     },
-    "mode": "cutout",  # Set to "cutout" for background removal
+    // Set "mode:" to "cutout" for background removal
+    "mode": "cutout",  
     "output": {
       "mediaType": "image/jpeg"
     },
@@ -86,11 +87,11 @@ curl -i -X POST \
     },
     "colorDecontamination": 1
   }'
-</code></pre>
+```
 
-### Mask Workflow
+**Mask workflow**
 
-<pre><code class="language-bash">
+```shell
 curl -i -X POST \
   https://image.adobe.io/v2/remove-background \
   -H 'Authorization: string' \
@@ -102,7 +103,8 @@ curl -i -X POST \
         "url": "string"
       }
     },
-    "mode": "mask",  # Set to "mask" to generate a mask of the subject
+    // Set "mode:" to "mask" to generate a mask of the subject
+    "mode": "mask",  
     "output": {
       "mediaType": "image/png"
     },
@@ -115,7 +117,7 @@ curl -i -X POST \
     },
     "colorDecontamination": 1
   }'
-</code></pre>
+```
 
 </AccordionItem>
 
