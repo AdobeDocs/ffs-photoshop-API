@@ -437,7 +437,7 @@
           "Masking"
         ],
         "summary": "Create mask",
-        "description": "This endpoint uses the Remove Background AI/ML model to return a PNG file with a mask applied around the subject. To check the status of this process, utilize the `Get Status - Mask` endpoint.",
+        "description": "⚠️ **DEPRECATED**: This endpoint is deprecated and will no longer be accessible after Oct 15, 2025. Use `/v2/remove-background` instead. For more information, see the [Deprecation Announcement](https://developer.adobe.com/firefly-services/docs/photoshop/getting_started/deprecation_announcement/).This endpoint uses the Remove Background AI/ML model to return a PNG file with a mask applied around the subject. To check the status of this process, utilize the `Get Status - Mask` endpoint.",
         "operationId": "createMaskAsync",
         "parameters": [
           {
