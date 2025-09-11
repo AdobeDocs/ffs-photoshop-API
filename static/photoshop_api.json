@@ -580,7 +580,7 @@
             }
           }
         },
-        "deprecated": false
+        "deprecated": true
       }
     },
     "/pie/psdService/status/{jobId}": {
