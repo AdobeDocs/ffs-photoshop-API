@@ -41,7 +41,7 @@
           "Get status"
         ],
         "summary": "Get status - mask",
-        "description": "This endpoint returns the status of a job for Remove Background and Create Mask. Please expand `200 Successful operation` under `Responses` to know details of the status returned.",
+        "description": "This endpoint returns the status of a job for a Remove Background and Create Mask operation. The schema of a 200 response varies depending on the status of the job.",
         "operationId": "senseiJobStatus",
         "parameters": [
           {
@@ -370,10 +370,11 @@
       "get": {
         "operationId": "facadeJobStatus",
         "tags": [
-          "Get status"
+          "Get status",
+          "Remove background"
         ],
         "summary": "Get status - v2",
-        "description": "Retrieve the status of a running job by providing the job ID. The job ID is obtained from the response of the asynchronous API call.",
+        "description": "Retrieve the status of a running Remove Background job by providing the job ID. The job ID is obtained from the response of the asynchronous Remove Background API call.",
         "x-ffs-status-fetcher": true,
         "x-ffs-job-name": "FacadeAsyncJob",
         "parameters": [
@@ -393,7 +394,54 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/JobStatusPollPayload"
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/JobStatusPollPayload"
+                    },
+                    {
+                      "$ref": "#/components/schemas/JobStatusSucceededResponse"
+                    }
+                  ]
+                },
+                "examples": {
+                  "pending": {
+                    "summary": "Job Pending",
+                    "value": {
+                      "status": "pending",
+                      "jobId": "urn:ff:jobs:eso851243:8d25eb96-bb4e-48cb-9656-3350ce1e29c7"
+                    }
+                  },
+                  "running": {
+                    "summary": "Job Running",
+                    "value": {
+                      "status": "running",
+                      "jobId": "urn:ff:jobs:eso851243:8d25eb96-bb4e-48cb-9656-3350ce1e29c7"
+                    }
+                  },
+                  "succeeded": {
+                    "summary": "Job Succeeded",
+                    "value": {
+                      "status": "succeeded",
+                      "jobId": "urn:ff:jobs:eso851243:8d25eb96-bb4e-48cb-9656-3350ce1e29c7",
+                      "result": {
+                        "outputs": [
+                          {
+                            "destination": {
+                              "url": "<OUTPUT_URL>"
+                            },
+                            "mediaType": "image/png"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "failed": {
+                    "summary": "Job Failed",
+                    "value": {
+                      "status": "failed",
+                      "jobId": "urn:ff:jobs:eso851243:8d25eb96-bb4e-48cb-9656-3350ce1e29c7"
+                    }
+                  }
                 }
               }
             }
@@ -589,7 +637,7 @@
           "Get status"
         ],
         "summary": "Get status",
-        "description": "Get job status of a Photoshop job",
+        "description": "Get the job status of a Photoshop job.",
         "operationId": "psJobStatus",
         "parameters": [
           {
@@ -2577,10 +2625,11 @@
     "/v1/status/{jobId}": {
       "get": {
         "tags": [
-          "Get status"
+          "Get status",
+          "Masking"
         ],
         "operationId": "getJobStatus",
-        "summary": "Get status - V1",
+        "summary": "Get status - v1",
         "description": "This endpoint allows you to check the status of an asynchronous job for a masking operation. The schema of a 200 response varies depending on the status of the job. A job with a `succeeded` status will include the results in the response and the result objects vary depending on the operation.",
         "parameters": [
           {
@@ -6013,6 +6062,47 @@
           "status",
           "jobId"
         ]
+      },
+      "JobStatusSucceededResponse": {
+        "type": "object",
+        "title": "Succeeded",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["succeeded"]
+          },
+          "jobId": {
+            "type": "string",
+            "description": "The job ID."
+          },
+          "result": {
+            "type": "object",
+            "properties": {
+              "outputs": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "destination": {
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "type": "string",
+                          "description": "The output URL"
+                        }
+                      }
+                    },
+                    "mediaType": {
+                      "type": "string",
+                      "description": "The media type of the output"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": ["status", "jobId", "result"]
       },
 
       "FillMaskedAreasInputImage": {
