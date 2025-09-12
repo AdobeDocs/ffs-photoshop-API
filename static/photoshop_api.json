@@ -394,7 +394,54 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/JobStatusPollPayload"
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/JobStatusPollPayload"
+                    },
+                    {
+                      "$ref": "#/components/schemas/JobStatusSucceededResponse"
+                    }
+                  ]
+                },
+                "examples": {
+                  "pending": {
+                    "summary": "Job Pending",
+                    "value": {
+                      "status": "pending",
+                      "jobId": "urn:ff:jobs:eso851243:8d25eb96-bb4e-48cb-9656-3350ce1e29c7"
+                    }
+                  },
+                  "running": {
+                    "summary": "Job Running",
+                    "value": {
+                      "status": "running",
+                      "jobId": "urn:ff:jobs:eso851243:8d25eb96-bb4e-48cb-9656-3350ce1e29c7"
+                    }
+                  },
+                  "succeeded": {
+                    "summary": "Job Succeeded",
+                    "value": {
+                      "status": "succeeded",
+                      "jobId": "urn:ff:jobs:eso851243:8d25eb96-bb4e-48cb-9656-3350ce1e29c7",
+                      "result": {
+                        "outputs": [
+                          {
+                            "destination": {
+                              "url": "<OUTPUT_URL>"
+                            },
+                            "mediaType": "image/png"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "failed": {
+                    "summary": "Job Failed",
+                    "value": {
+                      "status": "failed",
+                      "jobId": "urn:ff:jobs:eso851243:8d25eb96-bb4e-48cb-9656-3350ce1e29c7"
+                    }
+                  }
                 }
               }
             }
@@ -6015,6 +6062,47 @@
           "status",
           "jobId"
         ]
+      },
+      "JobStatusSucceededResponse": {
+        "type": "object",
+        "title": "Succeeded",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["succeeded"]
+          },
+          "jobId": {
+            "type": "string",
+            "description": "The job ID."
+          },
+          "result": {
+            "type": "object",
+            "properties": {
+              "outputs": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "destination": {
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "type": "string",
+                          "description": "The output URL"
+                        }
+                      }
+                    },
+                    "mediaType": {
+                      "type": "string",
+                      "description": "The media type of the output"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": ["status", "jobId", "result"]
       },
 
       "FillMaskedAreasInputImage": {
