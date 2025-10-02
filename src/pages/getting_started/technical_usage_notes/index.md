@@ -70,7 +70,7 @@ These are the API usage limits:
 
 **Hard limit**
 
-- POST: 6 requests/3 secs.
+- POST: 3 requests/3 secs.
 - GET: 1000 requests/3 secs.
 
 **Soft limit**
