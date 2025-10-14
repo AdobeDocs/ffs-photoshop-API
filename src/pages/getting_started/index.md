@@ -1,6 +1,6 @@
 ---
-title: Authentication
-description: Page for Authentication and instructins for using server-to-server authentication credentials to let your application's server generate access tokens.
+title: Photoshop API Authentication
+description: Page for authentication and instructions for using server-to-server authentication credentials to let your application's server generate access tokens.
 hideBreadcrumbNav: true
 keywords:
   - authentication
