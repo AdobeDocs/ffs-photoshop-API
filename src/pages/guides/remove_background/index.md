@@ -1,6 +1,6 @@
 ---
-title: Remove Background
-description: Learn how to use the Remove Background API to automatically detect and remove backgrounds from images while preserving the main subject
+title: Firefly's Remove Background API Feature Guide
+description: Learn how to use the Remove Background API to automatically detect and remove backgrounds from images while preserving the main subject.
 hideBreadcrumbNav: true
 keywords:
   - remove background
@@ -22,7 +22,7 @@ This API uses advanced AI to automatically detect and isolate the main subject o
 
 V1 is deprecated.
 
-The Remove Background V1 API (https://image.adobe.io/sensei/cutout) is deprecated. Although these workflow examples use the `/cutout` endpoint, any current implementations should migrate to Remove Background V2 API (https://image.adobe.io/v2/remove-background) by referring to [the V2 migration instructions below][1] to avoid interruptions.
+The Remove Background V1 API (/sensei/cutout) is deprecated. Although these workflow examples use the `/cutout` endpoint, any current implementations should migrate to Remove Background V2 API (/v2/remove-background) by referring to [the V2 migration instructions below][1] to avoid interruptions.
 
 The `/cutout` endpoint can recognize the subject of an image and eliminate the background, providing the subject as the output.
 
