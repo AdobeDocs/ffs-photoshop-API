@@ -14,17 +14,17 @@ contributors:
 
 # Product Crop
 
-The Product Crop endpoint facilitates smart cropping for images, automatically detecting the subject and ensuring it remains the focal point of the cropped image. You can identify the product and specify the desired padding for your cropped image.
+The Product Crop endpoint facilitates smart cropping for images, automatically detecting the subject and ensuring it remains the focal point.
 
-The `/productCrop` endpoint can take an input file and apply a crop to it. It doesn't support multilayered PSD files.
+The `/productCrop` endpoint can take an input file and crop it. It doesn't support multilayered PSD files.
 
 ### Known limitations
 
-There is a known issue that when a figure or portrait is present in the design on a salient object (like a t-shirt, collectible or artwork), the model will perform a crop with the person as the focal area rather than the object itself.
+There is a known issue when a figure or portrait is present in the design on a salient object (like a t-shirt, collectible or artwork). In these cases the model will sometimes perform a crop with the figure as the focal area rather than the object itself.
 
 ## Implementation example
 
-This example shows how to apply the crop with the required padding to an input file:
+This example shows how to apply the crop to an input file:
 
 ```shell
 curl -X POST \
@@ -40,11 +40,9 @@ curl -X POST \
     }
   ],
   "options": {
-    "padding": {
-      "unit": "Pixels",
-      "width": 10,
-      "height": 10
-    }
+    "unit": "Pixels",
+    "width": 0,
+    "height": 0
   },
   "outputs": [
     {
