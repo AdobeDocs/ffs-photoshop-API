@@ -54,6 +54,69 @@ subPages: [
 ]
 ```
 
+### 3. Hero Pages with Side Navigation
+
+**CRITICAL**: By default, Hero pages do NOT display side navigation in the `@adobe/gatsby-theme-aio` theme.
+
+**To enable side navigation on a Hero page:**
+
+1. **File Structure**: Place the `index.md` file in a **subdirectory** within `/src/pages/`, not at the root
+   - ❌ Wrong: `/src/pages/index.md` (root level - no sidenav)
+   - ✅ Correct: `/src/pages/about/index.md` (subdirectory - sidenav works)
+
+2. **Configuration**: The `subPages` array must match the subdirectory path
+   ```javascript
+   // Top nav
+   pages: [
+     {
+       title: 'About Photoshop API',
+       path: '/about/'  // Points to subdirectory
+     }
+   ]
+   
+   // Side nav
+   subPages: [
+     {
+       title: 'About Photoshop API',
+       path: '/about/',
+       header: true,
+       pages: [
+         {
+           title: 'Overview',
+           path: '/about/'  // The Hero page itself
+         },
+         {
+           title: 'Getting Started',
+           path: '/about/getting_started/',
+           header: true,
+           pages: [
+             // ... subsections
+           ]
+         }
+       ]
+     }
+   ]
+   ```
+
+3. **Hero Component**: The Hero component can remain in the markdown file as usual
+   ```markdown
+   ---
+   title: Page Title
+   description: Description
+   hideBreadcrumbNav: true
+   ---
+   
+   <Hero slots="image, heading, text"/>
+   
+   ![Hero image](./hero.png)
+   
+   # Heading
+   
+   Hero text content
+   ```
+
+**Result**: Both the Hero component AND the side navigation will display together.
+
 ## Common Patterns
 
 ### A. Simple Section
@@ -235,6 +298,80 @@ subPages: [
 }
 ```
 
+### Hero Page with Sidenav (Complete Example)
+```javascript
+// gatsby-config.js
+module.exports = {
+  siteMetadata: {
+    pages: [
+      {
+        title: 'About Photoshop API',
+        path: '/about/'
+      },
+      {
+        title: 'API Reference',
+        path: '/api/index.md'
+      }
+    ],
+    subPages: [
+      {
+        title: 'About Photoshop API',
+        path: '/about/',
+        header: true,
+        pages: [
+          {
+            title: 'Overview',
+            path: '/about/'
+          },
+          {
+            title: 'Getting Started',
+            path: '/about/getting_started/',
+            header: true,
+            pages: [
+              {
+                title: 'Authentication',
+                path: '/about/getting_started/'
+              },
+              {
+                title: 'Webhooks',
+                path: '/about/getting_started/webhooks/'
+              }
+            ]
+          },
+          {
+            title: 'Guides',
+            path: '/about/guides/',
+            header: true,
+            pages: [
+              {
+                title: 'Using these guides',
+                path: '/about/guides/'
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+**File structure:**
+```
+src/pages/
+├── about/
+│   ├── index.md           (Hero page with sidenav)
+│   ├── hero.png
+│   ├── getting_started/
+│   │   ├── index.md
+│   │   └── webhooks/
+│   │       └── index.md
+│   └── guides/
+│       └── index.md
+└── api/
+    └── index.md
+```
+
 ## Common Requests
 
 When modifying navigation, you can request:
@@ -245,6 +382,7 @@ When modifying navigation, you can request:
 5. "Move [page] to [section] dropdown"
 6. "Create a section title for [content]"
 7. "Convert [section] to a section title"
+8. "Add a sidenav to a Hero landing page"
 
 ## Notes
 - All paths must be unique

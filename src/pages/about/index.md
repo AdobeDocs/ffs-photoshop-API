@@ -1,6 +1,6 @@
 ---
 title: Adobe Photoshop API - Firefly Services
-description: This is the overview page of Adobe Photoshop API
+description: This is the overview page of Adobe Photoshop API.
 hideBreadcrumbNav: true
 keywords:
   - Photoshop API guides
@@ -39,13 +39,13 @@ This guide will assist you in:
 
 ### Get Started
 
-[Getting Started Guide](/getting_started/index.md)
+[Getting Started Guide](/about/getting_started/)
 
 Get started with the Adobe Photoshop Firefly Services.
 
 <DiscoverBlock slots="link, text"/>
 
-[Tutorials](/guides/index.md)
+[Tutorials](/about/guides/)
 
 Explore our tutorials page for comprehensive guidance.  
 
