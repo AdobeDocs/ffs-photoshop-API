@@ -22,7 +22,46 @@ pages: [
 - Used for main navigation bar items
 - Limited to 5-7 items for clean UX
 - Each item requires both `title` and `path`
-- No nesting allowed
+- No nesting allowed by default (but see Menus below)
+
+#### Top Navigation Dropdown Menus
+
+You can create dropdown menus in the Global Navigation (header bar) by using the `menu` field instead of `path`:
+
+```javascript
+pages: [
+  {
+    title: 'Adobe Analytics',
+    path: 'index.md'
+  },
+  {
+    title: 'Guides',
+    path: 'guides.md'
+  },
+  {
+    title: 'API Reference',
+    menu: [{
+      title: 'v2.0',
+      description: 'Version 2.0 of API', // optional
+      path: '2.0/api.index'
+    }, {
+      title: 'v1.4',
+      description: 'Version 1.4 of API', // optional
+      path: '1.4/api.index'
+    }]
+  }
+]
+```
+
+**Key Points:**
+- Use `menu` field instead of `path` to create a Global navigation dropdown
+- Each menu item requires `title` and `path`
+- `description` is optional but helpful for differentiating items
+- Common use cases:
+  - Multiple API versions
+  - Language or framework variations
+  - Related products or services
+  - Documentation sets
 
 ### 2. Side Navigation (`subPages` array)
 ```javascript
@@ -298,6 +337,45 @@ subPages: [
 }
 ```
 
+### Top Navigation with Menu Dropdowns
+```javascript
+// Example: Multi-version API documentation
+module.exports = {
+  siteMetadata: {
+    pages: [
+      {
+        title: 'Overview',
+        path: '/'
+      },
+      {
+        title: 'Guides',
+        path: '/guides/'
+      },
+      {
+        title: 'API Reference',
+        menu: [
+          {
+            title: 'v3.0',
+            description: 'Latest version',
+            path: '/api/v3/'
+          },
+          {
+            title: 'v2.0',
+            description: 'Previous stable version',
+            path: '/api/v2/'
+          },
+          {
+            title: 'v1.4',
+            description: 'Legacy version',
+            path: '/api/v1.4/'
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
 ### Hero Page with Sidenav (Complete Example)
 ```javascript
 // gatsby-config.js
@@ -383,6 +461,8 @@ When modifying navigation, you can request:
 6. "Create a section title for [content]"
 7. "Convert [section] to a section title"
 8. "Add a sidenav to a Hero landing page"
+9. "Create a dropdown menu in the top navigation for API versions"
+10. "Add a menu dropdown to the header bar"
 
 ## Notes
 - All paths must be unique
