@@ -1,6 +1,7 @@
 ---
-title: Photoshop API Overview
+title: Adobe Photoshop API - Firefly Services
 description: This is the overview page of Adobe Photoshop API
+hideBreadcrumbNav: true
 keywords:
   - Photoshop API guides
   - Photoshop API Overview
