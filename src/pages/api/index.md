@@ -1,6 +1,7 @@
 ---
 title: Firefly Photoshop API Reference
 description: Firefly's Photoshop API reference documentation.
+layout: none
 contributors:
   - https://github.com/khound
   - https://github.com/archyposada
