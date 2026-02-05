@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "Adobe Photoshop API",
+    "title": "Adobe FireflyPhotoshop API",
     "description": "This is the comprehensive API reference for Adobe Firefly's Photoshop API suite of services, including all available Photoshop endpoints, request formats, parameters, authentication requirements, and example responses to use when integrating with Firefly's services.",
     "version": "1.0"
   },
