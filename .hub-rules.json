@@ -1,0 +1,8 @@
+{
+  "hubRepoUrl": "https://github.com/AdobeDocs/ff-services-docs.git",
+  "hubBranch": "main",
+  "hubRepoPath": ".hub-rules",
+  "hubRulesDir": ".cursor/rules",
+  "mode": "symlink",
+  "tracked": {}
+}
