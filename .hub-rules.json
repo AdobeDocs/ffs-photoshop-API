@@ -1,0 +1,14 @@
+{
+  "hubRepoUrl": "https://github.com/AdobeDocs/ff-services-docs.git",
+  "hubBranch": "main",
+  "hubRepoPath": ".hub-rules",
+  "hubRulesDir": ".cursor/rules",
+  "mode": "symlink",
+  "tracked": {
+    "eval-API-ref.mdc": {
+      "hubPath": ".hub-rules/.cursor/rules/eval-API-ref.mdc",
+      "localPath": ".cursor/rules/eval-API-ref.mdc",
+      "mode": "symlink"
+    }
+  }
+}

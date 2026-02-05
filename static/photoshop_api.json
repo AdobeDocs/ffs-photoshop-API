@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "Adobe Photoshop API",
-    "description": "This is the comprehesive reference for the Adobe Photoshop API, including all available API endpoints, request formats, parameters, authentication requirements, and example responses to use when integrating with or building on top of our APIs.",
+    "title": "Adobe FireflyPhotoshop API",
+    "description": "This is the comprehensive API reference for Adobe Firefly's Photoshop API suite of services, including all available Photoshop endpoints, request formats, parameters, authentication requirements, and example responses to use when integrating with Firefly's services.",
     "version": "1.0"
   },
   "servers": [
@@ -10,6 +10,14 @@
       "url": "https://image.adobe.io",
       "description": "Adobe Photoshop Production",
       "variables": {}
+    }
+  ],
+  "security": [
+    {
+      "ApiKeyAuth": []
+    },
+    {
+      "BearerAuth": []
     }
   ],
   "tags": [
@@ -6764,13 +6772,5 @@
         "in": "header"
       }
     }
-  },
-  "security": [
-    {
-      "ApiKeyAuth": []
-    },
-    {
-      "BearerAuth": []
-    }
-  ]
+  }
 }
