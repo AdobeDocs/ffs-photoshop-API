@@ -18,7 +18,7 @@ The Edit Text endpoint allows you to modify text layers within Photoshop files (
 
 In these example images, we've altered the font on the original image (on the left) using the Text API:
 
-![alt image](textlayer_example.png?raw=true "Original Image")
+![alt image](../../assets/textlayer-example.png?raw=true "Original Image")
 
 The Edit Text endpoint supports editing one or more text layers within a PSD. Users can:
 

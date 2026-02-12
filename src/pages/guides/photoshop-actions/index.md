@@ -21,7 +21,7 @@ Photoshop Actions are a series of image adjustments that you can record in the P
 
 Typically, you apply actions on a single file or a batch of files and you record actions from Photoshop app menu commands, panel options, tool actions, and more.
 
-![alt image](frogs_adjusted.png?raw=true "Original Image")
+![alt image](../../assets/frogs-adjusted.png?raw=true "Original Image")
 
 For example, you can create an action file that changes the hue and saturation of an image, applies a slight blur effect to the image, and then saves the file in the desired format. In the Photoshop app, you create a sequence of actions and then save these image adjustments in a single file, known as an ATN file. You can later call the Photoshop API to run one or more actions from your ATN file and apply these actions to multiple images.
 
@@ -54,7 +54,7 @@ You can choose to playback all of the tasks recorded in an Action, or you can se
 
 In this example we applied a custom Action called Posterize. This ATN file had multiple recorded Photoshop tasks including Select Subject, Remove Background, Posterize, and Export as PNG.
 
-![alt image](spaniels_before_after.png?raw=true "Original Image")
+![alt image](../../assets/spaniels-before-after.png?raw=true "Original Image")
 
 ```shell
 curl -X POST \

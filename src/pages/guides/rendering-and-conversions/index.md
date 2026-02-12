@@ -57,4 +57,4 @@ curl -X POST \
 }'
 ```
 
-A call to this API initiates an asynchronous job and returns a response containing an href. Use the value in the href to [poll for the status of the job](/guides/get_job_status/).
+A call to this API initiates an asynchronous job and returns a response containing an href. Use the value in the href to [poll for the status of the job](/guides/get-job-status/index.md).

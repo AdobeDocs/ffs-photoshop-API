@@ -39,11 +39,11 @@ Now, let's start the exercise.
 
 ### Source image
 
-![Source image](source-image-fillMask.jpg)
+![Source image](../../assets/source-image-fillMask.jpg)
 
 ### Mask image
 
-![Mask image](mask-image-fillMask.jpg)
+![Mask image](../../assets/mask-image-fillMask.jpg)
 
 ## Calling the Fill Masked Areas API
 
@@ -80,7 +80,7 @@ The Photoshop API has a `mask-objects` endpoint that can be used to create masks
 
 You can see in the image below that by masking the dog, and then filling that masked area, the API has generated a new image with the dog removed.
 
-![Generated Result](result-fillMask.png)
+![Generated Result](../../assets/result-fillMask.png)
 
 ## Complete sample code
 

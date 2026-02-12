@@ -18,7 +18,7 @@ Create a grayscale mask that you can composite onto the original image.
 
 ## Getting started with mask creation
 
-![alt image](imagecutout_mask_example.png?raw=true "Original Image")
+![alt image](../../assets/imagecutout-mask-example.png?raw=true "Original Image")
 
 The `/mask` endpoint allows you to create a grayscale mask PNG file that you can composite onto the original image (or any other). The mask provides precise control over which parts of an image are affected by any subsequent operations.
 

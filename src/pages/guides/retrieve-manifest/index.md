@@ -38,7 +38,7 @@ curl -X POST \
 }'
 ```
 
-A call to this API initiates an asynchronous job and returns a response containing a URL. Use the value in the `href` field to [poll for the status of the job](/guides/get_job_status/) and the same response will also contain the JSON manifest.
+A call to this API initiates an asynchronous job and returns a response containing a URL. Use the value in the `href` field to [poll for the status of the job](/guides/get-job-status/index.md) and the same response will also contain the JSON manifest.
 
 ## Poll for job status
 

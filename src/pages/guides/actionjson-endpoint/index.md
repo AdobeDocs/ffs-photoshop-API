@@ -31,7 +31,7 @@ Watch this tutorial video and read on to learn more about ActionJSON.
 
 ## Implementation example
 
-![alt image](spanielsBW.png?raw=true "Original Image")
+![alt image](../../assets/spaniels-bw.png?raw=true "Original Image")
 
 In this example, we use a familiar asset and action file and modify the payload to return an output that executes all of the steps of the original action with one modification. Instead of color, we're going to use ActionJSON to return a black and white image.
 
@@ -161,7 +161,7 @@ You can alternatively create a new file in your Photoshop app's Action Panel:
 
 1. Go to Windows → Actions. The action panel opens.
 2. Select **New Action...** to create a new action, or click `+` in the panel.
-  ![alt image](actions_panel_menu.png?raw=true "Original Image")
+  ![alt image](../../assets/actions-panel-menu.png?raw=true "Original Image")
 1. Select your action from the action set.
 2. Select **Copy as Javascript**.
 3. Paste the contents in any text editor.

@@ -39,11 +39,11 @@ Use the [v1/mask-objects](../../api/index.md) endpoint first to generate masks t
 
 ### Source image
 
-![Source image](source-image-refinement.jpg)
+![Source image](../../assets/source-image-refinement.jpg)
 
 ### Mask image
 
-![Mask image](mask-image-refinement.png)
+![Mask image](../../assets/mask-image-refinement.png)
 
 ## Using color decontamination
 
@@ -77,11 +77,11 @@ You can see in the image below that the mask has been refined.
 
 **Result without color decontamination**
 
-![Generated Result](result-image-refinement.png)
+![Generated Result](../../assets/result-image-refinement.png)
 
 **Result with color decontamination**
 
-![Color Decontaminated Result](result-image1-color.png)
+![Color Decontaminated Result](../../assets/result-image1-color.png)
 
 ## Complete sample code
 

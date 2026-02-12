@@ -26,7 +26,7 @@ The Remove Background V1 API (/sensei/cutout) is deprecated. Although these work
 
 The `/cutout` endpoint can recognize the subject of an image and eliminate the background, providing the subject as the output.
 
-![alt image](imagecutout_cutout_example.png?raw=true "Original Image")
+![alt image](../../assets/imagecutout-cutout-example.png?raw=true "Original Image")
 
 Use the following cURL command to remove the background from an image:
 
@@ -51,7 +51,7 @@ curl -X POST \
 }'
 ```
 
-This initiates an asynchronous job and returns a response containing an href. Use the value in the href to [poll for the status of the job](/guides/get_job_status/).
+This initiates an asynchronous job and returns a response containing an href. Use the value in the href to [poll for the status of the job](/guides/get-job-status/index.md).
 
 ## Customized workflow
 

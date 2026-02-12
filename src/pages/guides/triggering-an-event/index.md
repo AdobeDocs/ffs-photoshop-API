@@ -49,7 +49,7 @@ curl -X POST \
 }'
 ```
 
-This initiates an asynchronous job and returns a response containing the href to [poll for job status and the JSON manifest](/guides/get_job_status/).
+This initiates an asynchronous job and returns a response containing the href to [poll for job status and the JSON manifest](/guides/get-job-status/index.md).
 
 **Example response:**
 

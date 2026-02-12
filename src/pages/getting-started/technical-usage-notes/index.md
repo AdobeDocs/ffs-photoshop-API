@@ -151,8 +151,3 @@ This is a list of all of the currently supported Postscript fonts for Photoshop 
 | SourceSansVariable-Roman          |
 | SourceSerifVariable-Roman         |
 | TrajanColor-Concept               |
-
-<!-- Links -->
-[1]: https://helpx.adobe.com/photoshop/using/file-formats.html#maximize_compatibility_for_psd_and_psb_files
-[2]: /guides/code_sample/index.md#generate-remove-background-result-as-photoshop-path
-

@@ -13,9 +13,9 @@ contributors:
   - https://github.com/archyposada
 ---
 
-<Hero slots="image, heading, text"/>
+<Superhero slots="image, heading, text"/>
 
-![Hero image](./hero.png)
+![Hero image](./assets/hero.png)
 
 # Adobe Photoshop API - Firefly Services
 
@@ -53,5 +53,3 @@ Explore our tutorials page for comprehensive guidance.
 [API Reference](/api/index.md)
 
 See the API reference page for detailed technical information about the API.
-
-<br/><br/><br/><br/>

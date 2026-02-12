@@ -26,21 +26,21 @@ In the Photoshop app, **layers** are used to stack different parts of an image. 
 
 Let's look at an example image to understand this idea. Here's an image with three layers:
 
-![alt image](./all_layers.png?raw=true "Original Image")
+![alt image](../../assets/all-layers.png?raw=true "Original Image")
 
 Separating the image into its layers looks like this:
 
-![alt image](./decompose_layers.png?raw=true "Original Image")
+![alt image](../../assets/decompose-layers.png?raw=true "Original Image")
 
 Choosing to view just one layer, such as the earth in the image, looks like this:
 
-![alt image](./layers_earth.png?raw=true "Original Image")
+![alt image](../../assets/layers-earth.png?raw=true "Original Image")
 
 In both the Photoshop app and the API, there is the concept of the **target layer**. This is the selected layer and any operations you perform *only apply to this layer*.
 
 For example, using the astronaut as the target layer and resizing it only applies to that layer, and this is the result:
 
-![alt image](./astronaut_resize.png?raw=true "Original Image")
+![alt image](../../assets/astronaut-resize.png?raw=true "Original Image")
 
 Layers that you define in the Photoshop app organize an image into manageable parts. Then with the Photoshop API, make isolated image adjustments by applying changes only to a target layer.
 
@@ -50,7 +50,7 @@ For more information about layers, see [Photoshop, layer basics](https://helpx.a
 
 In the Photoshop app, a **selection** defines an area in an image that we want to enhance or adjust. Just as with target layers, any operation you perform only applies to the selection itself.
 
-![alt image](./astronaut_selection.png?raw=true "Original Image")
+![alt image](../../assets/astronaut-selection.png?raw=true "Original Image")
 
 For example, in the image above the pink area is the selection made with the Photoshop app. Now the Photoshop API can make adjustments (like inserting a new background or expanding the selection) to that specific area.
 
@@ -69,15 +69,15 @@ You can define a mask in your Photoshop app and later manipulate that part of th
 
 For example, this image has two layers, with the earth and space in the background and the moon in the foreground:
 
-![alt image](./mask_background.png?raw=true "Original Image")
+![alt image](../../assets/mask-background.png?raw=true "Original Image")
 
 On the moon layer, we can define an area to mask out:
 
-![alt image](./mask_outline.png?raw=true "Original Image")
+![alt image](../../assets/mask-outline.png?raw=true "Original Image")
 
 After applying the mask, the earth and space background from the bottom layer shows through the area that was masked:
 
-![alt image](./mask_applied.png?raw=true "Original Image")
+![alt image](../../assets/mask-applied.png?raw=true "Original Image")
 
 Unlike selections and layers, enhancements apply to the mask itself, not the image being masked, and sophisticated image adjustments can be made without deleting or permanently altering source images.
 

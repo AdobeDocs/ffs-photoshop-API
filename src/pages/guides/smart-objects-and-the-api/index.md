@@ -20,7 +20,7 @@ The Smart Object that is replaced will be positioned within the bounding box of 
 
 For these example images, we generated a Smart Object within the "socks" layer and used the API to substitute the original image with a new pattern, creating two variations of the identical photograph.
 
-![alt image](smartobject_example.png?raw=true "Original Image")
+![alt image](../../assets/smartobject-example.png?raw=true "Original Image")
 
 ## Known limitations
 
@@ -69,7 +69,7 @@ curl -X POST \
 ]}'
 ```
 
-A call to this API initiates an asynchronous job and returns a response containing an href. Use the value in the href to [poll for the status of the job](/guides/get_job_status/).
+A call to this API initiates an asynchronous job and returns a response containing an href. Use the value in the href to [poll for the status of the job](/guides/get-job-status/index.md).
 
 ### Swapping the image in a smart object layer
 
@@ -126,7 +126,7 @@ curl -X POST \
 }'
 ```
 
-A call to this API initiates an asynchronous job and returns a response containing an href. Use the value in the href to [poll for the status of the job](/guides/get_job_status/).
+A call to this API initiates an asynchronous job and returns a response containing an href. Use the value in the href to [poll for the status of the job](/guides/get-job-status/index.md).
 
 ### Replacing a Smart Object within a layer
 
