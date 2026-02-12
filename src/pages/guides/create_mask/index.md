@@ -24,7 +24,7 @@ The `/mask` endpoint allows you to create a grayscale mask PNG file that you can
 
 The endpoint accepts a single input image to generate your mask.
 
-Using [Example.jpg][1], a typical cURL call might look like this:
+Using [Example.jpg](https://github.com/AdobeDocs/cis-photoshop-api-docs/blob/main/sample_files/Example.jpg), a typical cURL call might look like this:
 
 ```shell
 curl -X POST \
@@ -92,6 +92,3 @@ Once the job is complete your successful `/status` response will look similar to
     }
 }
 ```
-
-<!-- Links -->
-[1]: https://github.com/AdobeDocs/cis-photoshop-api-docs/blob/main/sample_files/Example.jpg

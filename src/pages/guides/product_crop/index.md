@@ -53,5 +53,3 @@ curl -X POST \
   ]
 }'
 ```
-
-<!-- Links -->

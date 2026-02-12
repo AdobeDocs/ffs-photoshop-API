@@ -18,7 +18,7 @@ Trigger webhook events from the Photoshop API by including your IMS ORG ID in AP
 
 ## Receive events
 
-To understand what webhook events are and how to set up your application to use them, start with [the page on using webhooks and events](../../getting_started/webhooks/).
+To understand what webhook events are and how to set up your application to use them, start with [the page on using webhooks and events](../../getting_started/webhooks/index.md).
 
 To receive Photoshop events in your webhook application, pass the IMS ORG ID in a header when you make an API call to initiate a job:
 

@@ -344,7 +344,3 @@ curl -X POST \
   ]
 }'
 ```
-
-<!-- Links -->
-[1]: #font-handling
-[2]: #supported-fonts

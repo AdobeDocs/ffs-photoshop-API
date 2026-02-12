@@ -32,7 +32,7 @@ These are known limitations to the Photoshop APIs:
 
 - The APIs will open any PSD created with Photoshop 1.0 or later.
 - When the API saves files as PSD, it will create PSDs compatible with the current version of Photoshop.
-- Regarding "maximize compatibility" referenced in the [Photoshop file formats documentation][1], the APIs default to "yes".
+- Regarding "maximize compatibility" referenced in the [Photoshop file formats documentation](https://helpx.adobe.com/photoshop/using/file-formats.html#maximize_compatibility_for_psd_and_psb_files), the APIs default to "yes".
   
 ## About retries
 
@@ -155,3 +155,4 @@ This is a list of all of the currently supported Postscript fonts for Photoshop 
 <!-- Links -->
 [1]: https://helpx.adobe.com/photoshop/using/file-formats.html#maximize_compatibility_for_psd_and_psb_files
 [2]: /guides/code_sample/index.md#generate-remove-background-result-as-photoshop-path
+

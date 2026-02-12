@@ -33,7 +33,7 @@ Now, let's start the exercise.
 
 ## Prerequisites
 
--  Valid credentials. If you don't have them yet, first visit the Firefly Services [Getting Started][1] guide to obtain a `client_id` and `client_secret`.
+-  Valid credentials. If you don't have them yet, first visit the Firefly Services [Getting Started](../index.md) guide to obtain a `client_id` and `client_secret`.
 -  Node.js installed on your machine and basic familiarity with `JavaScript`.
 -  Store the source and mask images below in a supported cloud storage provider.
 
@@ -47,7 +47,7 @@ Now, let's start the exercise.
 
 ## Calling the Fill Masked Areas API
 
-Use the [v1/mask-objects][2] endpoint first to generate masks to provide in your requests to this endpoint.
+Use the [v1/mask-objects](../../api/index.md) endpoint first to generate masks to provide in your requests to this endpoint.
 
 A simple example of the request body required to use the API is below:
 
@@ -215,7 +215,3 @@ main();
 </AccordionItem>
 
 </Accordion>
-
-<!-- Links -->
-[1]: ../index.md
-[2]: ../../api/

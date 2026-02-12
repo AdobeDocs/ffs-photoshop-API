@@ -232,7 +232,7 @@ Modify the JavaScript file to trim out the actions. Remove everything else from 
 ]
 ```
 
-Find [details about actionJSON at Photoshop API, `batchPlay`][2].
+Find [details about actionJSON at Photoshop API, `batchPlay`](https://developer.adobe.com/photoshop/uxp/2022/ps_reference/media/batchplay/).
 
 ### Executing an actionJSON with multiple inputs
 
@@ -374,6 +374,3 @@ curl -X POST \
   ]
 }'
 ```
-
-<!-- Links -->
-[2]: https://developer.adobe.com/photoshop/uxp/2022/ps_reference/media/batchplay/

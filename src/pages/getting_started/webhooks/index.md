@@ -29,16 +29,10 @@ Event types represent events triggered by the individual APIs. The event provide
 
 For a comprehensive understanding of Adobe I/O Events:
 
-1. See Adobe's I/O Events documentation to [create a webhook application and register your first webhook][1].
-2. Explore the [sample Node.js application here][2].
-3. You'll need a project on the Adobe I/O Console. To create one, follow the steps in the [Getting Started][3] guide.
+1. See Adobe's I/O Events documentation to [create a webhook application and register your first webhook](https://www.adobe.io/apis/experienceplatform/events/docs.html#!adobedocs/adobeio-events/master/intro/webhooks_intro.md).
+2. Explore the [sample Node.js application here](https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/webhook-sample-app).
+3. You'll need a project on the Adobe I/O Console. To create one, follow the steps in the [Getting Started](/getting_started/index.md) guide.
 
 After the webhook is successfully registered, you'll start receiving events from the event types you selected for any submitted job that has succeeded or failed so that your application won't need to poll for the status of the job using the job ID.
 
-Next, see [the guide on triggering an event from the APIs][4] to learn how to put this concept into practice.
-
-<!-- Links -->
-[1]: https://www.adobe.io/apis/experienceplatform/events/docs.html#!adobedocs/adobeio-events/master/intro/webhooks_intro.md
-[2]: https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/webhook-sample-app
-[3]: /getting_started/index.md
-[4]: /guides/triggering_an_event/index.md
+Next, see [the guide on triggering an event from the APIs](/guides/triggering_an_event/index.md) to learn how to put this concept into practice.

@@ -46,11 +46,11 @@ You'll need some form of user-owned storage (like Amazon S3 buckets) to use with
 
 ### Using Frame.io Developer API
 
-Refer to the [Frame.io API guide][1] to create assets and get pre-signed URLs.
+Refer to the [Frame.io API guide](https://developer.frame.io/api/reference/) to create assets and get pre-signed URLs.
 
 ### Using Google's direct link service
 
-You can use [Google's direct link service][2] to generate downloadable public links for your files. Before generating the links, set your file's visibility in Google Drive to **Anyone with the link**.
+You can use [Google's direct link service](https://sites.google.com/site/gdocs2direct/?authuser=1&pli=1) to generate downloadable public links for your files. Before generating the links, set your file's visibility in Google Drive to **Anyone with the link**.
 
 ## Ready-to-use workflows
 
@@ -60,34 +60,34 @@ We've documented the most common storage services and how to generate URLs progr
 
 ### AWS S3
 
-A pre-signed GET/PUT URL. See the docs for [more information about pre-signed URLs on S3][3].
+A pre-signed GET/PUT URL. See the docs for [more information about pre-signed URLs on S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/PresignedUrlUploadObject.html).
 
 Workflow samples:
 
-- [Node.js][4] - Note that creating pre-signed URLs for AWS S3 requires signature version S3V4.
-- [Python][5]
-- [Python application][6] that demonstrates how to call the API using assets stored in AWS S3.
+- [Node.js](https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/storage-app/aws-s3/presignedURLs.js) - Note that creating pre-signed URLs for AWS S3 requires signature version S3V4.
+- [Python](https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/storage-app/azure/presignedURLs.py)
+- [Python application](https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/storage-app/aws-s3/example.py) that demonstrates how to call the API using assets stored in AWS S3.
 
 ### Google Drive
 
-A signed GET/PUT URL. See the docs for [setting up your Google Drive account for signed URLs][7].
+A signed GET/PUT URL. See the docs for [setting up your Google Drive account for signed URLs](https://www.labnol.org/google-api-service-account-220404).
 
 Workflow samples:
 
-- [Node.js][8]
+- [Node.js](https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/storage-app/googledrive/presignedURLs.js)
 
 ### Azure
 
-A SAS (Shared Access Signature) for upload/download. See the docs for [generating a Shared Access Signature][9].
+A SAS (Shared Access Signature) for upload/download. See the docs for [generating a Shared Access Signature](https://azuresdkdocs.blob.core.windows.net/$web/python/azure-storage-blob/12.9.0/index.html).
 
 Workflow samples:
 
-- [Node.js][10]
-- [Python][11]
+- [Node.js](https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/storage-app/azure/presignedURLs.js)
+- [Python](https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/storage-app/azure/presignedURLs.py)
 
 ### Dropbox
 
-Temporary upload/download URLs. See the docs for [generating upload/download URLs][12]. You can also [create a file upload link for Dropbox][13].
+Temporary upload/download URLs. See the docs for [generating upload/download URLs](https://www.dropbox.com/developers/documentation). You can also [create a file upload link for Dropbox](https://www.dropbox.com/developers/documentation/http/documentation#files-get_temporary_upload_link).
 
 ### Test your URLs
 
@@ -106,19 +106,3 @@ Test your output file path:
 curl -X PUT "<your_file_path>" \
 -d <some-file.txt>
 ```
-
-<!-- Links -->
-[1]: https://developer.frame.io/api/reference/
-[2]: https://sites.google.com/site/gdocs2direct/?authuser=1&pli=1
-[3]: https://docs.aws.amazon.com/AmazonS3/latest/userguide/PresignedUrlUploadObject.html
-[4]: https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/storage-app/aws-s3/presignedURLs.js
-[5]: https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/storage-app/azure/presignedURLs.py
-[6]: https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/storage-app/aws-s3/example.py
-[7]: https://www.labnol.org/google-api-service-account-220404
-[8]: https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/storage-app/googledrive/presignedURLs.js
-[9]: https://azuresdkdocs.blob.core.windows.net/$web/python/azure-storage-blob/12.9.0/index.html
-[10]: https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/storage-app/azure/presignedURLs.js
-[11]: https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/storage-app/azure/presignedURLs.py
-[12]: https://www.dropbox.com/developers/documentation
-[13]: https://www.dropbox.com/developers/documentation/http/documentation#files-get_temporary_upload_link
-[14]: https://helpx.adobe.com/photoshop/using/file-formats.html#maximize_compatibility_for_psd_and_psb_files

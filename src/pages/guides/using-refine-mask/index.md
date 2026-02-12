@@ -29,11 +29,11 @@ Before getting into the code, let's consider how the Refine Masks API works at a
 
 <InlineAlert variant="help" slots="text" />
 
-Use the [v1/mask-objects][2] endpoint first to generate masks to provide in your requests to this endpoint.
+Use the [v1/mask-objects](../../api/index.md) endpoint first to generate masks to provide in your requests to this endpoint.
 
 ## Prerequisites
 
--  Valid credentials. If you don't have them yet, first visit the Firefly Services [Getting Started][1] guide to obtain a `client_id` and `client_secret`.
+-  Valid credentials. If you don't have them yet, first visit the Firefly Services [Getting Started](../index.md) guide to obtain a `client_id` and `client_secret`.
 -  Node.js installed on your machine and basic familiarity with `JavaScript`.
 -  Store the source and mask images below in a supported cloud storage provider.
 
@@ -220,7 +220,3 @@ main();
 </AccordionItem>
 
 </Accordion>
-
-<!-- Links -->
-[1]: ../index.md
-[2]: ../../api/

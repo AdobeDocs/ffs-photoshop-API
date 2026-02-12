@@ -69,7 +69,7 @@ curl -X POST \
 ]}'
 ```
 
-A call to this API initiates an asynchronous job and returns a response containing an href. Use the value in the href to [poll for the status of the job][1].
+A call to this API initiates an asynchronous job and returns a response containing an href. Use the value in the href to [poll for the status of the job](/guides/get_job_status/).
 
 ### Swapping the image in a smart object layer
 
@@ -126,7 +126,7 @@ curl -X POST \
 }'
 ```
 
-A call to this API initiates an asynchronous job and returns a response containing an href. Use the value in the href to [poll for the status of the job][1].
+A call to this API initiates an asynchronous job and returns a response containing an href. Use the value in the href to [poll for the status of the job](/guides/get_job_status/).
 
 ### Replacing a Smart Object within a layer
 
@@ -162,6 +162,3 @@ curl -X POST \
   }
 ]}'
 ```
-
-<!-- Links -->
-[1]: /guides/get_job_status/
