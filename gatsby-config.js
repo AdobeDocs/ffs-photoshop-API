@@ -77,7 +77,7 @@ module.exports = {
       },
       {
         title: 'API Reference',
-        path: '/api/index.md'
+        path: '/api/'
           },
     ],
     subPages: [
@@ -103,11 +103,11 @@ module.exports = {
           },
           {
             title: 'Storage Solutions',
-            path: '/getting_started/storage_solutions'
+            path: '/getting_started/storage_solutions/'
           },
           {
             title: 'Technical Usage Notes',
-            path: '/getting_started/technical_usage_notes'
+            path: '/getting_started/technical_usage_notes/'
           },
           {
             title: 'Webhooks and Events',
