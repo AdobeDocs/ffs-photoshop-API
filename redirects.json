@@ -1,1 +1,292 @@
-{"total":52,"offset":0,"limit":52,"data":[{"Source":"/firefly-services/docs/photoshop","Destination":"/firefly-services/docs/photoshop/"},{"Source":"/firefly-services/docs/photoshop/index","Destination":"/firefly-services/docs/photoshop/"},{"Source":"/firefly-services/docs/photoshop/guides","Destination":"/firefly-services/docs/photoshop/guides/"},{"Source":"/firefly-services/docs/photoshop/guides/index","Destination":"/firefly-services/docs/photoshop/guides/"},{"Source":"/firefly-services/docs/photoshop/guides/using-refine-mask","Destination":"/firefly-services/docs/photoshop/guides/using-refine-mask/"},{"Source":"/firefly-services/docs/photoshop/guides/using-refine-mask/index","Destination":"/firefly-services/docs/photoshop/guides/using-refine-mask/"},{"Source":"/firefly-services/docs/photoshop/guides/using-fill-mask","Destination":"/firefly-services/docs/photoshop/guides/using-fill-mask/"},{"Source":"/firefly-services/docs/photoshop/guides/using-fill-mask/index","Destination":"/firefly-services/docs/photoshop/guides/using-fill-mask/"},{"Source":"/firefly-services/docs/photoshop/guides/triggering-an-event","Destination":"/firefly-services/docs/photoshop/guides/triggering-an-event/"},{"Source":"/firefly-services/docs/photoshop/guides/triggering-an-event/index","Destination":"/firefly-services/docs/photoshop/guides/triggering-an-event/"},{"Source":"/firefly-services/docs/photoshop/guides/smart-objects-and-the-api","Destination":"/firefly-services/docs/photoshop/guides/smart-objects-and-the-api/"},{"Source":"/firefly-services/docs/photoshop/guides/smart-objects-and-the-api/index","Destination":"/firefly-services/docs/photoshop/guides/smart-objects-and-the-api/"},{"Source":"/firefly-services/docs/photoshop/guides/retrieve-manifest","Destination":"/firefly-services/docs/photoshop/guides/retrieve-manifest/"},{"Source":"/firefly-services/docs/photoshop/guides/retrieve-manifest/index","Destination":"/firefly-services/docs/photoshop/guides/retrieve-manifest/"},{"Source":"/firefly-services/docs/photoshop/guides/rendering-and-conversions","Destination":"/firefly-services/docs/photoshop/guides/rendering-and-conversions/"},{"Source":"/firefly-services/docs/photoshop/guides/rendering-and-conversions/index","Destination":"/firefly-services/docs/photoshop/guides/rendering-and-conversions/"},{"Source":"/firefly-services/docs/photoshop/guides/remove-background","Destination":"/firefly-services/docs/photoshop/guides/remove-background/"},{"Source":"/firefly-services/docs/photoshop/guides/remove-background/index","Destination":"/firefly-services/docs/photoshop/guides/remove-background/"},{"Source":"/firefly-services/docs/photoshop/guides/product-crop","Destination":"/firefly-services/docs/photoshop/guides/product-crop/"},{"Source":"/firefly-services/docs/photoshop/guides/product-crop/index","Destination":"/firefly-services/docs/photoshop/guides/product-crop/"},{"Source":"/firefly-services/docs/photoshop/guides/photoshop-actions","Destination":"/firefly-services/docs/photoshop/guides/photoshop-actions/"},{"Source":"/firefly-services/docs/photoshop/guides/photoshop-actions/index","Destination":"/firefly-services/docs/photoshop/guides/photoshop-actions/"},{"Source":"/firefly-services/docs/photoshop/guides/layer-level-edits","Destination":"/firefly-services/docs/photoshop/guides/layer-level-edits/"},{"Source":"/firefly-services/docs/photoshop/guides/layer-level-edits/index","Destination":"/firefly-services/docs/photoshop/guides/layer-level-edits/"},{"Source":"/firefly-services/docs/photoshop/guides/get-job-status","Destination":"/firefly-services/docs/photoshop/guides/get-job-status/"},{"Source":"/firefly-services/docs/photoshop/guides/get-job-status/index","Destination":"/firefly-services/docs/photoshop/guides/get-job-status/"},{"Source":"/firefly-services/docs/photoshop/guides/edit-text","Destination":"/firefly-services/docs/photoshop/guides/edit-text/"},{"Source":"/firefly-services/docs/photoshop/guides/edit-text/index","Destination":"/firefly-services/docs/photoshop/guides/edit-text/"},{"Source":"/firefly-services/docs/photoshop/guides/document-level-edits","Destination":"/firefly-services/docs/photoshop/guides/document-level-edits/"},{"Source":"/firefly-services/docs/photoshop/guides/document-level-edits/index","Destination":"/firefly-services/docs/photoshop/guides/document-level-edits/"},{"Source":"/firefly-services/docs/photoshop/guides/depthblur","Destination":"/firefly-services/docs/photoshop/guides/depthblur/"},{"Source":"/firefly-services/docs/photoshop/guides/depthblur/index","Destination":"/firefly-services/docs/photoshop/guides/depthblur/"},{"Source":"/firefly-services/docs/photoshop/guides/create-mask","Destination":"/firefly-services/docs/photoshop/guides/create-mask/"},{"Source":"/firefly-services/docs/photoshop/guides/create-mask/index","Destination":"/firefly-services/docs/photoshop/guides/create-mask/"},{"Source":"/firefly-services/docs/photoshop/guides/artboards","Destination":"/firefly-services/docs/photoshop/guides/artboards/"},{"Source":"/firefly-services/docs/photoshop/guides/artboards/index","Destination":"/firefly-services/docs/photoshop/guides/artboards/"},{"Source":"/firefly-services/docs/photoshop/guides/actionjson-endpoint","Destination":"/firefly-services/docs/photoshop/guides/actionjson-endpoint/"},{"Source":"/firefly-services/docs/photoshop/guides/actionjson-endpoint/index","Destination":"/firefly-services/docs/photoshop/guides/actionjson-endpoint/"},{"Source":"/firefly-services/docs/photoshop/getting-started","Destination":"/firefly-services/docs/photoshop/getting-started/"},{"Source":"/firefly-services/docs/photoshop/getting-started/index","Destination":"/firefly-services/docs/photoshop/getting-started/"},{"Source":"/firefly-services/docs/photoshop/getting-started/webhooks","Destination":"/firefly-services/docs/photoshop/getting-started/webhooks/"},{"Source":"/firefly-services/docs/photoshop/getting-started/webhooks/index","Destination":"/firefly-services/docs/photoshop/getting-started/webhooks/"},{"Source":"/firefly-services/docs/photoshop/getting-started/technical-usage-notes","Destination":"/firefly-services/docs/photoshop/getting-started/technical-usage-notes/"},{"Source":"/firefly-services/docs/photoshop/getting-started/technical-usage-notes/index","Destination":"/firefly-services/docs/photoshop/getting-started/technical-usage-notes/"},{"Source":"/firefly-services/docs/photoshop/getting-started/storage-solutions","Destination":"/firefly-services/docs/photoshop/getting-started/storage-solutions/"},{"Source":"/firefly-services/docs/photoshop/getting-started/storage-solutions/index","Destination":"/firefly-services/docs/photoshop/getting-started/storage-solutions/"},{"Source":"/firefly-services/docs/photoshop/getting-started/deprecation-announcement","Destination":"/firefly-services/docs/photoshop/getting-started/deprecation-announcement/"},{"Source":"/firefly-services/docs/photoshop/getting-started/deprecation-announcement/index","Destination":"/firefly-services/docs/photoshop/getting-started/deprecation-announcement/"},{"Source":"/firefly-services/docs/photoshop/getting-started/concepts","Destination":"/firefly-services/docs/photoshop/getting-started/concepts/"},{"Source":"/firefly-services/docs/photoshop/getting-started/concepts/index","Destination":"/firefly-services/docs/photoshop/getting-started/concepts/"},{"Source":"/firefly-services/docs/photoshop/api","Destination":"/firefly-services/docs/photoshop/api/"},{"Source":"/firefly-services/docs/photoshop/api/index","Destination":"/firefly-services/docs/photoshop/api/"}],":type":"sheet"}
+{
+  "total": 71,
+  "offset": 0,
+  "limit": 71,
+  "data": [
+    {
+      "Source": "/firefly-services/docs/photoshop",
+      "Destination": "/firefly-services/docs/photoshop/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/index",
+      "Destination": "/firefly-services/docs/photoshop/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides",
+      "Destination": "/firefly-services/docs/photoshop/guides/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/index",
+      "Destination": "/firefly-services/docs/photoshop/guides/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/using-refine-mask",
+      "Destination": "/firefly-services/docs/photoshop/guides/using-refine-mask/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/using-refine-mask/index",
+      "Destination": "/firefly-services/docs/photoshop/guides/using-refine-mask/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/using-fill-mask",
+      "Destination": "/firefly-services/docs/photoshop/guides/using-fill-mask/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/using-fill-mask/index",
+      "Destination": "/firefly-services/docs/photoshop/guides/using-fill-mask/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/triggering_an_event",
+      "Destination": "/firefly-services/docs/photoshop/guides/triggering_an_event/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/triggering_an_event/index",
+      "Destination": "/firefly-services/docs/photoshop/guides/triggering_an_event/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/smart_objects_and_the_api",
+      "Destination": "/firefly-services/docs/photoshop/guides/smart_objects_and_the_api/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/smart_objects_and_the_api/index",
+      "Destination": "/firefly-services/docs/photoshop/guides/smart_objects_and_the_api/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/retrieve_manifest",
+      "Destination": "/firefly-services/docs/photoshop/guides/retrieve_manifest/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/retrieve_manifest/index",
+      "Destination": "/firefly-services/docs/photoshop/guides/retrieve_manifest/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/rendering_and_conversions",
+      "Destination": "/firefly-services/docs/photoshop/guides/rendering_and_conversions/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/rendering_and_conversions/index",
+      "Destination": "/firefly-services/docs/photoshop/guides/rendering_and_conversions/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/remove_background",
+      "Destination": "/firefly-services/docs/photoshop/guides/remove_background/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/remove_background/index",
+      "Destination": "/firefly-services/docs/photoshop/guides/remove_background/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/product_crop",
+      "Destination": "/firefly-services/docs/photoshop/guides/product_crop/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/product_crop/index",
+      "Destination": "/firefly-services/docs/photoshop/guides/product_crop/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/photoshop_actions",
+      "Destination": "/firefly-services/docs/photoshop/guides/photoshop_actions/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/photoshop_actions/index",
+      "Destination": "/firefly-services/docs/photoshop/guides/photoshop_actions/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/layer_level_edits",
+      "Destination": "/firefly-services/docs/photoshop/guides/layer_level_edits/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/layer_level_edits/index",
+      "Destination": "/firefly-services/docs/photoshop/guides/layer_level_edits/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/get_job_status",
+      "Destination": "/firefly-services/docs/photoshop/guides/get_job_status/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/get_job_status/index",
+      "Destination": "/firefly-services/docs/photoshop/guides/get_job_status/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/edit_text",
+      "Destination": "/firefly-services/docs/photoshop/guides/edit_text/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/edit_text/index",
+      "Destination": "/firefly-services/docs/photoshop/guides/edit_text/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/document_level_edits",
+      "Destination": "/firefly-services/docs/photoshop/guides/document_level_edits/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/document_level_edits/index",
+      "Destination": "/firefly-services/docs/photoshop/guides/document_level_edits/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/depthblur",
+      "Destination": "/firefly-services/docs/photoshop/guides/depthblur/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/depthblur/index",
+      "Destination": "/firefly-services/docs/photoshop/guides/depthblur/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/create_mask",
+      "Destination": "/firefly-services/docs/photoshop/guides/create_mask/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/create_mask/index",
+      "Destination": "/firefly-services/docs/photoshop/guides/create_mask/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/artboards",
+      "Destination": "/firefly-services/docs/photoshop/guides/artboards/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/artboards/index",
+      "Destination": "/firefly-services/docs/photoshop/guides/artboards/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/actionjson_endpoint",
+      "Destination": "/firefly-services/docs/photoshop/guides/actionjson_endpoint/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/actionjson_endpoint/index",
+      "Destination": "/firefly-services/docs/photoshop/guides/actionjson_endpoint/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/getting_started",
+      "Destination": "/firefly-services/docs/photoshop/getting_started/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/getting_started/index",
+      "Destination": "/firefly-services/docs/photoshop/getting_started/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/getting_started/webhooks",
+      "Destination": "/firefly-services/docs/photoshop/getting_started/webhooks/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/getting_started/webhooks/index",
+      "Destination": "/firefly-services/docs/photoshop/getting_started/webhooks/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/getting_started/technical_usage_notes",
+      "Destination": "/firefly-services/docs/photoshop/getting_started/technical_usage_notes/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/getting_started/technical_usage_notes/index",
+      "Destination": "/firefly-services/docs/photoshop/getting_started/technical_usage_notes/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/getting_started/storage_solutions",
+      "Destination": "/firefly-services/docs/photoshop/getting_started/storage_solutions/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/getting_started/storage_solutions/index",
+      "Destination": "/firefly-services/docs/photoshop/getting_started/storage_solutions/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/getting_started/deprecation_announcement",
+      "Destination": "/firefly-services/docs/photoshop/getting_started/deprecation_announcement/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/getting_started/deprecation_announcement/index",
+      "Destination": "/firefly-services/docs/photoshop/getting_started/deprecation_announcement/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/getting_started/concepts",
+      "Destination": "/firefly-services/docs/photoshop/getting_started/concepts/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/getting_started/concepts/index",
+      "Destination": "/firefly-services/docs/photoshop/getting_started/concepts/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/api",
+      "Destination": "/firefly-services/docs/photoshop/api/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/api/index",
+      "Destination": "/firefly-services/docs/photoshop/api/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/triggering_an_event/",
+      "Destination": "/firefly-services/docs/photoshop/guides/triggering-an-event/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/smart_objects_and_the_api/",
+      "Destination": "/firefly-services/docs/photoshop/guides/smart-objects-and-the-api/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/retrieve_manifest/",
+      "Destination": "/firefly-services/docs/photoshop/guides/retrieve-manifest/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/rendering_and_conversions/",
+      "Destination": "/firefly-services/docs/photoshop/guides/rendering-and-conversions/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/remove_background/",
+      "Destination": "/firefly-services/docs/photoshop/guides/remove-background/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/product_crop/",
+      "Destination": "/firefly-services/docs/photoshop/guides/product-crop/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/photoshop_actions/",
+      "Destination": "/firefly-services/docs/photoshop/guides/photoshop-actions/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/layer_level_edits/",
+      "Destination": "/firefly-services/docs/photoshop/guides/layer-level-edits/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/get_job_status/",
+      "Destination": "/firefly-services/docs/photoshop/guides/get-job-status/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/edit_text/",
+      "Destination": "/firefly-services/docs/photoshop/guides/edit-text/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/document_level_edits/",
+      "Destination": "/firefly-services/docs/photoshop/guides/document-level-edits/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/create_mask/",
+      "Destination": "/firefly-services/docs/photoshop/guides/create-mask/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/actionjson_endpoint/",
+      "Destination": "/firefly-services/docs/photoshop/guides/actionjson-endpoint/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/getting_started/",
+      "Destination": "/firefly-services/docs/photoshop/getting-started/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/getting_started/webhooks/",
+      "Destination": "/firefly-services/docs/photoshop/getting-started/webhooks/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/getting_started/technical_usage_notes/",
+      "Destination": "/firefly-services/docs/photoshop/getting-started/technical-usage-notes/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/getting_started/storage_solutions/",
+      "Destination": "/firefly-services/docs/photoshop/getting-started/storage-solutions/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/getting_started/deprecation_announcement/",
+      "Destination": "/firefly-services/docs/photoshop/getting-started/deprecation-announcement/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/getting_started/concepts/",
+      "Destination": "/firefly-services/docs/photoshop/getting-started/concepts/"
+    }
+  ],
+  ":type": "sheet"
+}
