@@ -87,9 +87,9 @@ You can see in the image below that the mask has been refined.
 
 If it's helpful to see a complete implementation, we've provide the full JavaScript code sample.
 
-<Accordion>
+<AccordionItem slots="heading, code" />
 
-<AccordionItem header="Full code sample" isChevronIcon  position="right" iconColor="#1473E6">
+### Full code sample
 
 ```js
 const axios = require("axios");
@@ -216,7 +216,3 @@ async function main() {
  
 main();
 ```
-
-</AccordionItem>
-
-</Accordion>

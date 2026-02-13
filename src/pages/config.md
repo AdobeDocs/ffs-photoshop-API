@@ -16,6 +16,10 @@
     - [Guides](/guides/index.md)
     - [API Reference](/api/index.md)
 
+- buttons:
+    - [Console](https://developer.adobe.com/console/) consoleId
+    - [Submit Feedback](https://developer.adobe.com/firefly-services/docs/guides/support/)
+
 - subPages:
     - What's New header
     - [Deprecation Announcement](/getting-started/deprecation-announcement/index.md)

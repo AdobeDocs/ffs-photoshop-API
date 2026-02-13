@@ -25,9 +25,9 @@ These changes can include:
 
 Watch this tutorial video and read on to learn more about ActionJSON.
 
-<Media slots="video" width="750" height="500"/>
+<Embed slots="video" width="750" height="500"/>
 
-<https://youtu.be/giFJ6qbez_I?feature=shared>
+https://youtu.be/giFJ6qbez_I?feature=shared
 
 ## Implementation example
 

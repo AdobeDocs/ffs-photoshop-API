@@ -22,7 +22,7 @@ In these example images, we've altered the font on the original image (on the le
 
 The Edit Text endpoint supports editing one or more text layers within a PSD. Users can:
 
-<ListBlock slots="text1, text2" repeat="5" iconColor="#2ac3a2" icon="checkmark" variant="fullWidth" />
+<List slots="text1, text2" repeat="5" iconColor="#2ac3a2" icon="checkmark" variant="fullWidth" />
 
 Format text properties such as anti-alias, orientation and edit text contents. Only changing the text properties won't change styling.
   
@@ -76,7 +76,7 @@ Use the `manageMissingFonts` field in the `options` of the request to specify ho
 
 Or specify a global font in the `globalFont` field in the `options` section of the request, which would act as a default font for the current request.
 
-<InlineAlert variant="info" slots="header, text1" />
+<InlineAlert variant="info" slots="heading, text1" />
 
 NOTE
 

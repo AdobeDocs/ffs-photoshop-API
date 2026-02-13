@@ -18,7 +18,7 @@ This API uses advanced AI to automatically detect and isolate the main subject o
 
 ## Overview
 
-<InlineAlert variant="warning" slots="header, text" />
+<InlineAlert variant="warning" slots="heading, text" />
 
 V1 is deprecated.
 

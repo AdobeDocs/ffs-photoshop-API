@@ -70,7 +70,7 @@ A simple example of the request body required to use the API is below:
 
 The source of the images, take pre-signed URLs from the cloud storage provider.
 
-<InlineAlert variant="info" slots="header, text" />
+<InlineAlert variant="info" slots="heading, text" />
 
 NOTE
 
@@ -86,9 +86,9 @@ You can see in the image below that by masking the dog, and then filling that ma
 
 If it's helpful to see a complete implementation, we've provide the full JavaScript code sample.
 
-<Accordion>
+<AccordionItem slots="heading, code" />
 
-<AccordionItem header="Full code sample" isChevronIcon  position="right" iconColor="#1473E6">
+### Full code sample
 
 ```js
 const axios = require("axios");
@@ -211,7 +211,3 @@ async function main() {
 
 main();
 ```
-
-</AccordionItem>
-
-</Accordion>
