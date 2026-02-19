@@ -33,21 +33,21 @@ Now, let's start the exercise.
 
 ## Prerequisites
 
--  Valid credentials. If you don't have them yet, first visit the Firefly Services [Getting Started][1] guide to obtain a `client_id` and `client_secret`.
+-  Valid credentials. If you don't have them yet, first visit the Firefly Services [Getting Started](../index.md) guide to obtain a `client_id` and `client_secret`.
 -  Node.js installed on your machine and basic familiarity with `JavaScript`.
 -  Store the source and mask images below in a supported cloud storage provider.
 
 ### Source image
 
-![Source image](source-image-fillMask.jpg)
+![Source image](../../assets/source-image-fillMask.jpg)
 
 ### Mask image
 
-![Mask image](mask-image-fillMask.jpg)
+![Mask image](../../assets/mask-image-fillMask.jpg)
 
 ## Calling the Fill Masked Areas API
 
-Use the [v1/mask-objects][2] endpoint first to generate masks to provide in your requests to this endpoint.
+Use the [v1/mask-objects](../../api/index.md) endpoint first to generate masks to provide in your requests to this endpoint.
 
 A simple example of the request body required to use the API is below:
 
@@ -70,7 +70,7 @@ A simple example of the request body required to use the API is below:
 
 The source of the images, take pre-signed URLs from the cloud storage provider.
 
-<InlineAlert variant="info" slots="header, text" />
+<InlineAlert variant="info" slots="heading, text" />
 
 NOTE
 
@@ -80,15 +80,15 @@ The Photoshop API has a `mask-objects` endpoint that can be used to create masks
 
 You can see in the image below that by masking the dog, and then filling that masked area, the API has generated a new image with the dog removed.
 
-![Generated Result](result-fillMask.png)
+![Generated Result](../../assets/result-fillMask.png)
 
 ## Complete sample code
 
 If it's helpful to see a complete implementation, we've provide the full JavaScript code sample.
 
-<Accordion>
+<AccordionItem slots="heading, code" />
 
-<AccordionItem header="Full code sample" isChevronIcon  position="right" iconColor="#1473E6">
+### Full code sample
 
 ```js
 const axios = require("axios");
@@ -211,11 +211,3 @@ async function main() {
 
 main();
 ```
-
-</AccordionItem>
-
-</Accordion>
-
-<!-- Links -->
-[1]: ../index.md
-[2]: ../../api/

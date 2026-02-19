@@ -1,0 +1,51 @@
+- pathPrefix:
+    - /firefly-services/docs/photoshop/
+
+- pages:
+    - All Firefly Services
+        - [Firefly Services Home](https://developer.adobe.com/firefly-services/docs/guides/?aio_internal) Introduction and general information about all Firefly services.
+        - [Firefly API](https://developer.adobe.com/firefly-services/docs/firefly-api/?aio_internal) Docs and references for Firefly API.
+        - [Photoshop API](https://developer.adobe.com/firefly-services/docs/photoshop/?aio_internal) Docs and references for Photoshop API.
+        - [Lightroom API](https://developer.adobe.com/firefly-services/docs/lightroom/?aio_internal) Docs and references for Lightroom API.
+        - [Audio/Video API](https://developer.adobe.com/audio-video-firefly-services/?aio_internal) Docs and references for Audio/Video API.
+        - [InDesign API](https://developer.adobe.com/firefly-services/docs/indesign-apis/?aio_internal) Docs and references for InDesign API.
+        - [Substance 3D API](https://developer.adobe.com/firefly-services/docs/s3dapi/?aio_internal) Unlock generative AI for rendering and object composites.
+        - [Content Tagging API](https://experienceleague.adobe.com/docs/experience-platform/intelligent-services/content-commerce-ai/overview.html) Docs and references for Content Tagging services.
+    - [About Photoshop API](/index.md)
+    - [Getting Started](/getting-started/index.md)
+    - [Guides](/guides/index.md)
+    - [API Reference](/api/index.md)
+
+- buttons:
+    - [Submit Feedback](https://developer.adobe.com/firefly-services/docs/guides/support/)
+    - [Console](https://developer.adobe.com/console/) consoleId
+
+- subPages:
+    - What's New header
+    - [Deprecation Announcement](/getting-started/deprecation-announcement/index.md)
+    - Getting Started header
+    - [Authentication](/getting-started/index.md)
+    - [Storage Solutions](/getting-started/storage-solutions/index.md)
+    - [Technical Usage Notes](/getting-started/technical-usage-notes/index.md)
+    - [Webhooks and Events](/getting-started/webhooks/index.md)
+    - Learn More header
+    - [Photoshop Concepts](/getting-started/concepts/index.md)
+    - Guides header
+    - [Using these guides](/guides/index.md)
+    - [Photoshop Actions](/guides/photoshop-actions/index.md)
+    - [Using the ActionJSON endpoint](/guides/actionjson-endpoint/index.md)
+    - [Using Smart Objects](/guides/smart-objects-and-the-api/index.md)
+    - [Edit Text](/guides/edit-text/index.md)
+    - [Product Crop](/guides/product-crop/index.md)
+    - [Using Depth Blur](/guides/depthblur/index.md)
+    - [PSD Renditions and Conversions](/guides/rendering-and-conversions/index.md)
+    - [Layer level edits](/guides/layer-level-edits/index.md)
+    - [Document level edits](/guides/document-level-edits/index.md)
+    - [Artboards](/guides/artboards/index.md)
+    - [Remove Background](/guides/remove-background/index.md)
+    - [Triggering an event](/guides/triggering-an-event/index.md)
+    - [Get job status](/guides/get-job-status/index.md)
+    - [Retrieve a PSD manifest](/guides/retrieve-manifest/index.md)
+    - [Create a mask](/guides/create-mask/index.md)
+    - [Inpainting with Fill Mask](/guides/using-fill-mask/index.md)
+    - [Enhance image mask quality with Refine Mask](/guides/using-refine-mask/index.md)

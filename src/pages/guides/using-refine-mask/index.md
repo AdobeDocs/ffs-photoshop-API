@@ -29,21 +29,21 @@ Before getting into the code, let's consider how the Refine Masks API works at a
 
 <InlineAlert variant="help" slots="text" />
 
-Use the [v1/mask-objects][2] endpoint first to generate masks to provide in your requests to this endpoint.
+Use the [v1/mask-objects](../../api/index.md) endpoint first to generate masks to provide in your requests to this endpoint.
 
 ## Prerequisites
 
--  Valid credentials. If you don't have them yet, first visit the Firefly Services [Getting Started][1] guide to obtain a `client_id` and `client_secret`.
+-  Valid credentials. If you don't have them yet, first visit the Firefly Services [Getting Started](../index.md) guide to obtain a `client_id` and `client_secret`.
 -  Node.js installed on your machine and basic familiarity with `JavaScript`.
 -  Store the source and mask images below in a supported cloud storage provider.
 
 ### Source image
 
-![Source image](source-image-refinement.jpg)
+![Source image](../../assets/source-image-refinement.jpg)
 
 ### Mask image
 
-![Mask image](mask-image-refinement.png)
+![Mask image](../../assets/mask-image-refinement.png)
 
 ## Using color decontamination
 
@@ -77,19 +77,19 @@ You can see in the image below that the mask has been refined.
 
 **Result without color decontamination**
 
-![Generated Result](result-image-refinement.png)
+![Generated Result](../../assets/result-image-refinement.png)
 
 **Result with color decontamination**
 
-![Color Decontaminated Result](result-image1-color.png)
+![Color Decontaminated Result](../../assets/result-image1-color.png)
 
 ## Complete sample code
 
 If it's helpful to see a complete implementation, we've provide the full JavaScript code sample.
 
-<Accordion>
+<AccordionItem slots="heading, code" />
 
-<AccordionItem header="Full code sample" isChevronIcon  position="right" iconColor="#1473E6">
+### Full code sample
 
 ```js
 const axios = require("axios");
@@ -216,11 +216,3 @@ async function main() {
  
 main();
 ```
-
-</AccordionItem>
-
-</Accordion>
-
-<!-- Links -->
-[1]: ../index.md
-[2]: ../../api/

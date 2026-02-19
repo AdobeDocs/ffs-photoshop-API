@@ -134,15 +134,12 @@ hideBreadcrumbNav: true
 }
 ```
 
-<Accordion>
-<AccordionItem header="Solutions:" isChevronIcon position="right" iconColor="#1473E6">
+<AccordionItem header="Solutions:" isChevronIcon position="right" iconColor="#1473E6" />
 
 - [Actionable solution step 1]
 - [Actionable solution step 2]
 - [Actionable solution step 3]
 
-</AccordionItem>
-</Accordion>
 ```
 
 #### Common Issues and Sample Errors
@@ -213,15 +210,13 @@ hideBreadcrumbNav: true
    - Keep steps clear and actionable
    - Example:
      ```markdown
-     <Accordion>
-     <AccordionItem header="Solutions:" isChevronIcon position="right" iconColor="#1473E6">
+
+     <AccordionItem header="Solutions:" isChevronIcon position="right" iconColor="#1473E6" />
      
      - Verify the client ID and client secret
      - Check that the token hasn't expired
      - Ensure the endpoint URL is correct
      
-     </AccordionItem>
-     </Accordion>
      ```
 
 5. **Common Patterns**
