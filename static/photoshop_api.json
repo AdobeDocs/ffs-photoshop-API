@@ -14,10 +14,8 @@
   ],
   "security": [
     {
-      "ApiKeyAuth": []
-    },
-    {
-      "BearerAuth": []
+      "AccessToken": [],
+      "X-Api-Key": []
     }
   ],
   "tags": [
@@ -60,15 +58,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "x-gw-ims-org-id",
-            "in": "header",
-            "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
@@ -93,19 +82,9 @@
           "Remove background"
         ],
         "summary": "Remove background v1 (Deprecated)",
-        "description":  "⚠️ **DEPRECATED**: This endpoint is deprecated and will no longer be accessible after Oct 15, 2025. Use `/v2/remove-background` instead. For more information, see the [Deprecation Announcement](https://developer.adobe.com/firefly-services/docs/photoshop/getting_started/deprecation_announcement/). This endpoint will identify the main subject of your image and removes the background automatically. It also provides options to return a PNG file in 4 channel RGBA or 3 channel RGB format. To check the status of this process, utilize the `Get Status - Mask` endpoint.",
+        "description": "\u26a0\ufe0f **DEPRECATED**: This endpoint is deprecated and will no longer be accessible after Oct 15, 2025. Use `/v2/remove-background` instead. For more information, see the [Deprecation Announcement](https://developer.adobe.com/firefly-services/docs/photoshop/getting_started/deprecation_announcement/). This endpoint will identify the main subject of your image and removes the background automatically. It also provides options to return a PNG file in 4 channel RGBA or 3 channel RGB format. To check the status of this process, utilize the `Get Status - Mask` endpoint.",
         "operationId": "removeBackgroundAsync",
-        "parameters": [
-          {
-            "name": "x-gw-ims-org-id",
-            "in": "header",
-            "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "description": "The input image and the cutout mask parameters",
           "content": {
@@ -212,14 +191,14 @@
           "429": {
             "description": "Too many requests",
             "headers": {
-            "X-Access-Rate-Limit-Level": {
-              "$ref": "#/components/headers/X-Access-Rate-Limit-Level"
+              "X-Access-Rate-Limit-Level": {
+                "$ref": "#/components/headers/X-Access-Rate-Limit-Level"
               }
             },
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -229,8 +208,8 @@
             "headers": {},
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -493,19 +472,9 @@
           "Masking"
         ],
         "summary": "Create mask",
-        "description": "⚠️ **DEPRECATED**: This endpoint is deprecated and will no longer be accessible after Oct 15, 2025. Use `/v2/remove-background` instead. For more information, see the [Deprecation Announcement](https://developer.adobe.com/firefly-services/docs/photoshop/getting_started/deprecation_announcement/).This endpoint uses the Remove Background AI/ML model to return a PNG file with a mask applied around the subject. To check the status of this process, utilize the `Get Status - Mask` endpoint.",
+        "description": "\u26a0\ufe0f **DEPRECATED**: This endpoint is deprecated and will no longer be accessible after Oct 15, 2025. Use `/v2/remove-background` instead. For more information, see the [Deprecation Announcement](https://developer.adobe.com/firefly-services/docs/photoshop/getting_started/deprecation_announcement/).This endpoint uses the Remove Background AI/ML model to return a PNG file with a mask applied around the subject. To check the status of this process, utilize the `Get Status - Mask` endpoint.",
         "operationId": "createMaskAsync",
-        "parameters": [
-          {
-            "name": "x-gw-ims-org-id",
-            "in": "header",
-            "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "description": "The input image and the mask parameters",
           "content": {
@@ -612,14 +581,14 @@
           "429": {
             "description": "Too many requests",
             "headers": {
-            "X-Access-Rate-Limit-Level": {
-              "$ref": "#/components/headers/X-Access-Rate-Limit-Level"
+              "X-Access-Rate-Limit-Level": {
+                "$ref": "#/components/headers/X-Access-Rate-Limit-Level"
               }
             },
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -629,8 +598,8 @@
             "headers": {},
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -656,15 +625,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "x-gw-ims-org-id",
-            "in": "header",
-            "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
@@ -685,21 +645,13 @@
     },
     "/pie/psdService/documentManifest": {
       "post": {
-        "tags": ["Common operations"],
+        "tags": [
+          "Common operations"
+        ],
         "summary": "Extract document manifest",
         "description": "Extract metadata from PSD document, including general file and layer information.",
         "operationId": "getDocumentManifestAsync",
-        "parameters": [
-          {
-            "name": "x-gw-ims-org-id",
-            "in": "header",
-            "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "description": "The PSD file with the layer information you want to extract.",
           "content": {
@@ -779,8 +731,8 @@
             "headers": {},
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -791,21 +743,13 @@
     },
     "/pie/psdService/documentCreate": {
       "post": {
-        "tags": ["Common operations"],
+        "tags": [
+          "Common operations"
+        ],
         "summary": "Create PSD",
         "description": "Create new PSD with layers.",
         "operationId": "createDocumentAsync",
-        "parameters": [
-          {
-            "name": "x-gw-ims-org-id",
-            "in": "header",
-            "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "description": "The input psd file to create a new psd from",
           "content": {
@@ -907,8 +851,8 @@
             "headers": {},
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -919,21 +863,13 @@
     },
     "/pie/psdService/documentOperations": {
       "post": {
-        "tags": ["Common operations"],
+        "tags": [
+          "Common operations"
+        ],
         "summary": "Apply photoshop edits",
         "description": "Apply basic layer edits (name, state, etc.), add/edit adjustment, pixel, and shape layers.",
         "operationId": "modifyDocumentAsync",
-        "parameters": [
-          {
-            "name": "x-gw-ims-org-id",
-            "in": "header",
-            "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "description": "The input psd file to apply edits to and generate renditions and/or save as a new psd",
           "content": {
@@ -1035,8 +971,8 @@
             "headers": {},
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -1047,21 +983,13 @@
     },
     "/pie/psdService/renditionCreate": {
       "post": {
-        "tags": ["Common operations"],
+        "tags": [
+          "Common operations"
+        ],
         "summary": "Create renditions",
         "description": "Create flat image representations of a PSD in multiple formats.",
         "operationId": "createRenditionAsync",
-        "parameters": [
-          {
-            "name": "x-gw-ims-org-id",
-            "in": "header",
-            "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "description": "The input psd file to create renditions from",
           "content": {
@@ -1163,8 +1091,8 @@
             "headers": {},
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -1175,21 +1103,13 @@
     },
     "/pie/psdService/smartObject": {
       "post": {
-        "tags": ["Common operations"],
+        "tags": [
+          "Common operations"
+        ],
         "summary": "Replace smart object",
         "description": "Replace Smart Object in a PSD.",
         "operationId": "replaceSmartObjectAsync",
-        "parameters": [
-          {
-            "name": "x-gw-ims-org-id",
-            "in": "header",
-            "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "description": "The input psd file to apply edits for replacing embedded smart object to and generate renditions and/or save as a new psd",
           "content": {
@@ -1291,8 +1211,8 @@
             "headers": {},
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -1303,21 +1223,13 @@
     },
     "/pie/psdService/photoshopActions": {
       "post": {
-        "tags": ["Common operations"],
+        "tags": [
+          "Common operations"
+        ],
         "summary": "Run photoshop actions",
         "description": "Executes Photoshop Action file against a PSD, JPEG, PNG, or TIFF.",
         "operationId": "playPhotoshopActionsAsync",
-        "parameters": [
-          {
-            "name": "x-gw-ims-org-id",
-            "in": "header",
-            "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "description": "The input file to apply Photoshop Actions to and generate renditions and/or save as a new image",
           "content": {
@@ -1419,8 +1331,8 @@
             "headers": {},
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -1437,17 +1349,7 @@
         "summary": "Run actionJSON",
         "description": "Execute given Photoshop Action specified in actionJSON format.",
         "operationId": "playPhotoshopActionsJsonAsync",
-        "parameters": [
-          {
-            "name": "x-gw-ims-org-id",
-            "in": "header",
-            "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "description": "The input psd file to apply Photoshop actionJSON to and generate renditions and/or save as a new image",
           "content": {
@@ -1547,14 +1449,14 @@
           "429": {
             "description": "Too many requests",
             "headers": {
-            "X-Access-Rate-Limit-Level": {
-              "$ref": "#/components/headers/X-Access-Rate-Limit-Level"
+              "X-Access-Rate-Limit-Level": {
+                "$ref": "#/components/headers/X-Access-Rate-Limit-Level"
               }
             },
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -1564,8 +1466,8 @@
             "headers": {},
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -1582,17 +1484,7 @@
         "summary": "Convert to actionJSON",
         "description": "Convert an ATN file to actionJSON format.",
         "operationId": "convertToActionsJsonAsync",
-        "parameters": [
-          {
-            "name": "x-gw-ims-org-id",
-            "in": "header",
-            "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "description": "The input ATN file to convert to actionJSON.",
           "content": {
@@ -1683,8 +1575,8 @@
             "headers": {},
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -1695,21 +1587,13 @@
     },
     "/pie/psdService/productCrop": {
       "post": {
-        "tags": ["Common operations"],
+        "tags": [
+          "Common operations"
+        ],
         "summary": "Product crop",
         "description": "This endpoint identifies the subject of the input file and automatically crops the image to keep the subject in the center. Check the status of this process with the `Get Status` endpoint.",
         "operationId": "applyAutoCropAsync",
-        "parameters": [
-          {
-            "name": "x-gw-ims-org-id",
-            "in": "header",
-            "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "description": "The input image to apply product crop to.",
           "content": {
@@ -1809,14 +1693,14 @@
           "429": {
             "description": "Too many requests",
             "headers": {
-            "X-Access-Rate-Limit-Level": {
-              "$ref": "#/components/headers/X-Access-Rate-Limit-Level"
+              "X-Access-Rate-Limit-Level": {
+                "$ref": "#/components/headers/X-Access-Rate-Limit-Level"
               }
             },
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -1826,8 +1710,8 @@
             "headers": {},
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -1838,21 +1722,13 @@
     },
     "/pie/psdService/depthBlur": {
       "post": {
-        "tags": ["Common operations"],
+        "tags": [
+          "Common operations"
+        ],
         "summary": "Depth blur",
         "description": "Apply depth blur to an image input.",
         "operationId": "applyDepthBlurAsync",
-        "parameters": [
-          {
-            "name": "x-gw-ims-org-id",
-            "in": "header",
-            "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "description": "The input image to apply depth blur to.",
           "content": {
@@ -1952,14 +1828,14 @@
           "429": {
             "description": "Too many requests",
             "headers": {
-            "X-Access-Rate-Limit-Level": {
-              "$ref": "#/components/headers/X-Access-Rate-Limit-Level"
+              "X-Access-Rate-Limit-Level": {
+                "$ref": "#/components/headers/X-Access-Rate-Limit-Level"
               }
             },
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -1969,8 +1845,8 @@
             "headers": {},
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -1981,21 +1857,13 @@
     },
     "/pie/psdService/text": {
       "post": {
-        "tags": ["Common operations"],
+        "tags": [
+          "Common operations"
+        ],
         "summary": "Edit text layer",
         "description": "Change the contents of a text layer in a PSD, e.g. for localization.",
         "operationId": "editTextLayerAsync",
-        "parameters": [
-          {
-            "name": "x-gw-ims-org-id",
-            "in": "header",
-            "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "description": "The input text to be edited.",
           "content": {
@@ -2095,14 +1963,14 @@
           "429": {
             "description": "Too many requests",
             "headers": {
-            "X-Access-Rate-Limit-Level": {
-              "$ref": "#/components/headers/X-Access-Rate-Limit-Level"
+              "X-Access-Rate-Limit-Level": {
+                "$ref": "#/components/headers/X-Access-Rate-Limit-Level"
               }
             },
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -2112,8 +1980,8 @@
             "headers": {},
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -2124,21 +1992,13 @@
     },
     "/pie/psdService/artboardCreate": {
       "post": {
-        "tags": ["Common operations"],
+        "tags": [
+          "Common operations"
+        ],
         "summary": "Create artboards",
         "description": "Create artboards from multiple PSD inputs.",
         "operationId": "createArtboardAsync",
-        "parameters": [
-          {
-            "name": "x-gw-ims-org-id",
-            "in": "header",
-            "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "description": "The input artboard to be created.",
           "content": {
@@ -2240,8 +2100,8 @@
             "headers": {},
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -3258,15 +3118,15 @@
       "PsJobResponse": {
         "type": "object",
         "oneOf": [
-            {
-                "$ref": "#/components/schemas/ManifestJobApiResponse"
-            },
-            {
-                "$ref": "#/components/schemas/PsJobApiResponse"
-            }
+          {
+            "$ref": "#/components/schemas/ManifestJobApiResponse"
+          },
+          {
+            "$ref": "#/components/schemas/PsJobApiResponse"
+          }
         ],
         "description": "Photoshop Job response."
-    },
+      },
       "DocumentManifestRequest": {
         "title": "DocumentManifestRequest",
         "type": "object",
@@ -6077,7 +5937,9 @@
         "properties": {
           "status": {
             "type": "string",
-            "enum": ["succeeded"]
+            "enum": [
+              "succeeded"
+            ]
           },
           "jobId": {
             "type": "string",
@@ -6110,9 +5972,12 @@
             }
           }
         },
-        "required": ["status", "jobId", "result"]
+        "required": [
+          "status",
+          "jobId",
+          "result"
+        ]
       },
-
       "FillMaskedAreasInputImage": {
         "type": "object",
         "properties": {
@@ -6319,7 +6184,6 @@
           "mask"
         ]
       },
-
       "OutputImageDetails": {
         "type": "object",
         "properties": {
@@ -6716,7 +6580,7 @@
         ]
       }
     },
-    "headers":{
+    "headers": {
       "X-Access-Consumption-Status": {
         "description": "This is the value of different consumption statuses based on credits remaining from the user. Possible values can be quota_available, quota_warning_hard_cap, quota_exhausted_using_daily_credits.",
         "schema": {
@@ -6762,14 +6626,16 @@
       }
     },
     "securitySchemes": {
-      "BearerAuth": {
+      "AccessToken": {
         "type": "http",
-        "scheme": "bearer"
+        "scheme": "bearer",
+        "description": "The Adobe-generated access token, S2S format."
       },
-      "ApiKeyAuth": {
+      "X-Api-Key": {
         "type": "apiKey",
         "name": "x-api-key",
-        "in": "header"
+        "in": "header",
+        "description": "The client ID for authentication."
       }
     }
   }
