@@ -52,9 +52,7 @@
     - [Create a mask](/guides/create-mask/index.md)
     - [Inpainting with Fill Mask](/guides/using-fill-mask/index.md)
     - [Enhance image mask quality with Refine Mask](/guides/using-refine-mask/index.md)
-    - Photoshop v2 beta header
-    - [Guides - Photoshop v2 API](/guides/photoshop-v2-beta/index.md)
-    - PsV2 beta Migration header
+    - Migrate v1 to v2 header
     - [Migration to v2 Overview](/guides/photoshop-v2-beta/v1-to-v2/index.md)
     - [Key Improvements and Architecture with v2](/guides/photoshop-v2-beta/v1-to-v2/key-improvements.md)
     - [Edit Operations Migration](/guides/photoshop-v2-beta/v1-to-v2/edit-operations.md)
