@@ -303,8 +303,7 @@ In V2, you explicitly provide additional images and they're referenced in the Ac
 
 - [Actions Migration Overview](../actions-migration.md)
 - [Split View Migration](split-view.md) - For comparisons with divider lines
-- [V2 Execute Actions API Reference](https://developer.adobe.com/photoshop/photoshop-api-docs/api/#tag/Photoshop/operation/actionJsonCreate)
-- [Additional Images Documentation](https://developer.adobe.com/photoshop/photoshop-api-docs/features/#additional-images)
+- [V2 Execute Actions API Reference](https://developer.adobe.com/firefly-services/docs/photoshop/api/photoshop-v2-beta/#operation/executeActions)
 
 ## Support
 

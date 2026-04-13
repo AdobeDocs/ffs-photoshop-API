@@ -230,8 +230,7 @@ Use **Side by Side** when you need:
 ## Additional Resources
 
 - [Actions Migration Overview](../actions-migration.md)
-- [V2 Execute Actions API Reference](https://developer.adobe.com/photoshop/photoshop-api-docs/api/#tag/Photoshop/operation/actionJsonCreate)
-- [Additional Images Documentation](https://developer.adobe.com/photoshop/photoshop-api-docs/features/#additional-images)
+- [V2 Execute Actions API Reference](https://developer.adobe.com/firefly-services/docs/photoshop/api/photoshop-v2-beta/#operation/executeActions)
 
 ## Support
 
