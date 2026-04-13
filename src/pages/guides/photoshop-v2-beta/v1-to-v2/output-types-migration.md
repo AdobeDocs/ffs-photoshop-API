@@ -794,7 +794,6 @@ Use this checklist when migrating output configurations:
 
 ## Additional resources
 
-- [V2 API Documentation](https://developer.adobe.com/photoshop/api/v2/)
 - [Execute Actions Endpoint](actions-migration.md)
 - [Status Endpoint](status-migration.md)
 
