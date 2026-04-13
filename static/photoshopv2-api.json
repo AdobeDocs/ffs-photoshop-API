@@ -7,7 +7,7 @@
       "url": "https://www.adobe.com/content/dam/cc/en/legal/terms/enterprise/pdfs/PSLT-AdobeCreativeAPI-WW-2024v2.pdf"
     },
     "title": "Photoshop v2 beta API endpoints",
-    "version": "v2"
+    "version": "beta"
   },
   "servers": [
     {
