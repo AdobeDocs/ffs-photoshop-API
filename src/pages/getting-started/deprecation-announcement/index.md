@@ -41,7 +41,7 @@ End of Life (EOL): October 15, 2025.
 ### Where can I find resources?
 
 The latest comprehensive [information about all Photoshop APIs is available on the API Reference page](https://developer.adobe.com/firefly-services/docs/photoshop/api/#operation/removeBackground). \<br /\> \<br /\>
-For technical details specifically about the Remove Background V2 API, refer to the [Remove Background V2 endpoint](https://image.adobe.io/v2/remove-background).
+For technical details specifically about the Remove Background V2 API, refer to the Remove Background V2 endpoint.
 
 <AccordionItem slots="heading, text"/>
 
