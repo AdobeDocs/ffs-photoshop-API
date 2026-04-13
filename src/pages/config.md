@@ -15,7 +15,9 @@
     - [About Photoshop API](/index.md)
     - [Getting Started](/getting-started/index.md)
     - [Guides](/guides/index.md)
-    - [API Reference](/api/index.md)
+    - API Reference
+        - [Photoshop API](/api/index.md) - Current API
+        - [Photoshop v2 beta](/api/photoshop-v2-beta/index.md) - Beta
 
 - buttons:
     - [Support](https://airtable.com/appu5RTWgdM95jynx/pagyuT1qspNJcPU2E/form)
@@ -50,3 +52,28 @@
     - [Create a mask](/guides/create-mask/index.md)
     - [Inpainting with Fill Mask](/guides/using-fill-mask/index.md)
     - [Enhance image mask quality with Refine Mask](/guides/using-refine-mask/index.md)
+    - Photoshop v2 beta header
+    - [Guides - Photoshop v2 API](/guides/photoshop-v2-beta/index.md)
+    - PsV2 beta Migration header
+    - [Migration to v2 Overview](/guides/photoshop-v2-beta/v1-to-v2/index.md)
+    - [Key Improvements and Architecture with v2](/guides/photoshop-v2-beta/v1-to-v2/key-improvements.md)
+    - [Edit Operations Migration (V1 to V2)](/guides/photoshop-v2-beta/v1-to-v2/edit-operations.md)
+    - [Format Conversion Migration (V1 to V2)](/guides/photoshop-v2-beta/v1-to-v2/format-conversion-migration.md)
+    - [Document Creation Migration (V1 to V2)](/guides/photoshop-v2-beta/v1-to-v2/document-creation-migration.md)
+    - [Document Operations Migration (V1 to V2)](/guides/photoshop-v2-beta/v1-to-v2/document-operations-migration.md)
+    - [Layer Operations Migration (V1 to V2)](/guides/photoshop-v2-beta/v1-to-v2/composite-migration.md)
+      - [Layer Operations Migration Overview (v1 to v2)](/guides/photoshop-v2-beta/v1-to-v2/layer-operations-overview.md)
+      - [Image Layer Operations Migration (v1 to v2)](/guides/photoshop-v2-beta/v1-to-v2/layer-operations-image.md)
+      - [Text Layer Operations Migration (V1 to V2)](/guides/photoshop-v2-beta/v1-to-v2/layer-operations-text.md)
+      - [Adjustment Layer Operations Migration (V1 to V2)](/guides/photoshop-v2-beta/v1-to-v2/layer-operations-adjustments.md)
+      - [Smart Object Operations Migration (V1 to V2)](/guides/photoshop-v2-beta/v1-to-v2/layer-operations-smart-objects.md)
+      - [Advanced Layer Operations Migration (V1 to V2)](/guides/photoshop-v2-beta/v1-to-v2/layer-operations-advanced.md)
+      - [Export Layers Migration (V1 to V2)](/guides/photoshop-v2-beta/v1-to-v2/export-layers-migration.md)
+    - [Actions Migration (v1 to v2)](/guides/photoshop-v2-beta/v1-to-v2/actions-migration.md)
+    - [Output Types Migration (v1 to v2)](/guides/photoshop-v2-beta/v1-to-v2/output-types-migration.md)
+    - [Artboard Migration (v1 to v2)](/guides/photoshop-v2-beta/v1-to-v2/artboard-migration.md)
+    - [Manifest Migration (V1 to V2)](/guides/photoshop-v2-beta/v1-to-v2/manifest-migration.md)
+    - [Status Endpoint Migration (V1 to V2)](/guides/photoshop-v2-beta/v1-to-v2/status-migration.md)
+    - [Product Crop Migration (v1 to v2)](/guides/photoshop-v2-beta/v1-to-v2/convenience-apis/product-crop.md)
+    - [Split View Migration (v1 to v2)](/guides/photoshop-v2-beta/v1-to-v2/convenience-apis/split-view.md)
+    - [Side by Side Migration (v1 to v2)](/guides/photoshop-v2-beta/v1-to-v2/convenience-apis/side-by-side.md)
