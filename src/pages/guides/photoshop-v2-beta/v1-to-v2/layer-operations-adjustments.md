@@ -1,5 +1,5 @@
 ---
-title: Adjustment Layer Operations Migration (V1 to V2)
+title: Adjustment Layer Operations Migration
 description: Migrate adjustment layer operations from V1 to V2
 hideBreadcrumbNav: true
 keywords:
@@ -13,7 +13,7 @@ keywords:
   - v1 to v2
 ---
 
-# Adjustment Layer Operations Migration (V1 to V2)
+# Adjustment Layer Operations Migration
 
 This guide helps you migrate adjustment layer operations from V1's `/documentCreate` and `/documentOperations` endpoints to V2's `/create-composite` endpoint.
 

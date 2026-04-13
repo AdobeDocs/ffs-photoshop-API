@@ -1,5 +1,5 @@
 ---
-title: Actions Migration (v1 to v2)
+title: Actions Migration
 description: Migrate from individual action endpoints to the unified /v2/execute-actions endpoint
 hideBreadcrumbNav: true
 keywords:
@@ -13,7 +13,7 @@ keywords:
   - UXP
 ---
 
-# Actions Migration (v1 to v2)
+# Actions Migration
 
 This guide helps you migrate from v1's Photoshop action endpoints to the unified `/v2/execute-actions` endpoint.
 

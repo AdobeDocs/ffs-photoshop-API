@@ -1,5 +1,5 @@
 ---
-title: Manifest Migration (V1 to V2)
+title: Manifest Migration
 description: Migrate from /pie/psdService/documentManifest to /v2/generate-manifest
 hideBreadcrumbNav: true
 keywords:
@@ -10,7 +10,7 @@ keywords:
   - v1 to v2
 ---
 
-# Manifest Migration (V1 to V2)
+# Manifest Migration
 
 This guide helps you migrate from the v1 document manifest endpoint to `/v2/generate-manifest`.
 

@@ -1,5 +1,5 @@
 ---
-title: Document Operations Migration (V1 to V2)
+title: Document Operations Migration
 description: Migrate from /pie/psdService/documentOperations to /v2/create-composite for document-level editing operations
 hideBreadcrumbNav: true
 keywords:
@@ -14,7 +14,7 @@ keywords:
   - v1 to v2
 ---
 
-# Document Operations Migration (V1 to V2)
+# Document Operations Migration
 
 This guide helps you migrate from the v1 `/pie/psdService/documentOperations` endpoint to the v2 `/create-composite` endpoint for document-level editing operations.
 

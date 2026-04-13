@@ -1,5 +1,5 @@
 ---
-title: Image Layer Operations Migration (v1 to v2)
+title: Image Layer Operations Migration
 description: Migrate image layer and solid color layer operations from V1 to V2
 hideBreadcrumbNav: true
 keywords:
@@ -11,7 +11,7 @@ keywords:
   - v1 to v2
 ---
 
-# Image Layer Operations Migration (v1 to v2)
+# Image Layer Operations Migration
 
 This guide helps you migrate image layer and solid color layer operations from v1's `/documentCreate` and `/documentOperations` endpoints to v2's `/create-composite` endpoint.
 

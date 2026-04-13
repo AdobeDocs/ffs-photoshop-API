@@ -1,5 +1,5 @@
 ---
-title: Output Types Migration (v1 to v2)
+title: Output Types Migration
 description: Migrate JPEG, PNG, PSD, and TIFF output configurations from V1 to V2 structural and quality/compression changes
 hideBreadcrumbNav: true
 keywords:
@@ -14,7 +14,7 @@ keywords:
   - v1 to v2
 ---
 
-# Output Types Migration Guide (v1 to v2)
+# Output Types Migration Guide
 
 ## Overview
 

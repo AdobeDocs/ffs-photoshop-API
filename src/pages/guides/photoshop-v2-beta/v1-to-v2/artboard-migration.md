@@ -1,5 +1,5 @@
 ---
-title: Artboard Migration (v1 to v2)
+title: Artboard Migration
 description: Migrate from /pie/psdService/artboards to /v2/create-artboard
 hideBreadcrumbNav: true
 keywords:
@@ -8,7 +8,7 @@ keywords:
   - v1 to v2
 ---
 
-# Artboard Migration (v1 to v2)
+# Artboard Migration
 
 This guide helps you migrate from the v1 artboards endpoint to `/v2/create-artboard`.
 

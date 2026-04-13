@@ -1,5 +1,5 @@
 ---
-title: Document Creation Migration (V1 to V2)
+title: Document Creation Migration
 description: Migrate from /pie/psdService/documentCreate to /v2/create-composite for creating new blank documents
 hideBreadcrumbNav: true
 keywords:
@@ -12,7 +12,7 @@ keywords:
   - v1 to v2
 ---
 
-# Document Creation Migration (V1 to V2)
+# Document Creation Migration
 
 This guide helps you migrate from the v1 `/pie/psdService/documentCreate` endpoint to the v2 `/create-composite` endpoint for creating new blank documents from parameters.
 

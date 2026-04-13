@@ -1,5 +1,5 @@
 ---
-title: Smart Object Operations Migration (V1 to V2)
+title: Smart Object Operations Migration
 description: Migrate smart object layer operations from V1 to V2
 hideBreadcrumbNav: true
 keywords:
@@ -11,7 +11,7 @@ keywords:
   - v1 to v2
 ---
 
-# Smart Object Operations Migration (V1 to V2)
+# Smart Object Operations Migration
 
 This guide helps you migrate smart object layer operations from V1's `/documentCreate` and `/documentOperations` endpoints to V2's `/create-composite` endpoint.
 

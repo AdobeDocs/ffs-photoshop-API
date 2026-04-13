@@ -1,5 +1,5 @@
 ---
-title: Side by Side Migration (v1 to v2)
+title: Side by Side Migration
 description: Migrate from V1 sideBySide to V2 execute-actions for simple before/after comparisons
 hideBreadcrumbNav: true
 keywords:
@@ -9,7 +9,7 @@ keywords:
   - v1 to v2
 ---
 
-# Side by Side Migration (v1 to v2)
+# Side by Side Migration
 
 Migrate from the v1 API's `/pie/psdService/sideBySide` endpoint to the v2 API.
 

@@ -1,5 +1,5 @@
 ---
-title: Split View Migration (v1 to v2)
+title: Split View Migration
 description: Migrate from V1 splitView to V2 execute-actions for before/after comparisons with divider
 hideBreadcrumbNav: true
 keywords:
@@ -9,7 +9,7 @@ keywords:
   - v1 to v2
 ---
 
-# Split View Migration (v1 to v2)
+# Split View Migration
 
 Migrate from the v1 API's `/pie/psdService/splitView` endpoint to the v2 API.
 

@@ -1,5 +1,5 @@
 ---
-title: Format Conversion Migration (V1 to V2)
+title: Format Conversion Migration
 description: Migrate from /pie/psdService/renditionCreate to /v2/create-composite for format conversion and export operations
 hideBreadcrumbNav: true
 keywords:
@@ -18,7 +18,7 @@ keywords:
   - v1 to v2
 ---
 
-# Format Conversion Migration (V1 to V2)
+# Format Conversion Migration
 
 This guide helps you migrate from the v1 `/pie/psdService/renditionCreate` endpoint to the v2 `/create-composite` endpoint for format conversion and export operations.
 

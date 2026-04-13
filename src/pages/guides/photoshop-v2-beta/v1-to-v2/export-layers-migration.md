@@ -1,5 +1,5 @@
 ---
-title: Export Layers Migration (V1 to V2)
+title: Export Layers Migration
 description: Migrate exporting one or more layers from a document to the V2 create-composite endpoint
 hideBreadcrumbNav: true
 keywords:
@@ -11,7 +11,7 @@ keywords:
   - v1 to v2
 ---
 
-# Export Layers Migration Guide (V1 to V2)
+# Export Layers Migration Guide
 
 ## Overview
 

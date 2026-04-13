@@ -1,5 +1,5 @@
 ---
-title: Product Crop Migration (v1 to v2)
+title: Product Crop Migration
 description: Migrate from v1 productCrop to v2 execute-actions for auto-crop and padding.
 hideBreadcrumbNav: true
 keywords:
@@ -8,7 +8,7 @@ keywords:
   - migration
   - v1 to v2
 ---
-# Product Crop Migration (v1 to v2)
+# Product Crop Migration
 
 This guide shows how to migrate from the v1 API's `/pie/psdService/productCrop` endpoint to the v2 API's `/v2/execute-actions` endpoint.
 

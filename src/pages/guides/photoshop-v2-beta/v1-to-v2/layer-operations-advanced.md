@@ -1,5 +1,5 @@
 ---
-title: Advanced Layer Operations Migration (V1 to V2)
+title: Advanced Layer Operations Migration
 description: Migrate advanced layer operations including move, delete, masks, groups, blend modes, and transforms from V1 to V2
 hideBreadcrumbNav: true
 keywords:
@@ -13,7 +13,7 @@ keywords:
   - v1 to v2
 ---
 
-# Advanced Layer Operations Migration (V1 to V2)
+# Advanced Layer Operations Migration
 
 This guide helps you migrate advanced layer operations from V1's `/documentOperations` endpoint to V2's `/create-composite` endpoint, including moving, deleting, masking, grouping, and transforming layers.
 

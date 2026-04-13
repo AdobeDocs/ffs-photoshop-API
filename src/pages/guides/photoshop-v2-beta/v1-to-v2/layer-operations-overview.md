@@ -1,5 +1,5 @@
 ---
-title: Layer Operations Migration Overview (v1 to v2)
+title: Layer Operations Migration Overview
 description: Understanding the migration from v1 layer operations to the unified v2 approach
 hideBreadcrumbNav: true
 keywords:
@@ -11,7 +11,7 @@ keywords:
   - v1 to v2
 ---
 
-# Layer Operations Migration Overview (v1 to v2)
+# Layer Operations Migration Overview
 
 This guide explains how layer operations have changed from v1 to v2 and helps you navigate the migration process.
 

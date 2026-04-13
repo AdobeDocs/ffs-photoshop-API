@@ -1,5 +1,5 @@
 ---
-title: Edit Operations Migration (V1 to V2)
+title: Edit Operations Migration
 description: Migrate from individual Lightroom API endpoints to the unified /v2/edit endpoint
 hideBreadcrumbNav: true
 keywords:
@@ -11,7 +11,7 @@ keywords:
   - v1 to v2
 ---
 
-# Edit Operations Migration (V1 to V2)
+# Edit Operations Migration
 
 This guide helps you migrate from individual Lightroom v1 endpoints to the unified `/v2/edit` endpoint.
 

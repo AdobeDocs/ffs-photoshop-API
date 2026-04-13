@@ -1,5 +1,5 @@
 ---
-title: Text Layer Operations Migration (V1 to V2)
+title: Text Layer Operations Migration
 description: Migrate text layer operations from V1 /documentCreate and /documentOperations to V2 /create-composite
 hideBreadcrumbNav: true
 keywords:
@@ -11,7 +11,7 @@ keywords:
   - v1 to v2
 ---
 
-# Text Layer Operations Migration (V1 to V2)
+# Text Layer Operations Migration
 
 This guide helps you migrate text layer operations from V1's `/documentCreate` and `/documentOperations` endpoints to V2's unified `/create-composite` endpoint.
 

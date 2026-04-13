@@ -1,5 +1,5 @@
 ---
-title: Layer Operations Migration (V1 to V2)
+title: Layer Operations Migration
 description: Learn how to migrate your v1 composite operations to v2 layer operations.
 hideBreadcrumbNav: true
 keywords:
@@ -11,7 +11,7 @@ keywords:
   - v1 to v2
 ---
 
-# Layer Operations Migration (V1 to V2)
+# Layer Operations Migration
 
 This page helps you navigate the layer operation migration guides. Layer operations have been split into focused guides for easier navigation and future expansion.
 

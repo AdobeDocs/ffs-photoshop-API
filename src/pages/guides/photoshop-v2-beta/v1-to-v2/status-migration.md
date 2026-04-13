@@ -1,5 +1,5 @@
 ---
-title: Status Endpoint Migration (V1 to V2)
+title: Status Endpoint Migration
 description: Migrate from separate v1 status endpoints to the unified /v2/status endpoint
 hideBreadcrumbNav: true
 keywords:
@@ -10,7 +10,7 @@ keywords:
   - v1 to v2
 ---
 
-# Status Endpoint Migration (V1 to V2)
+# Status Endpoint Migration
 
 This guide helps you migrate from v1 status checking endpoints to the unified `/v2/status/{jobId}` endpoint.
 
