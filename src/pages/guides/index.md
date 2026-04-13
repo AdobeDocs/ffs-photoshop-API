@@ -46,7 +46,11 @@ Make sure to replace placeholder values with your actual credentials and file UR
 
 ## Migrating from v1?
 
-If you're already using the legacy Photoshop or Lightroom APIs (v1), the v2 API offers a unified architecture, combined operations in a single call, and more flexible storage—with a clear path to migrate.
+<Edition slots="text" backgroundcolor='blue' />
+
+beta
+
+If you're already using the legacy Photoshop or Lightroom APIs (v1), the Photoshop v2 beta API offers a unified architecture, combined operations in a single call, and more flexible storage—with a clear path to migrate.
 
 **Start here:**
 

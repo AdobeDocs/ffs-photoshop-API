@@ -48,6 +48,10 @@ Or review the endpoints in the [Photoshop API reference](/api/index.md).
 
 ## What is Photoshop v2 beta?
 
+<Edition slots="text" backgroundcolor='blue' />
+
+beta
+
 The **Photoshop v2 beta** API is a unified next-generation surface for Photoshop and Lightroom-style workflows in Firefly Services: one architecture, consistent request and response patterns, and flexible output destinations. Use it when you want combined operations in fewer round trips, clearer status handling, and migration paths from the legacy v1 Photoshop and Lightroom APIs.
 
 ### What improvements does Photoshop v2 beta offer?
