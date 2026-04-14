@@ -43,3 +43,18 @@ Code samples in these guides include:
 - Expected response formats
 
 Make sure to replace placeholder values with your actual credentials and file URLs before running any examples.
+
+## Migrating from v1?
+
+<Edition slots="text" backgroundcolor='blue' />
+
+beta
+
+If you're already using the legacy Photoshop or Lightroom APIs (v1), the Photoshop v2 beta API offers a unified architecture, combined operations in a single call, and more flexible storage—with a clear path to migrate.
+
+**Start here:**
+
+* **[Migration to v2 overview](photoshop-v2-beta/v1-to-v2/index.md)** — What's changing, breaking changes, and a step-by-step migration path with a reference table that maps each v1 endpoint to its v2 equivalent and the right guide.
+* **[Key improvements and architecture with v2](photoshop-v2-beta/v1-to-v2/key-improvements.md)** — Why migrate: combined operations, flexible storage options, published action files, and other architectural benefits.
+
+From the migration overview you can jump to detailed guides for your endpoints: edit operations, format conversion, document creation, layer operations, actions, artboards, manifest, status, and convenience APIs.

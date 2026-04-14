@@ -1,7 +1,7 @@
 {
-  "total": 71,
+  "total": 77,
   "offset": 0,
-  "limit": 71,
+  "limit": 77,
   "data": [
     {
       "Source": "/firefly-services/docs/photoshop",
@@ -286,6 +286,30 @@
     {
       "Source": "/firefly-services/docs/photoshop/getting_started/concepts/",
       "Destination": "/firefly-services/docs/photoshop/getting-started/concepts/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/photoshop-v2-beta",
+      "Destination": "/firefly-services/docs/photoshop/guides/photoshop-v2-beta/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/photoshop-v2-beta/index",
+      "Destination": "/firefly-services/docs/photoshop/guides/photoshop-v2-beta/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/photoshop-v2-beta/v1-to-v2",
+      "Destination": "/firefly-services/docs/photoshop/guides/photoshop-v2-beta/v1-to-v2/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/photoshop-v2-beta/v1-to-v2/index",
+      "Destination": "/firefly-services/docs/photoshop/guides/photoshop-v2-beta/v1-to-v2/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/api/photoshop-v2-beta",
+      "Destination": "/firefly-services/docs/photoshop/api/photoshop-v2-beta/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/api/photoshop-v2-beta/index",
+      "Destination": "/firefly-services/docs/photoshop/api/photoshop-v2-beta/"
     }
   ],
   ":type": "sheet"

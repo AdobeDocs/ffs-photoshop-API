@@ -1,0 +1,4358 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "description": "Photoshop v2 beta API Server for Adobe DI Arts.",
+    "license": {
+      "name": "Adobe Creative API License",
+      "url": "https://www.adobe.com/content/dam/cc/en/legal/terms/enterprise/pdfs/PSLT-AdobeCreativeAPI-WW-2024v2.pdf"
+    },
+    "title": "Photoshop v2 beta API endpoints",
+    "version": "beta"
+  },
+  "servers": [
+    {
+      "url": "https://photoshop-api.adobe.io",
+      "description": "Prod server."
+    }
+  ],
+  "security": [
+    {
+      "Authorization": []
+    },
+    {
+      "X-Api-Key": []
+    }
+  ],
+  "tags": [
+    {
+      "description": "Photoshop APIs for image processing operations.",
+      "name": "Photoshop operations"
+    },
+    {
+      "description": "Storage URL regeneration - Unauthenticated redirect endpoint.",
+      "name": "Storage operations"
+    },
+    {
+      "description": "APIs for retrieving job status information.",
+      "name": "Job status"
+    }
+  ],
+  "paths": {
+    "/v2/create-artboard": {
+      "post": {
+        "description": "Creates an artboard from the provided source. The request is processed asynchronously; use the Get status - v2 endpoint to poll for completion and outputs.",
+        "operationId": "createArtboard",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "default": {
+                  "summary": "Minimal create artboard request",
+                  "value": {
+                    "images": [
+                      {
+                        "source": {
+                          "url": "https://example.com/input.psd"
+                        },
+                        "bounds": {
+                          "left": 0,
+                          "top": 0,
+                          "right": 800,
+                          "bottom": 600
+                        }
+                      }
+                    ],
+                    "outputs": [
+                      {
+                        "destination": {
+                          "url": "https://example.com/artboard-output.jpg"
+                        },
+                        "mediaType": "image/jpeg"
+                      }
+                    ]
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/CreateArtboardRequest"
+              }
+            }
+          },
+          "description": "Request body containing the artboard source and output configuration.",
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Job accepted",
+                    "value": {
+                      "jobId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                      "statusUrl": "https://photoshop-api.adobe.io/v2/status/a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/JobAcceptedResponse"
+                }
+              }
+            },
+            "description": "Accepted"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Bad request",
+                    "value": {
+                      "error_code": "validation_error",
+                      "message": "Validation failed"
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Unauthorized",
+                    "value": {
+                      "error_code": "401013",
+                      "message": "OAuth token is not valid"
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Forbidden",
+                    "value": {
+                      "error_code": "unauthorized_forbidden",
+                      "message": "The user is not entitled to call this service"
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Input validation error",
+                    "value": {
+                      "error_code": "validation_error",
+                      "message": "Validation failed",
+                      "errors": [
+                        {
+                          "error_code": "value_error.missing",
+                          "message": "Field required"
+                        }
+                      ]
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Input Validation Error"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Too many requests",
+                    "value": {
+                      "error_code": "unauthorized_forbidden",
+                      "message": "The Service is experiencing high traffic. Please retry after a brief wait."
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "error_code": "runtime_error",
+                      "message": "There was a problem while attempting to perform the operation. Please try again."
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "summary": "Create an artboard",
+        "tags": [
+          "Photoshop operations"
+        ]
+      }
+    },
+    "/v2/create-composite": {
+      "post": {
+        "description": "Creates or edits a composite from the provided image, layers, and options. The request is processed asynchronously; use the Get status - v2 endpoint to poll for completion and outputs.",
+        "operationId": "createComposite",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "default": {
+                  "summary": "Minimal create composite request",
+                  "value": {
+                    "image": {
+                      "source": {
+                        "url": "https://example.com/input.psd"
+                      }
+                    },
+                    "outputs": [
+                      {
+                        "destination": {
+                          "url": "https://example.com/composite-output.jpg"
+                        },
+                        "mediaType": "image/jpeg"
+                      }
+                    ]
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/CreateCompositeRequest"
+              }
+            }
+          },
+          "description": "Request body containing the source image, layer configuration, and output options.",
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Job accepted",
+                    "value": {
+                      "jobId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                      "statusUrl": "https://photoshop-api.adobe.io/v2/status/a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/JobAcceptedResponse"
+                }
+              }
+            },
+            "description": "Accepted"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Bad request",
+                    "value": {
+                      "error_code": "validation_error",
+                      "message": "Validation failed"
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Unauthorized",
+                    "value": {
+                      "error_code": "401013",
+                      "message": "OAuth token is not valid"
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Forbidden",
+                    "value": {
+                      "error_code": "unauthorized_forbidden",
+                      "message": "The user is not entitled to call this service"
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Input validation error",
+                    "value": {
+                      "error_code": "validation_error",
+                      "message": "Validation failed",
+                      "errors": [
+                        {
+                          "error_code": "value_error.missing",
+                          "message": "Field required"
+                        }
+                      ]
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Input Validation Error"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Too many requests",
+                    "value": {
+                      "error_code": "unauthorized_forbidden",
+                      "message": "The Service is experiencing high traffic. Please retry after a brief wait."
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "error_code": "runtime_error",
+                      "message": "There was a problem while attempting to perform the operation. Please try again."
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "summary": "Create or edit a composite",
+        "tags": [
+          "Photoshop operations"
+        ]
+      }
+    },
+    "/v2/edit": {
+      "post": {
+        "description": "Applies edits and adjustments to an image (e.g. auto tone, layer edits). The request is processed asynchronously; use the Get status - v2 endpoint to poll for completion and outputs.",
+        "operationId": "edit",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "default": {
+                  "summary": "Minimal edit request",
+                  "value": {
+                    "image": {
+                      "source": {
+                        "url": "https://example.com/input.psd"
+                      }
+                    },
+                    "outputs": [
+                      {
+                        "destination": {
+                          "url": "https://example.com/output.jpg"
+                        },
+                        "mediaType": "image/jpeg"
+                      }
+                    ]
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/EditRequest"
+              }
+            }
+          },
+          "description": "Request body containing the image source, edits to apply, and output configuration.",
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Job accepted",
+                    "value": {
+                      "jobId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                      "statusUrl": "https://photoshop-api.adobe.io/v2/status/a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/JobAcceptedResponse"
+                }
+              }
+            },
+            "description": "Accepted"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Input validation error",
+                    "value": {
+                      "error_code": "validation_error",
+                      "message": "Validation failed"
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Unauthorized",
+                    "value": {
+                      "error_code": "401013",
+                      "message": "OAuth token is not valid"
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Forbidden",
+                    "value": {
+                      "error_code": "unauthorized_forbidden",
+                      "message": "The user is not entitled to call this service"
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Input validation error",
+                    "value": {
+                      "error_code": "validation_error",
+                      "message": "Validation failed",
+                      "errors": [
+                        {
+                          "error_code": "value_error.missing",
+                          "message": "Field required"
+                        }
+                      ]
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Input Validation Error"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Too many requests",
+                    "value": {
+                      "error_code": "unauthorized_forbidden",
+                      "message": "The Service is experiencing high traffic. Please retry after a brief wait."
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "error_code": "runtime_error",
+                      "message": "There was a problem while attempting to perform the operation. Please try again."
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "summary": "Edit an image with various adjustments",
+        "tags": [
+          "Photoshop operations"
+        ]
+      }
+    },
+    "/v2/execute-actions": {
+      "post": {
+        "description": "Executes Photoshop actions, scripts, and transformations on the provided input. The request is processed asynchronously; use the Get status - v2 endpoint to poll for completion and outputs.",
+        "operationId": "executeActions",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "default": {
+                  "summary": "Minimal execute actions request",
+                  "value": {
+                    "image": {
+                      "source": {
+                        "url": "https://example.com/input.psd"
+                      }
+                    },
+                    "options": {
+                      "actions": [
+                        {
+                          "source": {
+                            "url": "https://example.com/action.atn"
+                          }
+                        }
+                      ]
+                    },
+                    "outputs": [
+                      {
+                        "destination": {
+                          "url": "https://example.com/actions-output.jpg"
+                        },
+                        "mediaType": "image/jpeg"
+                      }
+                    ]
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/ActionsRequest"
+              }
+            }
+          },
+          "description": "Request body containing actions or UXP script configuration, optional resources, and output options.",
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Job accepted",
+                    "value": {
+                      "jobId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                      "statusUrl": "https://photoshop-api.adobe.io/v2/status/a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/JobAcceptedResponse"
+                }
+              }
+            },
+            "description": "Accepted"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Bad request",
+                    "value": {
+                      "error_code": "validation_error",
+                      "message": "Validation failed"
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Unauthorized",
+                    "value": {
+                      "error_code": "401013",
+                      "message": "OAuth token is not valid"
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Forbidden",
+                    "value": {
+                      "error_code": "unauthorized_forbidden",
+                      "message": "The user is not entitled to call this service"
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Input validation error",
+                    "value": {
+                      "error_code": "validation_error",
+                      "message": "Validation failed",
+                      "errors": [
+                        {
+                          "error_code": "value_error.missing",
+                          "message": "Field required"
+                        }
+                      ]
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Input Validation Error"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Too many requests",
+                    "value": {
+                      "error_code": "unauthorized_forbidden",
+                      "message": "The Service is experiencing high traffic. Please retry after a brief wait."
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "error_code": "runtime_error",
+                      "message": "There was a problem while attempting to perform the operation. Please try again."
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "summary": "Execute Photoshop actions, scripts, and transformations",
+        "tags": [
+          "Photoshop operations"
+        ]
+      }
+    },
+    "/v2/generate-manifest": {
+      "post": {
+        "description": "Generates a manifest (e.g. XMP or JSON) for the given input image. The request is processed asynchronously; use the Get status - v2 endpoint to poll for completion and outputs.",
+        "operationId": "generateManifest",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "default": {
+                  "summary": "Minimal generate manifest request",
+                  "value": {
+                    "image": {
+                      "source": {
+                        "url": "https://example.com/input.psd"
+                      }
+                    },
+                    "outputs": [
+                      {
+                        "destination": {
+                          "url": "https://example.com/manifest.json"
+                        },
+                        "mediaType": "application/json"
+                      }
+                    ]
+                  }
+                }
+              },
+              "schema": {
+                "$ref": "#/components/schemas/GenerateManifestRequest"
+              }
+            }
+          },
+          "description": "Request body containing the image source and manifest output configuration.",
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Job accepted",
+                    "value": {
+                      "jobId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                      "statusUrl": "https://photoshop-api.adobe.io/v2/status/a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/JobAcceptedResponse"
+                }
+              }
+            },
+            "description": "Accepted"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Bad request",
+                    "value": {
+                      "error_code": "validation_error",
+                      "message": "Validation failed"
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Unauthorized",
+                    "value": {
+                      "error_code": "401013",
+                      "message": "OAuth token is not valid"
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Forbidden",
+                    "value": {
+                      "error_code": "unauthorized_forbidden",
+                      "message": "The user is not entitled to call this service"
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Input validation error",
+                    "value": {
+                      "error_code": "validation_error",
+                      "message": "Validation failed",
+                      "errors": [
+                        {
+                          "error_code": "value_error.missing",
+                          "message": "Field required"
+                        }
+                      ]
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Input Validation Error"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Too many requests",
+                    "value": {
+                      "error_code": "unauthorized_forbidden",
+                      "message": "The Service is experiencing high traffic. Please retry after a brief wait."
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "error_code": "runtime_error",
+                      "message": "There was a problem while attempting to perform the operation. Please try again."
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "summary": "Generate a manifest for given input image",
+        "tags": [
+          "Photoshop operations"
+        ]
+      }
+    },
+    "/v2/short-url/{urn}": {
+      "get": {
+        "description": "Publicly accessible endpoint that returns a temporary redirect (302) to a pre-signed S3 URL. No authentication required as the pre-signed URL itself contains authorization.",
+        "operationId": "redirectToStorage",
+        "parameters": [
+          {
+            "description": "URN of the storage resource for which to obtain a pre-signed GET URL.",
+            "in": "path",
+            "name": "urn",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "Temporary Redirect To Pre-signed S3 GET URL"
+          },
+          "404": {
+            "description": "URN Not Found Or Expired"
+          }
+        },
+        "summary": "Redirect to pre-signed GET URL with remaining TTL",
+        "tags": [
+          "Storage operations"
+        ]
+      }
+    },
+    "/v2/status/{jobId}": {
+      "get": {
+        "description": "Retrieves the current status and details of a specific job including metadata, outputs, and processing information.",
+        "operationId": "getJobStatus",
+        "parameters": [
+          {
+            "description": "Unique identifier for the job to retrieve status information.",
+            "example": "550e8400-e29b-41d4-a716-446655440000",
+            "in": "path",
+            "name": "jobId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Job succeeded",
+                    "value": {
+                      "jobId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                      "status": "succeeded",
+                      "createdTime": "2024-01-15T10:30:00Z",
+                      "modifiedTime": "2024-01-15T10:30:05Z",
+                      "result": {
+                        "outputs": {}
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/JobStatusResponse"
+                }
+              }
+            },
+            "description": "Success"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Bad request",
+                    "value": {
+                      "error_code": "validation_error",
+                      "message": "Validation failed"
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Unauthorized",
+                    "value": {
+                      "error_code": "401013",
+                      "message": "OAuth token is not valid"
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Not found",
+                    "value": {
+                      "error_code": "unknown_job_id",
+                      "message": "Job not found"
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Requested Resource Was Not Found"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Forbidden",
+                    "value": {
+                      "error_code": "unauthorized_forbidden",
+                      "message": "The user is not entitled to call this service"
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Too many requests",
+                    "value": {
+                      "error_code": "unauthorized_forbidden",
+                      "message": "The Service is experiencing high traffic. Please retry after a brief wait."
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "default": {
+                    "summary": "Internal server error",
+                    "value": {
+                      "error_code": "runtime_error",
+                      "message": "There was a problem while attempting to perform the operation. Please try again."
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          }
+        },
+        "summary": "Get status - v2",
+        "tags": [
+          "Job status"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ActionResource": {
+        "required": [
+          "source"
+        ],
+        "type": "object",
+        "properties": {
+          "source": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CreativeCloudFileIdResourceInput"
+              },
+              {
+                "$ref": "#/components/schemas/CreativeCloudResourceInput"
+              },
+              {
+                "$ref": "#/components/schemas/InlineContentResourceInput"
+              },
+              {
+                "$ref": "#/components/schemas/LightroomResourceInput"
+              },
+              {
+                "$ref": "#/components/schemas/UrlResourceInput"
+              }
+            ]
+          }
+        },
+        "description": "List of Photoshop actions. Can be .atn files or inline actionJSON."
+      },
+      "ActionsOptions": {
+        "type": "object",
+        "properties": {
+          "actions": {
+            "maxItems": 10,
+            "minItems": 0,
+            "type": "array",
+            "description": "List of Photoshop actions. Can be .atn files or inline actionJSON.",
+            "items": {
+              "$ref": "#/components/schemas/ActionResource"
+            }
+          },
+          "additionalContents": {
+            "maxItems": 25,
+            "minItems": 0,
+            "type": "array",
+            "description": "List of additional resources. These images, js, brushes can be referenced in inline actionJSON or in UXP using placeholders `__ADDITIONAL_CONTENT_0__`, `__ADDITIONAL_CONTENT_1__`, etc. based on their array index.",
+            "items": {
+              "$ref": "#/components/schemas/AdditionalContentResource"
+            }
+          },
+          "brushes": {
+            "maxItems": 10,
+            "minItems": 0,
+            "type": "array",
+            "description": "List of brush resources. External references only.",
+            "items": {
+              "$ref": "#/components/schemas/BrushResource"
+            }
+          },
+          "fontOptions": {
+            "$ref": "#/components/schemas/FontOptions"
+          },
+          "patterns": {
+            "maxItems": 10,
+            "minItems": 0,
+            "type": "array",
+            "description": "List of pattern resources. External references only.",
+            "items": {
+              "$ref": "#/components/schemas/PatternResource"
+            }
+          },
+          "uxp": {
+            "$ref": "#/components/schemas/UxpResource"
+          }
+        },
+        "description": "Options configuration for the actions execution. At least one of `actions` or `uxp` is required."
+      },
+      "ActionsRequest": {
+        "required": [
+          "image",
+          "options",
+          "outputs"
+        ],
+        "type": "object",
+        "properties": {
+          "image": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ImageParameters"
+              },
+              {
+                "$ref": "#/components/schemas/ImageSource"
+              }
+            ]
+          },
+          "options": {
+            "$ref": "#/components/schemas/ActionsOptions"
+          },
+          "outputs": {
+            "maxItems": 25,
+            "minItems": 1,
+            "type": "array",
+            "description": "List of output asset details.",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/JpegOutput"
+                },
+                {
+                  "$ref": "#/components/schemas/JsonOutput"
+                },
+                {
+                  "$ref": "#/components/schemas/PngOutput"
+                },
+                {
+                  "$ref": "#/components/schemas/PsdOutput"
+                },
+                {
+                  "$ref": "#/components/schemas/PsdcOutput"
+                },
+                {
+                  "$ref": "#/components/schemas/TiffOutput"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "AddOperation": {
+        "required": [
+          "placement",
+          "type"
+        ],
+        "type": "object",
+        "description": "Add operation for adding layers.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Operation"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "placement": {
+                "$ref": "#/components/schemas/Placement"
+              }
+            }
+          }
+        ]
+      },
+      "AdditionalContentResource": {
+        "required": [
+          "source"
+        ],
+        "type": "object",
+        "properties": {
+          "source": {
+            "$ref": "#/components/schemas/FileResourceInput"
+          }
+        },
+        "description": "List of additional resources. These images, js, brushes can be referenced in inline actionJSON or in UXP using placeholders `__ADDITIONAL_CONTENT_0__`, `__ADDITIONAL_CONTENT_1__`, etc. based on their array index."
+      },
+      "AdditionalFont": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "$ref": "#/components/schemas/FileResourceInput"
+          }
+        },
+        "description": "Array of custom fonts needed in this document."
+      },
+      "AdjustmentLayer": {
+        "required": [
+          "adjustments",
+          "type"
+        ],
+        "type": "object",
+        "description": "Adjustment layer for applying image adjustments like brightness, contrast, hue/saturation, etc.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseLayer"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "adjustments": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/BrightnessContrastAdjustments"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ColorBalanceAdjustments"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ExposureAdjustments"
+                  },
+                  {
+                    "$ref": "#/components/schemas/HueSaturationAdjustments"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "Anchor": {
+        "required": [
+          "horizontal",
+          "vertical"
+        ],
+        "type": "object",
+        "properties": {
+          "horizontal": {
+            "type": "number",
+            "description": "Horizontal anchor position.",
+            "format": "double"
+          },
+          "vertical": {
+            "type": "number",
+            "description": "Vertical anchor position.",
+            "format": "double"
+          }
+        },
+        "description": "Anchor point coordinates for transformations and positioning."
+      },
+      "Apply": {
+        "type": "object",
+        "properties": {
+          "from": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "to": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "AreaFrame": {
+        "type": "object",
+        "properties": {
+          "bottom": {
+            "type": "integer",
+            "description": "Bottom boundary of the text area.",
+            "format": "int32"
+          },
+          "left": {
+            "type": "integer",
+            "description": "Left boundary of the text area.",
+            "format": "int32"
+          },
+          "right": {
+            "type": "integer",
+            "description": "Right boundary of the text area.",
+            "format": "int32"
+          },
+          "top": {
+            "type": "integer",
+            "description": "Top boundary of the text area.",
+            "format": "int32"
+          }
+        },
+        "description": "Area frame for defining text boundaries and wrapping."
+      },
+      "AutoStraighten": {
+        "required": [
+          "enabled"
+        ],
+        "type": "object",
+        "properties": {
+          "constrainCrop": {
+            "type": "boolean",
+            "description": "Whether to constrain crop the straightened image to remove blank edges.",
+            "default": true
+          },
+          "constrainCropOrDefault": {
+            "type": "boolean"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Whether auto straighten is enabled."
+          },
+          "uprightMode": {
+            "type": "string",
+            "description": "Upright mode options for auto straighten.",
+            "enum": [
+              "auto",
+              "full",
+              "level",
+              "vertical",
+              "auto",
+              "full",
+              "level",
+              "vertical"
+            ]
+          },
+          "uprightModeOrDefault": {
+            "type": "string",
+            "description": "Upright mode options for auto straighten.",
+            "enum": [
+              "auto",
+              "full",
+              "level",
+              "vertical"
+            ]
+          }
+        },
+        "description": "Auto straighten configuration with options."
+      },
+      "BaseAdjustment": {
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Adjustment type. Allowed values: hue_saturation, brightness_contrast, exposure, color_balance.",
+            "enum": [
+              "hue_saturation",
+              "brightness_contrast",
+              "exposure",
+              "color_balance"
+            ]
+          }
+        },
+        "description": "Adjustment settings to apply. Must specify exactly one adjustment type (brightness_contrast, hue_saturation, exposure, or color_balance).",
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "BaseLayer": {
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "blendOptions": {
+            "$ref": "#/components/schemas/BlendOptions"
+          },
+          "id": {
+            "type": "integer",
+            "description": "Layer ID.",
+            "format": "int32"
+          },
+          "isClipped": {
+            "type": "boolean",
+            "description": "Whether the layer is clipped. Defaults to false when adding layers. Optional for edits."
+          },
+          "isLocked": {
+            "type": "boolean",
+            "description": "Whether the layer is locked. Defaults to false when adding layers. Optional for edits."
+          },
+          "isVisible": {
+            "type": "boolean",
+            "description": "Whether the layer is visible. Defaults to true when adding layers. Optional for edits."
+          },
+          "name": {
+            "type": "string",
+            "description": "Layer name."
+          },
+          "operation": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AddOperation"
+              },
+              {
+                "$ref": "#/components/schemas/DeleteOperation"
+              },
+              {
+                "$ref": "#/components/schemas/EditOperation"
+              }
+            ]
+          },
+          "pixelMask": {
+            "$ref": "#/components/schemas/PixelMask"
+          },
+          "transform": {
+            "$ref": "#/components/schemas/Transform"
+          },
+          "transformMode": {
+            "type": "string",
+            "description": "Transform mode applied to the layer. Defaults to none when adding layers. Optional for edits.",
+            "enum": [
+              "fit",
+              "fill",
+              "custom",
+              "none"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "description": "Layer type enum.",
+            "enum": [
+              "layer",
+              "solid_color_layer",
+              "text_layer",
+              "smart_object_layer",
+              "adjustment_layer",
+              "group_layer"
+            ]
+          }
+        },
+        "description": "Array of layer edits to be applied.",
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "BlendOptions": {
+        "type": "object",
+        "properties": {
+          "blendMode": {
+            "type": "string",
+            "description": "Blend mode of a layer.",
+            "enum": [
+              "normal",
+              "dissolve",
+              "darken",
+              "multiply",
+              "color_burn",
+              "linear_burn",
+              "darker_color",
+              "lighten",
+              "screen",
+              "color_dodge",
+              "linear_dodge",
+              "lighter_color",
+              "overlay",
+              "soft_light",
+              "hard_light",
+              "vivid_light",
+              "pin_light",
+              "hard_mix",
+              "difference",
+              "exclusion",
+              "subtract",
+              "divide",
+              "hue",
+              "saturation",
+              "color",
+              "luminosity"
+            ]
+          },
+          "opacity": {
+            "maximum": 100,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Opacity percentage for the blend effect. Range: 0-100. Defaults to 100 when adding new layers. Optional for edits.",
+            "format": "int32"
+          }
+        },
+        "description": "Blend options for layer effects, including opacity settings."
+      },
+      "Bounds": {
+        "type": "object",
+        "properties": {
+          "bottom": {
+            "type": "integer",
+            "description": "Bottom coordinate in pixels.",
+            "format": "int32"
+          },
+          "left": {
+            "type": "integer",
+            "description": "Left coordinate in pixels.",
+            "format": "int32"
+          },
+          "right": {
+            "type": "integer",
+            "description": "Right coordinate in pixels.",
+            "format": "int32"
+          },
+          "top": {
+            "type": "integer",
+            "description": "Top coordinate in pixels.",
+            "format": "int32"
+          }
+        },
+        "description": "The bounds to crop the document to."
+      },
+      "BrightnessContrast": {
+        "type": "object",
+        "properties": {
+          "brightness": {
+            "maximum": 150,
+            "minimum": -150,
+            "type": "integer",
+            "description": "The adjustment layer's brightness. Range: -150 to 150. Defaults to 0 when adding new layers. Optional for edits.",
+            "format": "int32"
+          },
+          "contrast": {
+            "maximum": 150,
+            "minimum": -150,
+            "type": "integer",
+            "description": "The adjustment layer's contrast. Range: -150 to 150. Defaults to 0 when adding new layers. Optional for edits.",
+            "format": "int32"
+          }
+        },
+        "description": "Brightness and contrast adjustment settings."
+      },
+      "BrightnessContrastAdjustments": {
+        "required": [
+          "brightnessContrast",
+          "type"
+        ],
+        "type": "object",
+        "description": "Brightness and contrast adjustment.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAdjustment"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "brightnessContrast": {
+                "$ref": "#/components/schemas/BrightnessContrast"
+              }
+            }
+          }
+        ]
+      },
+      "BrushResource": {
+        "required": [
+          "source"
+        ],
+        "type": "object",
+        "properties": {
+          "source": {
+            "$ref": "#/components/schemas/FileResourceInput"
+          }
+        },
+        "description": "List of brush resources. External references only."
+      },
+      "CharacterStyle": {
+        "type": "object",
+        "properties": {
+          "font": {
+            "$ref": "#/components/schemas/Font"
+          },
+          "fontAlpha": {
+            "type": "number",
+            "description": "Font alpha/transparency value.",
+            "format": "double"
+          },
+          "fontColor": {
+            "$ref": "#/components/schemas/FontColor"
+          },
+          "fontSize": {
+            "type": "number",
+            "description": "Font size in points.",
+            "format": "double"
+          },
+          "syntheticBold": {
+            "type": "boolean",
+            "description": "Whether to apply synthetic bold."
+          },
+          "syntheticItalic": {
+            "type": "boolean",
+            "description": "Whether to apply synthetic italic."
+          },
+          "underline": {
+            "type": "boolean",
+            "description": "Whether to apply underline."
+          }
+        },
+        "description": "Character-level styling properties for text."
+      },
+      "CharacterStyleRange": {
+        "type": "object",
+        "properties": {
+          "apply": {
+            "$ref": "#/components/schemas/Apply"
+          },
+          "characterStyle": {
+            "$ref": "#/components/schemas/CharacterStyle"
+          }
+        },
+        "description": "Character style range defining styling for specific text ranges."
+      },
+      "Cmyk": {
+        "type": "object",
+        "properties": {
+          "black": {
+            "maximum": 255,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Black component value (0-255).",
+            "format": "int32"
+          },
+          "cyan": {
+            "maximum": 255,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Cyan component value (0-255).",
+            "format": "int32"
+          },
+          "magenta": {
+            "maximum": 255,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Magenta component value (0-255).",
+            "format": "int32"
+          },
+          "yellow": {
+            "maximum": 255,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Yellow component value (0-255).",
+            "format": "int32"
+          }
+        },
+        "description": "CMYK color values with cyan, magenta, yellow, and black components."
+      },
+      "ColorAdjustments": {
+        "type": "object",
+        "properties": {
+          "saturation": {
+            "maximum": 100,
+            "minimum": -100,
+            "type": "integer",
+            "description": "Saturation adjustment. Range: -100 to +100.",
+            "format": "int32",
+            "example": 20
+          },
+          "vibrance": {
+            "maximum": 100,
+            "minimum": -100,
+            "type": "integer",
+            "description": "Vibrance adjustment. Range: -100 to +100.",
+            "format": "int32",
+            "example": 15
+          },
+          "whiteBalance": {
+            "maximum": 50000,
+            "minimum": 2000,
+            "type": "integer",
+            "description": "White balance adjustment. Range: 2000 to 50000 Kelvin.",
+            "format": "int32",
+            "example": 5500
+          }
+        },
+        "description": "Color adjustments for image editing."
+      },
+      "ColorBalance": {
+        "type": "object",
+        "properties": {
+          "highlightLevels": {
+            "maxItems": 3,
+            "minItems": 3,
+            "type": "array",
+            "description": "Array of 3 integers for highlight levels. Each value must be between -100 and 100. Defaults to [0, 0, 0] when adding new layers. Optional for edits.",
+            "items": {
+              "maximum": 100,
+              "minimum": -100,
+              "type": "integer",
+              "description": "Array of 3 integers for highlight levels. Each value must be between -100 and 100. Defaults to [0, 0, 0] when adding new layers. Optional for edits.",
+              "format": "int32"
+            }
+          },
+          "midtoneLevels": {
+            "maxItems": 3,
+            "minItems": 3,
+            "type": "array",
+            "description": "Array of 3 integers for midtone levels. Each value must be between -100 and 100. Defaults to [0, 0, 0] when adding new layers. Optional for edits.",
+            "items": {
+              "maximum": 100,
+              "minimum": -100,
+              "type": "integer",
+              "description": "Array of 3 integers for midtone levels. Each value must be between -100 and 100. Defaults to [0, 0, 0] when adding new layers. Optional for edits.",
+              "format": "int32"
+            }
+          },
+          "preserveLuminosity": {
+            "type": "boolean",
+            "description": "Whether to preserve luminosity. Defaults to true when adding new layers. Optional for edits."
+          },
+          "shadowLevels": {
+            "maxItems": 3,
+            "minItems": 3,
+            "type": "array",
+            "description": "Array of 3 integers for shadow levels. Each value must be between -100 and 100. Defaults to [0, 0, 0] when adding new layers. Optional for edits.",
+            "items": {
+              "maximum": 100,
+              "minimum": -100,
+              "type": "integer",
+              "description": "Array of 3 integers for shadow levels. Each value must be between -100 and 100. Defaults to [0, 0, 0] when adding new layers. Optional for edits.",
+              "format": "int32"
+            }
+          }
+        },
+        "description": "Color balance adjustment settings."
+      },
+      "ColorBalanceAdjustments": {
+        "required": [
+          "colorBalance",
+          "type"
+        ],
+        "type": "object",
+        "description": "Color balance adjustment.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAdjustment"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "colorBalance": {
+                "$ref": "#/components/schemas/ColorBalance"
+              }
+            }
+          }
+        ]
+      },
+      "CreateArtboardRequest": {
+        "required": [
+          "images",
+          "outputs"
+        ],
+        "type": "object",
+        "properties": {
+          "images": {
+            "type": "array",
+            "description": "List of input images for the artboard. Each image must specify a source and bounds.",
+            "items": {
+              "$ref": "#/components/schemas/ImageWithBounds"
+            }
+          },
+          "outputs": {
+            "maxItems": 25,
+            "minItems": 1,
+            "type": "array",
+            "description": "List of output asset details. Each output specifies destination and output options.",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/JpegOutput"
+                },
+                {
+                  "$ref": "#/components/schemas/JsonOutput"
+                },
+                {
+                  "$ref": "#/components/schemas/PngOutput"
+                },
+                {
+                  "$ref": "#/components/schemas/PsdOutput"
+                },
+                {
+                  "$ref": "#/components/schemas/PsdcOutput"
+                },
+                {
+                  "$ref": "#/components/schemas/TiffOutput"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "CreateCompositeRequest": {
+        "required": [
+          "image",
+          "outputs"
+        ],
+        "type": "object",
+        "properties": {
+          "edits": {
+            "$ref": "#/components/schemas/Edits"
+          },
+          "fontOptions": {
+            "$ref": "#/components/schemas/FontOptions"
+          },
+          "image": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ImageParameters"
+              },
+              {
+                "$ref": "#/components/schemas/ImageSource"
+              }
+            ]
+          },
+          "outputs": {
+            "maxItems": 25,
+            "minItems": 1,
+            "type": "array",
+            "description": "List of output asset details.",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/JpegOutput"
+                },
+                {
+                  "$ref": "#/components/schemas/JsonOutput"
+                },
+                {
+                  "$ref": "#/components/schemas/PngOutput"
+                },
+                {
+                  "$ref": "#/components/schemas/PsdOutput"
+                },
+                {
+                  "$ref": "#/components/schemas/PsdcOutput"
+                },
+                {
+                  "$ref": "#/components/schemas/TiffOutput"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "CreativeCloudDestination": {
+        "required": [
+          "creativeCloudPath"
+        ],
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Destination"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "creativeCloudPath": {
+                "type": "string",
+                "description": "Path to Creative Cloud storage."
+              },
+              "creativeCloudProjectId": {
+                "pattern": "^urn:aaid:.*",
+                "type": "string",
+                "description": "The Creative Cloud project ID. Must be a valid URN starting with 'urn:aaid:sc:'.",
+                "example": "urn:aaid:sc:US:a21c8629-413f-55d9-..."
+              }
+            }
+          }
+        ]
+      },
+      "CreativeCloudFileIdResourceInput": {
+        "required": [
+          "creativeCloudFileId"
+        ],
+        "type": "object",
+        "description": "Creative Cloud file ID resource input. References a resource via Creative Cloud file ID (URN).",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ResourceInput"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "creativeCloudFileId": {
+                "pattern": "^urn:aaid:.*",
+                "type": "string",
+                "description": "The file ID of the asset in Creative Cloud. Must start with 'urn:aaid' (case-insensitive).",
+                "example": "urn:aaid:sc:US:a21c8629-413f-55d9-..."
+              }
+            }
+          }
+        ]
+      },
+      "CreativeCloudResourceInput": {
+        "required": [
+          "creativeCloudPath"
+        ],
+        "type": "object",
+        "description": "Creative Cloud resource input. References a resource via Creative Cloud path.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ResourceInput"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "creativeCloudPath": {
+                "type": "string",
+                "description": "The path to the asset in Creative Cloud."
+              },
+              "creativeCloudProjectId": {
+                "pattern": "^urn:aaid:.*",
+                "type": "string",
+                "description": "The Creative Cloud project ID. Must be a valid URN starting with 'urn:aaid:sc:'.",
+                "example": "urn:aaid:sc:US:a21c8629-413f-55d9-..."
+              }
+            }
+          }
+        ]
+      },
+      "Crop": {
+        "required": [
+          "bounds"
+        ],
+        "type": "object",
+        "properties": {
+          "bounds": {
+            "$ref": "#/components/schemas/Bounds"
+          },
+          "hide": {
+            "type": "boolean",
+            "description": "When true, hides pixels outside the crop bounds (non-destructive). When false, permanently deletes pixels outside the crop bounds (destructive). Defaults to false."
+          }
+        },
+        "description": "Options for cropping a document, specifying the bounds to crop to."
+      },
+      "CustomIccProfile": {
+        "required": [
+          "name",
+          "source",
+          "type"
+        ],
+        "type": "object",
+        "description": "Custom ICC profile with user-provided profile file.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/IccProfile"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "maxLength": 255,
+                "minLength": 0,
+                "type": "string",
+                "description": "Custom ICC profile name. Provide a descriptive name.",
+                "example": "U.S. Web Coated (SWOP) v2"
+              },
+              "source": {
+                "$ref": "#/components/schemas/FileResourceInput"
+              }
+            }
+          }
+        ]
+      },
+      "DeleteOperation": {
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "description": "Delete operation for removing layers.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Operation"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "shouldIncludeChildren": {
+                "type": "boolean",
+                "description": "Whether to include child layers in the deletion."
+              }
+            }
+          }
+        ]
+      },
+      "Destination": {
+        "type": "object",
+        "description": "Destination for output files. Can be either a URL with optional storage type or a Creative Cloud path."
+      },
+      "Dimension": {
+        "type": "object",
+        "properties": {
+          "height": {
+            "type": "integer",
+            "description": "Height after the element transformation.",
+            "format": "int32"
+          },
+          "width": {
+            "type": "integer",
+            "description": "Width after the element transformation.",
+            "format": "int32"
+          }
+        },
+        "description": "Width and height after transformation."
+      },
+      "DimensionMeasurement": {
+        "required": [
+          "unit"
+        ],
+        "type": "object",
+        "properties": {
+          "unit": {
+            "type": "string",
+            "description": "The unit of measurement for the dimension. 'pixels_unit' for absolute pixel measurements, 'percent_unit' for percentage-based scaling, 'distance_unit' for physical measurements using this formula: Physical Size (points) = Pixels × (72 ÷ DPI).",
+            "enum": [
+              "pixels_unit",
+              "percent_unit",
+              "distance_unit"
+            ]
+          },
+          "value": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "The value of the dimension. Must be greater than or equal to 0.",
+            "format": "int32"
+          }
+        },
+        "description": "Represents a dimension measurement for width or height with appropriate units."
+      },
+      "Document": {
+        "type": "object",
+        "properties": {
+          "crop": {
+            "$ref": "#/components/schemas/Crop"
+          },
+          "resize": {
+            "$ref": "#/components/schemas/Resize"
+          },
+          "trim": {
+            "$ref": "#/components/schemas/Trim"
+          }
+        },
+        "description": "Represents the editable document structure, including resize, crop and trim options. Each field corresponds to a specific type of document edit operation."
+      },
+      "EditOperation": {
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "description": "Edit operation for modifying existing layer properties.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Operation"
+          }
+        ]
+      },
+      "EditRequest": {
+        "required": [
+          "image",
+          "outputs"
+        ],
+        "type": "object",
+        "properties": {
+          "edits": {
+            "$ref": "#/components/schemas/LightroomEdits"
+          },
+          "image": {
+            "$ref": "#/components/schemas/Image"
+          },
+          "outputs": {
+            "maxItems": 25,
+            "minItems": 1,
+            "type": "array",
+            "description": "List of output asset details.",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/LrJpegOutput"
+                },
+                {
+                  "$ref": "#/components/schemas/LrPngOutput"
+                },
+                {
+                  "$ref": "#/components/schemas/TiffOutput"
+                },
+                {
+                  "$ref": "#/components/schemas/XmpOutput"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "Edits": {
+        "type": "object",
+        "properties": {
+          "document": {
+            "$ref": "#/components/schemas/Document"
+          },
+          "layers": {
+            "type": "array",
+            "description": "Array of layer edits to be applied.",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/AdjustmentLayer"
+                },
+                {
+                  "$ref": "#/components/schemas/GroupLayer"
+                },
+                {
+                  "$ref": "#/components/schemas/Layer"
+                },
+                {
+                  "$ref": "#/components/schemas/SmartObjectLayer"
+                },
+                {
+                  "$ref": "#/components/schemas/SolidColorLayer"
+                },
+                {
+                  "$ref": "#/components/schemas/TextLayer"
+                }
+              ]
+            }
+          }
+        },
+        "description": "Edits to be applied to the input asset."
+      },
+      "EffectsAdjustments": {
+        "type": "object",
+        "properties": {
+          "clarity": {
+            "maximum": 100,
+            "minimum": -100,
+            "type": "integer",
+            "description": "Clarity adjustment. Range: -100 to +100.",
+            "format": "int32",
+            "example": 5
+          },
+          "dehaze": {
+            "maximum": 100,
+            "minimum": -100,
+            "type": "integer",
+            "description": "Dehaze adjustment. Range: -100 to +100.",
+            "format": "int32",
+            "example": 2
+          },
+          "texture": {
+            "maximum": 100,
+            "minimum": -100,
+            "type": "integer",
+            "description": "Texture adjustment. Range: -100 to +100.",
+            "format": "int32",
+            "example": 10
+          },
+          "vignette": {
+            "maximum": 100,
+            "minimum": -100,
+            "type": "integer",
+            "description": "Vignette amount. Range: -100 to +100.",
+            "format": "int32",
+            "example": -10
+          }
+        },
+        "description": "Effects adjustments for image editing."
+      },
+      "EmbeddedDestination": {
+        "required": [
+          "embedded"
+        ],
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Destination"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "embedded": {
+                "type": "string",
+                "description": "Embedded format.",
+                "enum": [
+                  "string",
+                  "base64",
+                  "json"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "ErrorDetails": {
+        "type": "object",
+        "properties": {
+          "errorCode": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error_code": {
+            "type": "string",
+            "description": "The error code for this specific validation error."
+          },
+          "errors": {
+            "type": "array",
+            "description": "List of detailed validation errors when multiple errors occur. This field is optional and only populated when there are multiple validation errors.",
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            }
+          },
+          "message": {
+            "type": "string",
+            "description": "Human-readable string describing this specific validation error."
+          }
+        },
+        "description": "Error response containing error code, message, and optional list of validation errors.\n\nError Code Reference:\n| Error Code                    | Message                             |\n| ----------------------------- | ------------------------------------|\n|                               |                                     |\n| 401013                        | OAuth token is not valid            |\n| validation_error              | Validation failed                   |\n| unsupported_method            | Method not allowed                  |\n| invalid_content_type          | Unsupported media type              |\n| unknown_job_id                | Job not found                       |\n| unauthorized_forbidden        | The quota for the calling user has exhausted OR\n|                               | The Service is experiencing high traffic. Please retry after a brief wait OR\n|                               | The user is not entitled to call this service OR\n|                               | The user is currently blocked by the admin OR\n|                               | The user is having an invalid subscription OR\n|                               | The user is blocked due to a violation OR\n|                               | The user is having an invalid scope |\n| unauthorized_legal_reasons    | The user is unauthorized due to geo ip blocking failure OR\n|                               | The user is unauthorized due to user profile region failure from floodgate |\n| runtime_error                 | There was a problem while attempting to perform the operation. Please try again. |\n| invalid_json                  | The request payload is having invalid JSON (fallback) |\n"
+      },
+      "ExportOptions": {
+        "required": [
+          "mediaType"
+        ],
+        "type": "object",
+        "properties": {
+          "mediaType": {
+            "type": "string",
+            "description": "Supported media types for output.",
+            "enum": [
+              "image/jpeg",
+              "image/png",
+              "image/tiff",
+              "image/vnd.adobe.photoshop",
+              "document/vnd.adobe.cpsd+dcxucf",
+              "document/vnd.adobe.cpsd+dcx",
+              "application/json"
+            ]
+          }
+        },
+        "description": "Export options for the image.",
+        "discriminator": {
+          "propertyName": "mediaType"
+        }
+      },
+      "Exposure": {
+        "type": "object",
+        "properties": {
+          "exposureValue": {
+            "maximum": 20,
+            "exclusiveMaximum": false,
+            "minimum": -20,
+            "exclusiveMinimum": false,
+            "type": "number",
+            "description": "The layer's exposure value. Range: -20 to 20. Defaults to 0.0 when adding new layers. Optional for edits.",
+            "format": "double"
+          },
+          "gammaCorrection": {
+            "maximum": 9.99,
+            "exclusiveMaximum": false,
+            "minimum": 0.01,
+            "exclusiveMinimum": false,
+            "type": "number",
+            "description": "The layer's gamma correction value. Range: 0.01 to 9.99. Defaults to 1.0 when adding new layers. Optional for edits.",
+            "format": "double"
+          },
+          "offset": {
+            "maximum": 0.5,
+            "exclusiveMaximum": false,
+            "minimum": -0.5,
+            "exclusiveMinimum": false,
+            "type": "number",
+            "description": "The layer's offset value. Range: -0.5 to 0.5. Defaults to 0.0 when adding new layers. Optional for edits.",
+            "format": "double"
+          }
+        },
+        "description": "Exposure adjustment settings."
+      },
+      "ExposureAdjustments": {
+        "required": [
+          "exposure",
+          "type"
+        ],
+        "type": "object",
+        "description": "Exposure adjustment.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAdjustment"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "exposure": {
+                "$ref": "#/components/schemas/Exposure"
+              }
+            }
+          }
+        ]
+      },
+      "FileResourceInput": {
+        "type": "object",
+        "description": "The resource input for the image. Must be a valid FileResourceInput subtype.",
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/UrlResourceInput"
+          },
+          {
+            "$ref": "#/components/schemas/CreativeCloudResourceInput"
+          },
+          {
+            "$ref": "#/components/schemas/CreativeCloudFileIdResourceInput"
+          },
+          {
+            "$ref": "#/components/schemas/LightroomResourceInput"
+          }
+        ]
+      },
+      "Fill": {
+        "type": "object",
+        "properties": {
+          "solidColor": {
+            "$ref": "#/components/schemas/SolidColor"
+          }
+        },
+        "description": "Fill settings for layers."
+      },
+      "Font": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Display name of the font."
+          },
+          "postScriptName": {
+            "type": "string",
+            "description": "PostScript name of the font for precise identification."
+          }
+        },
+        "description": "Font definition with name and PostScript name."
+      },
+      "FontColor": {
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          }
+        },
+        "description": "Font color definition supporting RGB and CMYK color models.",
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "FontOptions": {
+        "type": "object",
+        "properties": {
+          "additionalFonts": {
+            "type": "array",
+            "description": "Array of custom fonts needed in this document.",
+            "items": {
+              "$ref": "#/components/schemas/AdditionalFont"
+            }
+          },
+          "defaultFont": {
+            "type": "string",
+            "description": "The full postscript name of the font to be used as the global default for the document."
+          },
+          "missingFontStrategy": {
+            "type": "string",
+            "description": "Action to take if there are missing fonts.",
+            "enum": [
+              "fail",
+              "use_default"
+            ]
+          }
+        },
+        "description": "Font options configuration."
+      },
+      "GenerateManifestRequest": {
+        "required": [
+          "image",
+          "outputs"
+        ],
+        "type": "object",
+        "properties": {
+          "exportOptions": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/JpegExportOptions"
+              },
+              {
+                "$ref": "#/components/schemas/PngExportOptions"
+              }
+            ]
+          },
+          "extractSmartObjectData": {
+            "type": "boolean",
+            "description": "Extract embedded smart objects and include pre-signed URLs in the manifest. Only applies to embedded (non-linked) smart objects. Default is false.",
+            "example": false,
+            "default": false
+          },
+          "image": {
+            "$ref": "#/components/schemas/Image"
+          },
+          "includeLayerThumbnails": {
+            "type": "boolean",
+            "default": false,
+            "example": false,
+            "description": "Indicates whether to generate renditions."
+          },
+          "includeXmp": {
+            "type": "boolean",
+            "description": "Include the XMP metadata in the response.",
+            "example": false,
+            "default": false
+          },
+          "maximumThumbnailDepth": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "Depth for layer renditions. If provided, must be greater than or equal to 0. 0 signifies no limit.",
+            "format": "int32"
+          },
+          "outputs": {
+            "maxItems": 25,
+            "minItems": 1,
+            "type": "array",
+            "description": "List of output destinations for the manifest.",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ManifestJsonOutput"
+                }
+              ]
+            }
+          },
+          "trimToTransparency": {
+            "type": "boolean",
+            "description": "Trim the layer to remove the transparent pixels.",
+            "example": false,
+            "default": false
+          }
+        }
+      },
+      "GroupLayer": {
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "description": "Group layer for organizing layers hierarchically.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseLayer"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "children": {
+                "type": "array",
+                "description": "Child layers in this group.",
+                "items": {
+                  "$ref": "#/components/schemas/NonGroupLayer"
+                }
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the group layer."
+              }
+            }
+          }
+        ]
+      },
+      "HostedDestination": {
+        "required": [
+          "validityPeriod"
+        ],
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Destination"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "validityPeriod": {
+                "maximum": 86400,
+                "minimum": 60,
+                "type": "integer",
+                "description": "Validity period in seconds. Minimum: 60 seconds (1 minute). Maximum: 86400 seconds (1 day).",
+                "format": "int32"
+              }
+            }
+          }
+        ]
+      },
+      "HueSaturation": {
+        "type": "object",
+        "properties": {
+          "colorize": {
+            "type": "boolean",
+            "description": "Whether to colorize the layer. When true, LocalRange cannot be used in any adjustment. Defaults to false when adding new layers. Optional for edits."
+          },
+          "hueSaturationAdjustments": {
+            "maxItems": 2147483647,
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HueSaturationAdjustment"
+            }
+          }
+        },
+        "description": "Hue/Saturation adjustment settings. When colorize is true, LocalRange cannot be used. When colorize is false, LocalRange can only be used for non-master channels (reds, yellows, greens, cyans, blues, magentas)."
+      },
+      "HueSaturationAdjustment": {
+        "type": "object",
+        "properties": {
+          "hue": {
+            "type": "integer",
+            "description": "The hue adjustment value. When colorize=false: -180 to 180. When colorize=true: 0 to 360. Defaults to 0 when adding new layers. Optional for edits.",
+            "format": "int32"
+          },
+          "lightness": {
+            "type": "integer",
+            "description": "The lightness adjustment value. When colorize=false: -100 to 100. When colorize=true: 0 to 100. Defaults to 0 when adding new layers. Optional for edits.",
+            "format": "int32"
+          },
+          "localRange": {
+            "$ref": "#/components/schemas/LocalRange"
+          },
+          "saturation": {
+            "type": "integer",
+            "description": "The saturation adjustment value. When colorize=false: -100 to 100. When colorize=true: 0 to 100. Defaults to 0 when adding new layers. Optional for edits.",
+            "format": "int32"
+          }
+        },
+        "description": "Array of hue/saturation adjustments. For master channel, LocalRange is not applicable."
+      },
+      "HueSaturationAdjustments": {
+        "required": [
+          "hueSaturation",
+          "type"
+        ],
+        "type": "object",
+        "description": "Hue and saturation adjustment.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAdjustment"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "hueSaturation": {
+                "$ref": "#/components/schemas/HueSaturation"
+              }
+            }
+          }
+        ]
+      },
+      "IccProfile": {
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Type of ICC profile. 'standard' for predefined profiles, 'custom' for user-provided profiles.",
+            "example": "standard",
+            "enum": [
+              "standard",
+              "custom"
+            ]
+          }
+        },
+        "description": "ICC profile configuration for color management.",
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "Image": {
+        "required": [
+          "source"
+        ],
+        "type": "object",
+        "properties": {
+          "source": {
+            "$ref": "#/components/schemas/FileResourceInput"
+          }
+        },
+        "description": "The image input, which contains a source field of type ResourceInput."
+      },
+      "ImageInput": {
+        "type": "object",
+        "description": "Image input configuration. Can be either a source image or parameters to create a new image."
+      },
+      "ImageParameters": {
+        "required": [
+          "height",
+          "resolution",
+          "width"
+        ],
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ImageInput"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "depth": {
+                "type": "string",
+                "description": "Bit depth options for image processing.",
+                "enum": [
+                  "8",
+                  "16",
+                  "32"
+                ]
+              },
+              "fill": {
+                "type": "string",
+                "description": "Type of fill for the background layer.",
+                "enum": [
+                  "white",
+                  "background_color",
+                  "transparent"
+                ]
+              },
+              "height": {
+                "maximum": 32000,
+                "minimum": 1,
+                "type": "integer",
+                "description": "Height in pixels.",
+                "format": "int32"
+              },
+              "iccProfile": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/CustomIccProfile"
+                  },
+                  {
+                    "$ref": "#/components/schemas/StandardIccProfile"
+                  }
+                ]
+              },
+              "mode": {
+                "type": "string",
+                "description": "Color mode.",
+                "enum": [
+                  "rgb",
+                  "hsb",
+                  "cmyk",
+                  "lab",
+                  "gray",
+                  "duotone",
+                  "opacity",
+                  "book"
+                ]
+              },
+              "name": {
+                "maxLength": 255,
+                "minLength": 0,
+                "type": "string",
+                "description": "Name of the document."
+              },
+              "pixelScaleFactor": {
+                "minimum": 0,
+                "type": "number",
+                "description": "Pixel scale factor.",
+                "format": "double"
+              },
+              "resolution": {
+                "maximum": 300,
+                "minimum": 72,
+                "type": "integer",
+                "description": "Resolution in pixels per inch.",
+                "format": "int32"
+              },
+              "width": {
+                "maximum": 32000,
+                "minimum": 1,
+                "type": "integer",
+                "description": "Width in pixels.",
+                "format": "int32"
+              }
+            }
+          }
+        ]
+      },
+      "ImageSource": {
+        "required": [
+          "source"
+        ],
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ImageInput"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "source": {
+                "$ref": "#/components/schemas/FileResourceInput"
+              }
+            }
+          }
+        ]
+      },
+      "ImageWithBounds": {
+        "required": [
+          "source"
+        ],
+        "type": "object",
+        "properties": {
+          "bounds": {
+            "$ref": "#/components/schemas/Bounds"
+          },
+          "source": {
+            "$ref": "#/components/schemas/FileResourceInput"
+          }
+        },
+        "description": "List of input images for the artboard. Each image must specify a source and bounds."
+      },
+      "InlineContentResourceInput": {
+        "required": [
+          "content"
+        ],
+        "type": "object",
+        "description": "Inline content resource input. Allows embedding content directly in the request.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ResourceInput"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "content": {
+                "maxLength": 51200,
+                "minLength": 0,
+                "type": "string",
+                "description": "Inline content as string (for scripts, JSON, or other text-based content)."
+              },
+              "contentType": {
+                "type": "string",
+                "description": "MIME type of the content. Optional but recommended for proper processing."
+              }
+            }
+          }
+        ]
+      },
+      "JobAcceptedResponse": {
+        "type": "object",
+        "properties": {
+          "jobId": {
+            "type": "string"
+          },
+          "statusUrl": {
+            "type": "string"
+          }
+        }
+      },
+      "JobStatusResponse": {
+        "type": "object",
+        "properties": {
+          "createdTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "errorDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorDetails"
+            }
+          },
+          "jobId": {
+            "type": "string"
+          },
+          "modifiedTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "result": {
+            "$ref": "#/components/schemas/Result"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      },
+      "JpegExportOptions": {
+        "required": [
+          "mediaType"
+        ],
+        "type": "object",
+        "description": "Jpeg Export options for the image.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ExportOptions"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "quality": {
+                "type": "string",
+                "description": "JPEG quality levels.",
+                "enum": [
+                  "very_poor",
+                  "poor",
+                  "low",
+                  "medium",
+                  "high",
+                  "maximum",
+                  "photoshop_max"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "JpegOutput": {
+        "required": [
+          "destination",
+          "mediaType"
+        ],
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/PhotoshopOutput"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "quality": {
+                "type": "string",
+                "description": "JPEG quality levels.",
+                "enum": [
+                  "very_poor",
+                  "poor",
+                  "low",
+                  "medium",
+                  "high",
+                  "maximum",
+                  "photoshop_max"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "JsonOutput": {
+        "required": [
+          "destination",
+          "mediaType"
+        ],
+        "type": "object",
+        "description": "JSON output configuration.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/PhotoshopOutput"
+          }
+        ]
+      },
+      "Layer": {
+        "required": [
+          "image",
+          "type"
+        ],
+        "type": "object",
+        "description": "Image layer for adding raster images to the document.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseLayer"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "image": {
+                "$ref": "#/components/schemas/ImageSource"
+              }
+            }
+          }
+        ]
+      },
+      "LightAdjustments": {
+        "type": "object",
+        "properties": {
+          "blacks": {
+            "maximum": 100,
+            "minimum": -100,
+            "type": "integer",
+            "description": "Blacks adjustment. Range: -100 to +100.",
+            "format": "int32",
+            "example": -10
+          },
+          "contrast": {
+            "maximum": 100,
+            "minimum": -100,
+            "type": "integer",
+            "description": "Contrast adjustment. Range: -100 to +100.",
+            "format": "int32",
+            "example": 10
+          },
+          "exposure": {
+            "maximum": 5.0,
+            "minimum": -5.0,
+            "type": "number",
+            "description": "Exposure adjustment.",
+            "format": "double",
+            "example": 1.2
+          },
+          "highlights": {
+            "maximum": 100,
+            "minimum": -100,
+            "type": "integer",
+            "description": "Highlights adjustment.",
+            "format": "int32",
+            "example": -20
+          },
+          "shadows": {
+            "maximum": 100,
+            "minimum": -100,
+            "type": "integer",
+            "description": "Shadows adjustment.",
+            "format": "int32",
+            "example": 15
+          },
+          "whites": {
+            "maximum": 100,
+            "minimum": -100,
+            "type": "integer",
+            "description": "Whites adjustment.",
+            "format": "int32",
+            "example": 5
+          }
+        },
+        "description": "Light adjustments for image editing."
+      },
+      "LightroomEdits": {
+        "type": "object",
+        "properties": {
+          "autoExposure": {
+            "type": "boolean",
+            "description": "Auto exposure adjustment."
+          },
+          "autoRedeye": {
+            "type": "boolean",
+            "description": "Auto redeye correction."
+          },
+          "autoStraighten": {
+            "$ref": "#/components/schemas/AutoStraighten"
+          },
+          "autoTone": {
+            "type": "boolean",
+            "description": "Auto tone adjustment."
+          },
+          "autoWhiteBalance": {
+            "type": "boolean",
+            "description": "Auto white balance adjustment."
+          },
+          "color": {
+            "$ref": "#/components/schemas/ColorAdjustments"
+          },
+          "effects": {
+            "$ref": "#/components/schemas/EffectsAdjustments"
+          },
+          "light": {
+            "$ref": "#/components/schemas/LightAdjustments"
+          },
+          "noiseReduction": {
+            "$ref": "#/components/schemas/NoiseReduction"
+          },
+          "presets": {
+            "maxItems": 10,
+            "minItems": 0,
+            "type": "array",
+            "description": "List of preset inputs to apply.",
+            "items": {
+              "$ref": "#/components/schemas/FileResourceInput"
+            }
+          },
+          "sharpen": {
+            "$ref": "#/components/schemas/SharpenAdjustments"
+          },
+          "sharpness": {
+            "maximum": 100,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Sharpness value.",
+            "format": "int32"
+          },
+          "xmp": {
+            "$ref": "#/components/schemas/XmpInput"
+          }
+        },
+        "description": "Lightroom edit adjustments including XMP, presets, and all adjustment parameters."
+      },
+      "LightroomOutput": {
+        "required": [
+          "destination",
+          "mediaType"
+        ],
+        "type": "object",
+        "properties": {
+          "destination": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CreativeCloudDestination"
+              },
+              {
+                "$ref": "#/components/schemas/EmbeddedDestination"
+              },
+              {
+                "$ref": "#/components/schemas/HostedDestination"
+              },
+              {
+                "$ref": "#/components/schemas/UrlDestination"
+              }
+            ]
+          },
+          "mediaType": {
+            "type": "string",
+            "description": "Supported media types for edit output.",
+            "enum": [
+              "image/jpeg",
+              "image/png",
+              "image/tiff",
+              "application/rdf+xml"
+            ]
+          }
+        },
+        "description": "Export options for a single output.",
+        "discriminator": {
+          "propertyName": "mediaType"
+        }
+      },
+      "LightroomResourceInput": {
+        "required": [
+          "lightroomPath"
+        ],
+        "type": "object",
+        "description": "Lightroom resource input. References a resource via Lightroom path.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ResourceInput"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "lightroomPath": {
+                "type": "string",
+                "description": "The path to the asset in Lightroom."
+              }
+            }
+          }
+        ]
+      },
+      "LocalRange": {
+        "required": [
+          "channelId"
+        ],
+        "type": "object",
+        "properties": {
+          "beginRamp": {
+            "maximum": 360,
+            "minimum": 0,
+            "type": "integer",
+            "description": "The beginning of the ramp (feather start). Range: 0-360 degrees.",
+            "format": "int32"
+          },
+          "beginSustain": {
+            "maximum": 360,
+            "minimum": 0,
+            "type": "integer",
+            "description": "The beginning of the sustain (full effect start). Range: 0-360 degrees.",
+            "format": "int32"
+          },
+          "channelId": {
+            "type": "string",
+            "description": "Channel for local range color adjustments.",
+            "enum": [
+              "REDS",
+              "YELLOWS",
+              "GREENS",
+              "CYANS",
+              "BLUES",
+              "MAGENTAS"
+            ]
+          },
+          "endRamp": {
+            "maximum": 360,
+            "minimum": 0,
+            "type": "integer",
+            "description": "The end of the ramp (feather end). Range: 0-360 degrees.",
+            "format": "int32"
+          },
+          "endSustain": {
+            "maximum": 360,
+            "minimum": 0,
+            "type": "integer",
+            "description": "The end of the sustain (full effect end). Range: 0-360 degrees.",
+            "format": "int32"
+          }
+        },
+        "description": "Local range settings for targeted color adjustments. Defines the hue range boundaries for the adjustment."
+      },
+      "LrJpegOutput": {
+        "required": [
+          "destination",
+          "mediaType"
+        ],
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightroomOutput"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "quality": {
+                "type": "string",
+                "description": "JPEG quality levels.",
+                "enum": [
+                  "very_poor",
+                  "poor",
+                  "low",
+                  "medium",
+                  "high",
+                  "maximum",
+                  "photoshop_max"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "LrPngOutput": {
+        "required": [
+          "destination",
+          "mediaType"
+        ],
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightroomOutput"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "compression": {
+                "type": "string",
+                "description": "PNG compression levels, from no compression to maximum compression. Values follow zlib/libpng standards.",
+                "enum": [
+                  "none",
+                  "very_low",
+                  "low",
+                  "medium_low",
+                  "medium",
+                  "medium_high",
+                  "default",
+                  "high",
+                  "very_high",
+                  "maximum"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "ManifestJsonOutput": {
+        "required": [
+          "destination",
+          "mediaType"
+        ],
+        "type": "object",
+        "description": "JSON manifest output configuration.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ManifestOutput"
+          }
+        ]
+      },
+      "ManifestOutput": {
+        "required": [
+          "destination",
+          "mediaType"
+        ],
+        "type": "object",
+        "properties": {
+          "destination": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CreativeCloudDestination"
+              },
+              {
+                "$ref": "#/components/schemas/EmbeddedDestination"
+              },
+              {
+                "$ref": "#/components/schemas/HostedDestination"
+              },
+              {
+                "$ref": "#/components/schemas/UrlDestination"
+              }
+            ]
+          },
+          "mediaType": {
+            "type": "string",
+            "description": "Supported media types for manifest output.",
+            "enum": [
+              "application/json"
+            ]
+          }
+        },
+        "description": "Export options for manifest output.",
+        "discriminator": {
+          "propertyName": "mediaType"
+        }
+      },
+      "Mask": {
+        "required": [
+          "digest",
+          "source"
+        ],
+        "type": "object",
+        "properties": {
+          "digest": {
+            "type": "string",
+            "description": "Fingerprint/digest of the mask for dictionary lookup."
+          },
+          "source": {
+            "$ref": "#/components/schemas/FileResourceInput"
+          }
+        },
+        "description": "Mask input for XMP operations. Contains source file reference and digest for dictionary lookup."
+      },
+      "NoiseReduction": {
+        "type": "object",
+        "properties": {
+          "color": {
+            "maximum": 100,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Color noise reduction. Range: 0 to 100.",
+            "format": "int32",
+            "example": 10
+          },
+          "luminance": {
+            "maximum": 100,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Luminance noise reduction. Range: 0 to 100.",
+            "format": "int32",
+            "example": 25
+          }
+        },
+        "description": "Noise reduction settings for image editing."
+      },
+      "NonGroupLayer": {
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "blendOptions": {
+            "$ref": "#/components/schemas/BlendOptions"
+          },
+          "id": {
+            "type": "integer",
+            "description": "Layer ID.",
+            "format": "int32"
+          },
+          "isClipped": {
+            "type": "boolean",
+            "description": "Whether the layer is clipped. Defaults to false when adding layers. Optional for edits."
+          },
+          "isLocked": {
+            "type": "boolean",
+            "description": "Whether the layer is locked. Defaults to false when adding layers. Optional for edits."
+          },
+          "isVisible": {
+            "type": "boolean",
+            "description": "Whether the layer is visible. Defaults to true when adding layers. Optional for edits."
+          },
+          "name": {
+            "type": "string",
+            "description": "Layer name."
+          },
+          "operation": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AddOperation"
+              },
+              {
+                "$ref": "#/components/schemas/DeleteOperation"
+              },
+              {
+                "$ref": "#/components/schemas/EditOperation"
+              }
+            ]
+          },
+          "pixelMask": {
+            "$ref": "#/components/schemas/PixelMask"
+          },
+          "transform": {
+            "$ref": "#/components/schemas/Transform"
+          },
+          "transformMode": {
+            "type": "string",
+            "description": "Transform mode applied to the layer. Defaults to none when adding layers. Optional for edits.",
+            "enum": [
+              "fit",
+              "fill",
+              "custom",
+              "none"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "description": "Layer type enum.",
+            "enum": [
+              "layer",
+              "solid_color_layer",
+              "text_layer",
+              "smart_object_layer",
+              "adjustment_layer",
+              "group_layer"
+            ]
+          }
+        },
+        "description": "Child layers in this group.",
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "Offset": {
+        "type": "object",
+        "properties": {
+          "horizontal": {
+            "type": "integer",
+            "description": "Horizontal offset in pixels. Defaults to 0 when adding new layers. Optional for edits.",
+            "format": "int32"
+          },
+          "vertical": {
+            "type": "integer",
+            "description": "Vertical offset in pixels. Defaults to 0 when adding new layers. Optional for edits.",
+            "format": "int32"
+          }
+        },
+        "description": "Offset coordinates for positioning elements."
+      },
+      "Operation": {
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Operation type enum.",
+            "enum": [
+              "add",
+              "edit",
+              "delete"
+            ]
+          }
+        },
+        "description": "Layer operation settings including placement, delete and edit operations.",
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "ParagraphStyle": {
+        "type": "object",
+        "properties": {
+          "apply": {
+            "$ref": "#/components/schemas/Apply"
+          },
+          "paragraphStyleProperties": {
+            "$ref": "#/components/schemas/ParagraphStyleProperties"
+          }
+        },
+        "description": "Paragraph style settings."
+      },
+      "ParagraphStyleProperties": {
+        "type": "object",
+        "properties": {
+          "alignment": {
+            "type": "string",
+            "description": "Text alignment options.",
+            "enum": [
+              "left",
+              "center",
+              "right"
+            ]
+          }
+        }
+      },
+      "ParagraphStyleRange": {
+        "type": "object",
+        "properties": {
+          "apply": {
+            "$ref": "#/components/schemas/Apply"
+          },
+          "paragraphStyle": {
+            "$ref": "#/components/schemas/ParagraphStyle"
+          }
+        },
+        "description": "Paragraph style range defining paragraph formatting for specific text ranges."
+      },
+      "PatternResource": {
+        "required": [
+          "source"
+        ],
+        "type": "object",
+        "properties": {
+          "source": {
+            "$ref": "#/components/schemas/FileResourceInput"
+          }
+        },
+        "description": "List of pattern resources. External references only."
+      },
+      "PhotoshopOutput": {
+        "required": [
+          "destination",
+          "mediaType"
+        ],
+        "type": "object",
+        "properties": {
+          "destination": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CreativeCloudDestination"
+              },
+              {
+                "$ref": "#/components/schemas/EmbeddedDestination"
+              },
+              {
+                "$ref": "#/components/schemas/HostedDestination"
+              },
+              {
+                "$ref": "#/components/schemas/UrlDestination"
+              }
+            ]
+          },
+          "height": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "Height in pixels. Must be >= 0.",
+            "format": "int32"
+          },
+          "iccProfile": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CustomIccProfile"
+              },
+              {
+                "$ref": "#/components/schemas/StandardIccProfile"
+              }
+            ]
+          },
+          "layers": {
+            "maxItems": 100,
+            "minItems": 0,
+            "type": "array",
+            "description": "Layers to include in the output.",
+            "items": {
+              "type": "integer",
+              "description": "Layers to include in the output.",
+              "format": "int32"
+            }
+          },
+          "maxWidth": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "Maximum width constraint in pixels. Must be >= 0. If specified and (width > maxWidth OR documentWidth > maxWidth), the output will be constrained to maxWidth.",
+            "format": "int32"
+          },
+          "mediaType": {
+            "type": "string",
+            "description": "Supported media types for output.",
+            "enum": [
+              "image/jpeg",
+              "image/png",
+              "image/tiff",
+              "image/vnd.adobe.photoshop",
+              "document/vnd.adobe.cpsd+dcxucf",
+              "document/vnd.adobe.cpsd+dcx",
+              "application/json"
+            ]
+          },
+          "scriptOutputPattern": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "Pattern for matching script output files in the UXP output directory. Supports both exact filenames and glob patterns. Examples: 'output.json' (matches single specific file), '*.json' (matches all JSON files), 'result-*.png' (matches result-1.png, result-2.png, etc.). Files are filtered based on the mediaType of this output definition. Only files with extensions matching the mediaType will be included. When a pattern matches multiple files, one output entry is created per file. When present, skips normal rendering/export and uses matched files instead. Output parameters like quality, compression, width, and height are ignored when this field is present. Only applicable for /v2/execute-actions endpoint. Nullable."
+          },
+          "shouldOverwrite": {
+            "type": "boolean",
+            "description": "Whether to overwrite existing files."
+          },
+          "shouldTrimToCanvas": {
+            "type": "boolean",
+            "description": "Trim Canvas."
+          },
+          "width": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "Width in pixels. Must be >= 0.",
+            "format": "int32"
+          }
+        },
+        "description": "Export options for a single output.",
+        "discriminator": {
+          "propertyName": "mediaType"
+        }
+      },
+      "PixelMask": {
+        "type": "object",
+        "properties": {
+          "isEnabled": {
+            "type": "boolean",
+            "description": "Whether the pixel mask is enabled. Defaults to true when adding new layers. Optional for edits."
+          },
+          "isLinked": {
+            "type": "boolean",
+            "description": "Whether the pixel mask is linked to the layer. Defaults to true when adding new layers. Optional for edits."
+          },
+          "offset": {
+            "$ref": "#/components/schemas/Offset"
+          },
+          "source": {
+            "$ref": "#/components/schemas/FileResourceInput"
+          }
+        },
+        "description": "Pixel mask settings for layer operations, including source input and pixel mask properties."
+      },
+      "Placement": {
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "referenceLayer": {
+            "$ref": "#/components/schemas/ReferenceLayer"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of placement operation (below, into, top, bottom, above).",
+            "enum": [
+              "below",
+              "into",
+              "top",
+              "bottom",
+              "above"
+            ]
+          }
+        },
+        "description": "Placement settings for positioning elements with alignment and insertion point."
+      },
+      "PngExportOptions": {
+        "required": [
+          "mediaType"
+        ],
+        "type": "object",
+        "description": "Png Export options for the image.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ExportOptions"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "compression": {
+                "type": "string",
+                "description": "PNG compression levels, from no compression to maximum compression. Values follow zlib/libpng standards.",
+                "enum": [
+                  "none",
+                  "very_low",
+                  "low",
+                  "medium_low",
+                  "medium",
+                  "medium_high",
+                  "default",
+                  "high",
+                  "very_high",
+                  "maximum"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "PngOutput": {
+        "required": [
+          "destination",
+          "mediaType"
+        ],
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/PhotoshopOutput"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "compression": {
+                "type": "string",
+                "description": "PNG compression levels, from no compression to maximum compression. Values follow zlib/libpng standards.",
+                "enum": [
+                  "none",
+                  "very_low",
+                  "low",
+                  "medium_low",
+                  "medium",
+                  "medium_high",
+                  "default",
+                  "high",
+                  "very_high",
+                  "maximum"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "PointFrame": {
+        "type": "object",
+        "properties": {
+          "x": {
+            "type": "integer",
+            "description": "X coordinate for text positioning.",
+            "format": "int32"
+          },
+          "y": {
+            "type": "integer",
+            "description": "Y coordinate for text positioning.",
+            "format": "int32"
+          }
+        },
+        "description": "Point frame for text positioning."
+      },
+      "PsdOutput": {
+        "required": [
+          "destination",
+          "mediaType"
+        ],
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/PhotoshopOutput"
+          }
+        ]
+      },
+      "PsdcOutput": {
+        "required": [
+          "destination",
+          "mediaType"
+        ],
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/PhotoshopOutput"
+          }
+        ]
+      },
+      "ReferenceLayer": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "Resize": {
+        "type": "object",
+        "properties": {
+          "constrainProportions": {
+            "type": "boolean",
+            "description": "Whether to constrain proportions during resizing.",
+            "default": true
+          },
+          "height": {
+            "$ref": "#/components/schemas/DimensionMeasurement"
+          },
+          "rasterize": {
+            "type": "boolean",
+            "description": "Whether to rasterize the image during resizing."
+          },
+          "resample": {
+            "type": "string",
+            "description": "The resampling method to use when resizing.",
+            "enum": [
+              "nearest_neighbor",
+              "bilinear",
+              "bicubic",
+              "bicubic_smoother",
+              "bicubic_sharper"
+            ],
+            "default": "bilinear"
+          },
+          "resolution": {
+            "$ref": "#/components/schemas/ResolutionMeasurement"
+          },
+          "scaleStyles": {
+            "type": "boolean",
+            "description": "Whether to scale styles during resizing.",
+            "default": true
+          },
+          "width": {
+            "$ref": "#/components/schemas/DimensionMeasurement"
+          }
+        },
+        "description": "Options for resizing a document, including width, height, resolution, resample type, and additional flags."
+      },
+      "ResolutionMeasurement": {
+        "required": [
+          "unit"
+        ],
+        "type": "object",
+        "properties": {
+          "unit": {
+            "type": "string",
+            "description": "The unit of measurement for resolution. 'density_unit' represents pixel density measurements like DPI (dots per inch) or PPI (pixels per inch).",
+            "enum": [
+              "density_unit"
+            ]
+          },
+          "value": {
+            "minimum": 0,
+            "type": "integer",
+            "description": "The value of the resolution. Must be greater than or equal to 0.",
+            "format": "int32"
+          }
+        },
+        "description": "Represents a resolution measurement with density unit."
+      },
+      "ResourceInput": {
+        "type": "object",
+        "description": "Source for the UXP script. Can be external file reference or inline script content. UXP scripts can use the placeholder `__UXP_OUTPUT_PATH__` which will be replaced at runtime with the directory path for script output files. Example usage: `const outputPath = '__UXP_OUTPUT_PATH__'; const outputFile = path.join(outputPath, 'uxpOutput.json');`."
+      },
+      "Result": {
+        "type": "object",
+        "properties": {
+          "outputs": {
+            "type": "object"
+          }
+        }
+      },
+      "Rgb": {
+        "type": "object",
+        "properties": {
+          "blue": {
+            "maximum": 255,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Blue component value (0-255).",
+            "format": "int32"
+          },
+          "green": {
+            "maximum": 255,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Green component value (0-255).",
+            "format": "int32"
+          },
+          "red": {
+            "maximum": 255,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Red component value (0-255).",
+            "format": "int32"
+          }
+        },
+        "description": "RGB color values with red, green, and blue components."
+      },
+      "SharpenAdjustments": {
+        "type": "object",
+        "properties": {
+          "detail": {
+            "maximum": 100,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Sharpen detail. Range: 0 to 100.",
+            "format": "int32",
+            "example": 50
+          },
+          "edgeMasking": {
+            "maximum": 100,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Sharpen edge masking. Range: 0 to 100.",
+            "format": "int32",
+            "example": 25
+          },
+          "radius": {
+            "maximum": 3,
+            "minimum": 0,
+            "type": "number",
+            "description": "Sharpen radius. Range: 0.5 to 3.0.",
+            "format": "double",
+            "example": 1
+          }
+        },
+        "description": "Sharpen adjustments for image editing."
+      },
+      "Skew": {
+        "required": [
+          "horizontal",
+          "vertical"
+        ],
+        "type": "object",
+        "properties": {
+          "horizontal": {
+            "type": "integer",
+            "description": "Horizontal skew.",
+            "format": "int32"
+          },
+          "vertical": {
+            "type": "integer",
+            "description": "Vertical skew.",
+            "format": "int32"
+          }
+        },
+        "description": "Skew transformation settings for horizontal and vertical distortion."
+      },
+      "SmartObject": {
+        "type": "object",
+        "properties": {
+          "smartObjectFile": {
+            "$ref": "#/components/schemas/SmartObjectFile"
+          }
+        },
+        "description": "Smart object settings and file reference."
+      },
+      "SmartObjectFile": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "$ref": "#/components/schemas/FileResourceInput"
+          }
+        },
+        "description": "File reference for the smart object."
+      },
+      "SmartObjectLayer": {
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "description": "Smart object layer for embedding external files or vector graphics.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseLayer"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "smartObject": {
+                "$ref": "#/components/schemas/SmartObject"
+              }
+            }
+          }
+        ]
+      },
+      "SolidColor": {
+        "type": "object",
+        "properties": {
+          "cmyk": {
+            "$ref": "#/components/schemas/Cmyk"
+          },
+          "rgb": {
+            "$ref": "#/components/schemas/Rgb"
+          }
+        },
+        "description": "Solid color definition using RGB values."
+      },
+      "SolidColorLayer": {
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "description": "Fill layer for adding solid color layer.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseLayer"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "fill": {
+                "$ref": "#/components/schemas/Fill"
+              }
+            }
+          }
+        ]
+      },
+      "StandardIccProfile": {
+        "required": [
+          "name",
+          "type"
+        ],
+        "type": "object",
+        "description": "Standard ICC profile with predefined profile names.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/IccProfile"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Standard ICC profile names for color management.",
+                "example": "SRGB_IEC61966_2_1",
+                "enum": [
+                  "Adobe RGB (1998)",
+                  "Apple RGB",
+                  "ColorMatch RGB",
+                  "sRGB IEC61966-2.1",
+                  "Dot Gain 10%",
+                  "Dot Gain 15%",
+                  "Dot Gain 20%",
+                  "Dot Gain 25%",
+                  "Dot Gain 30%",
+                  "Gray Gamma 1.8",
+                  "Gray Gamma 2.2"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "Text": {
+        "type": "object",
+        "properties": {
+          "antiAliasing": {
+            "type": "string",
+            "description": "Anti-aliasing setting for text."
+          },
+          "areaFrame": {
+            "$ref": "#/components/schemas/AreaFrame"
+          },
+          "characterStyles": {
+            "type": "array",
+            "description": "Character styles applied to text ranges.",
+            "items": {
+              "$ref": "#/components/schemas/CharacterStyleRange"
+            }
+          },
+          "content": {
+            "type": "string",
+            "description": "The text content."
+          },
+          "frameType": {
+            "type": "string",
+            "description": "Frame type for text."
+          },
+          "paragraphStyles": {
+            "type": "array",
+            "description": "Paragraph styles applied to text ranges.",
+            "items": {
+              "$ref": "#/components/schemas/ParagraphStyleRange"
+            }
+          },
+          "pointFrame": {
+            "$ref": "#/components/schemas/PointFrame"
+          },
+          "textOrientation": {
+            "type": "string",
+            "description": "Text orientation.",
+            "enum": [
+              "horizontal",
+              "vertical"
+            ]
+          },
+          "transform": {
+            "type": "array",
+            "description": "Transform matrix for text.",
+            "items": {
+              "type": "number",
+              "description": "Transform matrix for text.",
+              "format": "double"
+            }
+          }
+        },
+        "description": "Text content and formatting settings for text layers."
+      },
+      "TextLayer": {
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "description": "Text layer for adding and editing text content in the document.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseLayer"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "text": {
+                "$ref": "#/components/schemas/Text"
+              }
+            }
+          }
+        ]
+      },
+      "TiffOutput": {
+        "required": [
+          "destination",
+          "mediaType"
+        ],
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/PhotoshopOutput"
+          },
+          {
+            "$ref": "#/components/schemas/LightroomOutput"
+          }
+        ]
+      },
+      "Transform": {
+        "type": "object",
+        "properties": {
+          "anchor": {
+            "$ref": "#/components/schemas/Anchor"
+          },
+          "angle": {
+            "type": "number",
+            "description": "Rotation angle in degrees.",
+            "format": "double"
+          },
+          "dimension": {
+            "$ref": "#/components/schemas/Dimension"
+          },
+          "horizontalAlign": {
+            "type": "string",
+            "description": "Horizontal alignment options.",
+            "enum": [
+              "left",
+              "center",
+              "right"
+            ]
+          },
+          "offset": {
+            "$ref": "#/components/schemas/Offset"
+          },
+          "skew": {
+            "$ref": "#/components/schemas/Skew"
+          },
+          "verticalAlign": {
+            "type": "string",
+            "description": "Vertical alignment options.",
+            "enum": [
+              "top",
+              "center",
+              "bottom"
+            ]
+          }
+        },
+        "description": "Transformation applied to the smart object or layer."
+      },
+      "Trim": {
+        "type": "object",
+        "properties": {
+          "trimUpon": {
+            "type": "string",
+            "description": "The basis for the trim operation (background or transparent).",
+            "enum": [
+              "transparent_pixels"
+            ]
+          }
+        },
+        "description": "Options for trimming a document, specifying the basis for the trim operation."
+      },
+      "UrlDestination": {
+        "required": [
+          "url"
+        ],
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Destination"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "storageType": {
+                "type": "string",
+                "description": "Storage type for the destination.",
+                "enum": [
+                  "azure",
+                  "dropbox"
+                ]
+              },
+              "url": {
+                "type": "string",
+                "description": "Pre-signed URL for external storage. Must be HTTPS."
+              }
+            }
+          }
+        ]
+      },
+      "UrlResourceInput": {
+        "required": [
+          "url"
+        ],
+        "type": "object",
+        "description": "URL resource input. References a resource via a pre-signed URL.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ResourceInput"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "description": "The pre-signed URL of the resource."
+              }
+            }
+          }
+        ]
+      },
+      "UxpResource": {
+        "required": [
+          "source"
+        ],
+        "type": "object",
+        "properties": {
+          "source": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CreativeCloudFileIdResourceInput"
+              },
+              {
+                "$ref": "#/components/schemas/CreativeCloudResourceInput"
+              },
+              {
+                "$ref": "#/components/schemas/InlineContentResourceInput"
+              },
+              {
+                "$ref": "#/components/schemas/LightroomResourceInput"
+              },
+              {
+                "$ref": "#/components/schemas/UrlResourceInput"
+              }
+            ]
+          }
+        },
+        "description": "An UXP plugin script that can be executed."
+      },
+      "ValidationError": {
+        "type": "object",
+        "properties": {
+          "error_code": {
+            "type": "string",
+            "description": "The error code for this specific validation error."
+          },
+          "message": {
+            "type": "string",
+            "description": "Human-readable string describing this specific validation error."
+          }
+        },
+        "description": "Represents a single validation error with error code and message."
+      },
+      "XmpInput": {
+        "required": [
+          "source"
+        ],
+        "type": "object",
+        "properties": {
+          "masks": {
+            "type": "array",
+            "description": "List of mask inputs. Each mask contains a source file reference and digest for dictionary lookup.",
+            "items": {
+              "$ref": "#/components/schemas/Mask"
+            }
+          },
+          "orientation": {
+            "type": "string",
+            "description": "XMP orientation values following EXIF/TIFF specification.",
+            "enum": [
+              "top_left",
+              "top_right",
+              "bottom_right",
+              "bottom_left",
+              "left_top",
+              "right_top",
+              "right_bottom",
+              "left_bottom"
+            ]
+          },
+          "source": {
+            "$ref": "#/components/schemas/FileResourceInput"
+          }
+        },
+        "description": "XMP metadata input for the edit operation."
+      },
+      "XmpOutput": {
+        "required": [
+          "destination",
+          "mediaType"
+        ],
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/LightroomOutput"
+          }
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Authorization": {
+        "description": "User access token (Bearer xxx).",
+        "scheme": "Bearer",
+        "type": "http"
+      },
+      "X-Api-Key": {
+        "description": "API key (adobe.io).",
+        "in": "header",
+        "name": "X-Api-Key",
+        "type": "apiKey"
+      }
+    }
+  }
+}
