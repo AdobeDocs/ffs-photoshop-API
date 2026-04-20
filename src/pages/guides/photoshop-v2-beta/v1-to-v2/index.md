@@ -79,7 +79,7 @@ Authentication remains unchanged. Continue using your existing OAuth Server-to-S
 
 ## How should I begin migrating?
 
-1. **[Read the Kye Improvements and Architecture with v2](./key-improvements.md)** to understand the architectural changes
+1. **[Read the Key Improvements and Architecture with v2](./key-improvements.md)** to understand the architectural changes
 2. **Review storage options** in the [enhanced storage solutions guide](../../../getting-started/storage-solutions/index.md)
 3. **Choose your migration path** based on the endpoints you currently use (see the reference table below):
    - **Lightroom Operations:**

@@ -1,6 +1,6 @@
 ---
 title: Artboard Migration
-description: Migrate from /pie/psdService/artboards to /v2/create-artboard
+description: Migrate from /pie/psdService/artboardCreate to /v2/create-artboard
 hideBreadcrumbNav: true
 keywords:
   - artboards
@@ -10,63 +10,27 @@ keywords:
 
 # Artboard Migration
 
-This guide helps you migrate from the v1 artboards endpoint to `/v2/create-artboard`.
+This guide helps you migrate from the v1 artboardCreate endpoint to `/v2/create-artboard`.
 
 ## Overview
 
-The artboard functionality allows you to create artboards from multiple input images, positioning each image with specific bounds. The v2 endpoint provides the same functionality with an updated request/response structure.
+The artboard functionality allows you to create artboards from multiple input images. The v2 endpoint provides enhanced functionality with an updated request/response structure, support for more output formats, and an optional artboard spacing parameter.
 
 **V1 Endpoint:**
 
-- `/pie/psdService/artboards`
+- `/pie/psdService/artboardCreate`
 
 **V2 Endpoint:**
 
 - `/v2/create-artboard`
 
-## Best practices
-
-**Planning Artboard Layout:**
-
-1. Calculate total artboard size needed based on all image positions
-2. Ensure images don't overlap unless intentional
-3. Leave appropriate spacing between images
-4. Consider final output resolution requirements
-
-**Performance Tips:**
-
-1. Use appropriately sized source images
-2. Batch multiple outputs in a single request
-3. Use hosted storage for temporary outputs
-4. Consider using embedded storage for small previews
-
-**Output Optimization:**
-
-1. Generate multiple formats in one request (PSD, JPEG, and PNG)
-2. Use quality settings appropriate for your use case
-3. Specify dimensions for optimized outputs
-4. Enable canvas trimming if appropriate
-
 ## Migration example
-
-**Key differences from v1 to v2:**
-
-**Input structure:**
-
-- The v1 API's `inputs[].href` is now `images[].source.url` in v2
-- The v1 API's `inputs[].storage` is now `outputs[].destination.storageType` in v2
-
-**Output structure:**
-
-- The v1 API's `outputs[].href` is now `outputs[].destination.url` in v2
-- The v1 API's `outputs[].type` is now `outputs[].mediaType` in v2
-- The v1 API's `outputs[].storage` is now `outputs[].destination.storageType` in v2
 
 ### V1 approach
 
 ```shell
 curl -X POST \
-  https://image.adobe.io/pie/psdService/artboards \
+  https://image.adobe.io/pie/psdService/artboardCreate \
   -H "Authorization: Bearer $token" \
   -H "x-api-key: $apiKey" \
   -H "Content-Type: application/json" \
@@ -74,23 +38,11 @@ curl -X POST \
   "inputs": [
     {
       "href": "<IMAGE_1_URL>",
-      "storage": "external",
-      "bounds": {
-        "left": 0,
-        "top": 0,
-        "width": 500,
-        "height": 500
-      }
+      "storage": "external"
     },
     {
       "href": "<IMAGE_2_URL>",
-      "storage": "external",
-      "bounds": {
-        "left": 550,
-        "top": 0,
-        "width": 500,
-        "height": 500
-      }
+      "storage": "external"
     }
   ],
   "outputs": [
@@ -116,23 +68,11 @@ curl -X POST \
     {
       "source": {
         "url": "<IMAGE_1_URL>"
-      },
-      "bounds": {
-        "left": 0,
-        "top": 0,
-        "width": 500,
-        "height": 500
       }
     },
     {
       "source": {
         "url": "<IMAGE_2_URL>"
-      },
-      "bounds": {
-        "left": 550,
-        "top": 0,
-        "width": 500,
-        "height": 500
       }
     }
   ],
@@ -147,9 +87,24 @@ curl -X POST \
 }'
 ```
 
+## Key differences
+
+**Input structure:**
+
+- V1: `inputs[].href` → V2: `images[].source.url`
+- V1: `inputs[].storage` → V2: `outputs[].destination.storageType` (only for Azure/Dropbox)
+- V2 adds optional `artboardSpacing` parameter for controlling horizontal spacing
+
+**Output structure:**
+
+- V1: `outputs[].href` → V2: `outputs[].destination.url`
+- V1: `outputs[].type` → V2: `outputs[].mediaType`
+- V1: `outputs[].storage` → V2: `outputs[].destination.storageType` (optional in V2)
+- V2 supports 6 output formats: JPEG, PNG, TIFF, PSD, PSDC
+
 ## Input images
 
-Each image requires a source and bounds specification:
+Each image requires a source specification. The API arranges images horizontally with configurable spacing between them.
 
 ```json
 {
@@ -157,12 +112,6 @@ Each image requires a source and bounds specification:
     {
       "source": {
         "url": "<IMAGE_URL>"
-      },
-      "bounds": {
-        "left": 0,
-        "top": 0,
-        "width": 500,
-        "height": 500
       }
     }
   ]
@@ -203,46 +152,189 @@ The source can be specified using various storage types:
 }
 ```
 
-## Bounds specification
-
-Bounds define where each image is positioned on the artboard:
+**Lightroom Path:**
 
 ```json
 {
-  "bounds": {
-    "left": 0,
-    "top": 0,
-    "width": 500,
-    "height": 500
+  "source": {
+    "lightroomPath": "/path/to/image.jpg"
   }
 }
 ```
 
-**Bounds parameters:**
+## Artboard spacing
 
-- `left`: X-coordinate of the left edge (pixels)
-- `top`: Y-coordinate of the top edge (pixels)
-- `width`: Width of the image placement (pixels, 4-32000)
-- `height`: Height of the image placement (pixels, 4-32000)
-
-Alternatively, you can use `right` and `bottom` instead of `width` and `height`:
+Control the horizontal spacing between artboards using the optional `artboardSpacing` parameter.
 
 ```json
 {
-  "bounds": {
-    "left": 0,
-    "top": 0,
-    "right": 500,
-    "bottom": 500
-  }
+  "artboardSpacing": 100,
+  "images": [
+    {
+      "source": {
+        "url": "<IMAGE_1_URL>"
+      }
+    },
+    {
+      "source": {
+        "url": "<IMAGE_2_URL>"
+      }
+    }
+  ]
 }
 ```
+
+**Spacing parameter:**
+
+- **Type:** Integer
+- **Unit:** Pixels
+- **Default:** 50 pixels
+- **Optional:** Yes
+- **Description:** Horizontal spacing in pixels between each artboard
+
+### Examples with different spacing
+
+**Default spacing (50px):**
+
+```json
+{
+  "images": [
+    {
+      "source": { "url": "<IMAGE_1_URL>" }
+    },
+    {
+      "source": { "url": "<IMAGE_2_URL>" }
+    }
+  ]
+}
+```
+
+**Custom spacing (200px):**
+
+```json
+{
+  "artboardSpacing": 200,
+  "images": [
+    {
+      "source": { "url": "<IMAGE_1_URL>" }
+    },
+    {
+      "source": { "url": "<IMAGE_2_URL>" }
+    }
+  ]
+}
+```
+
+**Tight spacing (10px):**
+
+```json
+{
+  "artboardSpacing": 10,
+  "images": [
+    {
+      "source": { "url": "<IMAGE_1_URL>" }
+    },
+    {
+      "source": { "url": "<IMAGE_2_URL>" }
+    }
+  ]
+}
+```
+
+## Validation rules
+
+### Input images
+
+- **Minimum:** 1 image required
+- **Maximum:** 25 images allowed
+- **Required field:** `source` with valid file reference
+
+### Outputs
+
+- **Minimum:** 1 output required
+- **Maximum:** 25 outputs allowed
+- **Required fields:** `destination` and `mediaType`
 
 ## Output options
 
-The v2 API provides more flexible output options. A maximum of 25 outputs are allowed per request.
+V2 provides flexible output options with support for multiple formats:
+
+### Supported output formats
+
+**JPEG Output:**
+
+```json
+{
+  "destination": {
+    "url": "<JPEG_URL>"
+  },
+  "mediaType": "image/jpeg",
+  "quality": "maximum",
+  "width": 2000
+}
+```
+
+**PNG Output:**
+
+```json
+{
+  "destination": {
+    "url": "<PNG_URL>"
+  },
+  "mediaType": "image/png",
+  "compression": "medium",
+  "width": 1920
+}
+```
+
+**TIFF Output:**
+
+```json
+{
+  "destination": {
+    "url": "<TIFF_URL>"
+  },
+  "mediaType": "image/tiff",
+  "width": 3000
+}
+```
+
+**PSD Output:**
+
+```json
+{
+  "destination": {
+    "url": "<PSD_URL>"
+  },
+  "mediaType": "image/vnd.adobe.photoshop"
+}
+```
+
+**PSDC (Cloud Document) Output:**
+
+```json
+{
+  "destination": {
+    "url": "<PSDC_URL>"
+  },
+  "mediaType": "document/vnd.adobe.cpsd+dcxucf"
+}
+```
+
+**JSON Manifest Output:**
+
+```json
+{
+  "destination": {
+    "url": "<JSON_URL>"
+  },
+  "mediaType": "application/json"
+}
+```
 
 ### Multiple output formats
+
+Generate multiple formats in a single request:
 
 ```json
 {
@@ -296,6 +388,13 @@ The v2 API provides more flexible output options. A maximum of 25 outputs are al
 }
 ```
 
+The `validityPeriod` specifies how long the hosted URL remains valid:
+
+- **Minimum:** 60 seconds (1 minute)
+- **Maximum:** 86400 seconds (1 day / 24 hours)
+- **Unit:** Seconds
+- **Required** when using hosted storage
+
 **Embedded Storage:**
 
 ```json
@@ -307,6 +406,11 @@ The v2 API provides more flexible output options. A maximum of 25 outputs are al
 }
 ```
 
+Supported embedded formats:
+- `"base64"` - Base64-encoded image data
+- `"string"` - String representation
+- `"json"` - JSON format
+
 **Creative Cloud Storage:**
 
 ```json
@@ -317,6 +421,46 @@ The v2 API provides more flexible output options. A maximum of 25 outputs are al
   "mediaType": "image/vnd.adobe.photoshop"
 }
 ```
+
+Optional Creative Cloud project ID:
+
+```json
+{
+  "destination": {
+    "creativeCloudPath": "/path/to/output.psd",
+    "creativeCloudProjectId": "urn:aaid:sc:US:..."
+  },
+  "mediaType": "image/vnd.adobe.photoshop"
+}
+```
+
+**Azure Blob Storage:**
+
+```json
+{
+  "destination": {
+    "url": "<AZURE_PRESIGNED_URL>",
+    "storageType": "azure"
+  },
+  "mediaType": "image/jpeg"
+}
+```
+
+**Dropbox Storage:**
+
+```json
+{
+  "destination": {
+    "url": "<DROPBOX_URL>",
+    "storageType": "dropbox"
+  },
+  "mediaType": "image/jpeg"
+}
+```
+
+<InlineAlert variant="info" slots="text"/>
+
+The `storageType` field is only required for Azure Blob Storage and Dropbox. AWS S3 presigned URLs do not require this field.
 
 ## Output parameters
 
@@ -333,22 +477,74 @@ Control output rendering with additional parameters:
       "quality": "maximum",
       "width": 1920,
       "height": 1080,
-      "shouldTrimToCanvas": true
+      "maxWidth": 2400
     }
   ]
 }
 ```
 
-**Available Parameters:**
+**Available parameters:**
 
-- `width`: Output width in pixels
-- `height`: Output height in pixels
+- `width`: Output width in pixels (>= 0)
+- `height`: Output height in pixels (>= 0)
+- `maxWidth`: Maximum width constraint in pixels (>= 0)
 - `quality`: JPEG quality (`very_poor`, `poor`, `low`, `medium`, `high`, `maximum`, `photoshop_max`)
 - `compression`: PNG compression (`none`, `very_low`, `low`, `medium_low`, `medium`, `medium_high`, `default`, `high`, `very_high`, `maximum`)
-- `shouldTrimToCanvas`: Trim to canvas bounds
-- `shouldOverwrite`: Overwrite existing files
-- `iccProfile`: ICC color profile
-- `layers`: Specific layers to include in output
+- `shouldOverwrite`: Overwrite existing files (boolean)
+- `iccProfile`: ICC color profile for color management (standard or custom)
+- `layers`: Specific layers to include in output (array of layer references)
+- `cropMode`: Crop mode for layer export (`trim_to_transparency`, `document_bounds`, `layer_bounds`)
+
+### Advanced output features
+
+**Layer-specific export:**
+
+```json
+{
+  "destination": {
+    "url": "<OUTPUT_URL>"
+  },
+  "mediaType": "image/png",
+  "layers": [
+    {
+      "id": 123
+    },
+    {
+      "name": "Background"
+    }
+  ]
+}
+```
+
+**ICC color profile:**
+
+```json
+{
+  "destination": {
+    "url": "<OUTPUT_URL>"
+  },
+  "mediaType": "image/jpeg",
+  "iccProfile": {
+    "type": "standard",
+    "name": "sRGB IEC61966-2.1",
+    "imageMode": "rgb"
+  }
+}
+```
+
+See the [ICC Profile Migration guide](icc-profile-migration.md) for detailed color management options.
+
+**Crop mode:**
+
+```json
+{
+  "destination": {
+    "url": "<OUTPUT_URL>"
+  },
+  "mediaType": "image/png",
+  "cropMode": "trim_to_transparency"
+}
+```
 
 ## Complete example with multiple images
 
@@ -359,49 +555,26 @@ curl -X POST \
   -H "x-api-key: $apiKey" \
   -H "Content-Type: application/json" \
   -d '{
+  "artboardSpacing": 100,
   "images": [
     {
       "source": {
         "url": "<IMAGE_1_URL>"
-      },
-      "bounds": {
-        "left": 0,
-        "top": 0,
-        "width": 800,
-        "height": 600
       }
     },
     {
       "source": {
         "url": "<IMAGE_2_URL>"
-      },
-      "bounds": {
-        "left": 850,
-        "top": 0,
-        "width": 800,
-        "height": 600
       }
     },
     {
       "source": {
         "url": "<IMAGE_3_URL>"
-      },
-      "bounds": {
-        "left": 0,
-        "top": 650,
-        "width": 800,
-        "height": 600
       }
     },
     {
       "source": {
         "url": "<IMAGE_4_URL>"
-      },
-      "bounds": {
-        "left": 850,
-        "top": 650,
-        "width": 800,
-        "height": 600
       }
     }
   ],
@@ -417,11 +590,25 @@ curl -X POST \
         "url": "<JPEG_OUTPUT_URL>"
       },
       "mediaType": "image/jpeg",
-      "quality": "maximum"
+      "quality": "maximum",
+      "width": 2400
+    },
+    {
+      "destination": {
+        "validityPeriod": 7200
+      },
+      "mediaType": "image/png",
+      "compression": "high"
     }
   ]
 }'
 ```
+
+This example:
+1. Creates artboards from 4 images with 100px spacing between them
+2. Generates a PSD output at original resolution
+3. Generates a high-quality JPEG at 2400px width
+4. Generates a PNG with hosted storage (2-hour validity)
 
 ## Status checking
 
@@ -440,7 +627,7 @@ See the [status migration guide](status-migration.md) for details on the respons
 
 ### Incorrect input structure
 
-❌ **Problem:** Using v1 input format
+**Problem:** Using v1 input format
 
 ```json
 {
@@ -453,7 +640,7 @@ See the [status migration guide](status-migration.md) for details on the respons
 }
 ```
 
-✅ **Solution:** Use v2 images structure
+**Solution:** Use v2 images structure
 
 ```json
 {
@@ -467,11 +654,38 @@ See the [status migration guide](status-migration.md) for details on the respons
 }
 ```
 
-### Missing bounds
+### Too many images
 
-❌ **Problem:** Not providing bounds for images
+**Problem:** Exceeding the maximum number of images
 
-✅ **Solution:** Each image must have bounds specified
+**Error:**
+```
+Array size must be between 1 and 25 at path 'images'
+```
+
+**Solution:** Ensure you have between 1 and 25 images in your request
+
+### Too many outputs
+
+**Problem:** Exceeding the maximum number of outputs
+
+**Error:**
+```
+Array size must be between 1 and 25 at path 'outputs'
+```
+
+**Solution:** Ensure you have between 1 and 25 outputs in your request
+
+### Missing required fields
+
+**Problem:** Missing source in image
+
+**Error:**
+```
+Required field 'source' is missing at path 'images[0]'
+```
+
+**Solution:** Every image must have a source field
 
 ```json
 {
@@ -479,41 +693,117 @@ See the [status migration guide](status-migration.md) for details on the respons
     {
       "source": {
         "url": "<URL>"
-      },
-      "bounds": {
-        "left": 0,
-        "top": 0,
-        "width": 500,
-        "height": 500
       }
     }
   ]
 }
 ```
 
-### Invalid bounds values
+### Invalid hosted storage period
 
-❌ **Problem:** Bounds values outside valid range
+**Problem:** Hosted storage validityPeriod outside allowed range
 
-✅ **Solution:** Ensure width and height are between 4 and 32000 pixels
+**Error:**
+```
+validityPeriod must be between 60 and 86400 seconds
+```
+
+**Solution:** Use a value between 60 seconds (1 minute) and 86400 seconds (24 hours)
 
 ```json
 {
-  "bounds": {
-    "left": 0,
-    "top": 0,
-    "width": 500,
-    "height": 500
+  "destination": {
+    "validityPeriod": 3600
   }
 }
 ```
 
+### Missing storage type for Azure/Dropbox
+
+**Problem:** Using Azure or Dropbox without specifying storageType
+
+**Error:**
+```
+Azure Blob Storage URL requires 'storageType': 'azure'
+```
+
+**Solution:** Add storageType for Azure and Dropbox
+
+```json
+{
+  "destination": {
+    "url": "<AZURE_URL>",
+    "storageType": "azure"
+  }
+}
+```
+
+### Invalid JPEG quality value
+
+**Problem:** Using numeric quality instead of string enum
+
+**Error:**
+```
+Invalid value '7' at path 'outputs[0].quality'. Accepted values are: very_poor, poor, low, medium, high, maximum, photoshop_max
+```
+
+**Solution:** Use string enum values for quality
+
+```json
+{
+  "mediaType": "image/jpeg",
+  "quality": "maximum"
+}
+```
+
+## Best practices
+
+**Planning artboard layout:**
+
+1. Use appropriate artboardSpacing for your design needs (default is 50px)
+2. Consider the order of images in the array - they'll be arranged left to right
+3. Calculate total output width: (image widths) + (spacing x (number of images - 1))
+4. Consider final output resolution requirements
+
+**Performance tips:**
+
+1. Use appropriately sized source images
+2. Batch multiple outputs in a single request (up to 25)
+3. Use hosted storage for temporary outputs
+4. Consider using embedded storage for small previews
+
+**Output optimization:**
+
+1. Generate multiple formats in one request (PSD + JPEG + PNG)
+2. Use quality settings appropriate for your use case
+3. Specify dimensions for optimized outputs
+4. Use ICC profiles for color-critical work
+
+**Storage strategy:**
+
+1. Use AWS S3 presigned URLs when possible (no storageType needed)
+2. Specify validityPeriod for hosted URLs based on your download timeline
+3. Use Creative Cloud storage for persistent assets
+4. Add storageType only for Azure Blob Storage and Dropbox
+
+## Complete V1 parity reference
+
+For a single-page authoritative field-level comparison of every V1 field and how it maps to V2
+— including the V1 input structure, all storage-to-destination mappings,
+crop mode migration, quality/compression enum mappings, and status response changes — see the
+**[Create Artboard — Complete V1 Migration Reference](create-artboard-v1-reference.md)**.
+
 ## Next steps
 
+- Review the [output types migration guide](output-types-migration.md) for detailed format options
+- Check the [ICC profile migration guide](icc-profile-migration.md) for color management
 - Review the [storage solutions guide](../../../getting-started/storage-solutions/index.md) for more storage options
 - Check the [composite migration guide](composite-migration.md) for advanced layer operations
 - Test your artboard creation with development endpoints
 
-## Need help?
+## Related migration guides
 
-Contact the Adobe DI ART Service team for technical support with artboard operations.
+- [Output Types Migration](output-types-migration.md) - JPEG, PNG, PSD, TIFF output format changes
+- [ICC Profile Migration](icc-profile-migration.md) - Color management for output exports
+- [Status Migration](status-migration.md) - Job status checking in V2
+- [Migration Overview](index.md) - Complete V1 to V2 migration overview

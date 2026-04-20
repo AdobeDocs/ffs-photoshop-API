@@ -31,7 +31,8 @@ Note: V1 also had a dedicated `/psdService/smartObject` endpoint for specific sm
 ### Smart Object Types
 
 - **Embedded Smart Objects** - The source file is embedded in the PSD
-- **Linked Smart Objects** - The source file is linked externally (V1 supported, V2 status TBD)
+- **Linked Smart Objects** - The source file is linked externally
+  (`smartObject.isLinked: true` in V2)
 
 ## Adding Smart Object Layers
 
@@ -174,11 +175,25 @@ The smart object file reference is nested under `smartObject.smartObjectFile.sou
 }
 ```
 
-**V2:** (Status TBD - check V2 documentation)
+**V2:** Use `smartObject.isLinked` (`true` for linked, `false` for embedded)
+
+```json
+{
+  "type": "smart_object_layer",
+  "smartObject": {
+    "isLinked": true,
+    "smartObjectFile": {
+      "source": {
+        "url": "<URL>"
+      }
+    }
+  }
+}
+```
 
 <InlineAlert variant="info" slots="text"/>
 
-Check the current V2 API documentation for linked smart object support status. This feature may be in development.
+In V2, `smartObject.isLinked` replaces V1's `smartObject.linked` field. Set it explicitly to avoid ambiguity.
 
 ### 4. Add Operation Structure
 
@@ -410,6 +425,10 @@ V2 requires explicit `operation.type: "edit"` for editing existing layers, even 
 
 To replace smart object content, include `smartObject.smartObjectFile.source.url` with the new file URL. The `operation.type: "edit"` is required.
 
+<InlineAlert variant="warning" slots="text"/>
+
+Known limitation: V2 does not support replacing a linked smart object layer with an embedded smart object.
+
 ## Placement Options
 
 Smart objects support the same placement options as other layers:
@@ -435,20 +454,13 @@ Smart objects support the same placement options as other layers:
   "operation": {
     "type": "add",
     "placement": {
-      "type": "top"                // or "bottom"
-      // or with referenceLayer:
-      "type": "above",
-      "referenceLayer": {
-        "name": "..."              // or "id": 123
-      }
+      "type": "top"
     }
   }
 }
 ```
 
-<InlineAlert variant="info" slots="text"/>
-
-V2 uses `referenceLayer` with `name` or `id` instead of `relativeTo`. Placement types include: "top", "bottom", "above", "below", "into".
+For relative placement use `"above"`, `"below"`, or `"into"` with `referenceLayer`: `{"name": "..."}` or `{"id": 123}`.
 
 See [Image Layer Operations](layer-operations-image.md) for detailed placement patterns.
 
@@ -487,7 +499,7 @@ See [Image Layer Operations](layer-operations-image.md) for detailed placement p
   "document": {
     "width": 1000,
     "height": 1000,
-    "resolution": 72,
+    "resolution": {"unit": "density_unit", "value": 72},
     "fill": {
       "solidColor": {
         "red": 255,
@@ -530,7 +542,7 @@ Smart objects support standard layer properties:
   "type": "smart_object_layer",
   "name": "My Smart Object",
   "isVisible": true,
-  "isLocked": false,
+  "protection": ["none"],
   "blendOptions": {
     "opacity": 90,
     "blendMode": "normal"
@@ -569,9 +581,8 @@ Smart objects support standard layer properties:
 
 - `opacity` and `blendMode` are nested under `blendOptions`, not at the layer level
 - `bounds` is replaced with `transform` containing `offset` and `dimension`
-
-> - `transformMode` can be "custom", "fit", "fill", or "none"
-> - `isLocked` property is available for layer locking
+- `transformMode` can be "custom", "fit", "fill", or "none"
+- `protection` array is available for layer locking (e.g. `["all"]`, `["none"]`, or specific flags). Note: `all` and `none` must be the only element when used; they cannot be combined with other flags
 
 See [Advanced Layer Operations](layer-operations-advanced.md) for blend modes and transforms.
 
@@ -587,19 +598,21 @@ When migrating smart object operations from V1 to V2:
 - [ ] Use `referenceLayer` with `name` or `id` instead of `relativeTo`
 - [ ] Add `operation.type: "edit"` for editing existing layers
 - [ ] Convert `visible` to `isVisible`
+- [ ] Lock: Change `locked` to `protection` array (see [Advanced Layer Operations](layer-operations-advanced.md))
 - [ ] Move `opacity` and `blendMode` under `blendOptions` object
 - [ ] Replace `bounds` with `transform` containing `offset` and `dimension`
 - [ ] Add `transformMode` property ("custom", "fit", "fill", or "none")
-- [ ] Check V2 documentation for linked smart object support
+- [ ] Convert `smartObject.linked` to `smartObject.isLinked`
+      (`true` for linked, `false` for embedded)
 - [ ] Verify supported source file types in V2
 
 ## Common Migration Issues
 
 ### Issue: Linked smart objects
 
-**Problem:** V1 had `smartObject.linked` property
+**Problem:** V1 used `smartObject.linked`, which is not the same field name in V2
 
-**Solution:** Check V2 documentation for current linked smart object support
+**Solution:** Use V2 `smartObject.isLinked` with the same boolean intent
 
 ### Issue: Source file type support
 
@@ -715,6 +728,7 @@ When migrating smart object operations from V1 to V2:
           }
         },
         "smartObject": {
+          "isLinked": false,
           "smartObjectFile": {
             "source": {
               "url": "<LOGO_PSD_URL>"
@@ -746,6 +760,7 @@ When migrating smart object operations from V1 to V2:
           }
         },
         "smartObject": {
+          "isLinked": true,
           "smartObjectFile": {
             "source": {
               "url": "<PRODUCT_IMAGE_URL>"
@@ -769,9 +784,155 @@ When migrating smart object operations from V1 to V2:
 }
 ```
 
+## New features in V2
+
+V2 introduces several smart object capabilities that were not available in V1:
+
+### Replacement of linked smart object with another linked smart object
+
+V2 allows you to replace an existing linked smart object with a different linked smart object. This was not possible in V1.
+
+**Example:**
+
+```json
+{
+  "edits": {
+    "layers": [
+      {
+        "name": "Existing Linked Smart Object",
+        "type": "smart_object_layer",
+        "operation": {
+          "type": "edit"
+        },
+        "smartObject": {
+          "isLinked": true,
+          "smartObjectFile": {
+            "source": {
+              "url": "<NEW_LINKED_FILE_URL>"
+            }
+          }
+        }
+      }
+    ]
+  }
+}
+```
+
+### Replacement of embedded smart object with linked smart object
+
+V2 enables you to convert an embedded smart object into a linked smart object by replacing it with a linked file. This workflow was not supported in V1.
+
+**Example:**
+
+```json
+{
+  "edits": {
+    "layers": [
+      {
+        "name": "Existing Embedded Smart Object",
+        "type": "smart_object_layer",
+        "operation": {
+          "type": "edit"
+        },
+        "smartObject": {
+          "isLinked": true,
+          "smartObjectFile": {
+            "source": {
+              "url": "<LINKED_FILE_URL>"
+            }
+          }
+        }
+      }
+    ]
+  }
+}
+```
+
+<InlineAlert variant="info" slots="text"/>
+
+When replacing an embedded smart object with a linked smart object, ensure that `isLinked` is set to `true`.
+
+### Resize with linked smart objects
+
+V1 rejected any resize (`width`/`maxWidth`) on documents containing linked smart objects. V2 removes this restriction.
+
+| Scenario | Linked SO with content provided | Other linked SOs (no content) |
+|----------|-------------------------------|-------------------------------|
+| Width resize only (no edits) | N/A | Rasterized to pixel layer |
+| Edit/add linked SO + width resize | Stays linked smart object | Rasterized to pixel layer |
+
+**Example — Width resize only:**
+
+When no edits are provided, linked file content is not available to the engine. All linked smart object layers are rasterized into pixel layers during resize.
+
+```json
+{
+  "image": {
+    "source": {
+      "url": "<SIGNED_INPUT_PSD_GET_URL>"
+    }
+  },
+  "outputs": [
+    {
+      "destination": {
+        "url": "<SIGNED_OUTPUT_POST_URL>"
+      },
+      "mediaType": "image/vnd.adobe.photoshop",
+      "width": 200
+    }
+  ]
+}
+```
+
+**Result:** The output PSD is resized to 200px width (aspect ratio maintained). All linked smart object layers in the document are converted to regular pixel (image) layers.
+
+**Example — Edit linked SO + width resize:**
+
+When you edit or add a linked smart object in the same request as a resize, the edited/added layer stays intact as a linked smart object (its content was provided via the API). Other linked SO layers in the document that were not edited are rasterized.
+
+```json
+{
+  "image": {
+    "source": {
+      "url": "<SIGNED_INPUT_PSD_GET_URL>"
+    }
+  },
+  "edits": {
+    "layers": [
+      {
+        "type": "smart_object_layer",
+        "name": "<EXISTING_SMART_OBJECT_LAYER_NAME>",
+        "operation": {
+          "type": "edit"
+        },
+        "smartObject": {
+          "isLinked": true,
+          "smartObjectFile": {
+            "source": {
+              "url": "<SIGNED_REPLACEMENT_FILE_GET_URL>"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "outputs": [
+    {
+      "destination": {
+        "url": "<SIGNED_OUTPUT_POST_URL>"
+      },
+      "mediaType": "image/vnd.adobe.photoshop",
+      "width": 200
+    }
+  ]
+}
+```
+
+**Result:** The output PSD is resized to 200px width. The edited layer remains a linked smart object (its content was provided via the edit). All other linked SO layers in the document are rasterized into pixel layers.
+
 ## Feature Availability
 
-### Currently Available in V2
+### Currently available in V2
 
 - ✅ Add embedded smart object layers
 - ✅ Edit existing smart objects
@@ -779,24 +940,17 @@ When migrating smart object operations from V1 to V2:
 - ✅ Smart object transformations (transform with offset, dimension, angle, skew, anchor)
 - ✅ Transform modes (custom, fit, fill)
 - ✅ Layer visibility (`isVisible`)
-- ✅ Layer locking (`isLocked`)
+- ✅ Layer locking (`protection` array)
 - ✅ Blend options (opacity, blendMode)
 - ✅ Placement options (top, bottom, above, below, into)
 - ✅ Reference layer by name or ID
 - ✅ Multiple source file types (PSD, JPEG, PNG, SVG)
+- ✅ Linked and embedded smart objects (`smartObject.isLinked`)
+- ✅ Resize (`width`/`maxWidth`) documents containing linked smart objects
 
-### V1 Features - Status TBD
-
-- ⏳ Linked smart objects (`linked: true`)
-- ⏳ Check V2 documentation for current status
-
-### Coming Soon
+### Coming soon
 
 Check V2 API documentation and release notes for upcoming features.
-
-<InlineAlert variant="info" slots="text"/>
-
-If you rely on V1 smart object features not yet in V2, contact the Adobe DI ART Service team to discuss alternatives or timeline.
 
 ## Next steps
 
@@ -804,6 +958,3 @@ If you rely on V1 smart object features not yet in V2, contact the Adobe DI ART 
 - Check [Image Layers](layer-operations-image.md) for placement patterns
 - See [Advanced Operations](layer-operations-advanced.md) for transforms and effects
 
-## Need Help?
-
-Contact the Adobe DI ART Service team for technical support with smart object migration.

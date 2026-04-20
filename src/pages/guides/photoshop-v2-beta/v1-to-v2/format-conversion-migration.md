@@ -44,6 +44,7 @@ POST /v2/create-composite
 - **Media Types:** More explicit media type declarations
 - **Storage Options:** Enhanced storage options (external, hosted, embedded, Creative Cloud)
 - **Multiple Outputs:** Generate multiple formats in a single request (up to 25 outputs)
+- **Conversion Behavior:** See [Format Support: Color Mode and Bit Depth](output-types-migration.md#format-support-color-mode-and-bit-depth) for details
 
 ## Basic format conversion
 
@@ -903,7 +904,3 @@ Use **[Composite Operations](composite-migration.md)** when:
 - Review the [storage solutions guide](../../../getting-started/storage-solutions/index.md) for more storage options
 - Check the [status migration guide](status-migration.md) for checking job status
 - Test your conversion operations with development endpoints
-
-## Need help?
-
-Contact the Adobe DI ART Service team for technical support with format conversion operations.

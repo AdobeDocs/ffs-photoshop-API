@@ -193,9 +193,9 @@ In the v2 API, the corresponding placement options are controlled by the `operat
 
 - `type: "top"` - Add at top
 - `type: "bottom"` - Add at bottom
-- `type: "above"` with `relativeTo` - Above specific layer
-- `type: "below"` with `relativeTo` - Below specific layer
-- `type: "inside"` with `relativeTo` - Inside a group
+- `type: "above"` with `referenceLayer` - Above specific layer
+- `type: "below"` with `referenceLayer` - Below specific layer
+- `type: "into"` with `referenceLayer` - Inside a group
 
 ### Insert at Top
 
@@ -269,7 +269,7 @@ In the v2 API, the corresponding placement options are controlled by the `operat
     "type": "add",
     "placement": {
       "type": "above",
-      "relativeTo": {
+      "referenceLayer": {
         "name": "Background"
       }
     }
@@ -299,7 +299,7 @@ In the v2 API, the corresponding placement options are controlled by the `operat
     "type": "add",
     "placement": {
       "type": "below",
-      "relativeTo": {
+      "referenceLayer": {
         "id": 123
       }
     }
@@ -328,8 +328,8 @@ In the v2 API, the corresponding placement options are controlled by the `operat
   "operation": {
     "type": "add",
     "placement": {
-      "type": "inside",
-      "relativeTo": {
+      "type": "into",
+      "referenceLayer": {
         "name": "My Group"
       }
     }
@@ -503,7 +503,7 @@ curl -X POST \
 
 <InlineAlert variant="info" slots="text"/>
 
-In V2, editing existing layers doesn't require an explicit operation type. Simply reference the layer by name or ID and specify the properties to change.
+In V2, editing existing layers **requires** an explicit operation type. Include `operation: { "type": "edit" }`, then reference the layer by name or ID and specify the properties to change. The Core API Server rejects requests that omit the `operation` field.
 
 ## Replacing Layer Content
 
@@ -528,12 +528,19 @@ In V2, editing existing layers doesn't require an explicit operation type. Simpl
 
 ### V2 approach
 
+In V2, use `operation: { "type": "edit" }` and identify the layer by `id` or `name`. The replacement image is supplied via `image.source.url` in the same request:
+
 ```json
 {
   "edits": {
     "layers": [
       {
+        "type": "layer",
+        "id": 751,
         "name": "Existing Layer",
+        "operation": {
+          "type": "edit"
+        },
         "image": {
           "source": {
             "url": "<NEW_IMAGE_URL>"
@@ -544,6 +551,10 @@ In V2, editing existing layers doesn't require an explicit operation type. Simpl
   }
 }
 ```
+
+<InlineAlert variant="info" slots="text"/>
+
+**Target layer must be an image/pixel layer.** The layer you are editing (by `id` or `name`) must be an image/pixel layer in the document.
 
 ## Layer Positioning
 
@@ -624,7 +635,7 @@ Both V1 and V2 support explicit positioning:
 
 <InlineAlert variant="warning" slots="text"/>
 
-The `fillToCanvas` property from V1 is not yet available in V2. Contact Adobe DI ART Service team if you need this feature.
+The `fillToCanvas` property from V1 is not yet available in V2.
 
 ## Creating Documents with Image Layers
 
@@ -661,7 +672,7 @@ The `fillToCanvas` property from V1 is not yet available in V2. Contact Adobe DI
   "document": {
     "width": 1000,
     "height": 1000,
-    "resolution": 72,
+    "resolution": {"unit": "density_unit", "value": 72},
     "fill": {
       "solidColor": {
         "red": 255,
@@ -699,13 +710,14 @@ When migrating image layer operations from v1 to v2:
 - [ ] Replace `add` block with `operation.type: "add"`
 - [ ] Convert placement: `insertTop` → `placement.type: "top"`
 - [ ] Convert placement: `insertBottom` → `placement.type: "bottom"`
-- [ ] Convert placement: `insertAbove` → `placement.type: "above"` with `relativeTo`
-- [ ] Convert placement: `insertBelow` → `placement.type: "below"` with `relativeTo`
-- [ ] Convert placement: `insertInto` → `placement.type: "inside"` with `relativeTo`
+- [ ] Convert placement: `insertAbove` → `placement.type: "above"` with `referenceLayer`
+- [ ] Convert placement: `insertBelow` → `placement.type: "below"` with `referenceLayer`
+- [ ] Convert placement: `insertInto` → `placement.type: "into"` with `referenceLayer`
 - [ ] Change `type: "fillLayer"` to `type: "solid_color_layer"`
 - [ ] Remove explicit `edit: {}` block for modifications
 - [ ] Convert `blendOptions.opacity` to `opacity` (top-level property)
 - [ ] Convert `visible` to `isVisible`
+- [ ] Lock: Change `locked` to `protection` array (see [Advanced Layer Operations](layer-operations-advanced.md))
 - [ ] Note: `fillToCanvas` not yet available in V2
 
 ## Common migration issues
@@ -910,7 +922,7 @@ The v2 API requires explicit placement for an add operation. Always specify plac
 - ✅ Edit existing layers
 - ✅ Replace layer content
 - ✅ Layer positioning (bounds)
-- ✅ Layer placement (top, bottom, above, below, inside)
+- ✅ Layer placement (top, bottom, above, below, into)
 - ✅ Layer visibility and opacity
 
 ### V1 Features Not Yet in V2
@@ -918,10 +930,8 @@ The v2 API requires explicit placement for an add operation. Always specify plac
 - ⏳ `fillToCanvas` property
 - ⏳ Some advanced alignment options
 
-<InlineAlert variant="info" slots="text"/>
+## Next steps
 
-If you rely on v1 features not yet in v2, contact the Adobe DI ART Service team to discuss alternatives or timeline.
-
-## Need Help?
-
-Contact the Adobe DI ART Service team for technical support with image layer migration.
+- Review [Layer Operations Overview](layer-operations-overview.md) for general concepts
+- Check [Text Layers](layer-operations-text.md) for text operations
+- See [Advanced Operations](layer-operations-advanced.md) for masks and transforms

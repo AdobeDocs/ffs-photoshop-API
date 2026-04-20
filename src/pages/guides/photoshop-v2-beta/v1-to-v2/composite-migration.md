@@ -135,6 +135,7 @@ Layer operations work in conjunction with other v2 endpoints:
 
 - **[Export Layers Migration](export-layers-migration.md)** - Export one or more layers (single vs multi-layer, PSD support, quality defaults)
 - **[Format Conversion](format-conversion-migration.md)** - Convert PSDs to other formats without edits
+- **[ICC Profile Migration](icc-profile-migration.md)** - Color management for output exports
 - **[Document Creation](document-creation-migration.md)** - Create new blank documents
 - **[Document Operations](document-operations-migration.md)** - Document-level operations (resize, crop, trim)
 
@@ -142,7 +143,6 @@ Layer operations work in conjunction with other v2 endpoints:
 
 - Check the [Layer Operations Overview](layer-operations-overview.md) for general concepts
 - Review the [storage solutions guide](../../../getting-started/storage-solutions/index.md) for output options
-- Contact the Adobe DI ART Service team for technical support
 
 ## What's next?
 

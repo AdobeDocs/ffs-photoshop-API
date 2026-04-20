@@ -43,7 +43,7 @@ For artboard-based documents, use the separate `/v2/create-artboard` endpoint. S
 - **Request Structure:** Document parameters moved to the `image` object.
 - **Parameter Names:** Some parameter names have changed (e.g., `fill` options).
 - **Enhanced Options:** More granular control over document properties.
-- **Initial Content:** Layers can now be added during document creation.
+- **Initial Content:** Can add layers during document creation (creating a new document with a group layer is not yet supported — upcoming feature; to add layers inside a group, use create-composite on an existing document with placement `type: "into"` and `referenceLayer`).
 
 ## When to use document creation
 
@@ -74,12 +74,12 @@ Use **[Composite Operations](composite-migration.md)** when:
 
 ## Creating a basic blank document
 
-**Key Points:**
+**Key points:**
 
-- Document dimensions: `width`, `height` (pixels), `resolution`
-- `fill`: Background type (e.g. `"transparent"`, `"white"`, `"black"`)
+- Document dimensions: `width`, `height` (pixels), `resolution` (object with `unit` and `value`)
+- `fill`: Background type (e.g. `"transparent"`, `"white"`, `"background_color"`) or object for custom RGB
 - `mode`: Color mode (e.g. `"rgb"`, `"cmyk"`, `"grayscale"`)
-- `depth`: Bit depth (e.g. `"8"`, `"16"`, `"32"`)
+- `depth`: Bit depth as integer (e.g. `8`, `16`, `32`)
 
 **V2 Approach:**
 
@@ -93,10 +93,10 @@ curl -X POST \
   "image": {
     "width": 1920,
     "height": 1080,
-    "resolution": 72,
+    "resolution": {"unit": "density_unit", "value": 72},
     "fill": "transparent",
     "mode": "rgb",
-    "depth": "8"
+    "depth": 8
   },
   "outputs": [
     {
@@ -111,14 +111,98 @@ curl -X POST \
 
 ## Document parameters
 
-| Required | Parameter | Details |
-|----------|-----------|---------|
-| Yes | `width` | Type: Integer. Range: 1–32000 pixels. Width of the document in pixels. |
-| Yes | `height` | Type: Integer. Range: 1–32000 pixels. Height of the document in pixels. |
-| Yes | `resolution` | Type: Integer. Range: 72–300 PPI. Document resolution in pixels per inch. Common values: 72 (web), 150 (draft print), 300 (high-quality print). |
-| No | `fill` | Type: String. Default: `"white"`. Options: `"white"` (white background), `"background_color"` (uses background color, customizable), `"transparent"` (transparent background). Background fill for the document. |
-| No | `mode` | Type: String. Default: `"rgb"`. Options: `"rgb"`, `"cmyk"`, `"gray"`, `"lab"`, `"hsb"`, `"duotone"`, `"opacity"`, `"book"`. Color mode for the document. |
-| No | `depth` | Type: String. Default: `"8"`. Options: `"8"`, `"16"`, `"32"` (bits per channel). Bit depth per color channel. |
+### Required parameters
+
+**`width`**
+
+- Type: Integer
+- Range: 1-32000 pixels
+- Description: Width of the document in pixels
+
+**`height`**
+
+- Type: Integer
+- Range: 1-32000 pixels
+- Description: Height of the document in pixels
+
+**`resolution`**
+
+- Type: Object with `unit` and `value` properties
+- Format: `{"unit": "density_unit", "value": N}` where N must be at least 1 (value >= 1)
+- Description: Document resolution in pixels per inch (PPI)
+- Common values: 72 (web), 150 (draft print), 300 (high-quality print)
+- Example: `{"unit": "density_unit", "value": 72}`
+
+### Optional parameters
+
+**`fill`**
+
+- Type: String or Object
+- Default: `"white"`
+- String options:
+  - `"white"` - White background
+  - `"background_color"` - Uses background color (customizable)
+  - `"transparent"` - Transparent background
+- Object form (for custom colors): `{"solidColor": {"rgb": {"red": R, "green": G, "blue": B}}}`
+- Description: Background fill for the document
+
+<InlineAlert variant="warning" slots="header,text"/>
+
+The `fill` field changed between V1 and V2
+
+Two breaking differences: (1) `"backgroundColor"` was renamed to `"background_color"` — the V1 string enum `"backgroundColor"` is invalid in V2. Use `"background_color"` (with underscore). (2) Custom solid colors require the object form in V2 — V1 only supported the three string shortcuts, V2 adds `{"solidColor": {"rgb": {"red": R, "green": G, "blue": B}}}` for arbitrary custom colors.
+
+**`mode`**
+
+- Type: String
+- Default: `"rgb"`
+- Options: `"rgb"`, `"bitmap"`, `"grayscale"`, `"indexed"`, `"hsb"`, `"cmyk"`, `"lab"`, `"duotone"`, `"multichannel"`
+- Description: Color mode for the document. Supported depths vary by mode (see table below).
+
+**`depth`**
+
+- Type: Integer
+- Default: `8` (when omitted)
+- Values: `1`, `8`, `16`, or `32` (bit depth per channel). Valid combinations depend on `mode`:
+  - **bitmap:** `1` only
+  - **grayscale, rgb, hsb:** 8, 16, or 32
+  - **cmyk, lab, multichannel:** 8 or 16
+  - **indexed, duotone:** 8 only
+
+| mode         | Supported depths |
+|--------------|------------------|
+| bitmap       | 1                |
+| grayscale    | 8, 16, 32        |
+| rgb          | 8, 16, 32        |
+| hsb          | 8, 16, 32        |
+| cmyk         | 8, 16            |
+| lab          | 8, 16            |
+| multichannel | 8, 16            |
+| indexed      | 8 only           |
+| duotone      | 8 only           |
+
+**`pixelScaleFactor`**
+
+- Type: Number (Double)
+- Default: `1` when omitted
+- Range: Must be positive, minimum 0.1
+- Description: Pixel scale factor for the image (e.g., for high-DPI/Retina scaling)
+
+**`iccProfile`**
+
+- Type: Object (`standard` or `custom`)
+- Default: None (optional)
+- Description: ICC profile for color management applied at document creation time. Both standard named profiles and custom `.icc` files are supported.
+
+  **Standard profile:** `{"type": "standard", "name": "<profile_name>"}` where `name` is one of: Adobe RGB (1998), Apple RGB, ColorMatch RGB, sRGB IEC61966-2.1, Dot Gain 10%/15%/20%/25%/30%, Gray Gamma 1.8, Gray Gamma 2.2
+
+  **Custom profile:** `{"type": "custom", "name": "<descriptive_name>", "source": {"url": "<icc_file_url>"}}` — provide a URL to your `.icc` or `.icm` file. Supports `imageMode: "rgb"`, `"grayscale"`, or `"cmyk"`.
+
+**`name`**
+
+- Type: String
+- Max length: 255 characters
+- Description: Optional document name/title
 
 ## Examples by use case
 
@@ -131,10 +215,10 @@ Create a document optimized for web graphics:
   "image": {
     "width": 1920,
     "height": 1080,
-    "resolution": 72,
+    "resolution": {"unit": "density_unit", "value": 72},
     "fill": "transparent",
     "mode": "rgb",
-    "depth": "8"
+    "depth": 8
   },
   "outputs": [
     {
@@ -156,10 +240,10 @@ Create a high-resolution document for print:
   "image": {
     "width": 2550,
     "height": 3300,
-    "resolution": 300,
+    "resolution": {"unit": "density_unit", "value": 300},
     "fill": "white",
     "mode": "cmyk",
-    "depth": "8"
+    "depth": 8
   },
   "outputs": [
     {
@@ -181,10 +265,10 @@ Create a square canvas for social media:
   "image": {
     "width": 1080,
     "height": 1080,
-    "resolution": 72,
+    "resolution": {"unit": "density_unit", "value": 72},
     "fill": "white",
     "mode": "rgb",
-    "depth": "8"
+    "depth": 8
   },
   "outputs": [
     {
@@ -206,10 +290,43 @@ Create a wide banner document:
   "image": {
     "width": 3000,
     "height": 600,
-    "resolution": 72,
+    "resolution": {"unit": "density_unit", "value": 72},
     "fill": "transparent",
     "mode": "rgb",
-    "depth": "8"
+    "depth": 8
+  },
+  "outputs": [
+    {
+      "destination": {
+        "url": "<SIGNED_POST_URL>"
+      },
+      "mediaType": "image/vnd.adobe.photoshop"
+    }
+  ]
+}
+```
+
+### Document with custom ICC profile
+
+Create a document with a custom `.icc` profile for specialized color workflows:
+
+```json
+{
+  "image": {
+    "width": 2550,
+    "height": 3300,
+    "resolution": {"unit": "density_unit", "value": 300},
+    "fill": "white",
+    "mode": "rgb",
+    "depth": 8,
+    "iccProfile": {
+      "type": "custom",
+      "name": "DCI P3 D65",
+      "source": {
+        "url": "<PRESIGNED_URL_TO_ICC_FILE>"
+      },
+      "imageMode": "rgb"
+    }
   },
   "outputs": [
     {
@@ -236,10 +353,10 @@ curl -X POST \
   "image": {
     "width": 1920,
     "height": 1080,
-    "resolution": 72,
+    "resolution": {"unit": "density_unit", "value": 72},
     "fill": "white",
     "mode": "rgb",
-    "depth": "8"
+    "depth": 8
   },
   "edits": {
     "layers": [
@@ -303,7 +420,7 @@ curl -X POST \
   "image": {
     "width": 1920,
     "height": 1080,
-    "resolution": 72,
+    "resolution": {"unit": "density_unit", "value": 72},
     "fill": "white"
   }
 }
@@ -316,7 +433,7 @@ curl -X POST \
   "image": {
     "width": 1920,
     "height": 1080,
-    "resolution": 72,
+    "resolution": {"unit": "density_unit", "value": 72},
     "fill": "transparent"
   }
 }
@@ -329,7 +446,7 @@ curl -X POST \
   "image": {
     "width": 1920,
     "height": 1080,
-    "resolution": 72,
+    "resolution": {"unit": "density_unit", "value": 72},
     "fill": "background_color"
   }
 }
@@ -346,6 +463,7 @@ When using `"background_color"`, the default Photoshop background color will be 
 - **Best for:** Web graphics, digital displays, photography
 - **Channels:** 3 color channels (Red, Green, Blue)
 - **Use case:** Most common for digital work
+- **Supported depths:** 8, 16, or 32
 
 ```json
 {
@@ -358,6 +476,7 @@ When using `"background_color"`, the default Photoshop background color will be 
 - **Best for:** Print production, commercial printing
 - **Channels:** 4 color channels (Cyan, Magenta, Yellow, Black)
 - **Use case:** Documents intended for physical printing
+- **Supported depths:** 8 or 16
 
 ```json
 {
@@ -370,10 +489,11 @@ When using `"background_color"`, the default Photoshop background color will be 
 - **Best for:** Black and white images, print optimization
 - **Channels:** 1 channel
 - **Use case:** Monochrome artwork, black and white photography
+- **Supported depths:** 8, 16, or 32
 
 ```json
 {
-  "mode": "gray"
+  "mode": "grayscale"
 }
 ```
 
@@ -382,6 +502,7 @@ When using `"background_color"`, the default Photoshop background color will be 
 - **Best for:** Color correction, advanced color manipulation
 - **Channels:** 3 channels (Lightness, a, b)
 - **Use case:** Professional color grading
+- **Supported depths:** 8 or 16
 
 ```json
 {
@@ -391,16 +512,32 @@ When using `"background_color"`, the default Photoshop background color will be 
 
 ## Bit depth explained
 
-### 8-bit
+`depth` is an integer. Valid values depend on `mode` (see the mode/depth table above).
 
-- **File size:** Smallest
-- **Color precision:** 256 levels per channel
-- **Best for:** Web graphics, general use, final outputs
-- **Use when:** File size matters, standard quality sufficient
+### 1-bit
+
+- **File size:** Smallest possible
+- **Color precision:** Binary (black or white only)
+- **Best for:** Bitmap mode documents (line art, black and white scans)
+- **Supported modes:** bitmap only
 
 ```json
 {
-  "depth": "8"
+  "mode": "bitmap",
+  "depth": 1
+}
+```
+
+### 8-bit
+
+- **File size:** Smallest (for non-bitmap)
+- **Color precision:** 256 levels per channel
+- **Best for:** Web graphics, general use, final outputs
+- **Supported modes:** All except bitmap
+
+```json
+{
+  "depth": 8
 }
 ```
 
@@ -409,11 +546,11 @@ When using `"background_color"`, the default Photoshop background color will be 
 - **File size:** Medium
 - **Color precision:** 65,536 levels per channel
 - **Best for:** Photography, extensive editing workflows
-- **Use when:** Need to preserve quality through multiple edits
+- **Supported modes:** grayscale, rgb, hsb, cmyk, lab, multichannel
 
 ```json
 {
-  "depth": "16"
+  "depth": 16
 }
 ```
 
@@ -422,11 +559,11 @@ When using `"background_color"`, the default Photoshop background color will be 
 - **File size:** Largest
 - **Color precision:** High Dynamic Range (HDR)
 - **Best for:** HDR imaging, 3D rendering, scientific imaging
-- **Use when:** Working with HDR content or extreme tonal ranges
+- **Supported modes:** grayscale, rgb, hsb only (not cmyk, lab, indexed, duotone, multichannel)
 
 ```json
 {
-  "depth": "32"
+  "depth": 32
 }
 ```
 
@@ -444,10 +581,10 @@ curl -X POST \
   "image": {
     "width": 1920,
     "height": 1080,
-    "resolution": 72,
+    "resolution": {"unit": "density_unit", "value": 72},
     "fill": "white",
     "mode": "rgb",
-    "depth": "8"
+    "depth": 8
   },
   "outputs": [
     {
@@ -506,25 +643,25 @@ curl -X POST \
 **4x6 inches**
 
 ```json
-{ "width": 1200, "height": 1800, "resolution": 300 }
+{ "width": 1200, "height": 1800, "resolution": {"unit": "density_unit", "value": 300} }
 ```
 
 **5x7 inches**
 
 ```json
-{ "width": 1500, "height": 2100, "resolution": 300 }
+{ "width": 1500, "height": 2100, "resolution": {"unit": "density_unit", "value": 300} }
 ```
 
 **8x10 inches**
 
 ```json
-{ "width": 2400, "height": 3000, "resolution": 300 }
+{ "width": 2400, "height": 3000, "resolution": {"unit": "density_unit", "value": 300} }
 ```
 
 **8.5x11 inches (Letter)**
 
 ```json
-{ "width": 2550, "height": 3300, "resolution": 300 }
+{ "width": 2550, "height": 3300, "resolution": {"unit": "density_unit", "value": 300} }
 ```
 
 ### Web sizes
@@ -532,44 +669,118 @@ curl -X POST \
 **Full HD**
 
 ```json
-{ "width": 1920, "height": 1080, "resolution": 72 }
+{ "width": 1920, "height": 1080, "resolution": {"unit": "density_unit", "value": 72} }
 ```
 
 **4K/UHD**
 
 ```json
-{ "width": 3840, "height": 2160, "resolution": 72 }
+{ "width": 3840, "height": 2160, "resolution": {"unit": "density_unit", "value": 72} }
 ```
 
 **Desktop Wallpaper (Wide)**
 
 ```json
-{ "width": 2560, "height": 1440, "resolution": 72 }
+{ "width": 2560, "height": 1440, "resolution": {"unit": "density_unit", "value": 72} }
 ```
 
 ## Common migration issues
 
-### Resolution out of range
+### Resolution format
 
-❌ **Problem:** Trying to set resolution outside the 72-300 range.
+**Problem:** Using plain integer for resolution (invalid format in V2).
 
 ```json
 {
-  "resolution": 600
+  "resolution": 72
 }
 ```
 
-✅ **Solution:** Use value within 72-300 range.
+**Solution:** Use object format with `unit` and `value`.
 
 ```json
 {
-  "resolution": 300
+  "resolution": {"unit": "density_unit", "value": 72}
+}
+```
+
+### Resolution value too low
+
+**Problem:** Using resolution value less than 1.
+
+```json
+{
+  "resolution": {"unit": "density_unit", "value": 0}
+}
+```
+
+**Solution:** Use value >= 1.
+
+```json
+{
+  "resolution": {"unit": "density_unit", "value": 1}
+}
+```
+
+### Invalid pixelScaleFactor
+
+**Problem:** Using zero or negative pixelScaleFactor.
+
+```json
+{
+  "pixelScaleFactor": 0
+}
+```
+
+**Solution:** Use positive value, minimum 0.1.
+
+```json
+{
+  "pixelScaleFactor": 1.0
+}
+```
+
+### Invalid color mode (gray vs grayscale)
+
+**Problem:** Using deprecated or invalid `mode` value.
+
+```json
+{
+  "mode": "gray"
+}
+```
+
+**Solution:** Use `"grayscale"` (not `"gray"`). Supported values: `rgb`, `bitmap`, `grayscale`, `indexed`, `hsb`, `cmyk`, `lab`, `duotone`, `multichannel`.
+
+```json
+{
+  "mode": "grayscale"
+}
+```
+
+### Invalid depth for color mode
+
+**Problem:** Depth not supported for the selected mode (e.g., 32-bit for CMYK).
+
+```json
+{
+  "mode": "cmyk",
+  "depth": 32
+}
+```
+
+**Solution:** Use a valid depth for the mode. For bitmap, use `1`. For cmyk/lab use 8 or 16. For indexed/duotone use 8 only. For rgb/grayscale/hsb use 8, 16, or 32.
+
+```json
+{
+  "mode": "cmyk",
+  "depth": 16
 }
 ```
 
 ### Invalid fill option
 
-❌ **Problem:** Using invalid fill value.
+**Problem:** Using invalid fill value.
 
 ```json
 {
@@ -577,17 +788,17 @@ curl -X POST \
 }
 ```
 
-✅ **Solution:** Use valid fill options.
+**Solution:** Use valid fill options: `"white"`, `"transparent"`, `"background_color"`, or the object form `{"solidColor": {"rgb": {"red": R, "green": G, "blue": B}}}`.
 
 ```json
 {
-  "fill": "white" // or "transparent" or "background_color"
+  "fill": "white"
 }
 ```
 
 ### Dimensions too large
 
-❌ **Problem:** Dimensions exceed the maximum.
+**Problem:** Dimensions exceed the maximum.
 
 ```json
 {
@@ -596,7 +807,7 @@ curl -X POST \
 }
 ```
 
-✅ **Solution:** Stay within 1-32000 pixel range.
+**Solution:** Stay within 1-32000 pixel range.
 
 ```json
 {
@@ -610,7 +821,3 @@ curl -X POST \
 - Review the [composite operations guide](composite-migration.md) for adding layers to your new document
 - Check the [storage solutions guide](../../../getting-started/storage-solutions/index.md) for output options
 - Test your document creation with development endpoints
-
-## Need help?
-
-Contact the Adobe DI ART Service team for technical support with document creation operations.
