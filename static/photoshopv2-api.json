@@ -1,12 +1,12 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "description": "Photoshop v2 beta API Server for Adobe DI Arts.",
+    "description": "Photoshop v2 API Server for Adobe DI Arts.",
     "license": {
       "name": "Adobe Creative API License",
       "url": "https://www.adobe.com/content/dam/cc/en/legal/terms/enterprise/pdfs/PSLT-AdobeCreativeAPI-WW-2024v2.pdf"
     },
-    "title": "Photoshop v2 beta API endpoints",
+    "title": "Photoshop v2 API endpoints",
     "version": "beta"
   },
   "servers": [

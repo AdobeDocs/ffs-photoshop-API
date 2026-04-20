@@ -1,118 +1,53 @@
 ---
-title: Deprecation Announcement
-description: Learn about the deprecation of the Photoshop API.
+title: Deprecation Announcements in Photoshop API
+description: Learn about the deprecations happening in the Photoshop API.
 hideBreadcrumbNav: true
 keywords:
   - deprecation
   - photoshop api
+  - v1 deprecation
+  - v2 deprecation
 ---
+# V1 deprecation announcement
 
-# Deprecation announcement
+Photoshop API v1 will be reaching **end‑of‑life (EoL) in August of 2026**.
 
-The Remove Background V1 API (`/sensei/cutout`) and the Mask API (`/sensei/mask`) are being deprecated in favor of the Remove Background V2 API (`/v2/remove-background`).
+Customers currently relying on v1 endpoints are encouraged to begin planning their migration to Photoshop API v2, which is available in public beta and provides the following benefits:
 
-Remove Background V2 now supports both cutout and mask workflows through a single endpoint. The Remove Background V1 API and Mask API will reach End of Life (EOL) on *October 15, 2025*. After this date, they will no longer be supported or accessible.
-Please begin migration to Remove Background V2 as soon as possible to ensure uninterrupted service.
+* Modern, consistent API contracts
+* Improved scalability and reliability
+* A more extensible foundation for future workflows.
 
-For guidance about this change, refer to the FAQs below.
+Migrate to Photoshop API v2 before **August of 2026** to avoid service disruptions. For guidance about this change, refer to the FAQs below.
 
 <AccordionItem slots="heading, text" />
 
 ### What should I do?
 
-Migrate to the Remove Background V2 API before **October 15, 2025** to avoid service disruptions. \<br /\>  
-Remove Background V2 now handles both cutout and mask workflows using a single endpoint. To specify which operation you want, set the `"mode"` parameter in your request to `"cutout"` for background removal or `"mask"` for generating a mask. This allows a single API to support both workflows while ensuring consistent, high-quality results.
-
+Migrate to Photoshop API v2 before **August of 2026** to avoid service disruptions.
+  
 <AccordionItem slots="heading, text" />
 
 ### Why is Adobe making this change?
 
-We're moving to the Remove Background V2 API because it delivers: \<br /\> \<br /\> - Cleaner cutouts - The improved post-processing reduces matting and creates sharper edges. \<br /\> - Higher quality automation - Outputs with V2 are optimized for production pipelines and automated workflows.  \<br /\> - Ongoing support - V2 is the actively supported service that will receive updates and improvements.
+Photoshop API v1 was the first‑generation set of Firefly‑powered Photoshop APIs used by customers to automate Photoshop operations and imaging workflows. This version runs on legacy infrastructure and is being phased out as part of the transition to the modern Photoshop API v2 platform.
 
 <AccordionItem slots="heading, text" />
 
 ### When is this happening?
 
-Deprecation Notice: September 2, 2025. \<br /\>
-End of Life (EOL): October 15, 2025.
+Deprecation Notice: April 20, 2026. \<br /\>
+End of Life (EOL): August 31, 2026.
 
 <AccordionItem slots="heading, text" />
 
 ### Where can I find resources?
 
-The latest comprehensive [information about all Photoshop APIs is available on the API Reference page](https://developer.adobe.com/firefly-services/docs/photoshop/api/#operation/removeBackground). \<br /\> \<br /\>
-For technical details specifically about the Remove Background V2 API, refer to the Remove Background V2 endpoint.
+The latest comprehensive [information about all Photoshop APIs is available on the API Reference page](https://developer.adobe.com/firefly-services/docs/photoshop/api/photoshop-v2-beta/index.md). \<br /\> \<br /\>
+Migration guides for the Photoshop API v2 are available on the [Photoshop v2 beta guides page](/guides/photoshop-v2-beta/index.md).
 
 <AccordionItem slots="heading, text"/>
 
 ### Who can help me with migration?
 
 Your Adobe Customer Success Manager and Support Team are available to answer questions and guide you through the transition.
-
-<AccordionItem slots="heading, text, code" />
-
-### Can I see any newer example cutout request?
-
-**Cutout workflow**
-
-```shell
-curl -i -X POST \
-  https://image.adobe.io/v2/remove-background \
-  -H 'Authorization: string' \
-  -H 'Content-Type: application/json' \
-  -H 'x-api-key: YOUR_API_KEY_HERE' \
-  -d '{
-    "image": {
-      "source": {
-        "url": "string"
-      }
-    },
-    // Set "mode:" to "cutout" for background removal
-    "mode": "cutout",  
-    "output": {
-      "mediaType": "image/jpeg"
-    },
-    "trim": false,
-    "backgroundColor": {
-      "red": 255,
-      "green": 255,
-      "blue": 255,
-      "alpha": 1
-    },
-    "colorDecontamination": 1
-  }'
-```
-
-<AccordionItem slots="heading, text, code" />
-
-### Can I see a newer example mask request?
-
-**Mask workflow**
-
-```shell
-curl -i -X POST \
-  https://image.adobe.io/v2/remove-background \
-  -H 'Authorization: string' \
-  -H 'Content-Type: application/json' \
-  -H 'x-api-key: YOUR_API_KEY_HERE' \
-  -d '{
-    "image": {
-      "source": {
-        "url": "string"
-      }
-    },
-    // Set "mode:" to "mask" to generate a mask of the subject
-    "mode": "mask",  
-    "output": {
-      "mediaType": "image/png"
-    },
-    "trim": false,
-    "backgroundColor": {
-      "red": 255,
-      "green": 255,
-      "blue": 255,
-      "alpha": 1
-    },
-    "colorDecontamination": 1
-  }'
-```
