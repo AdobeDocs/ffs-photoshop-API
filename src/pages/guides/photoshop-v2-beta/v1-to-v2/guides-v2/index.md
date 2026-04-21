@@ -1,5 +1,5 @@
 ---
-title: V2 Guides
+title: Photoshop API v2 Guides
 description: Guides for working with Photoshop API v2 endpoints and workflows
 hideBreadcrumbNav: true
 keywords:
@@ -10,19 +10,19 @@ keywords:
   - v2 API
 ---
 
-# V2 Guides
+# Photoshop API v2 guides
 
 These guides cover how to work with the Photoshop API v2 endpoints. They provide step-by-step examples and best practices for common workflows.
 
 ## Available guides
 
-- [Execute Actions Workflow](execute-actions.md) — Automate Photoshop operations using Actions and UXP Scripts with the `/v2/execute-actions` endpoint
-- [Smart Object Workflow](smart-object-workflow.md) — Add linked smart objects and replace smart object content using `/v2/create-composite` and `/v2/generate-manifest`
-- [/v2/edit API Benchmarking](v2-edit-api-benchmarking.md) — JPEG and PNG output performance by resolution, quality, and compression for capacity planning
+- [Execute Actions workflow](execute-actions.md) — Automate Photoshop operations using Actions and UXP Scripts with the `/v2/execute-actions` endpoint
+- [Smart Object workflow](smart-object-workflow.md) — Add linked smart objects and replace smart object content using `/v2/create-composite` and `/v2/generate-manifest`
+- [/v2/edit API benchmarking](v2-edit-api-benchmarking.md) — JPEG and PNG output performance by resolution, quality, and compression for capacity planning
 
 ## Related v2 guides
 
-These guides within the migration section also cover v2 API usage:
+These specific migration guides also explain key details about v2 API usage in these cases:
 
 - [Product Crop](../convenience-apis/product-crop.md) — Auto-crop and padding using `/v2/execute-actions` with published ActionJSON
 - [Split View](../convenience-apis/split-view.md) — Masked before/after comparisons with branding using `/v2/execute-actions`

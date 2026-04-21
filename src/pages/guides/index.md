@@ -1,18 +1,18 @@
 ---
-title: Using these guides
-description: Learn how to set up your environment and get started with the Photoshop API guides and code samples
+title: Photoshop API v1 Guides
+description: Learn how to set up your environment and get started with the Photoshop API v1 guides and code samples
 hideBreadcrumbNav: true
 keywords:
-  - photoshop api
+  - photoshop api v1
   - code samples
   - getting started
   - authentication
   - storage setup
 ---
 
-# Using these guides
+# Photoshop API v1 guides
 
-Review this page to get oriented before starting with the API guides. You'll learn about prerequisites, code samples, and how to set up your environment for working with the Photoshop API.
+Review this page to get oriented before starting with the API guides. You'll learn about prerequisites, code samples, and how to set up your environment for working with the Photoshop API v1.
 
 ## Overview
 

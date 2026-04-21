@@ -1,0 +1,188 @@
+═══════════════════════════════════════════════════════════════
+                     LINTER REPORT
+═══════════════════════════════════════════════════════════════
+
+Generated: 2026-04-21T20:31:58.926Z
+Mode: Full Linting (all rules + dead links check)
+Target Directory: /Users/aabreu/workspace/ffs-photoshop-API
+
+───────────────────────────────────────────────────────────────
+
+Files to process: 50
+
+───────────────────────────────────────────────────────────────
+📄 FILE: src/pages/getting-started/concepts/index.md
+───────────────────────────────────────────────────────────────
+  ⚠️  WARNING
+    Location: Line 84:45
+    Message: Unexpected redirecting URL `https://helpx.adobe.com/photoshop/using/masking-layers.html`, expected final URL `https://helpx.adobe.com/photoshop/desktop/create-masks/layer-masks/add-layer-masks.html`
+    Rule: no-dead-urls
+
+  ⚠️  WARNING
+    Location: Line 47:40
+    Message: Unexpected redirecting URL `https://helpx.adobe.com/photoshop/using/layer-basics.html`, expected final URL `https://helpx.adobe.com/photoshop/desktop/create-manage-layers/get-started-layers/work-with-the-layers-panel.html`
+    Rule: no-dead-urls
+
+───────────────────────────────────────────────────────────────
+📄 FILE: src/pages/getting-started/index.md
+───────────────────────────────────────────────────────────────
+  ⚠️  WARNING
+    Location: Line 36:63
+    Message: Unexpected dead URL `https://developer.adobe.com/developer-console/docs/guides/services/services-add-api-oauth-s2s/#api-overview`, expected live URL
+    Rule: no-dead-urls
+
+  ⚠️  WARNING
+    Location: Line 35:118
+    Message: Unexpected dead URL `https://developer.adobe.com/developer-console/docs/guides/services/services-add-api-oauth-s2s/`, expected live URL
+    Rule: no-dead-urls
+
+  ⚠️  WARNING
+    Location: Line 35:5
+    Message: Unexpected dead URL `https://developer.adobe.com/developer-console/docs/guides/projects/projects-empty/`, expected live URL
+    Rule: no-dead-urls
+
+───────────────────────────────────────────────────────────────
+📄 FILE: src/pages/getting-started/storage-solutions/index.md
+───────────────────────────────────────────────────────────────
+  ⚠️  WARNING
+    Location: Line 68:3
+    Message: Unexpected redirecting URL `https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/storage-app/azure/presignedURLs.py`, expected final URL `https://github.com/AdobeDocs/cis-photoshop-api-docs/blob/main/sample-code/storage-app/azure/presignedURLs.py`
+    Rule: no-dead-urls
+
+  ⚠️  WARNING
+    Location: Line 86:3
+    Message: Unexpected redirecting URL `https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/storage-app/azure/presignedURLs.py`, expected final URL `https://github.com/AdobeDocs/cis-photoshop-api-docs/blob/main/sample-code/storage-app/azure/presignedURLs.py`
+    Rule: no-dead-urls
+
+  ⚠️  WARNING
+    Location: Line 81:71
+    Message: Unexpected dead URL `https://azuresdkdocs.blob.core.windows.net/$web/python/azure-storage-blob/12.9.0/index.html`, expected live URL
+    Rule: no-dead-urls
+
+  ⚠️  WARNING
+    Location: Line 67:3
+    Message: Unexpected redirecting URL `https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/storage-app/aws-s3/presignedURLs.js`, expected final URL `https://github.com/AdobeDocs/cis-photoshop-api-docs/blob/main/sample-code/storage-app/aws-s3/presignedURLs.js`
+    Rule: no-dead-urls
+
+  ⚠️  WARNING
+    Location: Line 69:3
+    Message: Unexpected redirecting URL `https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/storage-app/aws-s3/example.py`, expected final URL `https://github.com/AdobeDocs/cis-photoshop-api-docs/blob/main/sample-code/storage-app/aws-s3/example.py`
+    Rule: no-dead-urls
+
+  ⚠️  WARNING
+    Location: Line 85:3
+    Message: Unexpected redirecting URL `https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/storage-app/azure/presignedURLs.js`, expected final URL `https://github.com/AdobeDocs/cis-photoshop-api-docs/blob/main/sample-code/storage-app/azure/presignedURLs.js`
+    Rule: no-dead-urls
+
+  ⚠️  WARNING
+    Location: Line 77:3
+    Message: Unexpected redirecting URL `https://github.com/AdobeDocs/cis-photoshop-api-docs/tree/main/sample-code/storage-app/googledrive/presignedURLs.js`, expected final URL `https://github.com/AdobeDocs/cis-photoshop-api-docs/blob/main/sample-code/storage-app/googledrive/presignedURLs.js`
+    Rule: no-dead-urls
+
+  ⚠️  WARNING
+    Location: Line 49:14
+    Message: Unexpected redirecting URL `https://developer.frame.io/api/reference/`, expected final URL `https://developer.frame.io/api/reference`
+    Rule: no-dead-urls
+
+  ⚠️  WARNING
+    Location: Line 90:148
+    Message: Unexpected dead URL `https://www.dropbox.com/developers/documentation/http/documentation#files-get_temporary_upload_link`, expected live URL
+    Rule: no-dead-urls
+
+───────────────────────────────────────────────────────────────
+📄 FILE: src/pages/getting-started/technical-usage-notes/index.md
+───────────────────────────────────────────────────────────────
+  ⚠️  WARNING
+    Location: Line 35:56
+    Message: Unexpected dead URL `https://helpx.adobe.com/photoshop/using/file-formats.html#maximize_compatibility_for_psd_and_psb_files`, expected live URL
+    Rule: no-dead-urls
+
+  ⚠️  WARNING
+    Location: Line 35:56
+    Message: Unexpected redirecting URL `https://helpx.adobe.com/photoshop/using/file-formats.html#maximize_compatibility_for_psd_and_psb_files`, expected final URL `https://helpx.adobe.com/photoshop/desktop/save-and-export/export-files-to-different-formats/supported-file-formats-in-photoshop.html`
+    Rule: no-dead-urls
+
+───────────────────────────────────────────────────────────────
+📄 FILE: src/pages/getting-started/webhooks/index.md
+───────────────────────────────────────────────────────────────
+  ⚠️  WARNING
+    Location: Line 32:44
+    Message: Unexpected dead URL `https://www.adobe.io/apis/experienceplatform/events/docs.html#!adobedocs/adobeio-events/master/intro/webhooks_intro.md`, expected live URL
+    Rule: no-dead-urls
+
+  ⚠️  WARNING
+    Location: Line 32:44
+    Message: Unexpected redirecting URL `https://www.adobe.io/apis/experienceplatform/events/docs.html#!adobedocs/adobeio-events/master/intro/webhooks_intro.md`, expected final URL `https://developer.adobe.com/events/docs/`
+    Rule: no-dead-urls
+
+───────────────────────────────────────────────────────────────
+📄 FILE: src/pages/guides/photoshop-v2-beta/v1-to-v2/convenience-apis/product-crop.md
+───────────────────────────────────────────────────────────────
+  ⚠️  WARNING
+    Location: Line 343:3
+    Message: Unexpected dead URL `https://developer.adobe.com/firefly-services/docs/photoshop/api/photoshop-v2-beta/#operation/executeActions`, expected live URL
+    Rule: no-dead-urls
+
+  ⚠️  WARNING
+    Location: Line 349:3
+    Message: Unexpected redirecting URL `https://community.adobe.com/t5/photoshop-api/ct-p/ct-photoshop-api`, expected final URL `https://community.adobe.com/community`
+    Rule: no-dead-urls
+
+───────────────────────────────────────────────────────────────
+📄 FILE: src/pages/guides/photoshop-v2-beta/v1-to-v2/convenience-apis/side-by-side.md
+───────────────────────────────────────────────────────────────
+  ⚠️  WARNING
+    Location: Line 306:3
+    Message: Unexpected dead URL `https://developer.adobe.com/firefly-services/docs/photoshop/api/photoshop-v2-beta/#operation/executeActions`, expected live URL
+    Rule: no-dead-urls
+
+  ⚠️  WARNING
+    Location: Line 312:3
+    Message: Unexpected redirecting URL `https://community.adobe.com/t5/photoshop-api/ct-p/ct-photoshop-api`, expected final URL `https://community.adobe.com/community`
+    Rule: no-dead-urls
+
+───────────────────────────────────────────────────────────────
+📄 FILE: src/pages/guides/photoshop-v2-beta/v1-to-v2/convenience-apis/split-view.md
+───────────────────────────────────────────────────────────────
+  ⚠️  WARNING
+    Location: Line 233:3
+    Message: Unexpected dead URL `https://developer.adobe.com/firefly-services/docs/photoshop/api/photoshop-v2-beta/#operation/executeActions`, expected live URL
+    Rule: no-dead-urls
+
+  ⚠️  WARNING
+    Location: Line 239:3
+    Message: Unexpected redirecting URL `https://community.adobe.com/t5/photoshop-api/ct-p/ct-photoshop-api`, expected final URL `https://community.adobe.com/community`
+    Rule: no-dead-urls
+
+───────────────────────────────────────────────────────────────
+📄 FILE: src/pages/guides/remove-background/index.md
+───────────────────────────────────────────────────────────────
+  ⚠️  WARNING
+    Location: Line 163:57
+    Message: Unexpected dead URL `https://developer.adobe.com/firefly-services/docs/photoshop/api/#operation/removeBackground`, expected live URL
+    Rule: no-dead-urls
+
+  ⚠️  WARNING
+    Location: Line 78:31
+    Message: Unexpected dead URL `https://image.adobe.io/sensei/cutout`, expected live URL
+    Rule: no-dead-urls
+
+  ⚠️  WARNING
+    Location: Line 78:185
+    Message: Unexpected dead URL `https://image.adobe.io/v2/remove-background`, expected live URL
+    Rule: no-dead-urls
+
+
+═══════════════════════════════════════════════════════════════
+                        SUMMARY
+═══════════════════════════════════════════════════════════════
+
+  📁 Files processed:    50
+  📄 Files with issues:  9
+  ❌ Total errors:       0
+  ⚠️  Total warnings:     27
+  📋 Total issues:       27
+
+Result: ⚠️  PASSED WITH WARNINGS - No fatal errors
+
+═══════════════════════════════════════════════════════════════
