@@ -2524,7 +2524,7 @@ curl -X POST https://photoshop-api.adobe.io/v2/create-composite \
 
 ### Example 4b: Layer edit operation
 
-**V1 Code (with edit: {}):**
+**V1 Code (with edit: \{\}):**
 ```shell
 curl -X POST https://image.adobe.io/pie/psdService/documentOperations \
   -d '{
