@@ -18,6 +18,7 @@ These guides cover how to work with the Photoshop API v2 endpoints. They provide
 
 - [Execute Actions Workflow](execute-actions.md) — Automate Photoshop operations using Actions and UXP Scripts with the `/v2/execute-actions` endpoint
 - [Smart Object Workflow](smart-object-workflow.md) — Add linked smart objects and replace smart object content using `/v2/create-composite` and `/v2/generate-manifest`
+- [/v2/edit API Benchmarking](v2-edit-api-benchmarking.md) — JPEG and PNG output performance by resolution, quality, and compression for capacity planning
 
 ## Related v2 guides
 

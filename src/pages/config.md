@@ -61,6 +61,7 @@
     - [V2 Guides](/guides/photoshop-v2-beta/v1-to-v2/guides-v2/index.md)
       - [Execute Actions Workflow](/guides/photoshop-v2-beta/v1-to-v2/guides-v2/execute-actions.md)
       - [Smart Object Workflow](/guides/photoshop-v2-beta/v1-to-v2/guides-v2/smart-object-workflow.md)
+      - [/v2/edit API Benchmarking](/guides/photoshop-v2-beta/v1-to-v2/guides-v2/v2-edit-api-benchmarking.md)
     - [Edit Operations Migration](/guides/photoshop-v2-beta/v1-to-v2/edit-operations.md)
     - [Document Operations Migration](/guides/photoshop-v2-beta/v1-to-v2/document-operations-migration.md)
       - [Document Creation Migration](/guides/photoshop-v2-beta/v1-to-v2/document-creation-migration.md)
