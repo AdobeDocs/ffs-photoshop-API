@@ -88,6 +88,7 @@ All output types support these common fields:
 | `width` | integer | Output width in pixels (≥ 0) | No |
 | `height` | integer | Output height in pixels (≥ 0) | No |
 | `maxWidth` | integer | Maximum width in pixels (≥ 0) | No |
+| `resample` | string | Resampling algorithm when resizing to `width`/`maxWidth`. Values: `nearest_neighbor`, `bilinear`, `bicubic`, `bicubic_smoother`, `bicubic_sharper`. Defaults to `bicubic`. Applies to JPEG, PNG, and TIFF only. | No |
 | `shouldTrimToCanvas` | boolean | Trim transparent pixels | No |
 | `iccProfile` | object | ICC color profile for color management (JPEG, PNG, TIFF, PSD only; not PSDC) | No |
 
@@ -799,6 +800,7 @@ Use this checklist when migrating output configurations:
 - [ ] Remove `storage: "external"` for AWS S3 presigned URLs
 - [ ] Add `storageType` for Azure Blob Storage or Dropbox if applicable
 - [ ] Verify common fields (`width`, `height`, `maxWidth`) if used
+- [ ] Optionally add `resample` to control interpolation when `width`/`maxWidth` is set (JPEG, PNG, TIFF; defaults to `bicubic`)
 
 ### JPEG specific
 

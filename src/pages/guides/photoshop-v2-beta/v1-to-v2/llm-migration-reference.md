@@ -1326,6 +1326,7 @@ All output types support these optional fields:
 - `width` (integer, ≥ 0) - Output width in pixels
 - `height` (integer, ≥ 0) - Output height in pixels
 - `maxWidth` (integer, ≥ 0) - Maximum width in pixels
+- `resample` (string, optional) - Resampling algorithm when resizing to `width`/`maxWidth`. Values: `nearest_neighbor`, `bilinear`, `bicubic`, `bicubic_smoother`, `bicubic_sharper`. Defaults to `bicubic`. Applies to JPEG, PNG, and TIFF exports.
 - `shouldTrimToCanvas` (boolean) - Trim transparent pixels
 
 ### Multiple outputs
