@@ -534,7 +534,3 @@ if (status.errorDetails) {
 - Update your polling implementation with proper error handling
 - Test status checking with development endpoints
 - Implement monitoring for job failures in production
-
-## Need help?
-
-Contact the Adobe DI ART Service team for technical support with status endpoint migration.

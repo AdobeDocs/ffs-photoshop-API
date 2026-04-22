@@ -812,7 +812,3 @@ Trim unnecessary transparent space:
 - Review the [composite operations guide](composite-migration.md) for layer manipulation
 - Check the [format conversion guide](format-conversion-migration.md) for output options
 - Test your document operations with development endpoints
-
-## Need help?
-
-Contact the Adobe DI ART Service team for technical support with document operations.

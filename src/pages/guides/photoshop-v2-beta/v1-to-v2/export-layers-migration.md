@@ -19,24 +19,26 @@ This guide describes how to migrate **exporting one or more layers** from a docu
 
 ## Key differences (single-layer vs multi-layer export)
 
-- **Single-layer export** – One layer in `output.layers`; export that layer’s pixels. Supports JPEG, PNG, TIFF, and PSD.
+- **Single-layer export** – One layer in `output.layers`; export that layer's pixels. Supports JPEG, PNG, TIFF, and PSD.
 - **Multi-layer export** – Two or more layers in `output.layers`; composite those layers to one raster file. Supports JPEG, PNG, and TIFF only. **PSD is not supported for multi-layer export as of now.**
 
 <HorizontalLine />
 
-## Enum support for single-layer export (V2)
-
-When exporting **a single layer**, you can use these options.
+## Enum support (V2)
 
 ### Crop mode (`cropMode`)
 
-Only applicable when **exactly one layer** is specified in `output.layers`. Omit `cropMode` when exporting multiple layers or no layers.
+Controls the output bounding box for exported content. Supported for single-layer, multi-layer, and document export, with one restriction: `layer_bounds` is only valid for single-layer export.
 
-| Value | Description |
-|-------|-------------|
-| `layer_bounds` | Use the layer’s own bounds (default when not specified). |
-| `trim_to_transparency` | Crop to tight bounds of non-transparent pixels. |
-| `document_bounds` | Use full document (or artboard) bounds. |
+| Value | Description | Single-layer | Multi-layer | Document export |
+|-------|-------------|:---:|:---:|:---:|
+| `layer_bounds` | Use the layer's own bounds (default for single-layer export). | Yes | No | No |
+| `trim_to_transparency` | Crop to tight bounds of non-transparent pixels. | Yes | Yes | Yes |
+| `document_bounds` | Use full document (or artboard) bounds (default for document/multi-layer export). | Yes | Yes | Yes |
+
+<InlineAlert variant="info" slots="text"/>
+
+Using `layer_bounds` with multi-layer or document export returns a validation error. Use `trim_to_transparency` or `document_bounds` instead.
 
 ### Media type (`mediaType`)
 
@@ -51,7 +53,51 @@ For single-layer export, V2 supports: `image/jpeg`, `image/png`, `image/tiff`, `
 
 <HorizontalLine />
 
-## Sample: Single-layer export
+## ICC profile support for layer export
+
+Both single-layer and multi-layer exports support the optional `iccProfile` field on the output. This enables ICC color space conversion (e.g., sRGB, Adobe RGB, grayscale, or custom profiles) when exporting specific layers.
+
+- Works with supported layer export formats that support ICC: JPEG, TIFF, PSD for single-layer; JPEG, TIFF for multi-layer (**PNG does not support ICC profiles**)
+- Each output in a request can have its own independent `iccProfile`
+- Mixed outputs are supported: some with `iccProfile`, some without, in the same request
+- Supports both standard and custom ICC profiles (see [ICC Profile Migration](icc-profile-migration.md) for full schema details)
+
+### Example: single-layer export with ICC profile
+
+```json
+{
+  "outputs": [{
+    "destination": {"url": "https://example.com/out.tif"},
+    "mediaType": "image/tiff",
+    "layers": [{"id": 1096}],
+    "iccProfile": {
+      "type": "standard",
+      "name": "sRGB IEC61966-2.1"
+    }
+  }]
+}
+```
+
+### Example: multi-layer export with ICC profile
+
+```json
+{
+  "outputs": [{
+    "destination": {"url": "https://example.com/out.jpg"},
+    "mediaType": "image/jpeg",
+    "layers": [{"id": 1096}, {"id": 996}],
+    "quality": "high",
+    "iccProfile": {
+      "type": "standard",
+      "name": "Adobe RGB (1998)"
+    }
+  }]
+}
+```
+
+<HorizontalLine />
+
+## Sample: single-layer export
 
 ### V1 (example)
 
@@ -89,11 +135,11 @@ curl -X POST "https://photoshop-api.adobe.io/v2/create-composite" \
   }'
 ```
 
-**Schema changes (single-layer):** `inputs[].href` → `image.source.url`; `outputs[].href` → `outputs[].destination.url`; `outputs[].type` → `outputs[].mediaType`; `outputs[].layers` remains per output. Optional in V2: `cropMode` (single-layer only), `quality` / `compression` as string enums.
+**Schema changes (single-layer):** `inputs[].href` → `image.source.url`; `outputs[].href` → `outputs[].destination.url`; `outputs[].type` → `outputs[].mediaType`; `outputs[].layers` remains per output. Optional in V2: `cropMode`, `quality` / `compression` as string enums.
 
 <HorizontalLine />
 
-## Sample: Multi-layer export
+## Sample: multi-layer export
 
 ### V1 (example)
 
@@ -125,12 +171,13 @@ curl -X POST "https://photoshop-api.adobe.io/v2/create-composite" \
       "destination": {"url": "https://my-bucket.s3.amazonaws.com/out.jpg"},
       "mediaType": "image/jpeg",
       "layers": [{"id": 1096}, {"id": 996}],
-      "quality": "maximum"
+      "quality": "maximum",
+      "cropMode": "trim_to_transparency"
     }]
   }'
 ```
 
-**Schema changes (multi-layer):** Same as above. **Note:** Multi-layer export does not support PSD as of now; use `mediaType`: `image/jpeg`, `image/png`, or `image/tiff` only. Use string enums for `quality` (e.g. `maximum`, `photoshop_max`) and `compression` for PNG.
+**Schema changes (multi-layer):** Same as above. **Note:** Multi-layer export does not support PSD as of now; use `mediaType`: `image/jpeg`, `image/png`, or `image/tiff` only. `cropMode` supports `trim_to_transparency` and `document_bounds` (not `layer_bounds`). Use string enums for `quality` (e.g. `maximum`, `photoshop_max`) and `compression` for PNG.
 
 <HorizontalLine />
 
@@ -138,18 +185,20 @@ curl -X POST "https://photoshop-api.adobe.io/v2/create-composite" \
 
 - [ ] Use `outputs[].destination.url`, `outputs[].mediaType`, and `outputs[].layers` (V2 shape).
 - [ ] For multi-layer export, do not request PSD; use JPEG, PNG, or TIFF.
-- [ ] Use `cropMode` only when exporting exactly one layer.
+- [ ] `cropMode` `trim_to_transparency` and `document_bounds` work for all export types; `layer_bounds` is single-layer only.
 - [ ] Use string enums for `quality` (JPEG) and `compression` (PNG); omit for defaults (`photoshop_max` / `default`).
+- [ ] `iccProfile` is optional on layer exports — add if you need color space conversion (see [ICC Profile Migration](icc-profile-migration.md)).
 
 <HorizontalLine />
 
 ## Related guides
 
 - [Output Types Migration](output-types-migration.md) – JPEG quality and PNG compression enums, media types, and structural changes for all outputs
+- [ICC Profile Migration](icc-profile-migration.md) – ICC profile schema, standard/custom profiles, and format support
 - [Layer Operations Overview](layer-operations-overview.md) – Introduction to layer operations in V2
 - [Composite Migration](composite-migration.md) – Create-composite endpoint and layer operations
 - [Migration Overview](index.md) – Full V1 to V2 migration overview
 
 <HorizontalLine />
 
-**Last Updated:** February 2026
+**Last Updated:** March 2026

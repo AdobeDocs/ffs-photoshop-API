@@ -28,7 +28,28 @@ This guide helps you migrate adjustment layer operations from V1's `/documentCre
 
 ### Supported Adjustment Types
 
-Both V1 and V2 support these adjustment layer types. In **V2**, the `adjustments` object **requires** a `type` parameter (snake_case) alongside the adjustment payload:
+In **V2**, the `adjustments` object **requires** a `type` parameter (snake_case) alongside the
+adjustment payload. In **V1**, no `type` field existed — the key name (e.g., `brightnessContrast`)
+implicitly identified the type.
+
+<InlineAlert variant="warning" slots="text"/>
+
+**`adjustments.type` is required in V2 but did not exist in V1.** Omitting it in V2 will cause
+the request to be rejected. See [Adjustments Structure — Required `type` in V2](#3-adjustments-structure--required-type-in-v2) for details.
+
+**V1 key name → V2 `adjustments.type` mapping:**
+
+| V1 key name (implicit type) | V2 `adjustments.type` | Notes |
+| --------------------------- | --------------------- | ----- |
+| `brightnessContrast` | `brightness_contrast` | Breaking: renamed to snake_case |
+| `exposure` | `exposure` | Unchanged |
+| `hueSaturation` | `hue_saturation` | Breaking: renamed to snake_case |
+| `colorBalance` | `color_balance` | Breaking: renamed to snake_case |
+| *(not in V1)* | `curves` | New in V2 |
+| *(not in V1)* | `gradient_map_custom_stops` | New in V2 |
+| *(not in V1)* | `levels` | New in V2 |
+
+**V1→V2 payload key and `type` cross-reference:**
 
 | Adjustment          | V2 `type` value       | Payload key          |
 | ------------------- | --------------------- | -------------------- |
@@ -375,6 +396,9 @@ Each array represents: [Cyan-Red, Magenta-Green, Yellow-Blue]
           "brightnessContrast": {
             "brightness": 50
           }
+        },
+        "operation": {
+          "type": "edit"
         }
       }
     ]
@@ -382,9 +406,9 @@ Each array represents: [Cyan-Red, Magenta-Green, Yellow-Blue]
 }
 ```
 
-<InlineAlert variant="info" slots="text"/>
+<InlineAlert variant="warning" slots="text"/>
 
-In V2, editing existing layers doesn't require an explicit operation type or edit block. Simply reference the layer and specify new adjustment values.
+In V2, editing existing layers **requires** an explicit operation type. Include `operation: { "type": "edit" }`, then reference the layer by name or ID and specify new adjustment values. The server rejects requests that omit the `operation` field.
 
 ## Placement Options
 
@@ -409,14 +433,13 @@ In V2, editing existing layers doesn't require an explicit operation type or edi
   "operation": {
     "type": "add",
     "placement": {
-      "type": "top"                // or "bottom"
-      // or with relativeTo:
-      "type": "above",
-      "relativeTo": {"name": "..."}
+      "type": "top"
     }
   }
 }
 ```
+
+For relative placement use `"above"`, `"below"`, or `"into"` with `referenceLayer`: `{"name": "..."}` or `{"id": 123}`.
 
 See [Image Layer Operations](layer-operations-image.md) for detailed placement migration patterns.
 
@@ -456,7 +479,7 @@ See [Image Layer Operations](layer-operations-image.md) for detailed placement m
   "document": {
     "width": 1000,
     "height": 1000,
-    "resolution": 72,
+    "resolution": {"unit": "density_unit", "value": 72},
     "fill": {
       "solidColor": {
         "red": 255,
@@ -549,6 +572,7 @@ Adjustment layers support standard layer properties:
   "type": "adjustment_layer",
   "name": "My Adjustment",
   "isVisible": true,
+  "protection": ["none"],
   "opacity": 80,
   "blendMode": "normal",
   "adjustments": {...}
@@ -570,6 +594,7 @@ When migrating adjustment layer operations from V1 to V2:
 - [ ] Convert placement directives (insertTop → placement.type: "top", etc.)
 - [ ] Remove explicit `edit: {}` block for modifications
 - [ ] Convert `visible` to `isVisible` if using visibility
+- [ ] Lock: Change `locked` to `protection` array (see [Advanced Layer Operations](layer-operations-advanced.md))
 - [ ] Update storage syntax (`href`/`storage` → `url`/`storageType`)
 - [ ] Add required `type` inside `adjustments` (e.g. `"type": "brightness_contrast"`) — see [Adjustments Structure](#3-adjustments-structure--required-type-in-v2)
 - [ ] For Exposure: rename `exposure` to `exposureValue` inside the exposure payload (V2 only)
@@ -746,16 +771,9 @@ When migrating adjustment layer operations from V1 to V2:
 
 - ⏳ Additional adjustment layer types
 
-<InlineAlert variant="info" slots="text"/>
-
-If you need adjustment types not currently supported, contact the Adobe DI ART Service team to discuss alternatives or timeline.
-
 ## Next steps
 
 - Review [Layer Operations Overview](layer-operations-overview.md) for general concepts
 - Check [Image Layers](layer-operations-image.md) for combining with image layers
 - See [Advanced Operations](layer-operations-advanced.md) for masks and blend modes
 
-## Need Help?
-
-Contact the Adobe DI ART Service team for technical support with adjustment layer migration.

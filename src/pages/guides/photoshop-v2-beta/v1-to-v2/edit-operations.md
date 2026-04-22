@@ -555,7 +555,7 @@ The v2 `/edit` endpoint organizes adjustments into categories:
 
 - `saturation` (-100 to 100)
 - `vibrance` (-100 to 100)
-- `whiteBalance` (2000 to 50000 Kelvin)
+- `whiteBalance` (one of: `"As Shot"`, `"Auto"`, `"Cloudy"`, `"Custom"`, `"Daylight"`, `"Flash"`, `"Fluorescent"`, `"Shade"`, `"Tungsten"`)
 
 **Effects Adjustments (`effects`):**
 
@@ -655,9 +655,9 @@ V2 provides more flexible output options. You can now:
   },
   {
     "destination": {
-      "url": "<TIFF_URL>"
+      "url": "<DNG_URL>"
     },
-    "mediaType": "image/tiff"
+    "mediaType": "image/x-adobe-dng"
   },
   {
     "destination": {

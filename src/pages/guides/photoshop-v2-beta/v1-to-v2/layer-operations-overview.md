@@ -15,6 +15,24 @@ keywords:
 
 This guide explains how layer operations have changed from v1 to v2 and helps you navigate the migration process.
 
+## V1 layer operations landscape
+
+In v1, layer operations were:
+
+- **Scattered across multiple endpoints** - Different operations used different APIs
+- **Limited in capability** - Many layer types couldn't be manipulated programmatically
+- **Sequential only** - Required multiple API calls for complex operations
+- **Inconsistent patterns** - Different request/response structures per endpoint
+
+**V1 had limited support for:**
+
+- Basic image layer manipulation
+- Some text editing capabilities
+- Smart object operations (limited)
+- No programmatic support for adjustment layers, layer groups, or advanced compositing
+
+## V2 unified approach
+
 The v2 API consolidates all layer operations into the `/v2/create-composite` endpoint:
 
 - **Single endpoint** for all layer manipulation
@@ -208,7 +226,3 @@ Layer operations are just one part of the V2 migration:
 1. Choose the [specific layer type guide](#specific-layer-type-guides) that matches your V1 usage.
 2. Start with simple migrations before combining operations.
 3. Test with development endpoints before production.
-
-## Need help?
-
-Contact the Adobe DI ART Service team for technical support with your migration.

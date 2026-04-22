@@ -23,7 +23,7 @@ In v1, Photoshop actions were spread across multiple endpoints. In the v2 API, a
 
 - Traditional Photoshop `.atn` action files
 - ActionJSON (inline actions)
-- Convenience APIs (productCrop, depthBlur, splitView, sideBySide)
+- Convenience APIs (productCrop, depthBlur, text, splitView, sideBySide)
 - UXP scripts (limited availability)
 
 The v1 endpoints being consolidated are:
@@ -34,6 +34,7 @@ The v1 endpoints being consolidated are:
 | `/pie/psdService/actionJSON`       | `/v2/execute-actions` with inline actionJSON |
 | `/pie/psdService/productCrop`      | `/v2/execute-actions` with published action  |
 | `/pie/psdService/depthBlur`        | ⚠️ Not yet supported (Neural Filters unavailable) |
+| `/pie/psdService/text`             | `/v2/execute-actions` with inline actionJSON or UXP scripts |
 | `/pie/psdService/splitView`        | `/v2/execute-actions` with published action  |
 | `/pie/psdService/sideBySide`       | `/v2/execute-actions` with published action  |
 
@@ -482,8 +483,14 @@ Each convenience API has a detailed migration guide with complete ActionJSON def
 | Convenience API | V1 Endpoint | Key Feature | Detailed Guide |
 |----------------|-------------|-------------|----------------|
 | **Product Crop** | `/pie/psdService/productCrop` | Auto cutout with customizable padding | [Product Crop Migration](convenience-apis/product-crop.md) |
+| **Depth Blur** ⚠️ | `/pie/psdService/depthBlur` | Neural filter depth-of-field with 11+ parameters | [Depth Blur Migration](convenience-apis/depth-blur.md) - **Not yet supported in V2** |
+| **Text Layer Operations** | `/pie/psdService/text` | Edit text layers (font, size, color) via ActionJSON or UXP scripts | [Text Layer Operations Migration](convenience-apis/text-layer-operations.md) |
 | **Split View** | `/pie/psdService/splitView` | Before/after comparison with center divider | [Split View Migration](convenience-apis/split-view.md) |
 | **Side by Side** | `/pie/psdService/sideBySide` | Simple side-by-side comparison layout | [Side by Side Migration](convenience-apis/side-by-side.md) |
+
+<InlineAlert variant="warning" slots="text"/>
+
+Depth Blur is not currently supported in V2 as Neural Filters are not yet available. Continue using the V1 endpoint for this feature.
 
 <InlineAlert variant="info" slots="text"/>
 
@@ -506,7 +513,7 @@ When using UXP scripts that generate files, use the `scriptOutputPattern` parame
   "outputs": [
     {
       "destination": {
-        "hosted": true
+        "validityPeriod": 3600
       },
       "mediaType": "image/jpeg",
       "scriptOutputPattern": "final_composite.jpg"
@@ -529,7 +536,7 @@ When using UXP scripts that generate files, use the `scriptOutputPattern` parame
     },
     {
       "destination": {
-        "hosted": true
+        "validityPeriod": 3600
       },
       "mediaType": "image/png",
       "scriptOutputPattern": "result-*.png"
@@ -670,14 +677,14 @@ curl -X POST \
   "outputs": [
     {
       "destination": {
-        "hosted": true
+        "validityPeriod": 3600
       },
       "mediaType": "application/json",
       "scriptOutputPattern": "result.json"
     },
     {
       "destination": {
-        "hosted": true
+        "validityPeriod": 3600
       },
       "mediaType": "image/jpeg",
       "scriptOutputPattern": "processed_image.jpg"
@@ -734,7 +741,7 @@ curl -X POST \
   "outputs": [
     {
       "destination": {
-        "hosted": true
+        "validityPeriod": 3600
       },
       "mediaType": "application/json",
       "scriptOutputPattern": "result.json"
@@ -750,13 +757,13 @@ Maximum of 25 additional contents allowed per request. Use the array index to re
 **Best Practices for UXP Scripts:**
 
 1. **File Extension:** UXP scripts use `.psjs` extension (Photoshop JavaScript) to distinguish them from generic JavaScript files
-2. **Output Path:** Use the `__UXP_OUTPUT_PATH__` placeholder to reference the output directory---------
+2. **Output Path:** Write output files to `plugin-temp:/filename` (e.g., `plugin-temp:/result.json`)
 3. **Path Handling:** Use `path.join()` to construct file paths - NEVER use hardcoded separators like `"/"` or `"\\"`
 4. **Path Utilities:** Use `path.dirname()`, `path.basename()`, and other Node.js path module functions
 5. **Platform-Agnostic:** Avoid platform-specific code or APIs (Windows/macOS/Linux)
 6. **Descriptive Names:** Use descriptive filenames for outputs
 7. **Output Patterns:** Specify the filename or pattern in `scriptOutputPattern` parameter
-8. **Destinations:** Use `embedded` or `hosted` destinations (external storage not supported for script outputs)
+8. **Destinations:** Use `embedded` or hosted storage (`validityPeriod`) as destination (external storage not supported for script outputs)
 9. **Media Types:** Filter outputs by `mediaType` - only matching file extensions are included
 10. **Error Handling:** Handle errors gracefully in your UXP scripts
 11. **Testing:** Test thoroughly before production use
@@ -862,16 +869,17 @@ You can specify multiple outputs in different formats. A maximum of 25 outputs a
 }
 ```
 
+## Complete V1 parity reference
+
+For a field-level table comparison of every V1 field versus its V2 equivalent — including all breaking changes, removed options, and new V2-only features — see:
+
+**[Execute Actions — Complete V1 Migration Reference](execute-actions-v1-reference.md)**
+
+This reference covers all five V1 endpoints replaced by `/v2/execute-actions`:
+`photoshopActions`, `actionJSON`, `productCrop`, `splitView`, and `sideBySide`.
+
 ## Next steps
 
 - Review the [storage solutions guide](../../../getting-started/storage-solutions/index.md) for storage options
 - Check the [composite migration guide](composite-migration.md) for layer operations
 - Test your action workflows with development endpoints
-
-## Need help?
-
-Contact the Adobe DI ART Service team for:
-
-- Published action file access
-- UXP script approval and vetting
-- Migration technical support

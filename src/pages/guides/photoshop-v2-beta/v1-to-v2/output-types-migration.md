@@ -31,6 +31,7 @@ All output formats in v2 share common structural changes:
 | **Storage Type** | `outputs[].storage` (required) | `outputs[].destination.storageType` (optional) |
 | **Quality (JPEG)** | Numeric 1-7 (or 1-12) | String enum |
 | **Compression (PNG)** | "small", "medium", "large" | Detailed string enum |
+| **ICC Profile** | Not available | Optional `iccProfile` for color management (see [ICC Profile Migration](icc-profile-migration.md)) |
 
 ## Structural changes (all output types)
 
@@ -87,7 +88,65 @@ All output types support these common fields:
 | `width` | integer | Output width in pixels (≥ 0) | No |
 | `height` | integer | Output height in pixels (≥ 0) | No |
 | `maxWidth` | integer | Maximum width in pixels (≥ 0) | No |
+| `resample` | string | Resampling algorithm when resizing to `width`/`maxWidth`. Values: `nearest_neighbor`, `bilinear`, `bicubic`, `bicubic_smoother`, `bicubic_sharper`. Defaults to `bicubic`. Applies to JPEG, PNG, and TIFF only. | No |
 | `shouldTrimToCanvas` | boolean | Trim transparent pixels | No |
+| `iccProfile` | object | ICC color profile for color management (JPEG, PNG, TIFF, PSD only; not PSDC) | No |
+
+<HorizontalLine />
+
+## Format support: color mode and bit depth
+
+When exporting to different formats, the API automatically converts source images when the color mode or bit depth is not supported by the target format. The following tables describe supported values and fallback behavior for each export path.
+
+<InlineAlert variant="info" slots="text"/>
+
+**Export paths:** *Full document* = whole document export (e.g., `/v2/create-composite` with no layer selection). *Single layer* = exporting one layer. *Layers composite* = exporting a composite of multiple selected layers.
+
+<InlineAlert variant="info" slots="text"/>
+
+**With ICC Profile** = whether an ICC profile is specified in the output's `iccProfile` option. When an ICC profile is specified for full document export, format-specific conversion is skipped; the ICC transformation handles color management.
+
+<InlineAlert variant="info" slots="text"/>
+
+**Layers composite:** Format-specific conversion is not applied for layers composite export; the composite is written as-is.
+
+### Bit depth validation
+
+| Export path | Target format | Supported depths | Fallback | ICC profile specified |
+|-------------|---------------|------------------|----------|----------------------|
+| Full document | JPEG | 8-bit only | Convert to 8-bit if needed | No |
+| Full document | JPEG | 8-bit only | No conversion | Yes |
+| Full document | PNG | 8-bit, 16-bit | Convert to 8-bit if needed | No |
+| Full document | PNG | 8-bit, 16-bit | No conversion | Yes |
+| Full document | TIFF | 8, 16, 32-bit | No conversion | N/A |
+| Full document | PSD | 8, 16, 32-bit | No conversion | N/A |
+| Full document | PSDC | 8, 16, 32-bit | No conversion | N/A |
+| Single layer | JPEG | 8-bit only | Convert to 8-bit if needed | N/A |
+| Single layer | PNG | 8-bit, 16-bit | Convert to 8-bit if needed | N/A |
+| Single layer | TIFF | 8, 16, 32-bit | No conversion | N/A |
+| Single layer | PSD | 8, 16-bit | Convert to 8-bit if needed | N/A |
+| Layers composite | JPEG | — | No conversion | N/A |
+| Layers composite | PNG | — | No conversion | N/A |
+| Layers composite | TIFF | — | No conversion | N/A |
+
+### Color mode validation
+
+| Export path | Target format | Supported modes | Fallback | ICC profile specified |
+|-------------|---------------|-----------------|----------|----------------------|
+| Full document | JPEG | RGB, Grayscale, CMYK | Convert to RGB if needed | No |
+| Full document | JPEG | RGB, Grayscale, CMYK | No conversion | Yes |
+| Full document | PNG | RGB, Grayscale | Convert to RGB if needed | No |
+| Full document | PNG | RGB, Grayscale | No conversion | Yes |
+| Full document | TIFF | All | No conversion | N/A |
+| Full document | PSD | All | No conversion | N/A |
+| Full document | PSDC | All | No conversion | N/A |
+| Single layer | JPEG | RGB, Grayscale, CMYK | Convert to RGB if needed | N/A |
+| Single layer | PNG | RGB, Grayscale | Convert to RGB if needed | N/A |
+| Single layer | TIFF | All | No conversion | N/A |
+| Single layer | PSD | RGB, Grayscale, CMYK | Convert to RGB if needed | N/A |
+| Layers composite | JPEG | — | No conversion | N/A |
+| Layers composite | PNG | — | No conversion | N/A |
+| Layers composite | TIFF | — | No conversion | N/A |
 
 <HorizontalLine />
 
@@ -394,7 +453,7 @@ V2 accepts both media type formats:
     "layers": [
       {
         "name": "Background",
-        "locked": false
+        "protection": ["none"]
       }
     ]
   },
@@ -741,6 +800,7 @@ Use this checklist when migrating output configurations:
 - [ ] Remove `storage: "external"` for AWS S3 presigned URLs
 - [ ] Add `storageType` for Azure Blob Storage or Dropbox if applicable
 - [ ] Verify common fields (`width`, `height`, `maxWidth`) if used
+- [ ] Optionally add `resample` to control interpolation when `width`/`maxWidth` is set (JPEG, PNG, TIFF; defaults to `bicubic`)
 
 ### JPEG specific
 
@@ -801,5 +861,6 @@ Use this checklist when migrating output configurations:
 
 - [Migration Overview](index.md) - Complete V1 to V2 migration overview
 - [Format Conversion Migration](format-conversion-migration.md) - Converting between formats
+- [ICC Profile Migration](icc-profile-migration.md) - Color management for output exports
 - [Actions Migration](actions-migration.md) - Executing Photoshop actions
 - [Storage Solutions](../../../getting-started/storage-solutions/index.md) - Detailed storage configuration

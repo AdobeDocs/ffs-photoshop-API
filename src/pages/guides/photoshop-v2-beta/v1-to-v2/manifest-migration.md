@@ -53,6 +53,7 @@ Both V1 and V2 require explicit opt-in for layer thumbnail generation:
 - V1: `options.thumbnails` (object with `type` property) → V2: `includeLayerThumbnails` (boolean) + `exportOptions.mediaType`
 - V1: Thumbnail format in `options.thumbnails.type` → V2: Format in `exportOptions.mediaType`
 - V1: Layer information always included → V2: Layer information always included
+- V1: Layer `locked` (boolean) → V2: Layer `protection` (array of flags: none, all, transparency, composite, position, artboard_autonest)
 - New in V2: `includeXmp`, `maximumThumbnailDepth`, `trimToTransparency`
 - Both versions require explicit opt-in for thumbnail generation
 
@@ -190,15 +191,22 @@ Default: `false`
 
 ### Trim to transparency
 
-Trim layer thumbnails to remove transparent pixels:
+Trim layer thumbnails to remove transparent pixels, cropping each thumbnail tightly to its visible content:
 
 ```json
 {
+  "includeLayerThumbnails": true,
   "trimToTransparency": true
 }
 ```
 
 Default: `false`
+
+**Important:** `trimToTransparency` only applies when `includeLayerThumbnails` is `true`. If `includeLayerThumbnails` is `false`, this option has no effect.
+
+**Adjustment layers and layers with no pixel data:** `trimToTransparency` has no effect on these layers. Their thumbnails are always returned as a blank white canvas regardless of this setting.
+
+**Note:** `trimToTransparency` is specific to the `/v2/generate-manifest` endpoint. For trimming exported images in `/v2/create-composite` or `/v2/execute-actions`, use `cropMode: "trim_to_transparency"` in the output options instead.
 
 ### Export options
 
@@ -340,23 +348,24 @@ The generated manifest contains comprehensive document information:
     {
       "id": 1,
       "name": "Background",
-      "type": "layer",
+      "type": "pixel_layer",
       "visible": true,
-      "locked": false,
+      "protection": ["none"],
       "bounds": {
         "top": 0,
         "left": 0,
-        "width": 1920,
-        "height": 1080
+        "right": 1920,
+        "bottom": 1080
       },
       "thumbnail": {
-        "href": "<THUMBNAIL_URL>"
+        "mediaType": "image/jpeg",
+        "url": "<THUMBNAIL_URL>"
       }
     },
     {
       "id": 2,
       "name": "Text Layer",
-      "type": "textLayer",
+      "type": "text_layer",
       "visible": true,
       "text": {
         "content": "Hello World",
@@ -366,7 +375,7 @@ The generated manifest contains comprehensive document information:
     {
       "id": 3,
       "name": "Group",
-      "type": "groupLayer",
+      "type": "group_layer",
       "visible": true,
       "children": [...]
     }
@@ -423,7 +432,7 @@ The manifest response includes two mask-related structures:
   "name": "Layer with Mask",
   "type": "layer",
   "visible": true,
-  "locked": false,
+  "protection": ["none"],
   "bounds": {
     "top": 100,
     "left": 100,
@@ -462,9 +471,12 @@ The manifest response includes two mask-related structures:
 
 | Property | Type | Location | Description |
 | -------- | ---- | -------- | ----------- |
-| `clippingMask` | Boolean | `layerSettings.clippingMask` | Indicates whether the layer is clipped to the layer below it.
+| `clippingMask` | Boolean | `layerSettings.clippingMask` | Indicates whether the layer is clipped to the layer below it. |
+| `protection` | Array of strings | Layer level | V2: Protection flags (none, all, transparency, composite, position, artboard_autonest). Replaces V1 `locked` boolean. When using `none` or `all`, array must contain only that element. |
 
 **Note:** To set this property in edit operations, use the `isClipped` field at the layer config level (e.g., `layers[].isClipped: true`).
+
+**Migration note:** V2 manifest returns `protection` (array) instead of `locked` (boolean). Map `locked: true` to `protection: ["all"]`, `locked: false` to `protection: ["none"]` or empty.
 
 #### 1. userMask - Common Mask Properties
 
@@ -742,6 +754,7 @@ curl -X GET https://photoshop-api.adobe.io/v2/status/{jobId} ...
 - Generating thumbnails for all layers can be time-consuming for complex documents
 - Use `maximumThumbnailDepth` to limit generation depth
 - Consider disabling thumbnails if only document structure is needed
+- Enabling `trimToTransparency` adds per-layer processing overhead; use only when tight thumbnail cropping is required
 
 **XMP Metadata:**
 
@@ -759,7 +772,3 @@ curl -X GET https://photoshop-api.adobe.io/v2/status/{jobId} ...
 - Review the [storage solutions guide](../../../getting-started/storage-solutions/index.md) for output storage options
 - Check the [status migration guide](status-migration.md) for polling patterns
 - Test manifest generation with development endpoints
-
-## Need help?
-
-Contact the Adobe DI ART Service team for technical support with manifest generation.
