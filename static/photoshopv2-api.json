@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "description": "Photoshop v2 API Server for Adobe DI Arts.",
+    "description": "Photoshop v2 API Server for Adobe Firefly Services.",
     "license": {
       "name": "Adobe Creative API License",
       "url": "https://www.adobe.com/content/dam/cc/en/legal/terms/enterprise/pdfs/PSLT-AdobeCreativeAPI-WW-2024v2.pdf"
@@ -17,9 +17,7 @@
   ],
   "security": [
     {
-      "Authorization": []
-    },
-    {
+      "Authorization": [],
       "X-Api-Key": []
     }
   ],

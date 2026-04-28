@@ -86,8 +86,6 @@
     - [Create composite v1 reference](/guides/photoshop-v2-beta/v1-to-v2/create-composite-v1-reference.md)
     - [Convenience APIs migration](/guides/photoshop-v2-beta/v1-to-v2/convenience-apis/index.md)
       - [Product crop migration](/guides/photoshop-v2-beta/v1-to-v2/convenience-apis/product-crop.md)
-      - [Split view migration](/guides/photoshop-v2-beta/v1-to-v2/convenience-apis/split-view.md)
-      - [Side by side migration](/guides/photoshop-v2-beta/v1-to-v2/convenience-apis/side-by-side.md)
       - [Depth blur migration](/guides/photoshop-v2-beta/v1-to-v2/convenience-apis/depth-blur.md)
       - [Text layer operations migration](/guides/photoshop-v2-beta/v1-to-v2/convenience-apis/text-layer-operations.md)
     - [LLM migration reference](/guides/photoshop-v2-beta/v1-to-v2/llm-migration-reference.md)
