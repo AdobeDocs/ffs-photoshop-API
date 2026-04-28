@@ -14,7 +14,7 @@ contributors:
 
 # Getting started with Smart Objects
 
-The Smart Object endpoint allows you to create and edit an embedded Smart Objects in a Photoshop file, or PSD file.
+The Smart Object endpoint allows you to create and edit an embedded Smart Object in a PSD file.
 
 The Smart Object that is replaced will be positioned within the bounding box of the original image. Whether the new image is larger or smaller than the original, it will adjust to fit within the original bounding box while preserving its aspect ratio. To alter the bounds of the replaced image, you can specify bounds parameters in the API call.
 

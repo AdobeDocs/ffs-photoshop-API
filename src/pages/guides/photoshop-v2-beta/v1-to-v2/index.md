@@ -115,20 +115,18 @@ Use this table to quickly find the v2 equivalent for your v1 endpoints:
 | `/lrService/presets`                 | `/v2/edit`              | [Edit Operations](edit-operations.md)                     |
 | `/lrService/xmp`                     | `/v2/edit`              | [Edit Operations](edit-operations.md)                     |
 | `/lrService/edit`                    | `/v2/edit`              | [Edit Operations](edit-operations.md)                     |
+| `/pie/psdService/smartObject`        | `/v2/create-composite`  | [Smart Object](guides-v2/smart-object-workflow.md)        |
 | `/pie/psdService/renditionCreate`    | `/v2/create-composite`  | [Format Conversion](format-conversion-migration.md)       |
 | `/pie/psdService/documentCreate`     | `/v2/create-composite`  | [Document Creation](document-creation-migration.md)       |
 | `/pie/psdService/documentOperations` | `/v2/create-composite`  | [Document Operations](document-operations-migration.md)   |
-| Layer operations                     | `/v2/create-composite`  | [Layer Operations](composite-migration.md) (see sub-guides) |
 | `/pie/psdService/photoshopActions`   | `/v2/execute-actions`   | [Actions Migration](actions-migration.md)                 |
 | `/pie/psdService/actionJSON`         | `/v2/execute-actions`   | [Actions Migration](actions-migration.md)                 |
 | `/pie/psdService/productCrop`        | `/v2/execute-actions`   | [Product Crop](convenience-apis/product-crop.md)          |
-| `/pie/psdService/splitView`          | `/v2/execute-actions`   | [Split View](convenience-apis/split-view.md)              |
-| `/pie/psdService/sideBySide`         | `/v2/execute-actions`   | [Side by Side](convenience-apis/side-by-side.md)          |
 | `/pie/psdService/artboardCreate`     | `/v2/create-artboard`   | [Artboard Migration](artboard-migration.md)               |
 | `/pie/psdService/documentManifest`   | `/v2/generate-manifest` | [Manifest Migration](manifest-migration.md)               |
 | `/pie/psdService/status/{jobId}`     | `/v2/status/{jobId}`    | [Status Migration](status-migration.md)                   |
 | `/lrService/status/{jobId}`          | `/v2/status/{jobId}`    | [Status Migration](status-migration.md)                   |
-| Sensei PSDC Engine                   | `/v2/create-composite`  | [Format Conversion](format-conversion-migration.md)       |
+| Layer operations                     | `/v2/create-composite`  | [Layer Operations](composite-migration.md) (see sub-guides) |
 
 ## Need help?
 
