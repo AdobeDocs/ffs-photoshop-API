@@ -238,13 +238,18 @@ Smart objects can contain various file types:
 - PSD (image/vnd.adobe.photoshop)
 - JPEG (image/jpeg)
 - PNG (image/png)
+- AI / Adobe Illustrator (application/illustrator)
+- PDF (application/pdf)
 
 **V2 Supported:**
 
 - PSD (image/vnd.adobe.photoshop)
 - JPEG (image/jpeg)
 - PNG (image/png)
+- TIFF (image/tiff)
 - SVG (image/svg+xml)
+- AI / Adobe Illustrator (application/illustrator)
+- PDF (application/pdf)
 
 <InlineAlert variant="info" slots="text"/>
 
@@ -944,7 +949,7 @@ When you edit or add a linked smart object in the same request as a resize, the 
 - ✅ Blend options (opacity, blendMode)
 - ✅ Placement options (top, bottom, above, below, into)
 - ✅ Reference layer by name or ID
-- ✅ Multiple source file types (PSD, JPEG, PNG, SVG)
+- ✅ Multiple source file types (PSD, JPEG, PNG, TIFF, SVG, AI, PDF)
 - ✅ Linked and embedded smart objects (`smartObject.isLinked`)
 - ✅ Resize (`width`/`maxWidth`) documents containing linked smart objects
 
