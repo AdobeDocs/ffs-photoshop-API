@@ -2,6 +2,7 @@
 title: Granular Labels
 description: Learn how to use the Granular Labels param in the Mask Body endpoint
 hideBreadcrumbNav: true
+
 ---
 
 # Generate Human Item Masks: Granular Labels
@@ -10,15 +11,11 @@ hideBreadcrumbNav: true
 
 Feature Guide — `useGranularLabels` | API Version: v1 | April 2026
 
----
-
 ## 1. Overview
 
 The Generate Human Item Masks endpoint (`/v1/mask-body-parts`) detects and segments human body parts and clothing items in images, returning individual mask images for each identified region. By default, bilateral body parts (those that appear on both sides of the body) are returned as a single combined mask.
 
 The granular labels feature extends this capability by returning side-specific masks for bilateral parts. When enabled, you receive separate, independent masks for the left and right instances of each applicable body part. This is controlled by the `useGranularLabels` boolean field in the request body.
-
----
 
 ## 2. When to Use Granular Labels
 
@@ -31,8 +28,6 @@ Use `useGranularLabels: true` when your workflow requires:
 - **Precision apparel segmentation** — differentiating left/right sleeves, gloves, or shoes for e-commerce product presentation.
 
 > If your workflow treats both sides of the body identically (e.g., full-body background removal), you do not need granular labels. Omit the flag or set it to `false` to use the standard, combined label set with lower response payload size.
-
----
 
 ## 3. API Reference
 
@@ -52,8 +47,6 @@ POST https://image.adobe.io/v1/mask-body-parts
 | `mask` | object | Yes | The subject mask object. Contains `source` (URL) and `mediaType` fields. |
 | `mask.source.url` | string | Yes | Presigned URL of the subject mask image. Must be `image/png`. |
 | `useGranularLabels` | boolean | No | When `true`, returns side-specific masks for bilateral body parts. Defaults to `false`. |
-
----
 
 ## 4. Request Examples
 
@@ -87,8 +80,6 @@ POST https://image.adobe.io/v1/mask-body-parts
   "useGranularLabels": true
 }
 ```
-
----
 
 ## 5. Response Structure
 
@@ -134,8 +125,6 @@ GET https://image.adobe.io/v1/status/{jobId}
 }
 ```
 
----
-
 ## 6. Granular Label Reference
 
 The following labels may be returned in the `masks` array when `useGranularLabels` is `true`. Labels that are not bilateral (e.g., Face, Hair, Upper Clothes) are returned identically in both standard and granular modes.
@@ -158,8 +147,6 @@ The following labels may be returned in the `masks` array when `useGranularLabel
 | Accessories | Accessories | Same (no change) |
 | Background | Background | Same (no change) |
 
----
-
 ## 7. Best Practices
 
 - Only enable `useGranularLabels` when your workflow requires left/right differentiation. The standard mode returns a smaller payload and may process faster.
@@ -168,8 +155,6 @@ The following labels may be returned in the `masks` array when `useGranularLabel
 - For ground shadow workflows: use the `Left Shoe` and `Right Shoe` masks independently to calculate shadow anchor points per foot.
 - For reflection workflows: mirror each shoe or leg mask individually along the vertical axis to create correct per-limb reflections.
 - Input images should not exceed 4000 x 4000 px. For higher-resolution source images, downscale before calling the API.
-
----
 
 ## 8. Error Handling
 
@@ -180,7 +165,5 @@ The following labels may be returned in the `masks` array when `useGranularLabel
 | 403 | `forbidden` | Valid token but insufficient permissions. Verify API entitlements. |
 | 429 | `too_many_requests` | Rate limit exceeded. Implement exponential backoff. |
 | 500 | `internal_server_error` | Transient server error. Retry with backoff before escalating. |
-
----
 
 *Adobe Firefly Photoshop API — Generate Human Item Masks Granular Labels Guide • April 2026 • v1*
