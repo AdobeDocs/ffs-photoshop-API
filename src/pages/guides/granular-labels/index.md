@@ -1,3 +1,10 @@
+---
+title: Granular Labels
+description: Learn how to use the Graunalar Labels param in the Mask Body endpoint
+hideBreadcrumbNav: true
+
+---
+
 # Generate Human Item Masks: Granular Labels
 
 **USAGE GUIDE • ADOBE FIREFLY PHOTOSHOP API • GENERATE HUMAN ITEM MASKS — GRANULAR LABELS**
