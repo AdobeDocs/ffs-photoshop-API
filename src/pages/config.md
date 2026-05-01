@@ -27,6 +27,7 @@
 - subPages:
     - What's New header
     - [Deprecation Announcement](/getting-started/deprecation-announcement/index.md)
+  
     - Getting Started header
     - [Authentication](/getting-started/index.md)
     - [Storage Solutions](/getting-started/storage-solutions/index.md)
@@ -36,6 +37,7 @@
     - [Photoshop Concepts](/getting-started/concepts/index.md)
     - Guides header
     - [Photoshop API v1 guides](/guides/index.md)
+      - [Granular Labels](/guides/granular-labels/index.md)
       - [Photoshop Actions](/guides/photoshop-actions/index.md)
       - [Using the ActionJSON endpoint](/guides/actionjson-endpoint/index.md)
       - [Using Smart Objects](/guides/smart-objects-and-the-api/index.md)
