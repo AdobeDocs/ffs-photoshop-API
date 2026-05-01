@@ -2211,8 +2211,8 @@
           "Masking"
         ],
         "operationId": "maskBodyParts",
-        "summary": "Generate human item masks",
-        "description": "This endpoint processes an input image of a human, then identifies and creates masks for various items and sections on the body including sunglasses, hats, upper body apparel, lower body apparel, left arm, right arm, and more. The API returns an array of masks corresponding to each detected item and body part. To check the status of this process, utilize the `Get Status - V1` endpoint.",
+        "summary": "Generate human body part masks (with optional granular labels)",
+        "description": "This endpoint processes an input image of a human, then identifies and creates masks for various items and sections on the body including sunglasses, hats, upper body apparel, lower body apparel, arms, legs, shoes, and more. The API returns an array of masks corresponding to each detected item and body part.\n\n**Granular Labels (New \u2014 GA):** Set `useGranularLabels: true` in the request body to receive side-specific masks for bilateral body parts. For example, instead of a single combined mask, the API returns separate masks for `Left Shoe` and `Right Shoe`, `Left Arm` and `Right Arm`, and so on. This capability is essential for workflows that apply independent effects \u2014 such as ground shadows or reflections \u2014 to individual limbs at scale.\n\nTo check the status of this process, utilize the `Get Status - V1` endpoint.",
         "x-ffs-async-job": true,
         "x-ffs-job-status-fetcher": "facadeJobStatus",
         "parameters": [],
@@ -6083,6 +6083,11 @@
                 "$ref": "#/components/schemas/MaskBodyPartsInputMask"
               }
             ]
+          },
+          "useGranularLabels": {
+            "type": "boolean",
+            "description": "When set to true, the API returns granular side-specific labels for bilateral body parts (e.g., Left Shoe, Right Shoe, Left Arm, Right Arm). When false or omitted, the API returns the default combined label set. See the Granular Labels section of the documentation for the full label reference.",
+            "default": false
           }
         },
         "required": [
@@ -6266,7 +6271,8 @@
         "properties": {
           "label": {
             "type": "string",
-            "description": "The label of the identified body part."
+            "description": "The label of the identified body part or item. When useGranularLabels is true, side-specific labels (e.g., Left Shoe, Right Shoe) are returned. See GranularBodyPartLabel for the full enumeration of possible values.",
+            "example": "Left Shoe"
           },
           "boundingBox": {
             "description": "The bounding box of the identified body part.",
@@ -6577,6 +6583,40 @@
         "required": [
           "jobId",
           "status"
+        ]
+      },
+      "GranularBodyPartLabel": {
+        "type": "string",
+        "description": "The set of body part labels returned when useGranularLabels is true.",
+        "enum": [
+          "Background",
+          "Hair",
+          "Eyebrow",
+          "Eyes",
+          "Pupil",
+          "Nose",
+          "Mouth",
+          "Teeth",
+          "Face",
+          "Neck",
+          "Beard",
+          "Left Ear",
+          "Right Ear",
+          "Left Arm",
+          "Right Arm",
+          "Left Hand",
+          "Right Hand",
+          "Left Leg",
+          "Right Leg",
+          "Left Shoe",
+          "Right Shoe",
+          "Upper Clothes",
+          "Lower Clothes",
+          "Coat",
+          "Dress",
+          "Hat",
+          "Glasses",
+          "Accessories"
         ]
       }
     },
