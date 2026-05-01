@@ -2211,7 +2211,7 @@
           "Masking"
         ],
         "operationId": "maskBodyParts",
-        "summary": "Generate human body part masks",
+        "summary": "Generate human item masks",
         "description": "This endpoint processes an input image of a human, then identifies and creates masks for various items and sections on the body including sunglasses, hats, upper body apparel, lower body apparel, arms, legs, shoes, and more. The API returns an array of masks corresponding to each detected item and body part.\n\n**Granular Labels (New \u2014 GA):** Set `useGranularLabels: true` in the request body to receive side-specific masks for bilateral body parts. For example, instead of a single combined mask, the API returns separate masks for `Left Shoe` and `Right Shoe`, `Left Arm` and `Right Arm`, and so on. This capability is essential for workflows that apply independent effects \u2014 such as ground shadows or reflections \u2014 to individual limbs at scale.\n\nTo check the status of this process, utilize the `Get Status - V1` endpoint.",
         "x-ffs-async-job": true,
         "x-ffs-job-status-fetcher": "facadeJobStatus",
