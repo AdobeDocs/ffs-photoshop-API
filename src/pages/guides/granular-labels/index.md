@@ -1,8 +1,7 @@
 ---
 title: Granular Labels
-description: Learn how to use the Graunalar Labels param in the Mask Body endpoint
+description: Learn how to use the Granular Labels param in the Mask Body endpoint
 hideBreadcrumbNav: true
-
 ---
 
 # Generate Human Item Masks: Granular Labels
@@ -31,7 +30,7 @@ Use `useGranularLabels: true` when your workflow requires:
 - **High-volume automation** — processing large batches of sports player or product images where manual mask splitting is not feasible.
 - **Precision apparel segmentation** — differentiating left/right sleeves, gloves, or shoes for e-commerce product presentation.
 
-> ⚠️ If your workflow treats both sides of the body identically (e.g., full-body background removal), you do not need granular labels. Omit the flag or set it to `false` to use the standard, combined label set with lower response payload size.
+> If your workflow treats both sides of the body identically (e.g., full-body background removal), you do not need granular labels. Omit the flag or set it to `false` to use the standard, combined label set with lower response payload size.
 
 ---
 
