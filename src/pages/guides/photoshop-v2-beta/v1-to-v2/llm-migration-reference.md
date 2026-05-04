@@ -45,8 +45,6 @@ keywords:
 | `/pie/psdService/actionJSON` | `/v2/execute-actions` | Actions | Execute inline ActionJSON |
 | `/pie/psdService/productCrop` | `/v2/execute-actions` | Actions | Product crop convenience API |
 | `/pie/psdService/depthBlur` | Not yet supported (Neural Filters unavailable) | Actions | Depth blur convenience API |
-| `/pie/psdService/splitView` | `/v2/execute-actions` | Actions | Split view convenience API |
-| `/pie/psdService/sideBySide` | `/v2/execute-actions` | Actions | Side by side convenience API |
 | `/pie/psdService/artboardCreate` | `/v2/create-artboard` | Artboards | Create artboards from images |
 | `/pie/psdService/documentManifest` | `/v2/generate-manifest` | Manifest | Generate PSD manifest |
 | `/pie/psdService/status/{jobId}` | `/v2/status/{jobId}` | Status | Check job status (Photoshop) |
@@ -714,8 +712,6 @@ For `smart_object_layer`, `opacity` and `blendMode` remain nested under `blendOp
 - `/pie/psdService/actionJSON`
 - `/pie/psdService/productCrop`
 - `/pie/psdService/depthBlur`
-- `/pie/psdService/splitView`
-- `/pie/psdService/sideBySide`
 
 **V2 Endpoint:** `/v2/execute-actions`
 
@@ -877,24 +873,6 @@ For multiple layers: repeat the `select` + `set` sequence within the same string
 - Use `layer.textItem.characterStyle` to modify `fauxBold`, `fauxItalic`, etc.
 - Use `plugin-temp:/filename.ext` for script output files
 
-**Split View:**
-- **Steps**: 34 action steps
-- **Additional Contents**: Yes (2 required)
-  - `__ADDITIONAL_CONTENTS_PATH_0__`: Edited/final output image
-  - `__ADDITIONAL_CONTENTS_PATH_1__`: Product logo
-- **Key Parameters**: Width: 1200px (resizes final output)
-- **What It Does**: Masked before/after comparison with center divider line + logo
-- **Use Case**: Demonstrating image processing effects with branding
-
-**Side by Side:**
-- **Steps**: 19 action steps
-- **Additional Contents**: Yes (2 required)
-  - `__ADDITIONAL_CONTENTS_PATH_0__`: Edited/final output image
-  - `__ADDITIONAL_CONTENTS_PATH_1__`: Product logo
-- **Key Parameters**: Width: 1195.0px (exact value with decimal)
-- **What It Does**: Simple side-by-side comparison without masking + logo
-- **Use Case**: Clean before/after comparisons with branding
-- **Key Difference from Split View**: Simpler, no complex masking or divider lines
 
 **UXP Scripts (Limited Availability):**
 ```json
@@ -4014,8 +3992,6 @@ For the complete authoritative field-level diff, see
 | `POST /pie/psdService/photoshopActions` | `POST /v2/execute-actions` |
 | `POST /pie/psdService/actionJSON` | `POST /v2/execute-actions` |
 | `POST /pie/psdService/productCrop` | `POST /v2/execute-actions` (published action) |
-| `POST /pie/psdService/splitView` | `POST /v2/execute-actions` (published action) |
-| `POST /pie/psdService/sideBySide` | `POST /v2/execute-actions` (published action) |
 | `POST /pie/psdService/depthBlur` | Not yet supported (Neural Filters) |
 | `POST /pie/psdService/text` | Not execute-actions — use document edit operations |
 | `POST /pie/psdService/smartObjectV2` | Not execute-actions — use document edit operations |
