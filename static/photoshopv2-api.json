@@ -17,7 +17,7 @@
   ],
   "security": [
     {
-      "Authorization": [],
+      "AccessToken": [],
       "X-Api-Key": []
     }
   ],
@@ -4827,18 +4827,16 @@
       }
     },
     "securitySchemes": {
-      "Authorization": {
-        "description": "User access token (Bearer xxx)",
-        "in": "header",
-        "name": "Authorization",
-        "scheme": "Bearer",
-        "type": "http"
+      "AccessToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "The Adobe-generated access token, S2S format."
       },
       "X-Api-Key": {
-        "description": "Api key (adobe.io)",
+        "type": "apiKey",
+        "name": "x-api-key",
         "in": "header",
-        "name": "X-Api-Key",
-        "type": "apiKey"
+        "description": "The client ID for authentication."
       }
     }
   }

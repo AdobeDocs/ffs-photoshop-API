@@ -12,6 +12,7 @@
         - [Substance 3D API](https://developer.adobe.com/firefly-services/docs/s3dapi/?aio_internal) Unlock generative AI for rendering and object composites.
         - [Illustrator API](https://developer.adobe.com/firefly-services/docs/illustrator/?aio_internal) Docs and references for Illustrator API.
         - [Creative Production API](https://developer.adobe.com/firefly-services/docs/workflow-builder-api/?aio_internal) Docs and references for Firefly Creative Production API.
+        - [Express API](https://developer.adobe.com/firefly-services/docs/express-api/?aio_internal) Docs and references for Express API.
         - [Content Tagging API](https://experienceleague.adobe.com/docs/experience-platform/intelligent-services/content-commerce-ai/overview.html) Docs and references for Content Tagging services.
     - [About Photoshop API](/index.md)
     - [Getting Started](/getting-started/index.md)
@@ -27,6 +28,7 @@
 - subPages:
     - What's New header
     - [Deprecation Announcement](/getting-started/deprecation-announcement/index.md)
+  
     - Getting Started header
     - [Authentication](/getting-started/index.md)
     - [Storage Solutions](/getting-started/storage-solutions/index.md)
@@ -36,6 +38,7 @@
     - [Photoshop Concepts](/getting-started/concepts/index.md)
     - Guides header
     - [Photoshop API v1 guides](/guides/index.md)
+      - [Granular Labels](/guides/granular-labels/index.md)
       - [Photoshop Actions](/guides/photoshop-actions/index.md)
       - [Using the ActionJSON endpoint](/guides/actionjson-endpoint/index.md)
       - [Using Smart Objects](/guides/smart-objects-and-the-api/index.md)
