@@ -220,6 +220,57 @@ The example action performs four operations:
 
 **Customizing actions:** Change `_name` to match your layer. Adjust each `set` step's `to` object for size, font (`fontPostScriptName`, `fontName`, `fontStyleName`), or color (`RGBColor`). Add, reorder, or omit steps as needed. For multiple layers, repeat the `select` + `set` pattern.
 
+## Bounds and visibility-only edits
+
+When a V1 `/pie/psdService/text` payload only changes layer bounds or visibility — with no text content or style modifications — V2 still requires a non-empty `options` object containing ActionJSON or UXP. An empty `options` object is rejected:
+
+```
+options: At least one of actions or uxp must be provided
+```
+
+Generate ActionJSON that selects each target layer by `_name` and applies the appropriate operation:
+
+**Visibility toggle (show/hide):**
+
+```json
+[
+  {
+    "_obj": "select",
+    "_target": [{"_ref": "layer", "_name": "My Text Layer"}],
+    "makeVisible": false
+  },
+  {
+    "_obj": "hide",
+    "_target": [{"_ref": "layer", "_enum": "ordinal", "_value": "targetEnum"}]
+  }
+]
+```
+
+To show a hidden layer, use `"_obj": "show"` instead of `"hide"`.
+
+**Bounds change (translate/move):**
+
+```json
+[
+  {
+    "_obj": "select",
+    "_target": [{"_ref": "layer", "_name": "My Text Layer"}],
+    "makeVisible": false
+  },
+  {
+    "_obj": "move",
+    "_target": [{"_ref": "layer", "_enum": "ordinal", "_value": "targetEnum"}],
+    "to": {
+      "_obj": "offset",
+      "horizontal": {"_unit": "pixelsUnit", "_value": 50},
+      "vertical": {"_unit": "pixelsUnit", "_value": 30}
+    }
+  }
+]
+```
+
+Wrap this ActionJSON as a stringified string in `options.actions[].source.content` with `contentType: "application/json"`.
+
 ## Using UXP scripts
 
 In V2, you can also use **UXP scripts** for text layer operations. UXP is ideal when you need:
@@ -494,6 +545,79 @@ This example edits two text layers using both the V1 and V2 APIs.
 ```
 
 The first layer gets red text; the second gets 48pt blue text.
+
+## Complete V1 field reference
+
+The V1 `/psdService/text` endpoint supported more fields than the basic font/size/color covered above. Use the table below to find the V2 equivalent for each V1 `characterStyles` and `paragraphStyles` property.
+
+### text properties
+
+| V1 `text` field | V2 ActionJSON equivalent | Notes |
+|-----------------|--------------------------|-------|
+| `content` | `set` on `textLayer` with `textKey: "new string"` | Changes the text string. Target `_ref: "textLayer"`, `_property: "textLayer"`, `to._obj: "textLayer"`, `to.textKey: "..."` |
+| `orientation` | `set` on `textLayer` with `orientation: {_enum: "orientation", _value: "horizontal"}` | Values: `"horizontal"`, `"vertical"` |
+| `antiAlias` | `set` on `textLayer` with `antiAlias: {_enum: "antiAliasType", _value: "..."}` | Values: `"antiAliasNone"`, `"antiAliasCrisp"`, `"antiAliasStrong"`, `"antiAliasSmooth"`, `"antiAliasLCD"` |
+
+### characterStyles properties
+
+| V1 `characterStyles` field | V2 ActionJSON `set textStyle` property | Notes |
+|---------------------------|----------------------------------------|-------|
+| `size` | `size: {_unit: "pointsUnit", _value: N}` | Also set `textOverrideFeatureName: 808465458`, `typeStyleOperationType: 3` |
+| `fontPostScriptName` | `fontPostScriptName: "..."` | Set together with `fontName` and `fontStyleName` |
+| `color` | `color: {_obj: "RGBColor", red: N, green: N, blue: N}` | |
+| `leading` | `autoLeading: false, leading: {_unit: "pointsUnit", _value: N}` | Set `autoLeading: false` to disable auto leading |
+| `tracking` | `tracking: N` | Integer, in thousandths of an em (e.g., `100` = 10% of em) |
+| `syntheticBold` | `syntheticBold: true` | Faux bold — prefer a real bold font when available |
+| `syntheticItalic` | `syntheticItalic: true` | Faux italic — prefer a real italic font when available |
+| `fontCaps` | `fontCaps: {_enum: "fontCaps", _value: "..."}` | Values: `"allCaps"`, `"smallCaps"`, `"normal"` |
+| `baseline` | `baselineDirection: {_enum: "baselineDirection", _value: "..."}` | Values: `"subScript"`, `"superScript"`, `"normal"` |
+| `strikethrough` | `strikeThrough: {_enum: "strikeThrough", _value: "..."}` | Values: `"classicStrikeThrough"`, `"xHeightStrikeThrough"`, `"noStrikeThrough"` |
+| `underline` | `underline: {_enum: "underline", _value: "..."}` | Values: `"underlineOnLeft"`, `"noUnderline"` |
+| `verticalScale` | `verticalScale: N` | Percentage integer (e.g., `120` = 120%) |
+| `horizontalScale` | `horizontalScale: N` | Percentage integer (e.g., `80` = 80%) |
+| `ligature` | `ligature: true` | Standard ligatures (fi, fl, etc.) |
+| `autoKern` | `autoKern: {_enum: "autoKern", _value: "..."}` | Values: `"metricsKern"`, `"opticalKern"`, `"manualKern"` |
+| `stylisticAlternates` | UXP recommended | ActionJSON equivalent is not standardized; use UXP for reliable access |
+
+### paragraphStyles properties
+
+| V1 `paragraphStyles` field | V2 ActionJSON equivalent | Notes |
+|---------------------------|--------------------------|-------|
+| `alignment` | `set` on `paragraphStyle` with `align: {_enum: "alignmentType", _value: "..."}` | Target `_ref: "property"`, `_property: "paragraphStyle"`. Values: `"alignLeft"`, `"alignCenter"`, `"alignRight"`, `"justifyAll"`, `"justifyLeft"`, `"justifyCenter"`, `"justifyRight"` |
+
+**Example — change text content and alignment:**
+
+```json
+[
+  {
+    "_obj": "select",
+    "_target": [{"_name": "your-text-layer-name", "_ref": "layer"}],
+    "makeVisible": true
+  },
+  {
+    "_obj": "set",
+    "_target": [
+      {"_property": "textLayer", "_ref": "property"},
+      {"_enum": "ordinal", "_ref": "textLayer", "_value": "targetEnum"}
+    ],
+    "to": {
+      "_obj": "textLayer",
+      "textKey": "Updated text content"
+    }
+  },
+  {
+    "_obj": "set",
+    "_target": [
+      {"_property": "paragraphStyle", "_ref": "property"},
+      {"_enum": "ordinal", "_ref": "textLayer", "_value": "targetEnum"}
+    ],
+    "to": {
+      "_obj": "paragraphStyle",
+      "align": {"_enum": "alignmentType", "_value": "alignCenter"}
+    }
+  }
+]
+```
 
 ## Additional resources
 

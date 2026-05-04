@@ -33,6 +33,7 @@
     - [Storage Solutions](/getting-started/storage-solutions/index.md)
     - [Technical Usage Notes](/getting-started/technical-usage-notes/index.md)
     - [Webhooks and Events](/getting-started/webhooks/index.md)
+    - [UXP Scripts](/getting-started/uxp/index.md)
     - Learn More header
     - [Photoshop Concepts](/getting-started/concepts/index.md)
     - Guides header
@@ -90,5 +91,6 @@
       - [Product crop migration](/guides/photoshop-v2-beta/v1-to-v2/convenience-apis/product-crop.md)
       - [Depth blur migration](/guides/photoshop-v2-beta/v1-to-v2/convenience-apis/depth-blur.md)
       - [Text layer operations migration](/guides/photoshop-v2-beta/v1-to-v2/convenience-apis/text-layer-operations.md)
+      - [Smart Object Replace migration](/guides/photoshop-v2-beta/v1-to-v2/convenience-apis/smart-object-replace.md)
     - [LLM migration reference](/guides/photoshop-v2-beta/v1-to-v2/llm-migration-reference.md)
 

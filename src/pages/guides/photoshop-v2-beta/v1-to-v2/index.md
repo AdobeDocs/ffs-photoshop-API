@@ -122,6 +122,7 @@ Use this table to quickly find the v2 equivalent for your v1 endpoints:
 | `/pie/psdService/photoshopActions`   | `/v2/execute-actions`   | [Actions Migration](actions-migration.md)                 |
 | `/pie/psdService/actionJSON`         | `/v2/execute-actions`   | [Actions Migration](actions-migration.md)                 |
 | `/pie/psdService/productCrop`        | `/v2/execute-actions`   | [Product Crop](convenience-apis/product-crop.md)          |
+| `/pie/psdService/text`               | `/v2/execute-actions`   | [Text Layer Operations](convenience-apis/text-layer-operations.md) |
 | `/pie/psdService/artboardCreate`     | `/v2/create-artboard`   | [Artboard Migration](artboard-migration.md)               |
 | `/pie/psdService/documentManifest`   | `/v2/generate-manifest` | [Manifest Migration](manifest-migration.md)               |
 | `/pie/psdService/status/{jobId}`     | `/v2/status/{jobId}`    | [Status Migration](status-migration.md)                   |

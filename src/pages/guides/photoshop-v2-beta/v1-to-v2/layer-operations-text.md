@@ -163,11 +163,29 @@ curl -X POST \
 
 **V2:** `"type": "text_layer"`
 
+<InlineAlert variant="warning" slots="text"/>
+
+**`type` is required on every layer entry in `edits.layers[]`.** V1 allowed omitting `type` for simple visibility or property-only edits on existing layers; V2 always requires it. Error when omitted: `Missing required field 'type' for edit operation at path 'edits.layers[N]'`.
+
 ### 2. Character styles structure
 
 <InlineAlert variant="warning" slots="text"/>
 
 **Breaking change: character (and paragraph) style range semantics differ between V1 and V2.** In V1, the `to` field on a character or paragraph style range entry was interpreted as a **length** — so `from: 0, to: 5` meant "5 characters starting at index 0" (indices 0-4). In V2, `apply.to` is an **inclusive end index** (0-based) — so `apply: {from: 0, to: 4}` means "characters at indices 0, 1, 2, 3, 4" (the first 5 characters). When migrating V1 ranges to V2, set `apply.to` to the **last character index** you want to style, not a length.
+
+**Off-by-one example** — styling the word "Hello" in "Hello World":
+
+```json
+// V1: to=5 means length 5 → characters 0,1,2,3,4
+{"from": 0, "to": 5, "fontName": "Arial-BoldMT"}
+
+// V2: to=4 is the inclusive end index → characters 0,1,2,3,4 (same result)
+{"apply": {"from": 0, "to": 4}, "characterStyle": {"font": {"postScriptName": "Arial-BoldMT"}}}
+```
+
+<InlineAlert variant="warning" slots="text"/>
+
+**characterStyles with no range (implicit full-string in V1):** If a V1 `characterStyle` entry has **neither** `from` nor `to` (applies to the entire content implicitly), V2 requires an explicit `apply` block. Set `apply.from = 0` and `apply.to = len(text.content) - 1`. Omitting `apply` entirely causes the style not to apply, resulting in default font rendering and significant pixel differences from V1.
 
 **V1:** Direct properties in `characterStyles` array. The range is given with `from` and `to` on each item (no `apply` wrapper):
 
@@ -353,6 +371,13 @@ Both V1 and V2 support three font sources:
 | **Custom** | User-supplied font files (e.g. `.ttf`, `.otf`) provided via `fontOptions.additionalFonts`. |
 | **System** | Fonts available on the worker |
 | **Typekit** | Adobe Typekit fonts |
+
+#### Default font value
+
+- **V1:** If `globalFont` is not set and `manageMissingFonts` is `"useDefault"`, the worker uses **ArialMT** as the fallback.
+- **V2:** If `defaultFontPostScriptName` is not set and the strategy is use default, the worker uses **ArialMT** as the fallback.
+
+In both V1 and V2, the default fallback font is **ArialMT** when no global/default is specified.
 
 #### Missing-font strategy
 

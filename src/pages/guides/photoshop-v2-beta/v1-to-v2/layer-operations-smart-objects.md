@@ -17,7 +17,7 @@ This guide helps you migrate smart object layer operations from V1's `/documentC
 
 <InlineAlert variant="warning" slots="text"/>
 
-Note: V1 also had a dedicated `/psdService/smartObject` endpoint for specific smart object workflows. That endpoint is separate and not covered in this guide.
+Note: V1 also had a dedicated `/psdService/smartObject` endpoint for specific smart object workflows. That endpoint is separate and not covered in this guide. For migration guidance, see [Smart Object Replace Migration](convenience-apis/smart-object-replace.md).
 
 ## Overview
 
