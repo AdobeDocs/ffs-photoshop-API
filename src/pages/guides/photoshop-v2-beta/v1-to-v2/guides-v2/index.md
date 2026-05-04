@@ -25,7 +25,5 @@ These guides cover how to work with the Photoshop API v2 endpoints. They provide
 These specific migration guides also explain key details about v2 API usage in these cases:
 
 - [Product Crop](../convenience-apis/product-crop.md) — Auto-crop and padding using `/v2/execute-actions` with published ActionJSON
-- [Split View](../convenience-apis/split-view.md) — Masked before/after comparisons with branding using `/v2/execute-actions`
-- [Side by Side](../convenience-apis/side-by-side.md) — Side-by-side layout comparisons using `/v2/execute-actions`
 - [Text Layer Operations](../convenience-apis/text-layer-operations.md) — Text layer editing using `/v2/execute-actions` with ActionJSON or UXP scripts
 - [Actions Migration](../actions-migration.md) — Migrating Photoshop Actions and ActionJSON workflows to `/v2/execute-actions`

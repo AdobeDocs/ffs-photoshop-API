@@ -76,7 +76,7 @@ See the [storage solutions guide](../../../getting-started/storage-solutions/ind
 
 ## Published action files
 
-Convenience APIs for specific workflows in v1, like `productCrop`, `depthBlur`, `splitView`, and `sideBySide` used hidden server-side action files.
+Convenience APIs for specific workflows in v1, like `productCrop` and `depthBlur` used hidden server-side action files.
 
 In v2, these action files are now published and available to you:
 
@@ -90,8 +90,6 @@ In v2, these action files are now published and available to you:
 **Specific Workflow Migration Guides:**
 
 - [Product Crop Migration](convenience-apis/product-crop.md) - Auto-crop products with customizable padding.
-- [Split View Migration](convenience-apis/split-view.md) - Before/after comparisons with divider line.
-- [Side by Side Migration](convenience-apis/side-by-side.md) - Simple before/after comparisons.
 
 See the [Actions Migration Guide](actions-migration.md) for general information about using actions in v2.
 
