@@ -13,9 +13,7 @@ keywords:
 
 # Smart Object Replace Migration (V1 to V2)
 
-<InlineAlert variant="warning" slots="text"/>
-
-These APIs are **beta releases** and are **not yet ready for general use**.
+<InlineAlert variant="info" slots="text"/>
 
 This guide covers migration from V1's dedicated `/pie/psdService/smartObject` endpoint to V2's `/v2/create-composite` endpoint.
 
