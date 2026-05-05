@@ -128,11 +128,3 @@ Use this table to quickly find the v2 equivalent for your v1 endpoints:
 | `/pie/psdService/status/{jobId}`     | `/v2/status/{jobId}`    | [Status Migration](status-migration.md)                   |
 | `/lrService/status/{jobId}`          | `/v2/status/{jobId}`    | [Status Migration](status-migration.md)                   |
 | Layer operations                     | `/v2/create-composite`  | [Layer Operations](composite-migration.md) (see sub-guides) |
-
-## Need help?
-
-If you encounter issues during migration:
-
-- Review the detailed guides for your specific endpoints
-- Check the [storage solutions guide](../../../getting-started/storage-solutions/index.md) for storage-related questions
-- Contact the Adobe DI ART Service team for technical support

@@ -380,15 +380,38 @@ curl -X POST \
 
 ## Migration checklist
 
+**Request envelope:**
 - [ ] Replace `/pie/psdService/text` endpoint with `/v2/execute-actions`
-- [ ] Update request structure from `inputs`/`outputs` to `image`/`outputs`
-- [ ] Convert `href` fields to `url` fields in `image.source` and `outputs[].destination`
-- [ ] Remove `storage` fields
-- [ ] Update `type` field to `mediaType` in outputs
+- [ ] Move `inputs[0].href` to `image.source.url`
+- [ ] Move `outputs[0].href` to `outputs[0].destination.url`
+- [ ] Remove `storage` fields (not needed for presigned URLs)
+- [ ] Change `outputs[0].type` to `outputs[0].mediaType`
 - [ ] Choose **Actions** or **UXP**: Use `options.actions` for declarative edits, or `options.uxp` for conditional logic
-- [ ] For Actions: Build ActionJSON (`select` layer by name, then `set` textStyle for font/size/color); include in `options.actions[].source.content`; set `contentType` to `"application/json"`
-- [ ] For UXP: Use `core.executeAsModal()` for document modifications; provide script inline (`content`) or via `url`
-- [ ] Ensure text layer names in ActionJSON match your PSD (or use UXP to iterate over layers dynamically)
+
+**Text content and style (ActionJSON):**
+- [ ] `text.content` → `set` on `textLayer` with `textKey`
+- [ ] `text.orientation` → `set` on `textLayer` with `orientation` enum
+- [ ] `text.antiAlias` → `set` on `textLayer` with `antiAlias` enum
+- [ ] `characterStyles.size` → `set textStyle` with `size` (pointsUnit) + `textOverrideFeatureName: 808465458` + `typeStyleOperationType: 3`
+- [ ] `characterStyles.fontPostScriptName/fontName/fontStyleName` → `set textStyle`
+- [ ] `characterStyles.color` → `set textStyle` with `color._obj: "RGBColor"`
+- [ ] `characterStyles.leading` → `set textStyle` with `autoLeading: false` + `leading` (pointsUnit)
+- [ ] `characterStyles.tracking` → `set textStyle` with `tracking` (integer, thousandths of em)
+- [ ] `characterStyles.syntheticBold/syntheticItalic` → `set textStyle`
+- [ ] `characterStyles.fontCaps` → `set textStyle` with `fontCaps` enum
+- [ ] `characterStyles.baseline` → `set textStyle` with `baselineDirection` enum
+- [ ] `characterStyles.strikethrough` → `set textStyle` with `strikeThrough` enum
+- [ ] `characterStyles.underline` → `set textStyle` with `underline` enum
+- [ ] `characterStyles.verticalScale/horizontalScale` → `set textStyle` (percentage integers)
+- [ ] `characterStyles.ligature` → `set textStyle`
+- [ ] `characterStyles.autoKern` → `set textStyle` with `autoKern` enum
+- [ ] `characterStyles.stylisticAlternates` → use UXP (ActionJSON equivalent is not standardized)
+- [ ] `paragraphStyles.alignment` → `set paragraphStyle` with `align` enum
+
+**Font management:**
+- [ ] `options.fonts[].href` → `options.fontOptions.additionalFonts[].source.url`
+- [ ] `options.manageMissingFonts: "fail"/"useDefault"` → `options.fontOptions.missingFontStrategy: "fail"/"use_default"`
+- [ ] `options.globalFont` → `options.fontOptions.defaultFontPostScriptName`
 
 **When to use Actions vs UXP:**
 
@@ -552,15 +575,15 @@ The V1 `/psdService/text` endpoint supported more fields than the basic font/siz
 
 ### text properties
 
-| V1 `text` field | V2 ActionJSON equivalent | Notes |
+| V1 `text` Field | V2 ActionJSON Equivalent | Notes |
 |-----------------|--------------------------|-------|
-| `content` | `set` on `textLayer` with `textKey: "new string"` | Changes the text string. Target `_ref: "textLayer"`, `_property: "textLayer"`, `to._obj: "textLayer"`, `to.textKey: "..."` |
+| `content` | `set` on `textLayer` with `textKey: "new string"` | Target `_ref: "textLayer"`, `_property: "textLayer"`, `to._obj: "textLayer"`, `to.textKey: "..."` |
 | `orientation` | `set` on `textLayer` with `orientation: {_enum: "orientation", _value: "horizontal"}` | Values: `"horizontal"`, `"vertical"` |
 | `antiAlias` | `set` on `textLayer` with `antiAlias: {_enum: "antiAliasType", _value: "..."}` | Values: `"antiAliasNone"`, `"antiAliasCrisp"`, `"antiAliasStrong"`, `"antiAliasSmooth"`, `"antiAliasLCD"` |
 
 ### characterStyles properties
 
-| V1 `characterStyles` field | V2 ActionJSON `set textStyle` property | Notes |
+| V1 `characterStyles` Field | V2 ActionJSON `set textStyle` Property | Notes |
 |---------------------------|----------------------------------------|-------|
 | `size` | `size: {_unit: "pointsUnit", _value: N}` | Also set `textOverrideFeatureName: 808465458`, `typeStyleOperationType: 3` |
 | `fontPostScriptName` | `fontPostScriptName: "..."` | Set together with `fontName` and `fontStyleName` |
@@ -581,7 +604,7 @@ The V1 `/psdService/text` endpoint supported more fields than the basic font/siz
 
 ### paragraphStyles properties
 
-| V1 `paragraphStyles` field | V2 ActionJSON equivalent | Notes |
+| V1 `paragraphStyles` Field | V2 ActionJSON Equivalent | Notes |
 |---------------------------|--------------------------|-------|
 | `alignment` | `set` on `paragraphStyle` with `align: {_enum: "alignmentType", _value: "..."}` | Target `_ref: "property"`, `_property: "paragraphStyle"`. Values: `"alignLeft"`, `"alignCenter"`, `"alignRight"`, `"justifyAll"`, `"justifyLeft"`, `"justifyCenter"`, `"justifyRight"` |
 
@@ -618,6 +641,47 @@ The V1 `/psdService/text` endpoint supported more fields than the basic font/siz
   }
 ]
 ```
+
+## Font management
+
+V1 allowed custom fonts and missing font handling at the request level via `options.fonts`, `options.manageMissingFonts`, and `options.globalFont`. In V2, these map to `options.fontOptions` in the `/v2/execute-actions` request.
+
+### V1 font options
+
+```json
+{
+  "options": {
+    "fonts": [{"href": "<SIGNED_GET_URL_FOR_FONT>", "storage": "external"}],
+    "manageMissingFonts": "useDefault",
+    "globalFont": "ArialMT"
+  }
+}
+```
+
+### V2 font options
+
+```json
+{
+  "options": {
+    "fontOptions": {
+      "additionalFonts": [{"source": {"url": "<SIGNED_GET_URL_FOR_FONT>"}}],
+      "missingFontStrategy": "use_default",
+      "defaultFontPostScriptName": "ArialMT"
+    }
+  }
+}
+```
+
+### Font option field mapping
+
+| V1 Field | V2 Field | Notes |
+|----------|----------|-------|
+| `options.fonts[].href` | `options.fontOptions.additionalFonts[].source.url` | |
+| `options.fonts[].storage` | *(removed)* | Not needed for presigned URLs |
+| `options.manageMissingFonts: "fail"` | `options.fontOptions.missingFontStrategy: "fail"` | Job fails if any required font is missing |
+| `options.manageMissingFonts: "useDefault"` | `options.fontOptions.missingFontStrategy: "use_default"` | Substitutes the default font |
+| `options.globalFont` | `options.fontOptions.defaultFontPostScriptName` | PostScript name of the fallback font |
+
 
 ## Additional resources
 

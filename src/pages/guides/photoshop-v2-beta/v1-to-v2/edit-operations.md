@@ -1062,8 +1062,4 @@ The following Lightroom v1 endpoints have been deprecated or removed and have no
 
 <InlineAlert variant="info" slots="text"/>
 
-If your application depends on any of these deprecated or removed endpoints, please contact the Adobe DI ART Service team to discuss alternative solutions.
-
-## Need help?
-
-Contact the Adobe DI ART Service team if you encounter issues during migration.
+If your application depends on any of these deprecated or removed endpoints, please contact Adobe support to discuss alternative solutions.

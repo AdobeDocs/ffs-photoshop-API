@@ -163,9 +163,7 @@ curl -X POST \
 
 **V2:** `"type": "text_layer"`
 
-<InlineAlert variant="warning" slots="text"/>
-
-**`type` is required on every layer entry in `edits.layers[]`.** V1 allowed omitting `type` for simple visibility or property-only edits on existing layers; V2 always requires it. Error when omitted: `Missing required field 'type' for edit operation at path 'edits.layers[N]'`.
+> **`type` is required on every layer entry in `edits.layers[]`.** V1 allowed omitting `type` for simple visibility or property-only edits on existing layers; V2 always requires it. Error when omitted: `Missing required field 'type' for edit operation at path 'edits.layers[N]'`.
 
 ### 2. Character styles structure
 
@@ -183,9 +181,7 @@ curl -X POST \
 {"apply": {"from": 0, "to": 4}, "characterStyle": {"font": {"postScriptName": "Arial-BoldMT"}}}
 ```
 
-<InlineAlert variant="warning" slots="text"/>
-
-**characterStyles with no range (implicit full-string in V1):** If a V1 `characterStyle` entry has **neither** `from` nor `to` (applies to the entire content implicitly), V2 requires an explicit `apply` block. Set `apply.from = 0` and `apply.to = len(text.content) - 1`. Omitting `apply` entirely causes the style not to apply, resulting in default font rendering and significant pixel differences from V1.
+**characterStyles with no range (implicit full-string in V1):** If a V1 `characterStyle` entry has **neither** `from` nor `to` (applies to the entire content implicitly), V2 requires an explicit `apply` block. Set `apply.from = 0` and `apply.to = len(text.content) - 1`. Omitting `apply` entirely causes the style to not apply, resulting in default font rendering and significant pixel differences.
 
 **V1:** Direct properties in `characterStyles` array. The range is given with `from` and `to` on each item (no `apply` wrapper):
 

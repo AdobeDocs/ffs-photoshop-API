@@ -137,6 +137,10 @@ curl -X POST "https://photoshop-api.adobe.io/v2/create-composite" \
 
 **Schema changes (single-layer):** `inputs[].href` → `image.source.url`; `outputs[].href` → `outputs[].destination.url`; `outputs[].type` → `outputs[].mediaType`; `outputs[].layers` remains per output. Optional in V2: `cropMode`, `quality` / `compression` as string enums.
 
+> **Layer identifier: mutually exclusive.** Each entry in `outputs[].layers[]` must use **either** `id` or `name` — not both. V1 tolerated both fields together as disambiguation hints; V2 rejects the payload with: `"Each layer reference must contain exactly one of id or name (not both)."` Prefer `id` when present; drop `name`.
+
+> **V1 `outputs[].layers[]` with `visible` field:** Some V1 `renditionCreate`/`documentOperations` payloads included `outputs[].layers[]` entries with `{id, visible: true}` to select which layers appear in the composite export. Map these to V2 `outputs[].layers[]` as `[{id: N}, ...]` — this triggers multi-layer composite export. Do **not** move them to `edits.layers[]` (that path requires `type` + `operation` and performs layer edits, not export selection).
+
 <HorizontalLine />
 
 ## Sample: multi-layer export
