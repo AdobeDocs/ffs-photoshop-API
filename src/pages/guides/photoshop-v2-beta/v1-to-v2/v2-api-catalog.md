@@ -55,10 +55,11 @@ All Lightroom edit operations are unified under `/v2/edit`. You can combine any 
 
 ### V1 behavior
 
-V1 used three separate endpoints for what are now unified operations:
+V1 used four separate endpoints for what are now unified operations:
 - `renditionCreate` — convert PSD to JPEG/PNG/TIFF (format conversion only)
 - `documentCreate` — create a new blank document
 - `documentOperations` — modify existing documents: resize, crop, trim, add/edit/delete layers
+- `smartObject` — dedicated endpoint for placing or replacing smart object content
 
 Layer operations were specified as an `options.layers` array within `documentOperations`. Layer types used camelCase names (`layerSection`, `textLayer`, `smartObject`).
 
@@ -70,7 +71,7 @@ All three operations are unified under `/v2/create-composite`. The request struc
 
 | Behavior | V1 | V2 | Type |
 |----------|----|----|------|
-| Endpoint consolidation | Three separate endpoints | Single `/v2/create-composite` | Breaking Change |
+| Endpoint consolidation | Four separate endpoints (`renditionCreate`, `documentCreate`, `documentOperations`, `smartObject`) | Single `/v2/create-composite` | Breaking Change |
 | Input field | `inputs[0].href` | `image.source.url` | Breaking Change |
 | Operations block | `options` | `edits` | Breaking Change |
 | `operation.type` required on layer edits | Not required | Required: `"add"`, `"edit"`, `"delete"`, `"move"` | Breaking Change |
@@ -95,9 +96,12 @@ All three operations are unified under `/v2/create-composite`. The request struc
 - [Document Operations](document-operations-migration.md)
 - [Format Conversion](format-conversion-migration.md)
 
+For the dedicated V1 `/psdService/smartObject` endpoint:
+[Smart Object Place/Replace Migration](layer-operations-smart-objects.md)
+
 ## 3. Actions and scripts
 
-**V1 Endpoints:** `/pie/psdService/photoshopActions`, `/pie/psdService/actionJSON`, `/pie/psdService/productCrop`, `/pie/psdService/splitView`, `/pie/psdService/sideBySide`, `/pie/psdService/depthBlur`
+**V1 Endpoints:** `/pie/psdService/photoshopActions`, `/pie/psdService/actionJSON`, `/pie/psdService/text`, `/pie/psdService/productCrop`, `/pie/psdService/splitView`, `/pie/psdService/sideBySide`, `/pie/psdService/depthBlur`
 
 **V2 Endpoint:** `/v2/execute-actions`
 
@@ -128,10 +132,14 @@ Depth Blur (`/pie/psdService/depthBlur`) is **not yet supported in V2** — Neur
 | `plugin-temp:/` virtual path in scripts | Not available | Supported for inter-script file exchange | Net New |
 | Convenience action files inspectable | Hidden server-side | Published, downloadable | Net New |
 | Depth Blur | Available | Not yet supported | Removed (temporarily) |
+| Dedicated text endpoint | `/pie/psdService/text` (declarative `options.layers` text edits) | `/v2/execute-actions` (ActionJSON or UXP) | Breaking Change |
 
 ### Guide
 
 [Actions Migration](actions-migration.md)
+
+For the dedicated V1 `/psdService/text` endpoint:
+[Text Layer Operations Migration](convenience-apis/text-layer-operations.md)
 
 ## 4. Manifest generation
 
@@ -278,7 +286,7 @@ These changes apply to **all V2 endpoints**.
 | Dropbox | `"storage": "dropbox"` | `{"url": "..."}` in destination |
 | Creative Cloud | `"storage": "adobe"` | `{"creativeCloudPath": "..."}` or `{"creativeCloudFileId": "..."}` |
 | Embedded | Not available | `{"embedded": "base64"}` / `{"embedded": "string"}` / `{"embedded": "json"}` |
-| Hosted (Adobe-managed) | Not available | `{"hosted": true, "hostedExpiresInSeconds": N}` |
+| Hosted (Adobe-managed) | Not available | `{"validityPeriod": N}` (seconds, 60–86400) |
 | AWS S3 `storage` field | `"storage": "s3"` (deprecated) | Use presigned URL pattern instead |
 
 <InlineAlert variant="info" slots="text"/>
@@ -344,6 +352,8 @@ Use this list to audit your codebase for required V2 changes.
 - [ ] `/pie/psdService/productCrop` → `/v2/execute-actions` (with published action file)
 - [ ] `/pie/psdService/splitView` → `/v2/execute-actions` (with published action file)
 - [ ] `/pie/psdService/sideBySide` → `/v2/execute-actions` (with published action file)
+- [ ] `/pie/psdService/smartObject` → `/v2/create-composite` with `type: "smart_object_layer"`
+- [ ] `/pie/psdService/text` → `/v2/execute-actions` (ActionJSON or UXP)
 - [ ] `/pie/psdService/artboardCreate` → `/v2/create-artboard`
 - [ ] `/pie/psdService/documentManifest` → `/v2/generate-manifest`
 - [ ] `/pie/psdService/status/{jobId}` → `/v2/status/{jobId}`

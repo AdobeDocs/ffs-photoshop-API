@@ -163,11 +163,15 @@ curl -X POST \
 
 **V2:** `"type": "text_layer"`
 
+> **`type` is required on every layer entry in `edits.layers[]`.** V1 allowed omitting `type` for simple visibility or property-only edits on existing layers; V2 always requires it. Error when omitted: `Missing required field 'type' for edit operation at path 'edits.layers[N]'`.
+
 ### 2. Character styles structure
 
 <InlineAlert variant="warning" slots="text"/>
 
 **Breaking change: character (and paragraph) style range semantics differ between V1 and V2.** In V1, the `to` field on a character or paragraph style range entry was interpreted as a **length** — so `from: 0, to: 5` meant "5 characters starting at index 0" (indices 0-4). In V2, `apply.to` is an **inclusive end index** (0-based) — so `apply: {from: 0, to: 4}` means "characters at indices 0, 1, 2, 3, 4" (the first 5 characters). When migrating V1 ranges to V2, set `apply.to` to the **last character index** you want to style, not a length.
+
+**characterStyles with no range (implicit full-string in V1):** If a V1 `characterStyle` entry has **neither** `from` nor `to` (applies to the entire content implicitly), V2 requires an explicit `apply` block. Set `apply.from = 0` and `apply.to = len(text.content) - 1`. Omitting `apply` entirely causes the style to not apply, resulting in default font rendering and significant pixel differences.
 
 **V1:** Direct properties in `characterStyles` array. The range is given with `from` and `to` on each item (no `apply` wrapper):
 

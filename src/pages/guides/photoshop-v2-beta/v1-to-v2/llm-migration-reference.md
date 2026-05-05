@@ -41,8 +41,10 @@ keywords:
 | `/pie/psdService/renditionCreate` | `/v2/create-composite` | Format Conversion | Convert PSD to other formats |
 | `/pie/psdService/documentCreate` | `/v2/create-composite` | Document Creation | Create new blank documents |
 | `/pie/psdService/documentOperations` | `/v2/create-composite` | Document/Layer Operations | Document-level operations and layer manipulation |
+| `/pie/psdService/smartObject` | `/v2/create-composite` | Document/Layer Operations | Dedicated smart object place/replace endpoint |
 | `/pie/psdService/photoshopActions` | `/v2/execute-actions` | Actions | Execute .atn action files |
 | `/pie/psdService/actionJSON` | `/v2/execute-actions` | Actions | Execute inline ActionJSON |
+| `/pie/psdService/text` | `/v2/execute-actions` | Actions | Dedicated text layer edit endpoint |
 | `/pie/psdService/productCrop` | `/v2/execute-actions` | Actions | Product crop convenience API |
 | `/pie/psdService/depthBlur` | Not yet supported (Neural Filters unavailable) | Actions | Depth blur convenience API |
 | `/pie/psdService/splitView` | `/v2/execute-actions` | Actions | Split view convenience API |
@@ -84,12 +86,17 @@ START: What are you trying to do?
 │     ├─> Image layers? → Layer Operations: Image
 │     ├─> Text layers? → Layer Operations: Text
 │     ├─> Adjustment layers? → Layer Operations: Adjustments
-│     ├─> Smart objects? → Layer Operations: Smart Objects
+│     ├─> Smart objects (via V1 documentOperations)? → Layer Operations: Smart Objects
+│     ├─> Smart objects (via V1 /psdService/smartObject)? → convenience-apis/smart-object-replace
 │     └─> Move/delete/masks? → Layer Operations: Advanced
 │
 ├─ Execute Photoshop actions or scripts?
 │  └─> Use /v2/execute-actions
 │     └─> Guide: Actions Migration
+│
+├─ Edit text layers (V1 /psdService/text endpoint)?
+│  └─> Use /v2/execute-actions with ActionJSON or UXP
+│     └─> Guide: convenience-apis/text-layer-operations
 │
 ├─ Create artboards from multiple images?
 │  └─> Use /v2/create-artboard
@@ -113,6 +120,10 @@ START: What are you trying to do?
 **If using PSD layer operations:**
 - `/pie/psdService/documentOperations` → `/v2/create-composite` with `edits.layers`
 - Check layer type for specific guide
+
+**If using dedicated smart object or text endpoints:**
+- `/pie/psdService/smartObject` → `/v2/create-composite` with `type: "smart_object_layer"`
+- `/pie/psdService/text` → `/v2/execute-actions` (ActionJSON or UXP)
 
 **If using action endpoints:**
 - All action endpoints → `/v2/execute-actions`
@@ -667,7 +678,8 @@ For `smart_object_layer`, `opacity` and `blendMode` remain nested under `blendOp
 - Layer type: V1 `"smartObject"` → V2 `"smart_object_layer"`
 - Source: V1 `input: {href, storage}` → V2 `smartObject.smartObjectFile.source.url` (nested deeper)
 - Linked flag: V1 `smartObject.linked` → V2 `smartObject.isLinked`
-- V2 supports SVG as source format (V1 did not)
+- V2 adds SVG as a new source format; V1 supported PSD, JPEG, PNG, AI, and PDF
+- **Supported source file types:** PSD (`image/vnd.adobe.photoshop`), JPEG (`image/jpeg`), PNG (`image/png`), TIFF (`image/tiff`), SVG (`image/svg+xml`), AI (`application/illustrator`), PDF (`application/pdf`)
 - **Resize with linked smart objects:** Width-only resize (no layer edits) → ALL linked SOs are rasterized to pixel layers. Edit/add a linked SO in the same request + resize → that edited SO stays linked; all other linked SOs are rasterized.
 - Cannot replace a linked SO with an embedded SO (V2 limitation)
 
@@ -698,10 +710,12 @@ For `smart_object_layer`, `opacity` and `blendMode` remain nested under `blendOp
   - V1: `to` = **length** — `{from: 0, to: 5}` = 5 characters (indices 0–4)
   - V2: `apply.to` = **inclusive end index** — `{apply: {from: 0, to: 4}}` = indices 0–4 (same result)
   - **Migration rule: subtract 1 from V1's `to` value**. Same applies to paragraph style ranges.
+  - **characterStyles with no range (implicit full-string in V1):** If a V1 `characterStyle` has no `from`/`to` fields (applied to entire content implicitly), V2 requires an explicit `apply` block: `apply.from = 0`, `apply.to = len(text.content) - 1`. Omitting `apply` entirely causes the style to not apply, resulting in default font rendering and significant pixel differences.
 - Character style structure: V1 direct properties → V2 wrapped in `characterStyle` object
 - Font name: V1 top-level `fontName` → V2 `characterStyle.font.postScriptName` (inside `characterStyle.font`)
 - Text bounds: V1 layer-level `bounds: {left, top, width, height}` → V2 `text.frame: {type: "area", bounds: {top, left, right, bottom}}` where `right = left + width`, `bottom = top + height`
 - V2 also supports point frames: `text.frame: {type: "point", origin: {x, y}}`
+- **V1 `text.type: "point"` with layer-level `bounds`:** Map `bounds.left`/`bounds.top` to `text.frame: {type: "point", origin: {x: bounds.left, y: bounds.top}}`. Do NOT use `transform`/`transformMode` — that rescales glyphs instead of positioning them.
 - **Default when no frame given:** V1 default = area frame at (0,0,4,4); V2 default = point frame at canvas center — always set `text.frame` explicitly for predictable placement
 - `textOrientation` is a text-level property (not per character-style as V1's `orientation`)
 - Multi-line text: use `\r` for line breaks (same in both)
@@ -1003,6 +1017,10 @@ Export layers via `outputs[].layers` on the `/v2/create-composite` endpoint. Beh
 }
 ```
 
+> **Layer identifier: mutually exclusive.** Each entry in `outputs[].layers[]` must use **either** `id` or `name` — not both. V1 tolerated both fields together as disambiguation hints; V2 rejects the payload with: `"Each layer reference must contain exactly one of id or name (not both)."` Prefer `id` when present; drop `name`.
+
+> **V1 `outputs[].layers[]` with `visible` field:** Some V1 `renditionCreate`/`documentOperations` payloads included `outputs[].layers[]` entries with `{id, visible: true}` to select which layers appear in the composite export. Map these to V2 `outputs[].layers[]` as `[{id: N}, ...]` — this triggers multi-layer composite export. Do **not** move them to `edits.layers[]` (that path requires `type` + `operation` and performs layer edits, not export selection).
+
 ## Storage solutions reference
 
 ### Storage decision matrix
@@ -1231,6 +1249,10 @@ All output types share these common structural changes:
 
 **Default:** Use `"photoshop_max"` for production workflows.
 
+> **V1 implicit quality:** When a V1 `execute-actions` or `actionJSON` payload omits the `quality` field entirely, V1 uses its highest-quality JPEG encoder setting. Always set `quality: "photoshop_max"` in V2 when migrating from a V1 payload with no quality field — omitting it in V2 may default to a lower level and produce pixel-level differences against V1 reference outputs.
+
+> **execute-actions pixel fidelity:** V1 and V2 use different JPEG encoders. Even with identical quality settings, sub-1% pixel differences are expected. Use `"photoshop_max"` as the baseline when pixel fidelity is critical; accept sub-1% diffs as normal for JPEG across API versions.
+
 **V1 Example:**
 ```json
 {
@@ -1326,7 +1348,7 @@ All output types support these optional fields:
 - `width` (integer, ≥ 0) - Output width in pixels
 - `height` (integer, ≥ 0) - Output height in pixels
 - `maxWidth` (integer, ≥ 0) - Maximum width in pixels
-- `resample` (string, optional) - Resampling algorithm when resizing to `width`/`maxWidth`. Values: `nearest_neighbor`, `bilinear`, `bicubic`, `bicubic_smoother`, `bicubic_sharper`. Defaults to `bicubic`. Applies to JPEG, PNG, and TIFF exports.
+- `resample` (string, optional) - Resampling algorithm when resizing to `width`/`maxWidth`. Values: `nearest_neighbor`, `bilinear`, `bicubic`, `bicubic_smoother`, `bicubic_sharper`. Defaults to `bicubic_sharper`. Applies to JPEG, PNG, and TIFF exports.
 - `shouldTrimToCanvas` (boolean) - Trim transparent pixels
 
 ### Multiple outputs
@@ -1593,6 +1615,45 @@ When an ICC profile is specified on a full-document export, format-specific bit-
   ]
 }
 ```
+
+#### Issue: Unencoded characters in source/destination URLs
+
+**Problem:** V1 was lenient with URL encoding; V2 validates URLs strictly across all endpoints.
+```json
+{"image": {"source": {"url": "https://host/My Folder/file.psd"}}}
+```
+
+**Solution:** Percent-encode all special characters in every `source.url` and `destination.url` field.
+```json
+{"image": {"source": {"url": "https://host/My%20Folder/file.psd"}}}
+```
+Spaces (`%20`) are the most common culprit. Error returned: `"The url is malformed or blocked"`. Applies to all V2 endpoints.
+
+#### Issue: String values for numeric fields (strict type coercion)
+
+**Problem:** V1 accepted strings for numeric fields; V2 enforces strict types.
+```json
+{"image": {"width": "1920", "height": "1080", "depth": "8"}}
+```
+
+**Solution:** Use integers/floats.
+```json
+{"image": {"width": 1920, "height": 1080, "depth": 8}}
+```
+Commonly affected: `image.width`, `image.height`, `image.depth`, `outputs[].width`, `outputs[].height`, `opacity`, `resolution.value`.
+
+#### Issue: Missing `type` field on layer in `edits.layers[]`
+
+**Problem:** Layer entry has no `type` field — e.g., a visibility-only edit from V1 where type was inferred.
+```json
+{"edits": {"layers": [{"name": "My Layer", "isVisible": false}]}}
+```
+
+**Solution:** `type` is required on every entry in `edits.layers[]`. V2 does not infer layer type.
+```json
+{"edits": {"layers": [{"type": "layer", "name": "My Layer", "isVisible": false}]}}
+```
+Use the appropriate type: `"layer"`, `"text_layer"`, `"adjustment_layer"`, `"smart_object_layer"`, `"group_layer"`, or `"solid_color_layer"`.
 
 #### Issue: Wrong media type property
 
@@ -3467,7 +3528,7 @@ Use this checklist when migrating or validating V1 → V2 code:
 - [ ] Source: V1 `input: {href, storage}` → V2 `smartObject.smartObjectFile.source.url`
 - [ ] Linked flag: `smartObject.linked` → `smartObject.isLinked`
 - [ ] `transformMode` required when using `transform` object: `"none"`, `"custom"`, `"fit"`, or `"fill"`
-- [ ] V2 supports SVG source files (V1 did not)
+- [ ] V2 adds SVG source file type (not in V1); AI, PDF, and TIFF were already supported in V1
 - [ ] Width-only resize: linked SOs are rasterized to pixel layers unless their content is provided in the same request
 
 ### Text endpoint migration specific (`/pie/psdService/text`)
@@ -3475,6 +3536,7 @@ Use this checklist when migrating or validating V1 → V2 code:
 - [ ] Choose ActionJSON for fixed edits on known layers; choose UXP for conditional/iterative logic
 - [ ] ActionJSON must be stringified; include `contentType: "application/json"`
 - [ ] UXP: use `core.executeAsModal()` for document modifications; include `contentType: "application/javascript"`
+- [ ] **Bounds/visibility-only edits:** When the V1 payload only changes layer bounds or visibility (no text content/style fields), V2 still requires a non-empty `options` with ActionJSON or UXP — an empty `options` object is rejected with `"options: At least one of actions or uxp must be provided"`. Generate ActionJSON that selects each target layer by `_name` and applies: `translate`/`transform` for bounds changes, `hide`/`show` for visibility.
 
 ### Action operations specific
 - [ ] Actions use `source` object not `href`
@@ -3532,6 +3594,10 @@ Use this checklist when migrating or validating V1 → V2 code:
 - [ ] `fill: "backgroundColor"` (V1 camelCase) → `fill: "background_color"` (V2 snake_case); camelCase is rejected in V2
 - [ ] `fill` object form (V2): `{"solidColor": {"red": N, "green": N, "blue": N}}` for custom color
 - [ ] `depth` value is mode-dependent: `bitmap`→1 only; `grayscale`/`rgb`/`hsb`→8,16,32; `cmyk`/`lab`/`multichannel`→8,16; `indexed`/`duotone`→8 only
+- [ ] `solid_color_layer` fill uses `fill.solidColor.{red,green,blue}` (not `fills[0].solidColor.rgb.*`)
+- [ ] `fontColor` components are ≤ 32768 (scale V1 values > 32768 using `× 32768/65535`)
+- [ ] All `characterStyles` entries have explicit `apply.{from, to}` (no implicit full-range)
+- [ ] Source/destination URLs are fully percent-encoded (no unencoded spaces or special chars)
 
 ### Export layers specific
 - [ ] `cropMode` `layer_bounds` only used for single-layer export; `trim_to_transparency` and `document_bounds` work for all export types
@@ -3756,8 +3822,9 @@ curl -X GET https://photoshop-api.adobe.io/v2/status/{jobId} \
 
 ## Document version
 
-**Version:** 1.14
+**Version:** 1.16
 **Created:** October 29, 2025
+**Last Updated:** April 30, 2026
 
 **Coverage:**
 - All migration guides consolidated
@@ -3799,9 +3866,6 @@ curl -X GET https://photoshop-api.adobe.io/v2/status/{jobId} \
 - Layer transforms: V1 `bounds` → V2 `transform {offset, dimension}` with required `transformMode: "custom"`
 - Alignment: V1 layer-level → V2 placement-level `horizontalAlignment`/`verticalAlignment` with `placement.type: "custom"`
 - Document creation `fill` rename: `"backgroundColor"` → `"background_color"`; object form `{solidColor:{...}}`; depth-by-mode table
-
-**For Updates:**
-For questions, contact Firefly Services Support or refer to the official migration guides in this documentation.
 
 ## Composite API (`/v2/create-composite`) — key breaking changes reference
 
@@ -3889,6 +3953,8 @@ All `fontColor` components use 16-bit integer values:
 
 All components are required and default to `0` when omitted. Usage: `fontColor.rgb`, `fontColor.cmyk`, `fontColor.lab`, `fontColor.gray`.
 
+> **V1 fontColor value scaling:** V1 `/psdService/text` accepted `fontColor` components in a **0–65535** (full 16-bit) range. V2 enforces a maximum of **32768**. When migrating V1 payloads with any component above 32768, scale: `v2_value = round(v1_value × 32768 / 65535)` (≈ multiply by 0.5). Example: V1 `red: 65535` → V2 `red: 32768`. V1 payloads with values already ≤ 32768 need no change.
+
 ### Adjustment layer critical changes
 
 | Change | V1 | V2 |
@@ -3898,6 +3964,20 @@ All components are required and default to `0` when omitted. Usage: `fontColor.r
 | `hueSaturation` type | *(implicit)* | `type: "hue_saturation"` |
 | `colorBalance` type | *(implicit)* | `type: "color_balance"` |
 | Exposure amount field | `exposure.exposure` | `exposure.exposureValue` |
+
+### Solid color layer critical changes
+
+| V1 | V2 | Impact |
+|---|---|---|
+| `fills[0].solidColor.rgb.red/green/blue` | `fill.solidColor.red/green/blue` | Breaking: plural→singular, `rgb` wrapper removed |
+
+V1 used `fills` (plural array) with nested `solidColor.rgb` wrapper. V2 uses `fill` (singular object) with `solidColor` directly containing color components.
+
+**V1:** `{"fills": [{"solidColor": {"rgb": {"red": 255, "green": 0, "blue": 0}}}]}`
+
+**V2:** `{"fill": {"solidColor": {"red": 255, "green": 0, "blue": 0}}}`
+
+Error when using V1 structure: `"edits.layers[0].fill: fill is required when adding a solid color layer"`.
 
 ### Output format changes
 
@@ -4017,7 +4097,7 @@ For the complete authoritative field-level diff, see
 | `POST /pie/psdService/splitView` | `POST /v2/execute-actions` (published action) |
 | `POST /pie/psdService/sideBySide` | `POST /v2/execute-actions` (published action) |
 | `POST /pie/psdService/depthBlur` | Not yet supported (Neural Filters) |
-| `POST /pie/psdService/text` | Not execute-actions — use document edit operations |
+| `POST /pie/psdService/text` | `POST /v2/execute-actions` (ActionJSON or UXP) |
 | `POST /pie/psdService/smartObjectV2` | Not execute-actions — use document edit operations |
 
 The only known API-visible gap is Neural Filters (Depth Blur), which are not yet available in V2.
@@ -4072,6 +4152,31 @@ V1 supported a single action per request. V2 allows up to **10 actions** execute
 | `options.fonts[]` | `options.fontOptions.additionalFonts[]` (capped at 10) |
 | `options.brushes[].href` | `options.brushes[].source.url` |
 | `options.patterns[].href` | `options.patterns[].source.url` |
+
+### Stochastic filter validation caveats
+
+Several Photoshop filter actions use an internal random seed that differs between V1 and V2 rendering engines. Pixel-diff comparison is **not a valid acceptance test** for payloads containing these filters — expect 50–80% pixel differences even when the ActionJSON is semantically identical and correctly migrated.
+
+**Known stochastic `_obj` values:**
+
+| ActionJSON `_obj` | Filter Name |
+|---|---|
+| `addNoise` | Add Noise |
+| `grain` | Grain |
+| `reticulation` | Reticulation |
+| `mezzotint` | Mezzotint |
+| `pointillize` | Pointillize |
+| `clouds` | Clouds |
+| `differenceClouds` | Difference Clouds |
+| `spatter` | Spatter |
+| `sprayedStrokes` | Sprayed Strokes |
+| `colorHalftone` | Color Halftone |
+
+**Recommended validation alternatives for stochastic filters:**
+- Histogram comparison (channel mean/stddev within acceptable delta)
+- Structural Similarity Index (SSIM ≥ threshold)
+- Mean-color comparison per region
+- Skip pixel validation entirely and validate only the response status and output file existence
 
 ### Removed V1 options
 
