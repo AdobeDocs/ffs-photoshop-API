@@ -88,7 +88,7 @@ All output types support these common fields:
 | `width` | integer | Output width in pixels (≥ 0) | No |
 | `height` | integer | Output height in pixels (≥ 0) | No |
 | `maxWidth` | integer | Maximum width in pixels (≥ 0) | No |
-| `resample` | string | Resampling algorithm when resizing to `width`/`maxWidth`. Values: `nearest_neighbor`, `bilinear`, `bicubic`, `bicubic_smoother`, `bicubic_sharper`. Defaults to `bicubic`. Applies to JPEG, PNG, and TIFF only. | No |
+| `resample` | string | Resampling algorithm when resizing to `width`/`maxWidth`. Values: `nearest_neighbor`, `bilinear`, `bicubic`, `bicubic_smoother`, `bicubic_sharper`. Defaults to `bicubic_sharper`. Applies to JPEG, PNG, and TIFF only. | No |
 | `shouldTrimToCanvas` | boolean | Trim transparent pixels | No |
 | `iccProfile` | object | ICC color profile for color management (JPEG, PNG, TIFF, PSD only; not PSDC) | No |
 
@@ -206,6 +206,7 @@ The quality parameter is optional. If not specified, the API uses different defa
 
 - **Create Composite** (`/v2/create-composite`): Default quality is `photoshop_max`
 - **Generate Manifest** (`/v2/generate-manifest`): Default quality for layer thumbnails is `medium`
+- **Execute Actions** (`/v2/execute-actions`): No default is guaranteed — when the V1 payload omitted `quality` entirely, V1 used its highest-quality JPEG encoder. Always set `quality: "photoshop_max"` explicitly when migrating V1 execute-actions payloads with no quality field, to avoid pixel-level differences against V1 reference outputs.
 
 ### Complete JPEG migration example
 
@@ -800,7 +801,7 @@ Use this checklist when migrating output configurations:
 - [ ] Remove `storage: "external"` for AWS S3 presigned URLs
 - [ ] Add `storageType` for Azure Blob Storage or Dropbox if applicable
 - [ ] Verify common fields (`width`, `height`, `maxWidth`) if used
-- [ ] Optionally add `resample` to control interpolation when `width`/`maxWidth` is set (JPEG, PNG, TIFF; defaults to `bicubic`)
+- [ ] Optionally add `resample` to control interpolation when `width`/`maxWidth` is set (JPEG, PNG, TIFF; defaults to `bicubic_sharper`)
 
 ### JPEG specific
 

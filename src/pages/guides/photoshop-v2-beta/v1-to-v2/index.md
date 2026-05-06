@@ -122,16 +122,9 @@ Use this table to quickly find the v2 equivalent for your v1 endpoints:
 | `/pie/psdService/photoshopActions`   | `/v2/execute-actions`   | [Actions Migration](actions-migration.md)                 |
 | `/pie/psdService/actionJSON`         | `/v2/execute-actions`   | [Actions Migration](actions-migration.md)                 |
 | `/pie/psdService/productCrop`        | `/v2/execute-actions`   | [Product Crop](convenience-apis/product-crop.md)          |
+| `/pie/psdService/text`               | `/v2/execute-actions`   | [Text Layer Operations](convenience-apis/text-layer-operations.md) |
 | `/pie/psdService/artboardCreate`     | `/v2/create-artboard`   | [Artboard Migration](artboard-migration.md)               |
 | `/pie/psdService/documentManifest`   | `/v2/generate-manifest` | [Manifest Migration](manifest-migration.md)               |
 | `/pie/psdService/status/{jobId}`     | `/v2/status/{jobId}`    | [Status Migration](status-migration.md)                   |
 | `/lrService/status/{jobId}`          | `/v2/status/{jobId}`    | [Status Migration](status-migration.md)                   |
 | Layer operations                     | `/v2/create-composite`  | [Layer Operations](composite-migration.md) (see sub-guides) |
-
-## Need help?
-
-If you encounter issues during migration:
-
-- Review the detailed guides for your specific endpoints
-- Check the [storage solutions guide](../../../getting-started/storage-solutions/index.md) for storage-related questions
-- Contact the Adobe DI ART Service team for technical support

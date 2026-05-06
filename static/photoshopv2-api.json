@@ -17,7 +17,7 @@
   ],
   "security": [
     {
-      "AccessToken": [],
+      "Authorization": [],
       "X-Api-Key": []
     }
   ],
@@ -763,7 +763,80 @@
                   "text_layer",
                   "smart_object_layer",
                   "adjustment_layer",
-                  "group_layer"
+                  "group_layer",
+                  "background_layer"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "AddBackgroundLayer": {
+        "required": [
+          "operation"
+        ],
+        "type": "object",
+        "description": "Background layer for adding a background to the document.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/OperationBase"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "blendOptions": {
+                "$ref": "#/components/schemas/BlendOptions"
+              },
+              "image": {
+                "$ref": "#/components/schemas/ImageSource"
+              },
+              "isVisible": {
+                "type": "boolean",
+                "description": "Whether the layer is visible. Defaults to true when adding layers. Optional for edits."
+              },
+              "pixelMask": {
+                "$ref": "#/components/schemas/PixelMask"
+              },
+              "protection": {
+                "type": "array",
+                "description": "Protection flags for the layer (e.g. none, all, transparency, composite, position, artboard_autonest). Defaults to 'none' when adding layers. Optional for edits; omit, null, or empty array [] mean 'don't change'. When 'none' or 'all' is used, the array must contain only that element.",
+                "items": {
+                  "type": "string",
+                  "description": "Protection flag for layer. Used in protection array.",
+                  "enum": [
+                    "none",
+                    "all",
+                    "transparency",
+                    "composite",
+                    "position",
+                    "artboard_autonest"
+                  ]
+                }
+              },
+              "transform": {
+                "$ref": "#/components/schemas/Transform"
+              },
+              "transformMode": {
+                "type": "string",
+                "description": "Transform Mode applied to the layer. Defaults to none when adding layers. Optional for edits.",
+                "enum": [
+                  "fit",
+                  "fill",
+                  "custom",
+                  "none"
+                ]
+              },
+              "type": {
+                "type": "string",
+                "description": "Layer type enum",
+                "enum": [
+                  "layer",
+                  "solid_color_layer",
+                  "text_layer",
+                  "smart_object_layer",
+                  "adjustment_layer",
+                  "group_layer",
+                  "background_layer"
                 ]
               }
             }
@@ -795,6 +868,9 @@
                       "$ref": "#/components/schemas/AddAdjustmentLayer"
                     },
                     {
+                      "$ref": "#/components/schemas/AddBackgroundLayer"
+                    },
+                    {
                       "$ref": "#/components/schemas/AddGroupLayer"
                     },
                     {
@@ -814,6 +890,9 @@
                     },
                     {
                       "$ref": "#/components/schemas/EditAdjustmentLayer"
+                    },
+                    {
+                      "$ref": "#/components/schemas/EditBackgroundLayer"
                     },
                     {
                       "$ref": "#/components/schemas/EditGroupLayer"
@@ -881,7 +960,8 @@
                   "text_layer",
                   "smart_object_layer",
                   "adjustment_layer",
-                  "group_layer"
+                  "group_layer",
+                  "background_layer"
                 ]
               }
             }
@@ -957,7 +1037,8 @@
                   "text_layer",
                   "smart_object_layer",
                   "adjustment_layer",
-                  "group_layer"
+                  "group_layer",
+                  "background_layer"
                 ]
               }
             }
@@ -1054,7 +1135,8 @@
                   "text_layer",
                   "smart_object_layer",
                   "adjustment_layer",
-                  "group_layer"
+                  "group_layer",
+                  "background_layer"
                 ]
               }
             }
@@ -1130,7 +1212,8 @@
                   "text_layer",
                   "smart_object_layer",
                   "adjustment_layer",
-                  "group_layer"
+                  "group_layer",
+                  "background_layer"
                 ]
               }
             }
@@ -1206,7 +1289,8 @@
                   "text_layer",
                   "smart_object_layer",
                   "adjustment_layer",
-                  "group_layer"
+                  "group_layer",
+                  "background_layer"
                 ]
               }
             }
@@ -1969,7 +2053,7 @@
         "properties": {
           "unit": {
             "type": "string",
-            "description": "The unit of measurement for the dimension. 'pixels_unit' for absolute pixel measurements, 'percent_unit' for percentage-based scaling, 'distance_unit' for physical measurements using formula: Physical Size (points) = Pixels \u00d7 (72 \u00f7 DPI). Defaults to pixels_unit when omitted.",
+            "description": "The unit of measurement for the dimension. 'pixels_unit' for absolute pixel measurements, 'percent_unit' for percentage-based scaling, 'distance_unit' for physical measurements using formula: Physical Size (points) = Pixels × (72 ÷ DPI). Defaults to pixels_unit when omitted.",
             "default": "pixels_unit",
             "enum": [
               "pixels_unit",
@@ -2082,7 +2166,88 @@
                   "text_layer",
                   "smart_object_layer",
                   "adjustment_layer",
-                  "group_layer"
+                  "group_layer",
+                  "background_layer"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "EditBackgroundLayer": {
+        "required": [
+          "operation"
+        ],
+        "type": "object",
+        "description": "Background layer for editing an existing background layer.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/OperationBase"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "blendOptions": {
+                "$ref": "#/components/schemas/BlendOptions"
+              },
+              "convertToLayer": {
+                "type": "boolean",
+                "description": "When true, promotes the background layer to a regular layer. Mutually exclusive with image."
+              },
+              "convertedLayerName": {
+                "type": "string",
+                "description": "Name to set on the layer after conversion. Only applicable when convertToLayer is true. Optional."
+              },
+              "image": {
+                "$ref": "#/components/schemas/ImageSource"
+              },
+              "isVisible": {
+                "type": "boolean",
+                "description": "Whether the layer is visible. Defaults to true when adding layers. Optional for edits."
+              },
+              "pixelMask": {
+                "$ref": "#/components/schemas/EditPixelMask"
+              },
+              "protection": {
+                "type": "array",
+                "description": "Protection flags for the layer (e.g. none, all, transparency, composite, position, artboard_autonest). Defaults to 'none' when adding layers. Optional for edits; omit, null, or empty array [] mean 'don't change'. When 'none' or 'all' is used, the array must contain only that element.",
+                "items": {
+                  "type": "string",
+                  "description": "Protection flag for layer. Used in protection array.",
+                  "enum": [
+                    "none",
+                    "all",
+                    "transparency",
+                    "composite",
+                    "position",
+                    "artboard_autonest"
+                  ]
+                }
+              },
+              "transform": {
+                "$ref": "#/components/schemas/Transform"
+              },
+              "transformMode": {
+                "type": "string",
+                "description": "Transform Mode applied to the layer. Defaults to none when adding layers. Optional for edits.",
+                "enum": [
+                  "fit",
+                  "fill",
+                  "custom",
+                  "none"
+                ]
+              },
+              "type": {
+                "type": "string",
+                "description": "Layer type enum",
+                "enum": [
+                  "layer",
+                  "solid_color_layer",
+                  "text_layer",
+                  "smart_object_layer",
+                  "adjustment_layer",
+                  "group_layer",
+                  "background_layer"
                 ]
               }
             }
@@ -2150,7 +2315,8 @@
                   "text_layer",
                   "smart_object_layer",
                   "adjustment_layer",
-                  "group_layer"
+                  "group_layer",
+                  "background_layer"
                 ]
               }
             }
@@ -2237,7 +2403,8 @@
                   "text_layer",
                   "smart_object_layer",
                   "adjustment_layer",
-                  "group_layer"
+                  "group_layer",
+                  "background_layer"
                 ]
               }
             }
@@ -2388,7 +2555,8 @@
                   "text_layer",
                   "smart_object_layer",
                   "adjustment_layer",
-                  "group_layer"
+                  "group_layer",
+                  "background_layer"
                 ]
               }
             }
@@ -2463,7 +2631,8 @@
                   "text_layer",
                   "smart_object_layer",
                   "adjustment_layer",
-                  "group_layer"
+                  "group_layer",
+                  "background_layer"
                 ]
               }
             }
@@ -2538,7 +2707,8 @@
                   "text_layer",
                   "smart_object_layer",
                   "adjustment_layer",
-                  "group_layer"
+                  "group_layer",
+                  "background_layer"
                 ]
               }
             }
@@ -2560,6 +2730,9 @@
                   "$ref": "#/components/schemas/AddAdjustmentLayer"
                 },
                 {
+                  "$ref": "#/components/schemas/AddBackgroundLayer"
+                },
+                {
                   "$ref": "#/components/schemas/AddGroupLayer"
                 },
                 {
@@ -2579,6 +2752,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/EditAdjustmentLayer"
+                },
+                {
+                  "$ref": "#/components/schemas/EditBackgroundLayer"
                 },
                 {
                   "$ref": "#/components/schemas/EditGroupLayer"
@@ -4098,7 +4274,7 @@
           },
           "resample": {
             "type": "string",
-            "description": "Resampling algorithm used when resizing output to a target width. Valid values: nearest_neighbor, bilinear, bicubic, bicubic_smoother, bicubic_sharper. Defaults to bicubic when width or maxWidth is specified and this field is omitted. Optional.",
+            "description": "Resampling algorithm used when resizing output to a target width. Valid values: nearest_neighbor, bilinear, bicubic, bicubic_smoother, bicubic_sharper. Defaults to bicubic_sharper when width or maxWidth is specified and this field is omitted. Optional.",
             "enum": [
               "nearest_neighbor",
               "bilinear",
@@ -4490,7 +4666,7 @@
             "$ref": "#/components/schemas/FileResourceInput"
           }
         },
-        "description": "File reference for the smart object. Supported file formats: PSD, PNG, JPEG, SVG. Optional."
+        "description": "File reference for the smart object. Supported file formats: PSD, PNG, JPEG, TIFF, SVG, PDF, AI. Optional."
       },
       "SolidColor": {
         "required": [
@@ -4827,16 +5003,18 @@
       }
     },
     "securitySchemes": {
-      "AccessToken": {
-        "type": "http",
-        "scheme": "bearer",
-        "description": "The Adobe-generated access token, S2S format."
+      "Authorization": {
+        "description": "User access token (Bearer xxx)",
+        "in": "header",
+        "name": "Authorization",
+        "scheme": "Bearer",
+        "type": "http"
       },
       "X-Api-Key": {
-        "type": "apiKey",
-        "name": "x-api-key",
+        "description": "Api key (adobe.io)",
         "in": "header",
-        "description": "The client ID for authentication."
+        "name": "X-Api-Key",
+        "type": "apiKey"
       }
     }
   }

@@ -15,9 +15,9 @@ keywords:
 
 This guide helps you migrate smart object layer operations from V1's `/documentCreate` and `/documentOperations` endpoints to V2's `/create-composite` endpoint.
 
-<InlineAlert variant="warning" slots="text"/>
+<InlineAlert variant="info" slots="text"/>
 
-Note: V1 also had a dedicated `/psdService/smartObject` endpoint for specific smart object workflows. That endpoint is separate and not covered in this guide.
+V1 also had a dedicated `/psdService/smartObject` endpoint for smart object place/replace workflows. This guide focuses on smart objects via `documentCreate`/`documentOperations` only. For migration guidance, see [Smart Object Replace Migration](convenience-apis/smart-object-replace.md).
 
 ## Overview
 
@@ -238,17 +238,22 @@ Smart objects can contain various file types:
 - PSD (image/vnd.adobe.photoshop)
 - JPEG (image/jpeg)
 - PNG (image/png)
+- AI / Adobe Illustrator (application/illustrator)
+- PDF (application/pdf)
 
 **V2 Supported:**
 
 - PSD (image/vnd.adobe.photoshop)
 - JPEG (image/jpeg)
 - PNG (image/png)
+- TIFF (image/tiff)
 - SVG (image/svg+xml)
+- AI / Adobe Illustrator (application/illustrator)
+- PDF (application/pdf)
 
 <InlineAlert variant="info" slots="text"/>
 
-V2 supports SVG files as smart object sources, which can be useful for scalable graphics.
+V2 adds SVG as a new smart object source type; V1 already supported AI and PDF.
 
 ## Transform Mode
 
@@ -944,7 +949,7 @@ When you edit or add a linked smart object in the same request as a resize, the 
 - ✅ Blend options (opacity, blendMode)
 - ✅ Placement options (top, bottom, above, below, into)
 - ✅ Reference layer by name or ID
-- ✅ Multiple source file types (PSD, JPEG, PNG, SVG)
+- ✅ Multiple source file types (PSD, JPEG, PNG, TIFF, SVG, AI, PDF)
 - ✅ Linked and embedded smart objects (`smartObject.isLinked`)
 - ✅ Resize (`width`/`maxWidth`) documents containing linked smart objects
 

@@ -90,7 +90,7 @@ V2 `scriptOutputPattern` is a glob pattern matched against files written by a UX
   "outputs": [
     {
       "mediaType": "image/png",
-      "destination": { "hosted": true },
+      "destination": { "validityPeriod": 3600 },
       "scriptOutputPattern": "preview-*.png"
     }
   ]
@@ -262,7 +262,7 @@ V1 smart object behavior was inconsistent across add, edit, and replace operatio
 
 **New features in V2:**
 
-1. **SVG Support** — V2 adds SVG as a supported smart object source type (`image/svg+xml`). V1 only supported PSD, JPEG, and PNG.
+1. **Expanded File Type Support** — V2 adds SVG (`image/svg+xml`) as a new smart object source type. V1 supported PSD, JPEG, PNG, AI, and PDF.
 
 2. **Linked Smart Objects** — V2 provides full support for linked smart objects (external files referenced by the PSD rather than embedded). Add new linked smart objects using `isLinked: true`:
 
@@ -307,7 +307,7 @@ V1 smart object behavior was inconsistent across add, edit, and replace operatio
 
 4. **Resize with Linked Smart Objects** — V1 rejected any resize (`width`/`maxWidth`) on documents containing linked smart objects. V2 removes this restriction. See [resize behavior details](layer-operations-smart-objects.md#resize-with-linked-smart-objects) in the Smart Object Operations Migration guide.
 
-**Supported source types:** PSD, JPEG, PNG, SVG
+**Supported source types:** PSD, JPEG, PNG, TIFF, SVG, AI, PDF
 
 
 **Use cases for linked smart objects:**
