@@ -7,8 +7,6 @@ keywords:
   - photoshopActions
   - actionJSON
   - productCrop
-  - splitView
-  - sideBySide
   - migration reference
   - v1 to v2
 ---
@@ -27,8 +25,6 @@ For a guided walkthrough with examples, see [Actions Migration](actions-migratio
 | `POST /pie/psdService/photoshopActions` | `POST /v2/execute-actions` | `.atn` file execution |
 | `POST /pie/psdService/actionJSON` | `POST /v2/execute-actions` | Inline ActionJSON (stringified in V2) |
 | `POST /pie/psdService/productCrop` | `POST /v2/execute-actions` (published action) | Convenience API |
-| `POST /pie/psdService/splitView` | `POST /v2/execute-actions` (published action) | Requires 2 additional contents |
-| `POST /pie/psdService/sideBySide` | `POST /v2/execute-actions` (published action) | Requires 2 additional contents |
 | `POST /pie/psdService/depthBlur` | **Not yet supported** | Neural Filters unavailable in V2 |
 | `POST /pie/psdService/text` | `/v2/execute-actions` | Use UXP/actions instead |
 | `POST /pie/psdService/smartObjectV2` | `/v2/execute-actions` | Use UXP/actions instead |
@@ -273,8 +269,6 @@ complete ActionJSON definitions.
 | V1 Endpoint | V2 Approach | Guide |
 |---|---|---|
 | `productCrop` | Published ActionJSON | [Product Crop](convenience-apis/product-crop.md) |
-| `splitView` | Published ActionJSON + 2 `additionalContents` | [Split View](convenience-apis/split-view.md) |
-| `sideBySide` | Published ActionJSON + 2 `additionalContents` | [Side by Side](convenience-apis/side-by-side.md) |
 | `depthBlur` | **Not yet supported** | Neural Filters unavailable in V2 |
 
 ## 13. Resource limits summary
@@ -322,5 +316,3 @@ complete ActionJSON definitions.
 - [Output Types Migration](output-types-migration.md) — JPEG, PNG, TIFF output format details
 - [ICC Profile Migration](icc-profile-migration.md) — Color management options
 - [Product Crop](convenience-apis/product-crop.md) — Full ActionJSON definition
-- [Split View](convenience-apis/split-view.md) — Full ActionJSON definition
-- [Side by Side](convenience-apis/side-by-side.md) — Full ActionJSON definition

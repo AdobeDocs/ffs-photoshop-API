@@ -101,7 +101,7 @@ For the dedicated V1 `/psdService/smartObject` endpoint:
 
 ## 3. Actions and scripts
 
-**V1 Endpoints:** `/pie/psdService/photoshopActions`, `/pie/psdService/actionJSON`, `/pie/psdService/text`, `/pie/psdService/productCrop`, `/pie/psdService/splitView`, `/pie/psdService/sideBySide`, `/pie/psdService/depthBlur`
+**V1 Endpoints:** `/pie/psdService/photoshopActions`, `/pie/psdService/actionJSON`, `/pie/psdService/productCrop`, `/pie/psdService/depthBlur`
 
 **V2 Endpoint:** `/v2/execute-actions`
 
@@ -350,10 +350,6 @@ Use this list to audit your codebase for required V2 changes.
 - [ ] `/pie/psdService/photoshopActions` → `/v2/execute-actions`
 - [ ] `/pie/psdService/actionJSON` → `/v2/execute-actions`
 - [ ] `/pie/psdService/productCrop` → `/v2/execute-actions` (with published action file)
-- [ ] `/pie/psdService/splitView` → `/v2/execute-actions` (with published action file)
-- [ ] `/pie/psdService/sideBySide` → `/v2/execute-actions` (with published action file)
-- [ ] `/pie/psdService/smartObject` → `/v2/create-composite` with `type: "smart_object_layer"`
-- [ ] `/pie/psdService/text` → `/v2/execute-actions` (ActionJSON or UXP)
 - [ ] `/pie/psdService/artboardCreate` → `/v2/create-artboard`
 - [ ] `/pie/psdService/documentManifest` → `/v2/generate-manifest`
 - [ ] `/pie/psdService/status/{jobId}` → `/v2/status/{jobId}`

@@ -110,13 +110,11 @@ See [Actions Migration](actions-migration.md) for full syntax and examples.
 
 <InlineAlert variant="info" slots="text"/>
 
-V1 convenience APIs (`productCrop`, `splitView`, `sideBySide`) ran hidden server-side action files you couldn't inspect or modify. V2 publishes those same action files so you can examine, fork, and customize them.
+V1 convenience APIs (`productCrop`) ran hidden server-side action files you couldn't inspect or modify. V2 publishes those same action files so you can examine, fork, and customize them.
 
 V1 had several convenience endpoints that wrapped undisclosed Photoshop action files:
 
 - `/pie/psdService/productCrop` — auto-crop products with padding
-- `/pie/psdService/splitView` — before/after comparison with divider
-- `/pie/psdService/sideBySide` — before/after side-by-side layout
 
 In V2, these operations all use `/v2/execute-actions` with the action files now published. You can:
 
@@ -127,8 +125,6 @@ In V2, these operations all use `/v2/execute-actions` with the action files now 
 
 See the individual guides for download links and usage:
 - [Product Crop](convenience-apis/product-crop.md)
-- [Split View](convenience-apis/split-view.md)
-- [Side by Side](convenience-apis/side-by-side.md)
 
 ## `/v2/generate-manifest` — richer document intelligence
 
