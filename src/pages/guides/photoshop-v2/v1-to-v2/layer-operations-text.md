@@ -686,7 +686,7 @@ V2 has expanded character style options beyond V1:
 
 <InlineAlert variant="info" slots="text"/>
 
-V2 offers more text styling options than V1. See the [V2 API Reference](../../../api/photoshop-v2-beta/index.md) for complete property lists.
+V2 offers more text styling options than V1. See the [V2 API Reference](../../../api/photoshop-v2/index.md) for complete property lists.
 
 ## Paragraph style properties
 

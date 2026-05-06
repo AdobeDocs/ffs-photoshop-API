@@ -317,4 +317,4 @@ Increase the `slideAperture` value for more intense blur:
 ## Additional resources
 
 - [Actions Migration Overview](../actions-migration.md)
-- [V2 Execute Actions API Reference](https://developer.adobe.com/firefly-services/docs/photoshop/api/photoshop-v2-beta/#operation/executeActions)
+- [V2 Execute Actions API Reference](https://developer.adobe.com/firefly-services/docs/photoshop/api/photoshop-v2/#operation/executeActions)
