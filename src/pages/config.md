@@ -18,8 +18,8 @@
     - [Getting Started](/getting-started/index.md)
     - [Guides](/guides/index.md)
     - API Reference
-        - [Photoshop API](/api/index.md) - Current API (v1)
-        - [Photoshop API v2](/api/photoshop-v2/index.md) - v2 endpoints
+        - [Photoshop API v1](/api/index.md) - All v1 endpoints
+        - [Photoshop API v2](/api/photoshop-v2/index.md) - All v2 endpoints
 
 - buttons:
     - [Support](https://airtable.com/appu5RTWgdM95jynx/pagyuT1qspNJcPU2E/form)
