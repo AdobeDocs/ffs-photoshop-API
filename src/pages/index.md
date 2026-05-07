@@ -23,6 +23,14 @@ contributors:
 
 Unlock the potential of Adobe Photoshop and cutting edge AI/ML services through an easy-to-use RESTful API.
 
+<Announcement slots="heading, text, button" variant="secondary" backgroundColor="background-color-gray" borderColor="#14b8a6" hasborder="true"/>
+
+#### Now Generally Available - Photoshop API v2 
+
+Photoshop API v2 is now generally available. This release introduces major improvements in scalability, flexibility, and programmability, enabling teams to build production-grade, high-volume content workflows. v2 addresses these gaps and introduces a more extensible foundation for modern content pipelines.
+
+- [Learn more](/getting-started/v2-ga/index.md)
+
 ## Overview
 
 Welcome to the Adobe Photoshop API, now integrated into Firefly Services. Our API follows REST-like principles, utilizing standard HTTP response codes, verbs, and authentication methods that return JSON-encoded responses. While the examples provided are in cURL, feel free to develop your application in any preferred language.
