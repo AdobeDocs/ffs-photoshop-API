@@ -262,7 +262,7 @@ V1 smart object behavior was inconsistent across add, edit, and replace operatio
 
 **New features in V2:**
 
-1. **Expanded File Type Support** — V2 adds SVG (`image/svg+xml`) and AI / Adobe Illustrator (`application/illustrator`) <sup>[1](layer-operations-smart-objects.md#ai-file-note)</sup> as new smart object source types. V1 supported PSD, JPEG, PNG, and PDF.
+1. **Expanded File Type Support** — V2 adds SVG (`image/svg+xml`) and AI / Adobe Illustrator (`application/illustrator`) as new smart object source types. V1 supported PSD, JPEG, PNG, and PDF.
 
 2. **Linked Smart Objects** — V2 provides full support for linked smart objects (external files referenced by the PSD rather than embedded). Add new linked smart objects using `isLinked: true`:
 

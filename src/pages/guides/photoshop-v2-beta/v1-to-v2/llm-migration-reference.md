@@ -678,9 +678,9 @@ For `smart_object_layer`, `opacity` and `blendMode` remain nested under `blendOp
 - Layer type: V1 `"smartObject"` → V2 `"smart_object_layer"`
 - Source: V1 `input: {href, storage}` → V2 `smartObject.smartObjectFile.source.url` (nested deeper)
 - Linked flag: V1 `smartObject.linked` → V2 `smartObject.isLinked`
-- V2 adds SVG and AI <sup>[1](#ai-file-requirement)</sup> as new source formats; V1 supported PSD, JPEG, PNG, and PDF
-- **Supported source file types:** PSD (`image/vnd.adobe.photoshop`), JPEG (`image/jpeg`), PNG (`image/png`), TIFF (`image/tiff`), SVG (`image/svg+xml`), AI (`application/illustrator`) <sup>[1](#ai-file-requirement)</sup>, PDF (`application/pdf`)
-- <a id="ai-file-requirement"></a> <sup>1</sup> **AI file requirement:** AI files are only supported when the **Create PDF Compatible File** option was enabled when saving from Adobe Illustrator.
+- V2 adds SVG and AI as new source formats; V1 supported PSD, JPEG, PNG, and PDF
+- **Supported source file types:** PSD (`image/vnd.adobe.photoshop`), JPEG (`image/jpeg`), PNG (`image/png`), TIFF (`image/tiff`), SVG (`image/svg+xml`), AI (`application/illustrator`), PDF (`application/pdf`)
+- **AI file requirement:** AI files are only supported when the **Create PDF Compatible File** option was enabled when saving from Adobe Illustrator.
 - **Resize with linked smart objects:** Width-only resize (no layer edits) → ALL linked SOs are rasterized to pixel layers. Edit/add a linked SO in the same request + resize → that edited SO stays linked; all other linked SOs are rasterized.
 - Cannot replace a linked SO with an embedded SO (V2 limitation)
 
@@ -3608,8 +3608,8 @@ Use this checklist when migrating or validating V1 → V2 code:
 - [ ] Source: V1 `input: {href, storage}` → V2 `smartObject.smartObjectFile.source.url`
 - [ ] Linked flag: `smartObject.linked` → `smartObject.isLinked`
 - [ ] `transformMode` required when using `transform` object: `"none"`, `"custom"`, `"fit"`, or `"fill"`
-- [ ] V2 adds SVG and AI <sup>[1](#ai-file-requirement)</sup> as new source file types (not in V1); PSD, JPEG, PNG, TIFF, and PDF were already supported in V1
-- [ ] AI <sup>[1](#ai-file-requirement)</sup> files require **Create PDF Compatible File** to have been enabled when saving from Illustrator
+- [ ] V2 adds SVG and AI as new source file types (not in V1); PSD, JPEG, PNG, TIFF, and PDF were already supported in V1
+- [ ] AI files require **Create PDF Compatible File** to have been enabled when saving from Illustrator
 - [ ] Width-only resize: linked SOs are rasterized to pixel layers unless their content is provided in the same request
 
 ### Text endpoint migration specific (`/pie/psdService/text`)
@@ -3829,7 +3829,7 @@ curl -X GET https://photoshop-api.adobe.io/v2/status/{jobId} \
 - Artboard API V1→V2 complete field-level diff (input restructure, storage mapping, quality/compression enums, crop mode, status response)
 - Adjustment layer operations: `adjustments.type` discriminant required, type mapping table, `exposureValue` rename, hue/sat `hueSaturationAdjustments[]` restructure, `localRange`, parameter ranges, `transformMode` not applicable
 - Text layer operations: character style range off-by-one (V1 `to`=length → V2 `apply.to`=inclusive end index), `font.postScriptName`, `text.frame` area/point types, bounds conversion, font options rename, `textOrientation`
-- Smart object operations: `smartObject.smartObjectFile.source.url` path, `isLinked`, resize-with-linked-SO rasterization behavior, SVG support, supported source file types (PSD, JPEG, PNG, TIFF, SVG, AI <sup>[1](#ai-file-requirement)</sup>, PDF); SVG and AI added in V2; AI <sup>[1](#ai-file-requirement)</sup> files require Create PDF Compatible File option in Illustrator
+- Smart object operations: `smartObject.smartObjectFile.source.url` path, `isLinked`, resize-with-linked-SO rasterization behavior, SVG support, supported source file types (PSD, JPEG, PNG, TIFF, SVG, AI, PDF); SVG and AI added in V2; AI files require Create PDF Compatible File option in Illustrator
 - `/pie/psdService/text` migration: no declarative V2 equivalent; use `execute-actions` with ActionJSON (fixed edits) or UXP (conditional/iterative); decision table
 - Blend mode location: top-level `opacity`/`blendMode` for most layers; `blendOptions` for `smart_object_layer`
 - Layer transforms: V1 `bounds` → V2 `transform {offset, dimension}` with required `transformMode: "custom"`
