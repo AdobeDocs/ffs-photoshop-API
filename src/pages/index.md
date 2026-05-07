@@ -8,7 +8,7 @@ keywords:
   - Photoshop API
   - Photoshop API SDK
   - Photoshop API Developer documentation
-  - Photoshop v2 beta
+  - Photoshop API v2
   - Photoshop v2 API
 contributors:
   - https://github.com/khound
@@ -46,35 +46,31 @@ Many useful Photoshop operations are available in the Photoshop API. Here are ju
 Explore all the available Photoshop API services in the [Photoshop API guides](/guides/index.md).
 Or review the endpoints in the [Photoshop API reference](/api/index.md).
 
-## What is Photoshop v2 beta?
+## What is Photoshop API v2?
 
-<Edition slots="text" backgroundcolor='blue' />
+The **Photoshop API v2** is a unified next-generation surface for Photoshop and Lightroom-style workflows in Firefly Services: one architecture, consistent request and response patterns, and flexible output destinations. Use it when you want combined operations in fewer round trips, clearer status handling, and migration paths from the legacy v1 Photoshop and Lightroom APIs.
 
-beta
+### What improvements does Photoshop API v2 offer?
 
-The **Photoshop v2 beta** API is a unified next-generation surface for Photoshop and Lightroom-style workflows in Firefly Services: one architecture, consistent request and response patterns, and flexible output destinations. Use it when you want combined operations in fewer round trips, clearer status handling, and migration paths from the legacy v1 Photoshop and Lightroom APIs.
-
-### What improvements does Photoshop v2 beta offer?
-
-Photoshop v2 beta allows you to:
+Photoshop API v2 allows you to:
 
 * **Run Photoshop operations** — Create composites, edit documents and layers, execute actions, generate manifests, and create artboards through versioned `/v2` endpoints.
 * **Check asynchronous jobs** — Poll job status with a dedicated job-status model aligned to the v2 pipeline.
 * **Integrate storage flexibly** — Use embedded, hosted, and external storage patterns with clear destination configuration.
 * **Regenerate storage URLs when needed** — Use storage-related endpoints where applicable for your deployment.
 
-### What new features does Photoshop v2 beta offer?
+### What new features does Photoshop API v2 offer?
 
 * **Unified API** — Photoshop-oriented image processing plus job lifecycle and storage helpers documented under a single OpenAPI specification.
-* **Clear versioning** — `v2` paths and beta reference documentation kept separate from the shipping Photoshop API reference for easier comparison and migration.
+* **Clear versioning** — Versioned `/v2` endpoints and a dedicated Photoshop API v2 OpenAPI reference alongside the existing v1 Photoshop API reference, so you can compare contracts and plan migration without merging the two references.
 * **Guides for migrating from v1** — Topic-based migration guides for edit, document, layer, actions, output, artboard, manifest, and status flows.
 
-### How can I use the Photoshop v2 beta API?
+### How can I use the Photoshop API v2?
 
-Explore the Photoshop v2 migration guides to learn how to change existing implementations to use the improved v2 API.
+Explore the Photoshop API v2 migration guides to learn how to change existing implementations to use the improved v2 API.
 
-* **[Photoshop v2 beta guides](/guides/photoshop-v2-beta/index.md)** — Migration overviews, v1-to-v2 topics, and getting started topics scoped to the v2 beta.
-* **[Photoshop v2 beta API reference](/api/photoshop-v2-beta/index.md)** — Full endpoint reference for the `photoshopv2-api.json` specification.
+* **[Photoshop API v2 guides](/guides/photoshop-v2/index.md)** — Migration overviews, v1-to-v2 topics, and workflow guides for the v2 API.
+* **[Photoshop API v2 reference](/api/photoshop-v2/index.md)** — Full endpoint reference for the `photoshopv2-api.json` specification.
 
 ## Discover
 
@@ -100,12 +96,12 @@ See the API reference page for detailed technical information about the API.
 
 <DiscoverBlock slots="link, text"/>
 
-[Photoshop v2 beta guides](/guides/photoshop-v2-beta/index.md)
+[Photoshop API v2 guides](/guides/photoshop-v2/index.md)
 
-Review migration guides and other v2 beta topics for the Photoshop v2 beta API. For authentication and storage, use the [Getting Started](/getting-started/index.md) section.
+Review migration guides and other Photoshop API v2 topics. For authentication and storage, use the [Getting Started](/getting-started/index.md) section.
 
 <DiscoverBlock slots="link, text"/>
 
-[Photoshop v2 beta API reference](/api/photoshop-v2-beta/index.md)
+[Photoshop API v2 reference](/api/photoshop-v2/index.md)
 
-Browse the OpenAPI reference for Photoshop v2 beta endpoints.
+Browse the OpenAPI reference for Photoshop API v2 endpoints.

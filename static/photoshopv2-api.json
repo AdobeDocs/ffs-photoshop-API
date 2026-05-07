@@ -7,7 +7,7 @@
       "url": "https://www.adobe.com/content/dam/cc/en/legal/terms/enterprise/pdfs/PSLT-AdobeCreativeAPI-WW-2024v2.pdf"
     },
     "title": "Photoshop v2 API endpoints",
-    "version": "beta"
+    "version": "2.0"
   },
   "servers": [
     {
@@ -5005,9 +5005,7 @@
     "securitySchemes": {
       "Authorization": {
         "description": "User access token (Bearer xxx)",
-        "in": "header",
-        "name": "Authorization",
-        "scheme": "Bearer",
+        "scheme": "bearer",
         "type": "http"
       },
       "X-Api-Key": {
