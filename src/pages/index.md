@@ -25,7 +25,7 @@ Unlock the potential of Adobe Photoshop and cutting edge AI/ML services through 
 
 <Announcement slots="heading, text, button" variant="secondary" backgroundColor="background-color-gray" borderColor="#14b8a6" hasborder="true"/>
 
-#### Now Generally Available - Photoshop API v2 
+#### 🚀 Now Generally Available - Photoshop API v2 
 
 Photoshop API v2 is now generally available. This release introduces major improvements in scalability, flexibility, and programmability, enabling teams to build production-grade, high-volume content workflows. v2 addresses these gaps and introduces a more extensible foundation for modern content pipelines.
 
@@ -44,15 +44,19 @@ This guide will assist you in:
 
 ## What Photoshop API services are available?
 
-Many useful Photoshop operations are available in the Photoshop API. Here are just a few:
+Many useful Photoshop operations are available as services with the Photoshop API. Explore how to integrate and use the available Photoshop API services in the [Photoshop API guides](/guides/index.md).
+
+Here are just a few of the available services:
 
 * **[Remove background](/guides/remove-background/index.md)** — Detect and isolate the main subject with AI and remove the background while preserving the subject for use in composites and cutouts.
 * **[Smart Objects](/guides/smart-objects-and-the-api/index.md)** — Create and replace embedded Smart Objects in a PSD so new imagery fits the original layer bounds and keeps its aspect ratio.
 * **[Product Crop](/guides/product-crop/index.md)** — Smart-crop images by detecting the subject and framing it as the focal point (single-layer inputs; multilayer PSDs are not supported).
 * **[ActionJSON](/guides/actionjson-endpoint/index.md)** — Apply Photoshop Actions from an ATN file programmatically and adjust the action payload for more flexible, dynamic edits than a static action alone.
 
-Explore all the available Photoshop API services in the [Photoshop API guides](/guides/index.md).
-Or review the endpoints in the [Photoshop API reference](/api/index.md).
+You can also review the endpoints in [the latest and greatest Photoshop v2 API](#what-is-photoshop-api-v2) or the legacy Photoshop v1 API in the reference documentation:
+
+- [Photoshop API v1](/api/index.md)
+- [Photoshop API v2](/api/photoshop-v2/index.md)
 
 ## What is Photoshop API v2?
 
@@ -69,15 +73,17 @@ Photoshop API v2 allows you to:
 
 ### What new features does Photoshop API v2 offer?
 
-* **Unified API** — Photoshop-oriented image processing plus job lifecycle and storage helpers documented under a single OpenAPI specification.
-* **Clear versioning** — Versioned `/v2` endpoints and a dedicated Photoshop API v2 OpenAPI reference alongside the existing v1 Photoshop API reference, so you can compare contracts and plan migration without merging the two references.
-* **Guides for migrating from v1** — Topic-based migration guides for edit, document, layer, actions, output, artboard, manifest, and status flows.
+- **Combined operations** – Apply multiple edits in a single request instead of multiple API calls.
+- **Flexible storage options** – Embedded, hosted, presigned, and Creative Cloud storage.
+- **Published action files** – Inspect and customize the action definitions behind convenience workflows.
+- **Enhanced layer operations** – Richer layer control via the create-composite endpoint.
+- **Improved error handling** – Clearer error codes, multiple validation details, and a consistent error shape.
 
 ### How can I use the Photoshop API v2?
 
 Explore the Photoshop API v2 migration guides to learn how to change existing implementations to use the improved v2 API.
 
-* **[Photoshop API v2 guides](/guides/photoshop-v2/index.md)** — Migration overviews, v1-to-v2 topics, and workflow guides for the v2 API.
+* **[Photoshop API v2 migration guides](/guides/photoshop-v2/index.md)** — Migration overviews, v1-to-v2 topics, and workflow guides for the v2 API.
 * **[Photoshop API v2 reference](/api/photoshop-v2/index.md)** — Full endpoint reference for the `photoshopv2-api.json` specification.
 
 ## Discover
