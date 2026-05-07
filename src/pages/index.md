@@ -24,11 +24,13 @@ contributors:
 
 Unlock the potential of Adobe Photoshop and cutting edge AI/ML services through an easy-to-use RESTful API.
 
-> ## 🚀 Photoshop API v2 is now Generally Available
->
-> **Photoshop API v1 is deprecated and will reach end of life on July 31, 2026.** All teams must migrate to v2 before this date to avoid service disruption.
->
-> Photoshop API v2 introduces major improvements in scalability, flexibility, and programmability — enabling production-grade, high-volume content workflows. **[Get started with v2 →](/guides/photoshop-v2/index.md)**
+<Announcement slots="heading, text, button" variant="secondary" backgroundColor="background-color-gray" borderColor="#14b8a6" hasborder="true"/>
+
+#### 🚀 Now Generally Available - Photoshop API v2 
+
+Photoshop API v2 is now generally available. This release introduces major improvements in scalability, flexibility, and programmability, enabling teams to build production-grade, high-volume content workflows. v2 addresses these gaps and introduces a more extensible foundation for modern content pipelines.
+
+- [Learn more](/getting-started/v2-ga/index.md)
 
 ## Overview
 

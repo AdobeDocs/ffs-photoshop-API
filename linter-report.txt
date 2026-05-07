@@ -5,10 +5,13 @@
 Generated: 2026-05-07T16:51:56.236Z
 Mode: Full Linting (all rules + dead links check)
 Target Directory: /Users/aposada/Documents/Projects/ffs-photoshop-API
+Generated: 2026-05-07T17:01:46.012Z
+Mode: Remark Rules Only (dead links skipped)
+Target Directory: /Users/aabreu/workspace/ffs-photoshop-API
 
 ───────────────────────────────────────────────────────────────
 
-Files to process: 66
+Files to process: 67
 
 ───────────────────────────────────────────────────────────────
 📄 FILE: src/pages/getting-started/concepts/index.md
@@ -167,6 +170,8 @@ Files to process: 66
 
   📁 Files processed:    66
   📄 Files with issues:  10
+  📁 Files processed:    67
+  📄 Files with issues:  0
   ❌ Total errors:       0
   ⚠️  Total warnings:     24
   📋 Total issues:       24

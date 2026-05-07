@@ -41,41 +41,6 @@
     }
   ],
   "paths": {
-    "/sensei/status/{jobId}": {
-      "get": {
-        "tags": [
-          "Get status"
-        ],
-        "summary": "Get status - mask",
-        "description": "This endpoint returns the status of a job for a Remove Background and Create Mask operation. The schema of a 200 response varies depending on the status of the job.",
-        "operationId": "senseiJobStatus",
-        "parameters": [
-          {
-            "name": "jobId",
-            "in": "path",
-            "description": "The job ID.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Job status",
-            "headers": {},
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SenseiJobApiResponse"
-                }
-              }
-            }
-          }
-        },
-        "deprecated": false
-      }
-    },
     "/v2/remove-background": {
       "post": {
         "tags": [
@@ -2481,122 +2446,12 @@
         },
         "description": "A file located on Adobe's cloud or a supported external service."
       },
-      "SenseiColor": {
-        "title": "SenseiColor",
-        "type": "object",
-        "properties": {
-          "space": {
-            "$ref": "#/components/schemas/ColorSpaceType"
-          }
-        },
-        "description": "Color space for output image"
-      },
-      "ColorSpaceType": {
-        "title": "ColorSpaceType",
-        "type": "string",
-        "enum": [
-          "rgb",
-          "rgba"
-        ],
-        "description": "Color space for output image"
-      },
-      "SenseiOutputDetails": {
-        "title": "SenseiOutputDetails",
-        "type": "object",
-        "required": [
-          "href",
-          "storage"
-        ],
-        "properties": {
-          "href": {
-            "type": "string",
-            "description": "A pre-signed POST URL to the output file."
-          },
-          "storage": {
-            "$ref": "#/components/schemas/StorageType"
-          },
-          "mask": {
-            "$ref": "#/components/schemas/MaskFormat"
-          },
-          "color": {
-            "$ref": "#/components/schemas/SenseiColor"
-          },
-          "overwrite": {
-            "type": "boolean",
-            "description": "If the file already exists, indicates if the output file should be overwritten. Will eventually support eTags. Only applies to CC Storage.",
-            "default": true
-          }
-        },
-        "description": "A PNG file."
-      },
-      "SenseiJobApiResponse": {
-        "title": "SenseiJobApiResponse",
-        "type": "object",
-        "properties": {
-          "jobId": {
-            "type": "string",
-            "description": "The job ID requested."
-          },
-          "created": {
-            "type": "string",
-            "description": "Created timestamp of the job (YYYY-DD-MMThh:mm:ss.mmmmmZ)."
-          },
-          "modified": {
-            "type": "string",
-            "description": "Modified timestamp of the job (YYYY-DD-MMThh:mm:ss.mmmmmZ)."
-          },
-          "status": {
-            "$ref": "#/components/schemas/JobStatus"
-          },
-          "output": {
-            "$ref": "#/components/schemas/SenseiOutputDetails"
-          },
-          "errors": {
-            "$ref": "#/components/schemas/JobError"
-          },
-          "_links": {
-            "$ref": "#/components/schemas/JobStatusLink"
-          }
-        }
-      },
       "JobStatusLink": {
         "title": "JobStatusLink",
         "type": "object",
         "properties": {
           "self": {
             "$ref": "#/components/schemas/SelfLink"
-          }
-        }
-      },
-      "RemoveBackgroundRequest": {
-        "title": "RemoveBackgroundRequest",
-        "type": "object",
-        "required": [
-          "input",
-          "output"
-        ],
-        "properties": {
-          "input": {
-            "$ref": "#/components/schemas/StorageDetails"
-          },
-          "output": {
-            "$ref": "#/components/schemas/SenseiOutputDetails"
-          }
-        }
-      },
-      "CreateMaskRequest": {
-        "title": "CreateMaskRequest",
-        "type": "object",
-        "required": [
-          "input",
-          "output"
-        ],
-        "properties": {
-          "input": {
-            "$ref": "#/components/schemas/StorageDetails"
-          },
-          "output": {
-            "$ref": "#/components/schemas/SenseiOutputDetails"
           }
         }
       },
@@ -4354,15 +4209,6 @@
           }
         }
       },
-      "MaskFormatType": {
-        "title": "MaskFormatType",
-        "enum": [
-          "binary",
-          "soft"
-        ],
-        "type": "string",
-        "description": "Soft mask or binary mask."
-      },
       "ImageModeType": {
         "title": "ImageModeType",
         "enum": [
@@ -4681,15 +4527,6 @@
         ],
         "type": "string",
         "description": "Action to take if there are one or more missing fonts in the document. Using `fail` - the job will not succeed and the status will be set to `failed` with the details of the error provided in the `details` section in the status. Using `useDefault` - the job will succeed, however all the missing fonts will use the font: ArialMT."
-      },
-      "MaskFormat": {
-        "title": "MaskFormat",
-        "type": "object",
-        "properties": {
-          "format": {
-            "$ref": "#/components/schemas/MaskFormatType"
-          }
-        }
       },
       "MaskDetails": {
         "title": "MaskDetails",

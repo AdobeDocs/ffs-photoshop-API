@@ -22,8 +22,6 @@ The `/v2/remove-background` endpoint can recognize the subject of an image and e
 
 ![alt image](../../assets/imagecutout-cutout-example.png?raw=true "Original Image")
 
-Use the following cURL command to remove the background from an image:
-
 ```shell
 curl -i -X POST \
   https://image.adobe.io/v2/remove-background \
@@ -43,7 +41,7 @@ curl -i -X POST \
   }'
 ```
 
-This initiates an asynchronous job and returns a response containing an href. Use the value in the href to [poll for the status of the job](/guides/get-job-status/index.md).
+The response includes `jobId` and `statusUrl`. Poll `statusUrl`, or call `GET https://image.adobe.io/v2/status/{jobId}` with that `jobId`, until `status` is `succeeded` or `failed`.
 
 ## Customized workflow
 
@@ -61,7 +59,7 @@ Sample input and output:
 ### Implementation steps
 
 1. [Download the make-file.atn file](https://github.com/AdobeDocs/cis-photoshop-api-docs/blob/main/sample_files/ic_customized_workflow/make-path.atn). This file will be used in the Photoshop action API call.
-2. Make the first API call to the Remove Background service to generate an intermediate result as RGBA remove background.
+2. Make the first API call to Remove Background v2 to generate an intermediate result as RGBA remove background.
 3. Make the second API call to the Photoshop Action service to use the intermediate result as well as the make-file.atn file to generate a final JPEG format result with the desired Photoshop path embedded.
 4. Open the final result with the Photoshop Desktop app to check the generated path in the path panel.
 
@@ -78,4 +76,4 @@ The V2 endpoint supports additional parameters for enhanced output quality:
 
 For the latest technical information, see [the API reference documentation](https://developer.adobe.com/firefly-services/docs/photoshop/api/#operation/removeBackground).
 
-For support, contact your Adobe Customer Success Manager.
+For deprecation timelines and support, see [Deprecation Announcement](/getting-started/deprecation-announcement/index.md) and [Remove background](https://developer.adobe.com/firefly-services/docs/photoshop/api/#operation/removeBackground) in the API reference.

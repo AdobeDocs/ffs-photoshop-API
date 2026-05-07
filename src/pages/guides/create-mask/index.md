@@ -16,15 +16,15 @@ contributors:
 
 Generate semantic masks for foreground objects and background regions in an image.
 
-## Getting started with mask creation
+## Overview
 
-![alt image](../../assets/imagecutout-mask-example.png?raw=true "Original Image")
+The Remove Background service returns a PNG mask around the subject when you use `"mode": "mask"`. Submit `POST https://image.adobe.io/v2/remove-background`, then poll **`GET https://image.adobe.io/v2/status/{jobId}`** until the job completes. See [Remove background](https://developer.adobe.com/firefly-services/docs/photoshop/api/#operation/removeBackground) and [Get status - v2](https://developer.adobe.com/firefly-services/docs/photoshop/api/#operation/facadeJobStatus).
 
 The `/v1/mask-objects` endpoint analyzes an input image and returns two sets of masks: `semanticMasks` for detected foreground objects, and `backgroundMasks` for background regions. Each mask includes a label, confidence score, bounding box, and a URL for the mask image.
 
 The endpoint accepts a single input image via presigned URL. Max dimensions: 4000 x 4000 px.
 
-Using [Example.jpg](https://github.com/AdobeDocs/cis-photoshop-api-docs/blob/main/sample_files/Example.jpg), a typical cURL call might look like this:
+**1. Start the job**
 
 ```shell
 curl -X POST \
