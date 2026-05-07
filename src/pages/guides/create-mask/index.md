@@ -1,6 +1,6 @@
 ---
 title: Create a mask
-description: Learn how to create grayscale mask PNG files using the Create Mask API endpoint for image compositing and editing
+description: Learn how to create grayscale mask PNG files using Remove Background v2 (mask mode) for image compositing and editing
 hideBreadcrumbNav: true
 keywords:
   - create mask
@@ -14,81 +14,57 @@ contributors:
 
 # Create Mask
 
-Create a grayscale mask that you can composite onto the original image.
+Create a grayscale mask that you can composite onto the original image using **Remove Background v2** with **`mode` set to `"mask"`**.
 
-## Getting started with mask creation
+## Overview
+
+The Remove Background service returns a PNG mask around the subject when you use `"mode": "mask"`. Submit `POST https://image.adobe.io/v2/remove-background`, then poll **`GET https://image.adobe.io/v2/status/{jobId}`** until the job completes. See [Remove background](https://developer.adobe.com/firefly-services/docs/photoshop/api/#operation/removeBackground) and [Get status - v2](https://developer.adobe.com/firefly-services/docs/photoshop/api/#operation/facadeJobStatus).
 
 ![alt image](../../assets/imagecutout-mask-example.png?raw=true "Original Image")
 
-The `/mask` endpoint allows you to create a grayscale mask PNG file that you can composite onto the original image (or any other). The mask provides precise control over which parts of an image are affected by any subsequent operations.
+Using [Example.jpg](https://github.com/AdobeDocs/cis-photoshop-api-docs/blob/main/sample_files/Example.jpg), a typical flow looks like this:
 
-The endpoint accepts a single input image to generate your mask.
-
-Using [Example.jpg](https://github.com/AdobeDocs/cis-photoshop-api-docs/blob/main/sample_files/Example.jpg), a typical cURL call might look like this:
+**1. Start the job**
 
 ```shell
 curl -X POST \
-  https://image.adobe.io/sensei/mask \
-  -H "Authorization: Bearer $token"  \
+  https://image.adobe.io/v2/remove-background \
+  -H "Authorization: Bearer $token" \
   -H "x-api-key: $apiKey" \
   -H "Content-Type: application/json" \
   -d '{
-   "input":{
-      "storage":"<your_storage>",
-      "href":"<SIGNED_GET_URL>"
-   },
-   "output":{
-      "storage":"<your_storage>",
-      "href":"<SIGNED_POST_URL>",
-      "mask":{
-         "format":"soft"
+    "image": {
+      "source": {
+        "url": "<SIGNED_GET_URL_OR_SUPPORTED_SOURCE_URL>"
       }
-   }
-}'
+    },
+    "mode": "mask",
+    "output": {
+      "mediaType": "image/png"
+    }
+  }'
 ```
 
-This initiates an asynchronous job and returns a response containing the URL to poll for job status and the JSON manifest.
+The **202** response includes `jobId` and `statusUrl`. For example:
 
 ```json
 {
-    "_links": {
-        "self": {
-            "href": "https://image.adobe.io/sensei/status/e3a13d81-a462-4b71-9964-28b2ef34aca7"
-        }
-    }
+  "jobId": "urn:ff:jobs:YOUR_JOB_ID",
+  "statusUrl": "https://image.adobe.io/v2/status/urn:ff:jobs:YOUR_JOB_ID"
 }
 ```
 
-Using the job ID returned from the previous call you can poll on the returned `/status` href to get the job status:
+**2. Poll for status**
+
+Use `statusUrl`, or call:
 
 ```shell
 curl -X GET \
-  https://image.adobe.io/sensei/status/e3a13d81-a462-4b71-9964-28b2ef34aca7 \
-  -H "Authorization: Bearer $token"  \
-  -H "x-api-key: $apiKey" \
-  -H "Content-Type: application/json"
+  "https://image.adobe.io/v2/status/urn:ff:jobs:YOUR_JOB_ID" \
+  -H "Authorization: Bearer $token" \
+  -H "x-api-key: $apiKey"
 ```
 
-Once the job is complete your successful `/status` response will look similar to the response below. The output will have been placed in your requested location. In the event of failure the errors will be shown instead:
+When `status` is `succeeded`, the payload includes `result.outputs` with URLs for the generated mask file (shape matches [Get status - v2](https://developer.adobe.com/firefly-services/docs/photoshop/api/#operation/facadeJobStatus) in the API reference). If the job `failed`, error details appear in the status payload.
 
-```json
-{
-    "jobID": "e3a13d81-a462-4b71-9964-28b2ef34aca7",
-    "status": "succeeded",
-    "created": "2020-02-11T21:08:43.789Z",
-    "modified": "2020-02-11T21:08:48.492Z",
-    "input": "<SIGNED_GET_URL>",
-    "_links": {
-        "self": {
-            "href": "https://image.adobe.io/sensei/status/e3a13d81-a462-4b71-9964-28b2ef34aca7"
-        }
-    },
-    "output": {
-        "storage": "<your_storage>",
-        "href": "<SIGNED_POST_URL>",
-        "mask": {
-            "format": "soft"
-        }
-    }
-}
-```
+For subject cutout (RGBA) instead of a grayscale mask, use `"mode": "cutout"`. See also [Remove background](/guides/remove-background/index.md).

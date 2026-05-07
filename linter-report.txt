@@ -2,7 +2,7 @@
                      LINTER REPORT
 ═══════════════════════════════════════════════════════════════
 
-Generated: 2026-05-06T20:35:40.884Z
+Generated: 2026-05-07T16:50:16.160Z
 Mode: Remark Rules Only (dead links skipped)
 Target Directory: /Users/aabreu/workspace/ffs-photoshop-API
 
