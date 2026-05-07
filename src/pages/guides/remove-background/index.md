@@ -18,40 +18,30 @@ This API uses advanced AI to automatically detect and isolate the main subject o
 
 ## Overview
 
-<InlineAlert variant="warning" slots="heading, text" />
-
-V1 is deprecated.
-
-The Remove Background V1 API (/sensei/cutout) is deprecated. Although these workflow examples use the `/cutout` endpoint, any current implementations should migrate to Remove Background V2 API (/v2/remove-background) by referring to [the V2 migration instructions below](#migrating-to-remove-background-v2) to avoid interruptions.
-
-The `/cutout` endpoint can recognize the subject of an image and eliminate the background, providing the subject as the output.
+The `/v2/remove-background` endpoint can recognize the subject of an image and eliminate the background, providing the subject as the output.
 
 ![alt image](../../assets/imagecutout-cutout-example.png?raw=true "Original Image")
 
-Use the following cURL command to remove the background from an image:
-
 ```shell
-curl -X POST \
-  https://image.adobe.io/sensei/cutout \
-  -H "Authorization: Bearer $token"  \
-  -H "x-api-key: $apiKey" \
-  -H "Content-Type: application/json" \
+curl -i -X POST \
+  https://image.adobe.io/v2/remove-background \
+  -H 'Authorization: Bearer $token' \
+  -H 'Content-Type: application/json' \
+  -H 'x-api-key: $apiKey' \
   -d '{
-   "input":{
-      "storage":"<your_storage>",
-      "href":"<signed_get_url>"
-   },
-   "output":{
-      "storage":"<your_storage>",
-      "href":"<signed_post_url>",
-      "mask":{
-         "format":"soft"
+    "image": {
+      "source": {
+        "url": "<signed_get_url>"
       }
-   }
-}'
+    },
+    "mode": "cutout",
+    "output": {
+      "mediaType": "image/png"
+    }
+  }'
 ```
 
-This initiates an asynchronous job and returns a response containing an href. Use the value in the href to [poll for the status of the job](/guides/get-job-status/index.md).
+The response includes `jobId` and `statusUrl`. Poll `statusUrl`, or call `GET https://image.adobe.io/v2/status/{jobId}` with that `jobId`, until `status` is `succeeded` or `failed`.
 
 ## Customized workflow
 
@@ -69,97 +59,21 @@ Sample input and output:
 ### Implementation steps
 
 1. [Download the make-file.atn file](https://github.com/AdobeDocs/cis-photoshop-api-docs/blob/main/sample_files/ic_customized_workflow/make-path.atn). This file will be used in the Photoshop action API call.
-2. Make the first API call to the Remove Background service to generate an intermediate result as RGBA remove background.
+2. Make the first API call to Remove Background v2 to generate an intermediate result as RGBA remove background.
 3. Make the second API call to the Photoshop Action service to use the intermediate result as well as the make-file.atn file to generate a final JPEG format result with the desired Photoshop path embedded.
 4. Open the final result with the Photoshop Desktop app to check the generated path in the path panel.
 
-## Migrating to Remove Background V2
+## Optional parameters
 
-The Remove Background V1 API (https://image.adobe.io/sensei/cutout) used in these example workflows is deprecated. To avoid service interruptions, migrate to Remove Background V2 API (https://image.adobe.io/v2/remove-background) by referring to these steps and considerations.
+The V2 endpoint supports additional parameters for enhanced output quality:
 
-### Step 1: Update the endpoint and payload
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `mode` | string | Output mode. `cutout` returns the subject on a transparent background; `mask` returns a grayscale mask. |
+| `trim` | boolean | Trims transparent edges from the output image. |
+| `backgroundColor` | object | Sets a background fill color (RGBA). |
+| `colorDecontamination` | number | Reduces color bleed from the removed background (0–1). |
 
-Update your Remove Background endpoint from `/sensei/cutout` to `/v2/remove-background`.
+For the latest technical information, see [the API reference documentation](https://developer.adobe.com/firefly-services/docs/photoshop/api/#operation/removeBackground).
 
-**V1 Payload:**
-
-```shell
-curl -i -X POST \
-  https://image.adobe.io/sensei/cutout \
-  -H 'Content-Type: application/json' \
-  -H 'x-api-key: YOUR_API_KEY_HERE' \
-  -H 'x-gw-ims-org-id: string' \
-  -d '{
-    "input": {
-      "href": "string",
-      "storage": "external"
-    },
-    "output": {
-      "href": "string",
-      "storage": "external",
-      "mask": {
-        "format": "binary"
-      },
-      "color": {
-        "space": "rgb"
-      },
-      "overwrite": true
-    }
-  }'
-```
-
-**V2 Payload:**
-
-```shell
-curl -i -X POST \
-  https://image.adobe.io/v2/remove-background \
-  -H 'Authorization: string' \
-  -H 'Content-Type: application/json' \
-  -H 'x-api-key: YOUR_API_KEY_HERE' \
-  -d '{
-    "image": {
-      "source": {
-        "url": "string"
-      }
-    },
-    "mode": "cutout",
-    "output": {
-      "mediaType": "image/jpeg"
-    },
-    "trim": false,
-    "backgroundColor": {
-      "red": 255,
-      "green": 255,
-      "blue": 255,
-      "alpha": 1
-    },
-    "colorDecontamination": 1
-  }'
-```
-
-### Step 2: Test your integration
-
-Be sure to:
-
-* Run your workflow against the V2 endpoint.
-
-* Check that the outputs are correct; V2 includes improved post-processing for cleaner edges and reduced matting.
-
-### Step 3: Deploy the change
-
-To deploy the change:
-
-* Update production systems with the V2 endpoint and payload.
-
-* Monitor results for any errors or issues.
-
-### Notes for developers
-
-Be aware that the V2 endpoint uses a slightly different payload structure.
-Ensure that `image.source.url` and `output.mediaType` are set correctly.
-
-Optional parameters like `trim` and `colorDecontamination` are available in V2 for enhanced output quality.
-
-The latest technical information is always available on [the API reference documentation](https://developer.adobe.com/firefly-services/docs/photoshop/api/#operation/removeBackground).
-
-For support, contact your Adobe Customer Success Manager.
+For deprecation timelines and support, see [Deprecation Announcement](/getting-started/deprecation-announcement/index.md) and [Remove background](https://developer.adobe.com/firefly-services/docs/photoshop/api/#operation/removeBackground) in the API reference.
