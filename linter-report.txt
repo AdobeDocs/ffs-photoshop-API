@@ -2,20 +2,20 @@
                      LINTER REPORT
 ═══════════════════════════════════════════════════════════════
 
-Generated: 2026-05-07T16:50:16.160Z
+Generated: 2026-05-07T16:57:08.757Z
 Mode: Remark Rules Only (dead links skipped)
 Target Directory: /Users/aabreu/workspace/ffs-photoshop-API
 
 ───────────────────────────────────────────────────────────────
 
-Files to process: 66
+Files to process: 67
 
 
 ═══════════════════════════════════════════════════════════════
                         SUMMARY
 ═══════════════════════════════════════════════════════════════
 
-  📁 Files processed:    66
+  📁 Files processed:    67
   📄 Files with issues:  0
   ❌ Total errors:       0
   ⚠️  Total warnings:     0
