@@ -17,7 +17,8 @@ This page lists **models and cloud endpoints** used by **pegasus-worker-v2** whe
 
 | Capability | Hosting | Model / identifier | API or endpoint | Notes |
 | ---------- | ------- | ------------------ | --------------- | ----- |
-| Generative Fill / Expand | Cloud | `me_md` | `https://firefly-clio-imaging.adobe.io/v2/images/fill`<br>`https://firefly-clio-imaging.adobe.io/v2/images/expand` | Fill and expand each use the corresponding path. |
+| Generative Fill | Cloud | `me_md` | `https://firefly-clio-imaging.adobe.io/v2/images/fill` | |
+| Generative Expand | Cloud | `me_md` | `https://firefly-clio-imaging.adobe.io/v2/images/expand` | |
 | Select Subject | Cloud | Select Subject V5 | Generated dynamically | If cloud fails, falls back to **on-device** (uses **V3**). |
 | Select Sky / sky replacement | On-device | `SKBS` / `SKRF` | — | |
 | Remove tool — MetaCAF (generative remove) | Cloud | multi-edit erase | `https://di-me.ff.adobe.io/v2/images/generate-erase` | |
