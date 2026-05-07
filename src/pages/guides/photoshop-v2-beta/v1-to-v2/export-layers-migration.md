@@ -104,6 +104,7 @@ Both single-layer and multi-layer exports support the optional `iccProfile` fiel
 ```bash
 curl -X POST "https://image.adobe.io/pie/psdService/renditionCreate" \
   -H "Authorization: Bearer $ACCESS_TOKEN" \
+  -H "x-api-key: $apiKey" \
   -H "Content-Type: application/json" \
   -d '{
     "inputs": [{"href": "https://my-bucket.s3.amazonaws.com/input.psd", "storage": "external"}],
@@ -122,6 +123,7 @@ curl -X POST "https://image.adobe.io/pie/psdService/renditionCreate" \
 ```bash
 curl -X POST "https://photoshop-api.adobe.io/v2/create-composite" \
   -H "Authorization: Bearer $ACCESS_TOKEN" \
+  -H "x-api-key: $apiKey" \
   -H "Content-Type: application/json" \
   -d '{
     "image": {"source": {"url": "https://my-bucket.s3.amazonaws.com/input.psd"}},
@@ -150,6 +152,7 @@ curl -X POST "https://photoshop-api.adobe.io/v2/create-composite" \
 ```bash
 curl -X POST "https://image.adobe.io/pie/psdService/renditionCreate" \
   -H "Authorization: Bearer $ACCESS_TOKEN" \
+  -H "x-api-key: $apiKey" \
   -H "Content-Type: application/json" \
   -d '{
     "inputs": [{"href": "https://my-bucket.s3.amazonaws.com/input.psd", "storage": "external"}],
@@ -168,6 +171,7 @@ curl -X POST "https://image.adobe.io/pie/psdService/renditionCreate" \
 ```bash
 curl -X POST "https://photoshop-api.adobe.io/v2/create-composite" \
   -H "Authorization: Bearer $ACCESS_TOKEN" \
+  -H "x-api-key: $apiKey" \
   -H "Content-Type: application/json" \
   -d '{
     "image": {"source": {"url": "https://my-bucket.s3.amazonaws.com/input.psd"}},

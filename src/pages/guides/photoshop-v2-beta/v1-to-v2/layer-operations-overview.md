@@ -207,6 +207,7 @@ Layer A must come first in the array since it's processed first and Layer B refe
 
 For detailed information on working with specific layer types, see these guides:
 
+- **[Background Layers](layer-operations-background.md)** - Background layer operations and conversion
 - **[Image Layers](layer-operations-image.md)** - Image and solid color layers
 - **[Text Layers](layer-operations-text.md)** - Text layers with character and paragraph styles
 - **[Adjustment Layers](layer-operations-adjustments.md)** - Non-destructive adjustment layers
