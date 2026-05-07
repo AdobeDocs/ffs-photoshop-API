@@ -95,7 +95,7 @@ START: What are you trying to do?
 │
 ├─ Edit text layers (V1 /psdService/text endpoint)?
 │  └─> Use /v2/execute-actions with ActionJSON or UXP
-│     └─> Guide: convenience-apis/text-layer-operations
+│     └─> Guide: Text Endpoint Migration Specific (validation checklist section)
 │
 ├─ Create artboards from multiple images?
 │  └─> Use /v2/create-artboard
@@ -913,7 +913,7 @@ V2 supports up to 10 actions executed in sequence:
 ```
 
 **Additional Contents Placeholder:**
-Reference in ActionJSON or UXP scripts as `__ADDITIONAL_CONTENTS_PATH_0__`, `__ADDITIONAL_CONTENTS_PATH_1__`, etc. (0-based index matches position in `additionalContents` array). Binary resources (brushes, patterns, fonts) must use external URLs — inline content is not supported for these types.
+Reference in ActionJSON or UXP scripts as `__ADDITIONAL_CONTENT_0__`, `__ADDITIONAL_CONTENT_1__`, etc. (0-based index matches position in `additionalContents` array). Binary resources (brushes, patterns, fonts) must use external URLs — inline content is not supported for these types.
 
 #### Convenience API details
 
@@ -974,8 +974,8 @@ For multiple layers: repeat the `select` + `set` sequence within the same string
 **Split View:**
 - **Steps**: 34 action steps
 - **Additional Contents**: Yes (2 required)
-  - `__ADDITIONAL_CONTENTS_PATH_0__`: Edited/final output image
-  - `__ADDITIONAL_CONTENTS_PATH_1__`: Product logo
+  - `__ADDITIONAL_CONTENT_0__`: Edited/final output image
+  - `__ADDITIONAL_CONTENT_1__`: Product logo
 - **Key Parameters**: Width: 1200px (resizes final output)
 - **What It Does**: Masked before/after comparison with center divider line + logo
 - **Use Case**: Demonstrating image processing effects with branding
@@ -983,8 +983,8 @@ For multiple layers: repeat the `select` + `set` sequence within the same string
 **Side by Side:**
 - **Steps**: 19 action steps
 - **Additional Contents**: Yes (2 required)
-  - `__ADDITIONAL_CONTENTS_PATH_0__`: Edited/final output image
-  - `__ADDITIONAL_CONTENTS_PATH_1__`: Product logo
+  - `__ADDITIONAL_CONTENT_0__`: Edited/final output image
+  - `__ADDITIONAL_CONTENT_1__`: Product logo
 - **Key Parameters**: Width: 1195.0px (exact value with decimal)
 - **What It Does**: Simple side-by-side comparison without masking + logo
 - **Use Case**: Clean before/after comparisons with branding
@@ -3617,14 +3617,17 @@ Use this checklist when migrating or validating V1 → V2 code:
 - [ ] Choose ActionJSON for fixed edits on known layers; choose UXP for conditional/iterative logic
 - [ ] ActionJSON must be stringified; include `contentType: "application/json"`
 - [ ] UXP: use `core.executeAsModal()` for document modifications; include `contentType: "application/javascript"`
-- [ ] **Bounds/visibility-only edits:** When the V1 payload only changes layer bounds or visibility (no text content/style fields), V2 still requires a non-empty `options` with ActionJSON or UXP — an empty `options` object is rejected with `"options: At least one of actions or uxp must be provided"`. Generate ActionJSON that selects each target layer by `_name` and applies: `translate`/`transform` for bounds changes, `hide`/`show` for visibility.
+- [ ] **Multi-layer edits:** V1 `options.layers[]` often contains many layers (10–50+). The V2 ActionJSON MUST contain one `select`+`set` step pair per layer — do NOT deduplicate layers that share the same text content, and do NOT drop any layers. Select by `_id` (integer), not `_name` (layer names are non-unique). Example for a two-layer payload: `[{"_obj":"select","_target":[{"_ref":"layer","_id":71}],"makeVisible":false},{"_obj":"set","_target":[{"_ref":"textLayer","_enum":"ordinal","_value":"targetEnum"}],"to":{"_obj":"textLayer","textKey":"Hello"}},{"_obj":"select","_target":[{"_ref":"layer","_id":44}],"makeVisible":false},{"_obj":"set","_target":[{"_ref":"textLayer","_enum":"ordinal","_value":"targetEnum"}],"to":{"_obj":"textLayer","textKey":"World"}}]`
+- [ ] **Bounds/visibility-only edits:** When the V1 payload only changes layer bounds or visibility (no text content/style fields), V2 still requires a non-empty `options` with ActionJSON or UXP — an empty `options` object is rejected with `"options: At least one of actions or uxp must be provided"`. Generate ActionJSON that selects each target layer by `_id` and applies: `translate`/`transform` for bounds changes, `hide`/`show` for visibility. Do NOT attempt a declarative V2 text-layer edit without at least one entry in `options.actions` or `options.uxp`.
+- [ ] `options.fonts[]` → `options.fontOptions.additionalFonts[]` with `{source: {url}}` structure
+- [ ] `options.manageMissingFonts: "useDefault"` → `options.fontOptions.missingFontStrategy: "use_default"`
 
 ### Action operations specific
 - [ ] Actions use `source` object not `href`
 - [ ] ActionJSON is stringified (not array/object)
 - [ ] `contentType` specified for inline content
 - [ ] Additional contents use correct field name (`additionalContents`, not `additionalImages`)
-- [ ] Additional contents placeholder format is `__ADDITIONAL_CONTENTS_PATH_0__` (not `__ADDITIONAL_IMAGES_0__`)
+- [ ] Additional contents placeholder format is `__ADDITIONAL_CONTENT_0__` (not `__ADDITIONAL_IMAGES_0__` or `__ADDITIONAL_CONTENTS_PATH_0__`); preserve the numeric index from the original V1 placeholder exactly — do NOT renumber
 - [ ] `additionalContents` max count is 25 (not 10)
 - [ ] UXP script uses object syntax for `options.uxp` (not array)
 - [ ] UXP script output paths use `plugin-temp:/filename.ext` (not `__UXP_OUTPUT_PATH__`)
@@ -3811,7 +3814,7 @@ curl -X GET https://photoshop-api.adobe.io/v2/status/{jobId} \
 - XMP with Orientation override (V2 new capability)
 - Creative Cloud Storage (ACP) clarifications
 - Layer processing order (V2 top-down, V1 bottom-up)
-- `additionalContents` / `__ADDITIONAL_CONTENTS_PATH_0__` (replaces `additionalImages`)
+- `additionalContents` / `__ADDITIONAL_CONTENT_0__` (replaces `additionalImages`)
 - UXP object syntax and `plugin-temp:/` output path
 - `scriptOutputPattern` hosted destination (`{"validityPeriod": 3600}`)
 - `resolution` object format, integer `depth`, `"grayscale"` mode name
@@ -4102,9 +4105,9 @@ V1 `options.actionJSON` was an **array of inline JSON objects**. V2 requires Act
 |---|---|---|
 | Field name | `options.additionalImages[]` | `options.additionalContents[]` |
 | Item structure | `{href, storage}` | `{source: {url}}` |
-| Placeholder | `ACTION_JSON_OPTIONS_ADDITIONAL_IMAGES_0` | `__ADDITIONAL_CONTENTS_PATH_0__` |
+| Placeholder | `ACTION_JSON_OPTIONS_ADDITIONAL_IMAGES_0` | `__ADDITIONAL_CONTENT_0__` |
 
-The old placeholder format is still accepted in V2 for backward compatibility but `__ADDITIONAL_CONTENTS_PATH_X__` is preferred.
+Use `__ADDITIONAL_CONTENT_N__` where N is the exact index from the original V1 placeholder — do NOT renumber. The old `ACTION_JSON_OPTIONS_ADDITIONAL_IMAGES_N` format is accepted by V2 for backward compatibility but `__ADDITIONAL_CONTENT_N__` is the authoritative format per the V2 API schema.
 
 ### .atn action source nesting
 
