@@ -18,22 +18,20 @@ This API uses advanced AI to automatically detect and isolate the main subject o
 
 ## Overview
 
-Use **Remove Background v2**: submit a job with `POST https://image.adobe.io/v2/remove-background`, then poll **`GET https://image.adobe.io/v2/status/{jobId}`** with the `jobId` from the response until the job completes. See [Remove background](https://developer.adobe.com/firefly-services/docs/photoshop/api/#operation/removeBackground) and [Get status - v2](https://developer.adobe.com/firefly-services/docs/photoshop/api/#operation/facadeJobStatus) in the API reference.
-
-The following example removes the background (cutout-style output) using an external image URL:
+The `/v2/remove-background` endpoint can recognize the subject of an image and eliminate the background, providing the subject as the output.
 
 ![alt image](../../assets/imagecutout-cutout-example.png?raw=true "Original Image")
 
 ```shell
-curl -X POST \
+curl -i -X POST \
   https://image.adobe.io/v2/remove-background \
-  -H "Authorization: Bearer $token" \
-  -H "x-api-key: $apiKey" \
-  -H "Content-Type: application/json" \
+  -H 'Authorization: Bearer $token' \
+  -H 'Content-Type: application/json' \
+  -H 'x-api-key: $apiKey' \
   -d '{
     "image": {
       "source": {
-        "url": "<signed_get_url_or_supported_source_url>"
+        "url": "<signed_get_url>"
       }
     },
     "mode": "cutout",
@@ -65,11 +63,17 @@ Sample input and output:
 3. Make the second API call to the Photoshop Action service to use the intermediate result as well as the make-file.atn file to generate a final JPEG format result with the desired Photoshop path embedded.
 4. Open the final result with the Photoshop Desktop app to check the generated path in the path panel.
 
-## Migrating from legacy Sensei endpoints
+## Optional parameters
 
-The legacy `/sensei/cutout`, `/sensei/mask`, and `/sensei/status/{jobId}` flows are **not** included in the current Photoshop API OpenAPI reference. Integrations should use **`POST /v2/remove-background`** and **`GET /v2/status/{jobId}`** instead.
+The V2 endpoint supports additional parameters for enhanced output quality:
 
-* Use **`mode`: `"cutout"`** for subject cutout output, **`mode`: `"mask"`** for a grayscale mask PNG, or **`mode`: `"psd"`** when you need PSD output (see the reference schema for `RemoveBgMode`).
-* Request bodies use the v2 shape (`image.source.url`, optional `output.mediaType`, `trim`, `backgroundColor`, `colorDecontamination`, and so on)—not the older `input` / `output` storage objects used by Sensei.
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `mode` | string | Output mode. `cutout` returns the subject on a transparent background; `mask` returns a grayscale mask. |
+| `trim` | boolean | Trims transparent edges from the output image. |
+| `backgroundColor` | object | Sets a background fill color (RGBA). |
+| `colorDecontamination` | number | Reduces color bleed from the removed background (0–1). |
+
+For the latest technical information, see [the API reference documentation](https://developer.adobe.com/firefly-services/docs/photoshop/api/#operation/removeBackground).
 
 For deprecation timelines and support, see [Deprecation Announcement](/getting-started/deprecation-announcement/index.md) and [Remove background](https://developer.adobe.com/firefly-services/docs/photoshop/api/#operation/removeBackground) in the API reference.
