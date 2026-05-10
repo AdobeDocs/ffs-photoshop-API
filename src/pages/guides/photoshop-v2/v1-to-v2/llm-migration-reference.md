@@ -25,7 +25,6 @@ keywords:
 7. [Common migration issues and solutions](#common-migration-issues-and-solutions)
 8. [Code transformation examples](#code-transformation-examples)
 9. [Validation checklist](#validation-checklist)
-10. [LLM interaction guidelines](#llm-interaction-guidelines)
 
 ## Quick reference and decision trees
 
@@ -96,7 +95,7 @@ START: What are you trying to do?
 │
 ├─ Edit text layers (V1 /psdService/text endpoint)?
 │  └─> Use /v2/execute-actions with ActionJSON or UXP
-│     └─> Guide: convenience-apis/text-layer-operations
+│     └─> Guide: Text Endpoint Migration Specific (validation checklist section)
 │
 ├─ Create artboards from multiple images?
 │  └─> Use /v2/create-artboard
@@ -629,7 +628,8 @@ V2 allows you to override the image's embedded orientation metadata by specifyin
 - `"adjustment_layer"` - Non-destructive adjustments
 - `"smart_object_layer"` - Smart objects
 - `"solid_color_layer"` - Solid color fill layers
-- `"group_layer"` - Layer groups (V1 `"layerSection"` → V2 `"group_layer"`). **Creating a new document with a group layer is not yet supported (upcoming feature).** **Editing an existing document** to add a layer inside a group layer **is supported**: use placement `type: "into"` with `referenceLayer` (e.g. `"referenceLayer": { "name": "Group 1" }`).
+- `"group_layer"` - Layer groups (V1 `"layerSection"` → V2 `"group_layer"`). **Creating a new document with a group layer is not yet supported (upcoming feature).** **Editing an existing document** to add a layer inside a group layer **is supported**: use placement `type: "into"` with `referenceLayer` (e.g. `"referenceLayer": { "name": "Group 1" }`). The `children` array is **not accepted in edit operations** — use `into` placement with `referenceLayer` instead.
+- `"background_layer"` - Background layer (V1 `"backgroundLayer"` → V2 `"background_layer"`). Target by `name: "Background"` or the `id` returned from the manifest (not `-1` as in V1; flat backgrounds with no layers use `id: 0`). Supports add, edit, delete, and convert-to-layer. Move is not supported. **Restricted fields**: `transform`, `transformMode`, `pixelMask`, `protection`, `blendOptions`. To apply any restricted field, convert to a regular layer first (`convertToLayer: true`). See **Background Layer Specifics** below.
 
 **Placement Options:**
 ```json
@@ -659,7 +659,7 @@ V2 allows you to override the image's embedded orientation metadata by specifyin
 
 <InlineAlert variant="info" slots="text"/>
 
-For `smart_object_layer`, `opacity` and `blendMode` remain nested under `blendOptions`. For all other layer types (image, text, adjustment, solid color, group), they are **top-level** properties in V2.
+For `smart_object_layer`, `opacity` and `blendMode` remain nested under `blendOptions`. For all other layer types (image, text, adjustment, solid color, group, background), they are **top-level** properties in V2.
 
 **Layer Transforms (V1 → V2):**
 
@@ -678,8 +678,9 @@ For `smart_object_layer`, `opacity` and `blendMode` remain nested under `blendOp
 - Layer type: V1 `"smartObject"` → V2 `"smart_object_layer"`
 - Source: V1 `input: {href, storage}` → V2 `smartObject.smartObjectFile.source.url` (nested deeper)
 - Linked flag: V1 `smartObject.linked` → V2 `smartObject.isLinked`
-- V2 adds SVG as a new source format; V1 supported PSD, JPEG, PNG, AI, and PDF
+- V2 adds SVG and AI as new source formats; V1 supported PSD, JPEG, PNG, and PDF
 - **Supported source file types:** PSD (`image/vnd.adobe.photoshop`), JPEG (`image/jpeg`), PNG (`image/png`), TIFF (`image/tiff`), SVG (`image/svg+xml`), AI (`application/illustrator`), PDF (`application/pdf`)
+- **AI file requirement:** AI files are only supported when the **Create PDF Compatible File** option was enabled when saving from Adobe Illustrator.
 - **Resize with linked smart objects:** Width-only resize (no layer edits) → ALL linked SOs are rasterized to pixel layers. Edit/add a linked SO in the same request + resize → that edited SO stays linked; all other linked SOs are rasterized.
 - Cannot replace a linked SO with an embedded SO (V2 limitation)
 
@@ -710,7 +711,7 @@ For `smart_object_layer`, `opacity` and `blendMode` remain nested under `blendOp
   - V1: `to` = **length** — `{from: 0, to: 5}` = 5 characters (indices 0–4)
   - V2: `apply.to` = **inclusive end index** — `{apply: {from: 0, to: 4}}` = indices 0–4 (same result)
   - **Migration rule: subtract 1 from V1's `to` value**. Same applies to paragraph style ranges.
-  - **characterStyles with no range (implicit full-string in V1):** If a V1 `characterStyle` has no `from`/`to` fields (applied to entire content implicitly), V2 requires an explicit `apply` block: `apply.from = 0`, `apply.to = len(text.content) - 1`. Omitting `apply` entirely causes the style to not apply, resulting in default font rendering and significant pixel differences.
+  - **characterStyles with no range (implicit full-string in V1):** If a V1 `characterStyle` has no `from`/`to` fields (applied to entire content implicitly), `apply` is **optional** in V2. Omitting `apply` applies the style to the entire text content. You may include `apply: {from: 0, to: len(text.content) - 1}` explicitly, but it is not required.
 - Character style structure: V1 direct properties → V2 wrapped in `characterStyle` object
 - Font name: V1 top-level `fontName` → V2 `characterStyle.font.postScriptName` (inside `characterStyle.font`)
 - Text bounds: V1 layer-level `bounds: {left, top, width, height}` → V2 `text.frame: {type: "area", bounds: {top, left, right, bottom}}` where `right = left + width`, `bottom = top + height`
@@ -720,6 +721,85 @@ For `smart_object_layer`, `opacity` and `blendMode` remain nested under `blendOp
 - `textOrientation` is a text-level property (not per character-style as V1's `orientation`)
 - Multi-line text: use `\r` for line breaks (same in both)
 - Font options: V1 `options.fonts` (href+storage) → V2 `fontOptions.additionalFonts` (source.url); V1 `options.globalFont` → V2 `fontOptions.defaultFontPostScriptName`; V1 `options.manageMissingFonts: "useDefault"` → V2 `fontOptions.missingFontStrategy: "use_default"` (`"fail"` unchanged)
+
+**Background Layer Specifics:**
+
+- Layer type: V1 `"backgroundLayer"` → V2 `"background_layer"`
+- V1 referenced background by `id: -1`; V2 returns the actual PIE layer ID from the manifest. For documents with **only** a flat background (no other layers), the manifest returns `id: 0`.
+- Target background layer in V2 by `name: "Background"` or by the `id` from the manifest response.
+- Manifest response includes `background.canConvertToLayer` (boolean) — indicates whether the background can be promoted to a regular layer via `convertToLayer: true`.
+- **Placement:** Background layers are always at the bottom of the stack. Do NOT include `placement` on a `background_layer` add operation — it is ignored.
+
+**Allowed direct edits** (no conversion needed):
+- `isVisible` — toggle layer visibility
+- `image.source` — replace background pixel content (same `image` block as other layer types)
+
+**Restricted fields** — return error when set directly on `background_layer`:
+`transform`, `transformMode`, `pixelMask`, `protection`, `blendOptions`
+
+**Mutually exclusive within a single entry:** `image` (pixel replacement) and `convertToLayer: true` cannot appear in the same layer entry. Use two separate entries in the `layers` array (see chained workflow below).
+
+**Convert to regular layer:**
+Use `convertToLayer: true` to promote the background to a regular `layer`. Use `convertedLayerName` to
+assign a name immediately — subsequent `layers` entries in the **same API call** can then target it
+by that name:
+
+```json
+{
+  "type": "background_layer",
+  "name": "Background",
+  "operation": { "type": "edit" },
+  "convertToLayer": true,
+  "convertedLayerName": "Converted Background"
+}
+```
+
+After conversion the layer appears in the manifest with `type: "layer"` and the assigned name.
+All previously-restricted operations (`transform`, `protection`, `blendOptions`, etc.) are now valid.
+
+**Chained workflow — pixel replace + convert + transform in one API call:**
+
+Place multiple entries in the `layers` array; the processor applies them sequentially:
+
+```json
+"layers": [
+  {
+    "type": "background_layer",
+    "name": "Background",
+    "operation": { "type": "edit" },
+    "image": { "source": { "url": "<NEW_BACKGROUND_IMAGE>" } }
+  },
+  {
+    "type": "background_layer",
+    "name": "Background",
+    "operation": { "type": "edit" },
+    "convertToLayer": true,
+    "convertedLayerName": "Converted Background"
+  },
+  {
+    "type": "layer",
+    "name": "Converted Background",
+    "operation": { "type": "edit" },
+    "transformMode": "custom",
+    "transform": { "angle": 15.0, "skew": { "horizontal": 0.0, "vertical": 0.0 } }
+  }
+]
+```
+
+Entry 1 replaces the background pixels.
+Entry 2 converts the background to a named regular layer.
+Entry 3 applies a transform to the converted layer — using `name: "Converted Background"` which was
+assigned in entry 2.
+
+> **V1 → V2 background layer migration checklist:**
+> - Change `type: "backgroundLayer"` → `type: "background_layer"`
+> - Change `id: -1` → use `id` from manifest (or `name: "Background"`)
+> - Change `visible` → `isVisible`
+> - Remove `locked` / `protection` from background_layer entries (add after conversion)
+> - Replace `add: {}` → `operation: { "type": "add" }` (no `placement`)
+> - Replace `edit: {}` → `operation: { "type": "edit" }`
+> - Replace `input.href` → `image.source.url`
+> - To apply `transform`, `protection`, or `blendOptions`: add `convertToLayer: true` + `convertedLayerName`, then target the converted layer by name in a subsequent entry
 
 ### C. Actions migration
 
@@ -833,7 +913,7 @@ V2 supports up to 10 actions executed in sequence:
 ```
 
 **Additional Contents Placeholder:**
-Reference in ActionJSON or UXP scripts as `__ADDITIONAL_CONTENTS_PATH_0__`, `__ADDITIONAL_CONTENTS_PATH_1__`, etc. (0-based index matches position in `additionalContents` array). Binary resources (brushes, patterns, fonts) must use external URLs — inline content is not supported for these types.
+Reference in ActionJSON or UXP scripts as `__ADDITIONAL_CONTENT_0__`, `__ADDITIONAL_CONTENT_1__`, etc. (0-based index matches position in `additionalContents` array). Binary resources (brushes, patterns, fonts) must use external URLs — inline content is not supported for these types.
 
 #### Convenience API details
 
@@ -894,8 +974,8 @@ For multiple layers: repeat the `select` + `set` sequence within the same string
 **Split View:**
 - **Steps**: 34 action steps
 - **Additional Contents**: Yes (2 required)
-  - `__ADDITIONAL_CONTENTS_PATH_0__`: Edited/final output image
-  - `__ADDITIONAL_CONTENTS_PATH_1__`: Product logo
+  - `__ADDITIONAL_CONTENT_0__`: Edited/final output image
+  - `__ADDITIONAL_CONTENT_1__`: Product logo
 - **Key Parameters**: Width: 1200px (resizes final output)
 - **What It Does**: Masked before/after comparison with center divider line + logo
 - **Use Case**: Demonstrating image processing effects with branding
@@ -903,8 +983,8 @@ For multiple layers: repeat the `select` + `set` sequence within the same string
 **Side by Side:**
 - **Steps**: 19 action steps
 - **Additional Contents**: Yes (2 required)
-  - `__ADDITIONAL_CONTENTS_PATH_0__`: Edited/final output image
-  - `__ADDITIONAL_CONTENTS_PATH_1__`: Product logo
+  - `__ADDITIONAL_CONTENT_0__`: Edited/final output image
+  - `__ADDITIONAL_CONTENT_1__`: Product logo
 - **Key Parameters**: Width: 1195.0px (exact value with decimal)
 - **What It Does**: Simple side-by-side comparison without masking + logo
 - **Use Case**: Clean before/after comparisons with branding
@@ -960,7 +1040,7 @@ Supports glob patterns: `*.json`, `result-*.png`, etc.
 - Pattern: Returns manifest to specified output destination
 - Options: `includeLayerThumbnails`, `includeXmp`, `maximumThumbnailDepth`, `trimToTransparency` (boolean, crops layer thumbnails to visible content; requires `includeLayerThumbnails: true`; has no effect on adjustment layers or layers with no pixel data — those always return a blank white canvas thumbnail; specific to `/v2/generate-manifest` — for trimming exported images in `/v2/create-composite` or `/v2/execute-actions`, use `cropMode: "trim_to_transparency"` in output options instead)
 - V1 manifest had `locked` (boolean) on layers → V2 returns `protection` (array of flags: `none`, `all`, `transparency`, `composite`, `position`, `artboard_autonest`)
-- V1 manifest had `mask` property with `offset.x`/`offset.y` → V2 uses `pixelMask` with `offset.horizontal`/`offset.vertical`, plus new `hasMask`, `extendOpaque`, `bounds` fields; density/feather moved to separate `userMask` property; to delete a pixel mask in edit operations use `pixelMask: { "delete": true }` (edit only, not valid on add; supported on all layer types)
+- V1 manifest had `mask` property with `offset.x`/`offset.y` → V2 uses `pixelMask` with `offset.horizontal`/`offset.vertical`, plus new read-only fields `hasMask`, `extendOpaque`, `bounds`, and editable fields `enabled` (boolean, default `true`, toggles mask visibility without deleting data) and `linked` (boolean, default `true`, whether mask transforms with the layer); density/feather moved to separate `userMask` property: `density` (integer, 0–100, mask opacity/strength) and `feather` (number, 0–250, edge softness in pixels); to delete a pixel mask in edit operations use `pixelMask: { "delete": true }` (edit only, not valid on add; supported on all layer types)
 - Clipping mask: V1 `mask.clip` → V2 `layerSettings.clippingMask` in manifest; use top-level `isClipped: true` in edit operations
 - **Layer type renames** (manifest response only — V2 edit/create-composite request payloads still use `"type": "layer"` unchanged): `layer`→`pixel_layer`, `textLayer`→`text_layer`, `layerSection`→`group_layer`, `layerSection`(artboard)→`artboard`, `smartObject`→`smart_object_layer`, `fillLayer`→`solid_color_layer`, `adjustmentLayer`→`adjustment_layer`, `backgroundLayer`→`background_layer`
 - **`bounds` format changed**: V1 `{height, left, top, width}` → V2 `{left, top, right, bottom}` (no height/width; compute from right-left, bottom-top)
@@ -3498,7 +3578,7 @@ Use this checklist when migrating or validating V1 → V2 code:
 - [ ] Text layers: characterStyles wrapped in `characterStyle` object
 - [ ] Text layers: paragraphStyles wrapped in `paragraphStyle` object
 - [ ] Pixel mask offset uses `offset.horizontal`/`offset.vertical` (not `offset.x`/`offset.y`)
-- [ ] Pixel mask: V1 `mask.linked`/`mask.enabled` → V2 `mask.isLinked`/`mask.isEnabled`; source is `mask.source.url` (not `mask.input.href`)
+- [ ] Pixel mask: V1 `mask.linked`/`enabled`/`input` → V2 `pixelMask.linked`/`enabled`/`source.url` (also: prefix changed from `mask` to `pixelMask`)
 - [ ] Visibility: `visible` → `isVisible`
 - [ ] Opacity/blend mode: for most layer types, top-level `opacity` and `blendMode` (not `blendOptions`); for `smart_object_layer`, use `blendOptions.opacity` and `blendOptions.blendMode`
 - [ ] Layer transforms: V1 `bounds {left,top,width,height}` → V2 `transform {offset:{horizontal,vertical}, dimension:{width,height}}`; `transformMode: "custom"` is required
@@ -3528,7 +3608,8 @@ Use this checklist when migrating or validating V1 → V2 code:
 - [ ] Source: V1 `input: {href, storage}` → V2 `smartObject.smartObjectFile.source.url`
 - [ ] Linked flag: `smartObject.linked` → `smartObject.isLinked`
 - [ ] `transformMode` required when using `transform` object: `"none"`, `"custom"`, `"fit"`, or `"fill"`
-- [ ] V2 adds SVG source file type (not in V1); AI, PDF, and TIFF were already supported in V1
+- [ ] V2 adds SVG and AI as new source file types (not in V1); PSD, JPEG, PNG, TIFF, and PDF were already supported in V1
+- [ ] AI files require **Create PDF Compatible File** to have been enabled when saving from Illustrator
 - [ ] Width-only resize: linked SOs are rasterized to pixel layers unless their content is provided in the same request
 
 ### Text endpoint migration specific (`/pie/psdService/text`)
@@ -3536,14 +3617,17 @@ Use this checklist when migrating or validating V1 → V2 code:
 - [ ] Choose ActionJSON for fixed edits on known layers; choose UXP for conditional/iterative logic
 - [ ] ActionJSON must be stringified; include `contentType: "application/json"`
 - [ ] UXP: use `core.executeAsModal()` for document modifications; include `contentType: "application/javascript"`
-- [ ] **Bounds/visibility-only edits:** When the V1 payload only changes layer bounds or visibility (no text content/style fields), V2 still requires a non-empty `options` with ActionJSON or UXP — an empty `options` object is rejected with `"options: At least one of actions or uxp must be provided"`. Generate ActionJSON that selects each target layer by `_name` and applies: `translate`/`transform` for bounds changes, `hide`/`show` for visibility.
+- [ ] **Multi-layer edits:** V1 `options.layers[]` often contains many layers (10–50+). The V2 ActionJSON MUST contain one `select`+`set` step pair per layer — do NOT deduplicate layers that share the same text content, and do NOT drop any layers. Select by `_id` (integer), not `_name` (layer names are non-unique). Example for a two-layer payload: `[{"_obj":"select","_target":[{"_ref":"layer","_id":71}],"makeVisible":false},{"_obj":"set","_target":[{"_ref":"textLayer","_enum":"ordinal","_value":"targetEnum"}],"to":{"_obj":"textLayer","textKey":"Hello"}},{"_obj":"select","_target":[{"_ref":"layer","_id":44}],"makeVisible":false},{"_obj":"set","_target":[{"_ref":"textLayer","_enum":"ordinal","_value":"targetEnum"}],"to":{"_obj":"textLayer","textKey":"World"}}]`
+- [ ] **Bounds/visibility-only edits:** When the V1 payload only changes layer bounds or visibility (no text content/style fields), V2 still requires a non-empty `options` with ActionJSON or UXP — an empty `options` object is rejected with `"options: At least one of actions or uxp must be provided"`. Generate ActionJSON that selects each target layer by `_id` and applies: `translate`/`transform` for bounds changes, `hide`/`show` for visibility. Do NOT attempt a declarative V2 text-layer edit without at least one entry in `options.actions` or `options.uxp`.
+- [ ] `options.fonts[]` → `options.fontOptions.additionalFonts[]` with `{source: {url}}` structure
+- [ ] `options.manageMissingFonts: "useDefault"` → `options.fontOptions.missingFontStrategy: "use_default"`
 
 ### Action operations specific
 - [ ] Actions use `source` object not `href`
 - [ ] ActionJSON is stringified (not array/object)
 - [ ] `contentType` specified for inline content
 - [ ] Additional contents use correct field name (`additionalContents`, not `additionalImages`)
-- [ ] Additional contents placeholder format is `__ADDITIONAL_CONTENTS_PATH_0__` (not `__ADDITIONAL_IMAGES_0__`)
+- [ ] Additional contents placeholder format is `__ADDITIONAL_CONTENT_0__` (not `__ADDITIONAL_IMAGES_0__` or `__ADDITIONAL_CONTENTS_PATH_0__`); preserve the numeric index from the original V1 placeholder exactly — do NOT renumber
 - [ ] `additionalContents` max count is 25 (not 10)
 - [ ] UXP script uses object syntax for `options.uxp` (not array)
 - [ ] UXP script output paths use `plugin-temp:/filename.ext` (not `__UXP_OUTPUT_PATH__`)
@@ -3595,8 +3679,10 @@ Use this checklist when migrating or validating V1 → V2 code:
 - [ ] `fill` object form (V2): `{"solidColor": {"red": N, "green": N, "blue": N}}` for custom color
 - [ ] `depth` value is mode-dependent: `bitmap`→1 only; `grayscale`/`rgb`/`hsb`→8,16,32; `cmyk`/`lab`/`multichannel`→8,16; `indexed`/`duotone`→8 only
 - [ ] `solid_color_layer` fill uses `fill.solidColor.{red,green,blue}` (not `fills[0].solidColor.rgb.*`)
-- [ ] `fontColor` components are ≤ 32768 (scale V1 values > 32768 using `× 32768/65535`)
-- [ ] All `characterStyles` entries have explicit `apply.{from, to}` (no implicit full-range)
+- [ ] `fontColor.cmyk.yellowColor` → `fontColor.cmyk.yellow`; `fontColor.lab.luminance` → `fontColor.lab.l`
+- [ ] `fontColor` rgb/cmyk/gray/lab-l: V1 accepted 0–65535; V2 max is 32768 (use 32768 if V1 value exceeds it)
+- [ ] `fontColor` lab `a`/`b`: V1 accepted 0–65535; V2 max is 16384 (use 16384 if V1 value exceeds it)
+- [ ] `apply.{from, to}` is optional per `characterStyles` entry — omitting it applies the style to the full text; include it only when styling a specific character range
 - [ ] Source/destination URLs are fully percent-encoded (no unencoded spaces or special chars)
 
 ### Export layers specific
@@ -3621,120 +3707,6 @@ Use this checklist when migrating or validating V1 → V2 code:
 - [ ] Same OAuth token used (no change needed)
 - [ ] Authorization header present
 - [ ] x-api-key header present
-
-## LLM interaction guidelines
-
-### When users ask "How do I migrate X endpoint?"
-
-1. **Identify the V1 endpoint category:**
-   - Is it Lightroom (`/lrService/*`)? → Edit Operations
-   - Is it PSD operations (`/pie/psdService/*`)? → Determine specific type
-   - Is it actions? → Actions Migration
-   - Is it status? → Status Migration
-
-2. **Provide the V2 equivalent:**
-   - Show endpoint mapping from Quick Reference
-   - Explain the new endpoint purpose
-
-3. **Show code transformation:**
-   - Complete V1 example
-   - Complete V2 equivalent
-   - Highlight key differences
-
-4. **Link to detailed guide:**
-   - Reference specific migration guide section
-
-### When users ask "My V1 code does Y, how do I do that in V2?"
-
-1. **Analyze the V1 pattern:**
-   - What operation is being performed?
-   - What parameters are being used?
-   - What output format is expected?
-
-2. **Map to V2 operation type:**
-   - Use Decision Tree to determine correct endpoint
-   - Identify required vs optional parameters
-
-3. **Provide equivalent V2 code:**
-   - Complete working example
-   - Preserve user's specific values
-   - Show parameter name mappings
-
-4. **Suggest improvements:**
-   - Can operations be batched?
-   - Better storage option available?
-   - New capabilities that might help?
-
-### When users ask "What storage should I use for Z?"
-
-1. **Analyze the use case:**
-   - What type of output? (image, metadata, temporary)
-   - What's the workflow? (production, prototype, CC integration)
-   - How long do files need to persist?
-
-2. **Apply decision matrix:**
-   - Use Storage Decision Matrix
-   - Consider file size and type
-   - Consider infrastructure
-
-3. **Recommend storage type:**
-   - Provide specific example
-   - Explain benefits for this use case
-   - Warn about limitations
-
-### When users report "I'm getting error X in v2"
-
-1. **Match to common issues:**
-   - Check Common Migration Issues section
-   - Identify error category
-
-2. **Explain root cause:**
-   - Why is this happening?
-   - What changed from V1?
-
-3. **Provide solution:**
-   - Show incorrect code
-   - Show correct code
-   - Explain the difference
-
-4. **Show correct pattern:**
-   - Complete working example
-   - Related validation checklist items
-
-### Question type examples
-
-**"How do I migrate /lrService/autoTone?"**
-
-Response should include:
-1. V2 endpoint: `/v2/edit`
-2. Side-by-side code comparison
-3. Key changes highlighted
-4. Link to Edit Operations guide
-
-**"I want to add text to a PSD"**
-
-Response should include:
-1. Use `/v2/create-composite`
-2. Show `edits.layers` with `text_layer` type
-3. Complete example with character/paragraph styles
-4. Link to Text Layer Operations guide
-
-**"What's the V2 equivalent of productCrop?"**
-
-Response should include:
-1. Use `/v2/execute-actions`
-2. Explain published action files
-3. Show ActionJSON content
-4. Option to customize
-5. Link to Actions guide
-
-**"How do I get the manifest data immediately?"**
-
-Response should include:
-1. Use embedded storage
-2. Show `embedded: "json"` configuration
-3. Explain response format
-4. Warn: Only for metadata/JSON outputs
 
 ## Appendix: Common error codes
 
@@ -3822,9 +3794,9 @@ curl -X GET https://photoshop-api.adobe.io/v2/status/{jobId} \
 
 ## Document version
 
-**Version:** 1.16
+**Version:** 1.19
 **Created:** October 29, 2025
-**Last Updated:** April 30, 2026
+**Last Updated:** May 6, 2026
 
 **Coverage:**
 - All migration guides consolidated
@@ -3842,7 +3814,7 @@ curl -X GET https://photoshop-api.adobe.io/v2/status/{jobId} \
 - XMP with Orientation override (V2 new capability)
 - Creative Cloud Storage (ACP) clarifications
 - Layer processing order (V2 top-down, V1 bottom-up)
-- `additionalContents` / `__ADDITIONAL_CONTENTS_PATH_0__` (replaces `additionalImages`)
+- `additionalContents` / `__ADDITIONAL_CONTENT_0__` (replaces `additionalImages`)
 - UXP object syntax and `plugin-temp:/` output path
 - `scriptOutputPattern` hosted destination (`{"validityPeriod": 3600}`)
 - `resolution` object format, integer `depth`, `"grayscale"` mode name
@@ -3860,7 +3832,7 @@ curl -X GET https://photoshop-api.adobe.io/v2/status/{jobId} \
 - Artboard API V1→V2 complete field-level diff (input restructure, storage mapping, quality/compression enums, crop mode, status response)
 - Adjustment layer operations: `adjustments.type` discriminant required, type mapping table, `exposureValue` rename, hue/sat `hueSaturationAdjustments[]` restructure, `localRange`, parameter ranges, `transformMode` not applicable
 - Text layer operations: character style range off-by-one (V1 `to`=length → V2 `apply.to`=inclusive end index), `font.postScriptName`, `text.frame` area/point types, bounds conversion, font options rename, `textOrientation`
-- Smart object operations: `smartObject.smartObjectFile.source.url` path, `isLinked`, resize-with-linked-SO rasterization behavior, SVG support
+- Smart object operations: `smartObject.smartObjectFile.source.url` path, `isLinked`, resize-with-linked-SO rasterization behavior, SVG support, supported source file types (PSD, JPEG, PNG, TIFF, SVG, AI, PDF); SVG and AI added in V2; AI files require Create PDF Compatible File option in Illustrator
 - `/pie/psdService/text` migration: no declarative V2 equivalent; use `execute-actions` with ActionJSON (fixed edits) or UXP (conditional/iterative); decision table
 - Blend mode location: top-level `opacity`/`blendMode` for most layers; `blendOptions` for `smart_object_layer`
 - Layer transforms: V1 `bounds` → V2 `transform {offset, dimension}` with required `transformMode: "custom"`
@@ -3905,7 +3877,7 @@ layers must appear earlier in the array in V2.
 | V1 `type` | V2 `type` |
 |---|---|
 | `"adjustmentLayer"` | `"adjustment_layer"` |
-| `"backgroundLayer"` | `"background_layer"` (manifest response only; cannot create in edits) |
+| `"backgroundLayer"` | `"background_layer"` (supports add, edit, delete, convert-to-layer; move not supported) |
 | `"fillLayer"` | `"solid_color_layer"` |
 | `"layer"` | `"layer"` (unchanged) |
 | `"layerSection"` | `"group_layer"` |
@@ -3922,7 +3894,7 @@ layers must appear earlier in the array in V2.
 | `blendOptions.blendMode` | `blendMode` (top-level) | Breaking: de-nested |
 | `bounds: {left, top, width, height}` | `transform: {offset: {horizontal, vertical}, dimension: {width, height}}` | Breaking |
 | `mask.clip: true` | `isClipped: true` (top-level) | Breaking |
-| `mask.linked`/`enabled`/`input` | `mask.isLinked`/`isEnabled`/`source.url` | Breaking |
+| `mask.linked`/`enabled`/`input` | `pixelMask.linked`/`enabled`/`source.url` | Breaking (also: prefix changed from `mask` to `pixelMask`) |
 | `fillToCanvas: true` | **Not supported** | Feature gap |
 
 ### Text layer critical changes
@@ -3941,19 +3913,21 @@ layers must appear earlier in the array in V2.
 
 #### Font color value ranges
 
-All `fontColor` components use 16-bit integer values:
+V1 accepted 0–65535 for all `fontColor` components. V2 enforces lower maximums:
 
-| Color Model | Components | Range | Notes |
-|---|---|---|---|
-| `rgb` | `red`, `green`, `blue` | 0–32768 | 16-bit unsigned |
-| `cmyk` | `cyan`, `magenta`, `yellow`, `black` | 0–32768 | 16-bit unsigned |
-| `lab` | `l` | 0–32768 | Lightness, 16-bit unsigned |
-| `lab` | `a`, `b` | -16384–16384 | 16-bit signed |
-| `gray` | `gray` | 0–32768 | 16-bit unsigned|
+| Color Model | V1 Fields | V2 Fields | V1 Range | V2 Range | If V1 value exceeds V2 max |
+|---|---|---|---|---|---|
+| `rgb` | `red`, `green`, `blue` | `red`, `green`, `blue` | 0–65535 | 0–32768 | Use 32768 |
+| `cmyk` | `cyan`, `magenta`, `yellowColor`, `black` | `cyan`, `magenta`, `yellow`, `black` | 0–65535 | 0–32768 | Use 32768 |
+| `lab` | `luminance` | `l` | 0–65535 | 0–32768 | Use 32768 |
+| `lab` | `a`, `b` | `a`, `b` | 0–65535 | -16384–16384 | Use 16384 |
+| `gray` | `gray` | `gray` | 0–65535 | 0–32768 | Use 32768 |
 
 All components are required and default to `0` when omitted. Usage: `fontColor.rgb`, `fontColor.cmyk`, `fontColor.lab`, `fontColor.gray`.
 
-> **V1 fontColor value scaling:** V1 `/psdService/text` accepted `fontColor` components in a **0–65535** (full 16-bit) range. V2 enforces a maximum of **32768**. When migrating V1 payloads with any component above 32768, scale: `v2_value = round(v1_value × 32768 / 65535)` (≈ multiply by 0.5). Example: V1 `red: 65535` → V2 `red: 32768`. V1 payloads with values already ≤ 32768 need no change.
+**V2 rejects requests where any component exceeds its maximum.** Cap values before sending:
+- `rgb`, `cmyk`, `gray`, `lab.l`: cap at **32768** — e.g. V1 `red: 40000` → V2 `red: 32768`
+- `lab.a`, `lab.b`: cap at **16384** — e.g. V1 `a: 17000` → V2 `a: 16384`
 
 ### Adjustment layer critical changes
 
@@ -3995,7 +3969,6 @@ Error when using V1 structure: `"edits.layers[0].fill: fill is required when add
 | Feature | Notes |
 |---|---|
 | `fillToCanvas` | Not supported |
-| `background_layer` create/edit | Not supported (manifest returns `background_layer` for document background) |
 | Canvas size adjustment | Coming soon |
 | Image rotation | Coming soon |
 | Trim by color | Not supported |
@@ -4132,9 +4105,9 @@ V1 `options.actionJSON` was an **array of inline JSON objects**. V2 requires Act
 |---|---|---|
 | Field name | `options.additionalImages[]` | `options.additionalContents[]` |
 | Item structure | `{href, storage}` | `{source: {url}}` |
-| Placeholder | `ACTION_JSON_OPTIONS_ADDITIONAL_IMAGES_0` | `__ADDITIONAL_CONTENTS_PATH_0__` |
+| Placeholder | `ACTION_JSON_OPTIONS_ADDITIONAL_IMAGES_0` | `__ADDITIONAL_CONTENT_0__` |
 
-The old placeholder format is still accepted in V2 for backward compatibility but `__ADDITIONAL_CONTENTS_PATH_X__` is preferred.
+Use `__ADDITIONAL_CONTENT_N__` where N is the exact index from the original V1 placeholder — do NOT renumber. The old `ACTION_JSON_OPTIONS_ADDITIONAL_IMAGES_N` format is accepted by V2 for backward compatibility but `__ADDITIONAL_CONTENT_N__` is the authoritative format per the V2 API schema.
 
 ### .atn action source nesting
 
