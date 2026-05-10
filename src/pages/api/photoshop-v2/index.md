@@ -1,6 +1,6 @@
 ---
-title: Firefly Photoshop v2 beta API Reference
-description: Firefly Photoshop v2 beta API reference documentation.
+title: Firefly Photoshop API v2 Reference
+description: Firefly Photoshop API v2 reference documentation.
 layout: none
 contributors:
   - https://github.com/khound
@@ -8,7 +8,7 @@ contributors:
   - https://github.com/AEAbreu-hub
 keywords:
   - Photoshop API
-  - Photoshop v2 beta
+  - Photoshop API v2
   - Firefly Photoshop API
   - Photoshop API Reference
 ---

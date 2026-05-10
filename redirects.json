@@ -289,27 +289,63 @@
     },
     {
       "Source": "/firefly-services/docs/photoshop/guides/photoshop-v2-beta",
-      "Destination": "/firefly-services/docs/photoshop/guides/photoshop-v2-beta/"
+      "Destination": "/firefly-services/docs/photoshop/guides/photoshop-v2/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/photoshop-v2-beta/",
+      "Destination": "/firefly-services/docs/photoshop/guides/photoshop-v2/"
     },
     {
       "Source": "/firefly-services/docs/photoshop/guides/photoshop-v2-beta/index",
-      "Destination": "/firefly-services/docs/photoshop/guides/photoshop-v2-beta/"
+      "Destination": "/firefly-services/docs/photoshop/guides/photoshop-v2/"
     },
     {
       "Source": "/firefly-services/docs/photoshop/guides/photoshop-v2-beta/v1-to-v2",
-      "Destination": "/firefly-services/docs/photoshop/guides/photoshop-v2-beta/v1-to-v2/"
+      "Destination": "/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/photoshop-v2-beta/v1-to-v2/",
+      "Destination": "/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/"
     },
     {
       "Source": "/firefly-services/docs/photoshop/guides/photoshop-v2-beta/v1-to-v2/index",
-      "Destination": "/firefly-services/docs/photoshop/guides/photoshop-v2-beta/v1-to-v2/"
+      "Destination": "/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/"
     },
     {
       "Source": "/firefly-services/docs/photoshop/api/photoshop-v2-beta",
-      "Destination": "/firefly-services/docs/photoshop/api/photoshop-v2-beta/"
+      "Destination": "/firefly-services/docs/photoshop/api/photoshop-v2/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/api/photoshop-v2-beta/",
+      "Destination": "/firefly-services/docs/photoshop/api/photoshop-v2/"
     },
     {
       "Source": "/firefly-services/docs/photoshop/api/photoshop-v2-beta/index",
-      "Destination": "/firefly-services/docs/photoshop/api/photoshop-v2-beta/"
+      "Destination": "/firefly-services/docs/photoshop/api/photoshop-v2/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/photoshop-v2",
+      "Destination": "/firefly-services/docs/photoshop/guides/photoshop-v2/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/photoshop-v2/index",
+      "Destination": "/firefly-services/docs/photoshop/guides/photoshop-v2/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2",
+      "Destination": "/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/index",
+      "Destination": "/firefly-services/docs/photoshop/guides/photoshop-v2/v1-to-v2/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/api/photoshop-v2",
+      "Destination": "/firefly-services/docs/photoshop/api/photoshop-v2/"
+    },
+    {
+      "Source": "/firefly-services/docs/photoshop/api/photoshop-v2/index",
+      "Destination": "/firefly-services/docs/photoshop/api/photoshop-v2/"
     }
   ],
   ":type": "sheet"
