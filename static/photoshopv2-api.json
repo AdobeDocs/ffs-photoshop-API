@@ -3863,9 +3863,7 @@
     "securitySchemes": {
       "Authorization": {
         "description": "User access token (Bearer xxx)",
-        "in": "header",
-        "name": "Authorization",
-        "scheme": "Bearer",
+        "scheme": "bearer",
         "type": "http"
       },
       "X-Api-Key": {
