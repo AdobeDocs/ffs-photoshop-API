@@ -181,7 +181,7 @@ curl -X POST \
 {"apply": {"from": 0, "to": 4}, "characterStyle": {"font": {"postScriptName": "Arial-BoldMT"}}}
 ```
 
-**characterStyles with no range (implicit full-string in V1):** If a V1 `characterStyle` entry has **neither** `from` nor `to` (applies to the entire content implicitly), V2 requires an explicit `apply` block. Set `apply.from = 0` and `apply.to = len(text.content) - 1`. Omitting `apply` entirely causes the style to not apply, resulting in default font rendering and significant pixel differences.
+**characterStyles with no range (implicit full-string in V1):** If a V1 `characterStyle` entry has **neither** `from` nor `to` (applies to the entire content implicitly), `apply` is optional in V2. Omitting `apply` applies the style to the entire text content. You may include `apply: {from: 0, to: len(text.content) - 1}` explicitly if you prefer, but it is not required.
 
 **V1:** Direct properties in `characterStyles` array. The range is given with `from` and `to` on each item (no `apply` wrapper):
 
@@ -772,21 +772,26 @@ Both V1 and V2 use pixels for `fontSize`. In V2 it goes inside `characterStyle.f
 
 ### Font color structure
 
-**Supported in both V1 and V2:** rgb, cmyk, lab, and gray are all supported in both versions; all components use 16-bit integer values. Use the same nested shape in V2 as in V1.
+**Supported in both V1 and V2:** rgb, cmyk, lab, and gray. V1 accepted 0–65535 for all components; V2 enforces lower maximums:
 
-**Value ranges by color model:**
-
-| Color Model | Components | Range | Notes |
-| ----------- | ---------- | ----- | ----- |
-| `rgb` | `red`, `green`, `blue` | 0-32768 | 16-bit unsigned |
-| `cmyk` | `cyan`, `magenta`, `yellow`, `black` | 0-32768 | 16-bit unsigned |
-| `lab` | `l` | 0-32768 | Lightness, 16-bit unsigned |
-| `lab` | `a`, `b` | -16384-16384 | 16-bit signed |
-| `gray` | `gray` | 0-32768 | 16-bit unsigned; 0 = black, 32768 = white |
+| Color Model | V1 Fields | V2 Fields | V1 Range | V2 Range | If V1 value exceeds V2 max |
+| ----------- | --------- | --------- | --------- | --------- | -------------------------- |
+| `rgb` | `red`, `green`, `blue` | `red`, `green`, `blue` | 0–65535 | 0–32768 | Use 32768 |
+| `cmyk` | `cyan`, `magenta`, `yellowColor`, `black` | `cyan`, `magenta`, `yellow`, `black` | 0–65535 | 0–32768 | Use 32768 |
+| `lab` | `luminance` | `l` | 0–65535 | 0–32768 | Use 32768 |
+| `lab` | `a`, `b` | `a`, `b` | 0–65535 | -16384–16384 | Use 16384 |
+| `gray` | `gray` | `gray` | 0–65535 | 0–32768 | Use 32768 |
 
 All components are required and default to `0` when omitted.
 
-**V1 and V2** (same structure): rgb, cmyk, lab, gray:
+<InlineAlert variant="warning" slots="text1"/>
+
+V2 rejects requests where any `fontColor` component exceeds its maximum. If your V1 payload contains a value above the V2 limit, cap it at the maximum before sending:
+
+- `rgb`, `cmyk`, `gray`, `lab.l` — cap at **32768**. Example: V1 `red: 40000` → V2 `red: 32768`
+- `lab.a`, `lab.b` — cap at **16384**. Example: V1 `a: 40000` → V2 `a: 16384`
+
+**V2 structure** (updated field names): rgb, cmyk, lab, gray:
 
 ```json
 {
@@ -843,7 +848,9 @@ When migrating text layer operations from V1 to V2:
 - [ ] Use `apply.from`/`apply.to` for character style ranges (V2); both indices are inclusive (0-based); wrap style properties in `characterStyle`
 - [ ] Use `font.postScriptName` (inside `characterStyle.font`) in V2 instead of top-level `fontName`
 - [ ] Wrap paragraph style properties in `paragraphStyle` object
-- [ ] Font color: V1 and V2 both support rgb, cmyk, lab, and gray; use the same nested shape (`fontColor.rgb`, `fontColor.cmyk`, `fontColor.lab`, `fontColor.gray`)
+- [ ] Font color field renames: `fontColor.cmyk.yellowColor` → `fontColor.cmyk.yellow`; `fontColor.lab.luminance` → `fontColor.lab.l`
+- [ ] Font color rgb/cmyk/gray/lab-l: V1 accepted 0–65535; V2 clamps to 0–32768 (any value > 32768 becomes 32768)
+- [ ] Font color lab `a`/`b`: V1 accepted 0–65535; V2 range is -16384–16384 (any value > 16384 becomes 16384)
 - [ ] Update font management properties (`manageMissingFonts` → `missingFontStrategy`, `globalFont` → `defaultFontPostScriptName`)
 - [ ] Update custom fonts: `options.fonts` (href, storage) → `fontOptions.additionalFonts` (source.url)
 - [ ] Update inputs/outputs: V1 `inputs[].href` → V2 `image.source.url`; V1 `outputs[].href` → V2 `outputs[].destination.url`, and use `mediaType` instead of `type`

@@ -238,7 +238,6 @@ Smart objects can contain various file types:
 - PSD (image/vnd.adobe.photoshop)
 - JPEG (image/jpeg)
 - PNG (image/png)
-- AI / Adobe Illustrator (application/illustrator)
 - PDF (application/pdf)
 
 **V2 Supported:**
@@ -248,12 +247,14 @@ Smart objects can contain various file types:
 - PNG (image/png)
 - TIFF (image/tiff)
 - SVG (image/svg+xml)
-- AI / Adobe Illustrator (application/illustrator)
+- AI / Adobe Illustrator (application/illustrator) — requires **Create PDF Compatible File** option when saving from Illustrator
 - PDF (application/pdf)
 
 <InlineAlert variant="info" slots="text"/>
 
 V2 adds SVG as a new smart object source type; V1 already supported AI and PDF.
+
+**Note:** AI files are only supported when the **Create PDF Compatible File** option was enabled when saving from Adobe Illustrator.
 
 ## Transform Mode
 

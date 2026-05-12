@@ -162,3 +162,20 @@ curl -X POST \
   }
 ]}'
 ```
+
+## Opening the output PSD in Photoshop
+
+When you open the output PSD locally in Photoshop, you may see a **"missing file"** prompt for the linked smart object. This is expected behavior, not a bug. The path stored inside the PSD points to the server location where the file resided during processing — that path will not resolve on your local machine. Photoshop is correctly flagging the broken link.
+
+You have two options depending on your workflow:
+
+1. **Relink locally.** Keep a copy of the source asset (the file you passed as the linked smart object) somewhere accessible on your machine. In Photoshop, use the **Layer** panel → **Smart Objects** → **Relink to File**,
+
+   ![Relinking the smart object in Photoshop](../../assets/relink-2.jpg?raw=true "Relinking the smart object")
+
+   or respond to the missing-link dialog when the PSD opens. Once relinked, Photoshop will remember the new path.
+
+   ![Missing file prompt in Photoshop](../../assets/relink-1.jpg?raw=true "Missing file prompt")
+
+2. **Use embedded smart objects instead.** If portability matters more than the linked-asset workflow — for example, when handing off the PSD to an end user who just wants to open and work without managing external files — embedded smart objects travel with the PSD and eliminate the relinking step. Set `"isLinked": false` (or omit `isLinked`) in the `smartObject` block to embed rather than link. Linked smart objects are the right choice when you manage your own asset pipeline and want explicit control over source files; embedded is generally smoother for hand-off scenarios.
+
