@@ -29,6 +29,10 @@
     {
       "description": "APIs for retrieving job status information",
       "name": "Job Status"
+    },
+    {
+      "description": "AI-powered background removal and subject isolation operations",
+      "name": "Remove background"
     }
   ],
   "paths": {
@@ -484,6 +488,104 @@
         "summary": "Generate a manifest for given input image",
         "tags": [
           "Photoshop APIs"
+        ]
+      }
+    },
+    "/v2/remove-background": {
+      "servers": [
+        {
+          "url": "https://image.adobe.io",
+          "description": "Photoshop image production host."
+        }
+      ],
+      "post": {
+        "description": "This endpoint allows you to remove the background from an image. The request is processed asynchronously and the status of the running job can be checked with the Get Job Status endpoint. This path uses the Photoshop image production host; other endpoints in this reference default to the Photoshop API production host unless otherwise noted.",
+        "operationId": "removeBackground",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveBackgroundV2Request"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobAcceptedResponse"
+                }
+              }
+            },
+            "description": "Job accepted for processing"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad request - Invalid request payload"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized - Invalid or missing access token"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden - User not authorized or quota exhausted"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Validation error - Invalid input data"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Too many requests - Rate limit exceeded. When present, Retry-After header (seconds) indicates delay before retrying."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "summary": "Remove background v2",
+        "tags": [
+          "Remove background"
         ]
       }
     },
@@ -4891,6 +4993,145 @@
               }
             }
           }
+        ]
+      },
+      "RemoveBackgroundV2Request": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "description": "The image to be processed.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RemoveBgInputImage"
+              }
+            ]
+          },
+          "mode": {
+            "$ref": "#/components/schemas/RemoveBgMode"
+          },
+          "output": {
+            "description": "The options for the output image.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RemoveBgOutputImageOptions"
+              }
+            ]
+          },
+          "trim": {
+            "type": "boolean",
+            "description": "If true, the image returned is cropped to the cutout border. Transparent pixels are removed.",
+            "default": false
+          },
+          "backgroundColor": {
+            "description": "The background color.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RemoveBgColor"
+              }
+            ]
+          },
+          "colorDecontamination": {
+            "type": "number",
+            "description": "If the value is greater than 0, automatically removes colored reflections that have been left on the main subject by the background.",
+            "minimum": 0,
+            "maximum": 1,
+            "default": 1,
+            "example": 1
+          }
+        },
+        "required": [
+          "image"
+        ]
+      },
+      "RemoveBgColor": {
+        "type": "object",
+        "properties": {
+          "red": {
+            "type": "number",
+            "description": "The red value of the color.",
+            "minimum": 0,
+            "maximum": 255
+          },
+          "green": {
+            "type": "number",
+            "description": "The green value of the color.",
+            "minimum": 0,
+            "maximum": 255
+          },
+          "blue": {
+            "type": "number",
+            "description": "The blue value of the color.",
+            "minimum": 0,
+            "maximum": 255
+          },
+          "alpha": {
+            "type": "number",
+            "description": "The transparency value. 0 is fully transparent and 1 is fully opaque.",
+            "minimum": 0,
+            "maximum": 1
+          }
+        },
+        "required": [
+          "red",
+          "green",
+          "blue",
+          "alpha"
+        ]
+      },
+      "RemoveBgInputImage": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "description": "The source path for the input image. Dimensions of the image should not be greater than 6000px X 6000px. The image media type must be `image/jpeg`, `image/png`, `image/webp`, or `image/tiff`.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UrlResource"
+              }
+            ]
+          }
+        },
+        "required": [
+          "source"
+        ]
+      },
+      "RemoveBgMode": {
+        "type": "string",
+        "description": "The mode of background removal.",
+        "default": "cutout",
+        "enum": [
+          "cutout",
+          "mask",
+          "psd"
+        ]
+      },
+      "RemoveBgOutputImageMediaType": {
+        "type": "string",
+        "description": "The media type of the output image. By default this will match the input source file format.",
+        "enum": [
+          "image/jpeg",
+          "image/png",
+          "image/webp",
+          "image/vnd.adobe.photoshop"
+        ]
+      },
+      "RemoveBgOutputImageOptions": {
+        "type": "object",
+        "properties": {
+          "mediaType": {
+            "$ref": "#/components/schemas/RemoveBgOutputImageMediaType"
+          }
+        }
+      },
+      "UrlResource": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "The URL of the resource. Only these listed domains are accepted in the request:  \n  <ul><li><code>amazonaws.com</code></li><li><code>windows.net</code></li><li><code>dropboxusercontent.com</code></li><li><code>assets.frame.io</code></li><li><code>storage.googleapis.com</code></li></ul>"
+          }
+        },
+        "required": [
+          "url"
         ]
       },
       "UrlResourceInput": {

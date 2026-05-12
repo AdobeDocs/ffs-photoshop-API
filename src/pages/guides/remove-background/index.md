@@ -18,7 +18,7 @@ This API uses advanced AI to automatically detect and isolate the main subject o
 
 ## Overview
 
-The `/v2/remove-background` endpoint can recognize the subject of an image and eliminate the background, providing the subject as the output.
+The `/v2/remove-background` endpoint can recognize the subject of an image and eliminate the background, providing the subject as the output. For the interactive OpenAPI reference for this endpoint and related v2 operations, see [Photoshop API v2 reference](../../api/photoshop-v2/index.md).
 
 ![alt image](../../assets/imagecutout-cutout-example.png?raw=true "Original Image")
 
@@ -74,6 +74,6 @@ The V2 endpoint supports additional parameters for enhanced output quality:
 | `backgroundColor` | object | Sets a background fill color (RGBA). |
 | `colorDecontamination` | number | Reduces color bleed from the removed background (0–1). |
 
-For the latest technical information, see [the API reference documentation](https://developer.adobe.com/firefly-services/docs/photoshop/api/#operation/removeBackground).
+For the latest technical information, see [the API reference documentation](https://developer.adobe.com/firefly-services/docs/photoshop/api/photoshop-v2/#operation/removeBackground).
 
-For deprecation timelines and support, see [Deprecation Announcement](/getting-started/deprecation-announcement/index.md) and [Remove background](https://developer.adobe.com/firefly-services/docs/photoshop/api/#operation/removeBackground) in the API reference.
+For deprecation timelines and support, see [Deprecation Announcement](/getting-started/deprecation-announcement/index.md) and [Remove background](https://developer.adobe.com/firefly-services/docs/photoshop/api/photoshop-v2/#operation/removeBackground) in the API reference.

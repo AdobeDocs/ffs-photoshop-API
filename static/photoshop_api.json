@@ -28,10 +28,6 @@
       "description": "Operations for creating and manipulating masks"
     },
     {
-      "name": "Remove background",
-      "description": "AI-powered background removal and subject isolation operations"
-    },
-    {
       "name": "actionJSON",
       "description": "Operations for working with Photoshop actions in JSON format"
     },
@@ -41,254 +37,6 @@
     }
   ],
   "paths": {
-    "/v2/remove-background": {
-      "post": {
-        "tags": [
-          "Remove background"
-        ],
-        "operationId": "removeBackground",
-        "summary": "Remove background v2",
-        "description": "This endpoint allows you to remove the background from an image. The request is processed asynchronously and the status of the running job can be checked with the Get Status endpoint.",
-        "x-ffs-async-job": true,
-        "x-ffs-job-status-fetcher": "facadeJobStatus",
-        "parameters": [
-          {
-            "name": "Authorization",
-            "description": "The bearer token for the user. This is the access token.",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "x-api-key",
-            "description": "The API key/Client ID",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Content-Type",
-            "description": "The content type of the request. The value is `application/json`.",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RemoveBackgroundV2Request"
-              }
-            }
-          }
-        },
-        "responses": {
-          "202": {
-            "description": "Accepted",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobLinkResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobError"
-                },
-                "examples": {
-                  "unauthorized": {
-                    "value": {
-                      "error_code": "unauthorized",
-                      "message": "User is not entitled to perform the requested operation."
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobError"
-                },
-                "examples": {
-                  "access_error": {
-                    "value": {
-                      "error_code": "access_error",
-                      "message": "User is not entitled to perform the requested operation."
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too Many Requests",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobError"
-                },
-                "examples": {
-                  "rate_limited": {
-                    "value": {
-                      "error_code": "rate_limited",
-                      "message": "Too many requests."
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobError"
-                },
-                "examples": {
-                  "runtime_error": {
-                    "value": {
-                      "error_code": "runtime_error",
-                      "message": "Internal Server Error."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v2/status/{jobId}": {
-      "get": {
-        "operationId": "facadeJobStatus",
-        "tags": [
-          "Get status",
-          "Remove background"
-        ],
-        "summary": "Get status - v2",
-        "description": "Retrieve the status of a running Remove Background job by providing the job ID. The job ID is obtained from the response of the asynchronous Remove Background API call.",
-        "x-ffs-status-fetcher": true,
-        "x-ffs-job-name": "FacadeAsyncJob",
-        "parameters": [
-          {
-            "name": "jobId",
-            "required": true,
-            "in": "path",
-            "description": "The job ID from the response of the Remove Background API call.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/JobStatusPollPayload"
-                    },
-                    {
-                      "$ref": "#/components/schemas/JobStatusSucceededResponse"
-                    }
-                  ]
-                },
-                "examples": {
-                  "pending": {
-                    "summary": "Job Pending",
-                    "value": {
-                      "status": "pending",
-                      "jobId": "urn:ff:jobs:eso851243:8d25eb96-bb4e-48cb-9656-3350ce1e29c7"
-                    }
-                  },
-                  "running": {
-                    "summary": "Job Running",
-                    "value": {
-                      "status": "running",
-                      "jobId": "urn:ff:jobs:eso851243:8d25eb96-bb4e-48cb-9656-3350ce1e29c7"
-                    }
-                  },
-                  "succeeded": {
-                    "summary": "Job Succeeded",
-                    "value": {
-                      "status": "succeeded",
-                      "jobId": "urn:ff:jobs:eso851243:8d25eb96-bb4e-48cb-9656-3350ce1e29c7",
-                      "result": {
-                        "outputs": [
-                          {
-                            "destination": {
-                              "url": "<OUTPUT_URL>"
-                            },
-                            "mediaType": "image/png"
-                          }
-                        ]
-                      }
-                    }
-                  },
-                  "failed": {
-                    "summary": "Job Failed",
-                    "value": {
-                      "status": "failed",
-                      "jobId": "urn:ff:jobs:eso851243:8d25eb96-bb4e-48cb-9656-3350ce1e29c7"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobError"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Requested Resource Was Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobError"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/pie/psdService/status/{jobId}": {
       "get": {
         "tags": [
@@ -1800,7 +1548,6 @@
         "summary": "Generate object and background masks",
         "description": "Given an image, this API generates semantic masks for the foreground objects and a list of background masks that segment the background elements of the image. Each mask includes a label and a URL for the mask image. To check the status of this process, utilize the `Get Status - V1` endpoint.",
         "x-ffs-async-job": true,
-        "x-ffs-job-status-fetcher": "facadeJobStatus",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -1895,7 +1642,6 @@
         "summary": "Generate human item masks",
         "description": "This endpoint processes an input image of a human, then identifies and creates masks for various items and sections on the body including sunglasses, hats, upper body apparel, lower body apparel, arms, legs, shoes, and more. The API returns an array of masks corresponding to each detected item and body part.\n\n**Granular Labels (New \u2014 GA):** Set `useGranularLabels: true` in the request body to receive side-specific masks for bilateral body parts. For example, instead of a single combined mask, the API returns separate masks for `Left Shoe` and `Right Shoe`, `Left Arm` and `Right Arm`, and so on. This capability is essential for workflows that apply independent effects \u2014 such as ground shadows or reflections \u2014 to individual limbs at scale.\n\nTo check the status of this process, utilize the `Get Status - V1` endpoint.",
         "x-ffs-async-job": true,
-        "x-ffs-job-status-fetcher": "facadeJobStatus",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -1990,7 +1736,6 @@
         "summary": "Refine mask",
         "description": "This endpoint allows you to refine and improve the quality of existing masks. The API will enhance the edges and details of the provided masks to create more precise and accurate results. To check the status of this process, utilize the `Get Status - V1` endpoint.",
         "x-ffs-async-job": true,
-        "x-ffs-job-status-fetcher": "facadeJobStatus",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -2085,7 +1830,6 @@
         "summary": "Fill masked areas",
         "description": "This endpoint allows you to inpaint masked areas within an image. The API will remove the objects represented by these masks and inpaint the specified areas. Provide a list of masks corresponding to the regions you wish to modify. To check the status of this process, utilize the `Get Status - V1` endpoint.",
         "x-ffs-async-job": true,
-        "x-ffs-job-status-fetcher": "facadeJobStatus",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -5324,133 +5068,6 @@
           "url"
         ]
       },
-      "RemoveBgInputImage": {
-        "type": "object",
-        "properties": {
-          "source": {
-            "description": "The source path for the input image. Dimensions of the image should not be greater than 6000px X 6000px. The image media type must be `image/jpeg`, `image/png`, `image/webp`, or `image/tiff`.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/UrlResource"
-              }
-            ]
-          }
-        },
-        "required": [
-          "source"
-        ]
-      },
-      "RemoveBgMode": {
-        "type": "string",
-        "description": "The mode of background removal.",
-        "default": "cutout",
-        "enum": [
-          "cutout",
-          "mask",
-          "psd"
-        ]
-      },
-      "RemoveBgOutputImageMediaType": {
-        "type": "string",
-        "description": "The media type of the output image. By default this will match the input source file format.",
-        "enum": [
-          "image/jpeg",
-          "image/png",
-          "image/webp",
-          "image/vnd.adobe.photoshop"
-        ]
-      },
-      "RemoveBgOutputImageOptions": {
-        "type": "object",
-        "properties": {
-          "mediaType": {
-            "$ref": "#/components/schemas/RemoveBgOutputImageMediaType"
-          }
-        }
-      },
-      "RemoveBgColor": {
-        "type": "object",
-        "properties": {
-          "red": {
-            "type": "number",
-            "description": "The red value of the color.",
-            "minimum": 0,
-            "maximum": 255
-          },
-          "green": {
-            "type": "number",
-            "description": "The green value of the color.",
-            "minimum": 0,
-            "maximum": 255
-          },
-          "blue": {
-            "type": "number",
-            "description": "The blue value of the color.",
-            "minimum": 0,
-            "maximum": 255
-          },
-          "alpha": {
-            "type": "number",
-            "description": "The transparency value. 0 is fully transparent and 1 is fully opaque.",
-            "minimum": 0,
-            "maximum": 1
-          }
-        },
-        "required": [
-          "red",
-          "green",
-          "blue",
-          "alpha"
-        ]
-      },
-      "RemoveBackgroundV2Request": {
-        "type": "object",
-        "properties": {
-          "image": {
-            "description": "The image to be processed.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/RemoveBgInputImage"
-              }
-            ]
-          },
-          "mode": {
-            "$ref": "#/components/schemas/RemoveBgMode"
-          },
-          "output": {
-            "description": "The options for the output image.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/RemoveBgOutputImageOptions"
-              }
-            ]
-          },
-          "trim": {
-            "type": "boolean",
-            "description": "If true, the image returned is cropped to the cutout border. Transparent pixels are removed.",
-            "default": false
-          },
-          "backgroundColor": {
-            "description": "The background color.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/RemoveBgColor"
-              }
-            ]
-          },
-          "colorDecontamination": {
-            "type": "number",
-            "description": "If the value is greater than 0, automatically removes colored reflections that have been left on the main subject by the background.",
-            "minimum": 0,
-            "maximum": 1,
-            "default": 1,
-            "example": 1
-          }
-        },
-        "required": [
-          "image"
-        ]
-      },
       "JobLinkResponse": {
         "type": "object",
         "properties": {
@@ -5466,69 +5083,6 @@
         "required": [
           "jobId",
           "statusUrl"
-        ]
-      },
-      "JobStatusPollPayload": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "$ref": "#/components/schemas/JobStatus"
-          },
-          "jobId": {
-            "type": "string",
-            "description": "The job ID."
-          }
-        },
-        "required": [
-          "status",
-          "jobId"
-        ]
-      },
-      "JobStatusSucceededResponse": {
-        "type": "object",
-        "title": "Succeeded",
-        "properties": {
-          "status": {
-            "type": "string",
-            "enum": [
-              "succeeded"
-            ]
-          },
-          "jobId": {
-            "type": "string",
-            "description": "The job ID."
-          },
-          "result": {
-            "type": "object",
-            "properties": {
-              "outputs": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "destination": {
-                      "type": "object",
-                      "properties": {
-                        "url": {
-                          "type": "string",
-                          "description": "The output URL"
-                        }
-                      }
-                    },
-                    "mediaType": {
-                      "type": "string",
-                      "description": "The media type of the output"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "required": [
-          "status",
-          "jobId",
-          "result"
         ]
       },
       "FillMaskedAreasInputImage": {
