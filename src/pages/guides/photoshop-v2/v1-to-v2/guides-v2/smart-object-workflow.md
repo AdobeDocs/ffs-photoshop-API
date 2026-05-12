@@ -11,7 +11,7 @@ keywords:
 
 # Smart Object Workflow
 
-For authentication, API key, and storage setup, see [Using these guides](/guides/index.md).
+For authentication, API key, and storage setup, see [Photoshop API v1 guides overview](/guides/v1/index.md).
 
 ## Example 1: Adding a linked smart object
 

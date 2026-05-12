@@ -18,7 +18,7 @@ Generate semantic masks for foreground objects and background regions in an imag
 
 ## Overview
 
-The Remove Background service returns a PNG mask around the subject when you use `"mode": "mask"`. Submit `POST https://image.adobe.io/v2/remove-background`, then poll **`GET https://image.adobe.io/v2/status/{jobId}`** until the job completes. See [Remove background](https://developer.adobe.com/firefly-services/docs/photoshop/api/#operation/removeBackground) and [Get status - v2](https://developer.adobe.com/firefly-services/docs/photoshop/api/#operation/facadeJobStatus).
+The Remove Background service returns a PNG mask around the subject when you use `"mode": "mask"`. Submit `POST https://image.adobe.io/v2/remove-background`, then poll **`GET https://image.adobe.io/v2/status/{jobId}`** until the job completes. See [Remove background](https://developer.adobe.com/firefly-services/docs/photoshop/api/photoshop-v2/#operation/removeBackground) and [Get Job Status](https://developer.adobe.com/firefly-services/docs/photoshop/api/photoshop-v2/#operation/getJobStatus).
 
 The `/v1/mask-objects` endpoint analyzes an input image and returns two sets of masks: `semanticMasks` for detected foreground objects, and `backgroundMasks` for background regions. Each mask includes a label, confidence score, bounding box, and a URL for the mask image.
 
