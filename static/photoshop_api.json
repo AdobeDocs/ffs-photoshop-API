@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Adobe FireflyPhotoshop API",
-    "description": "This is the comprehensive API reference for Adobe Firefly's Photoshop API suite of services, including all available Photoshop endpoints, request formats, parameters, authentication requirements, and example responses to use when integrating with Firefly's services.\n\nPhotoshop API v1 is scheduled for end of life in August 2026; migrate to Photoshop API v2 before then to avoid service disruptions. For official dates, FAQs, and migration resources, see the [Deprecation announcement](https://developer.adobe.com/firefly-services/docs/photoshop/getting-started/deprecation-announcement/).",
+    "description": "This is the comprehensive API reference for Adobe Firefly's Photoshop API suite of services, including all available Photoshop endpoints, request formats, parameters, authentication requirements, and example responses to use when integrating with Firefly's services.\n\n---\n\n### Deprecation notice\n\nPhotoshop API v1 is scheduled for end of life in August 2026; migrate to Photoshop API v2 before then to avoid service disruptions. For official dates, FAQs, and migration resources, see the [Deprecation announcement](https://developer.adobe.com/firefly-services/docs/photoshop/getting-started/deprecation-announcement/).",
     "version": "1.0"
   },
   "servers": [
