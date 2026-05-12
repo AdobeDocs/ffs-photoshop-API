@@ -27,7 +27,7 @@
 
 - subPages:
     - What's New header
-    - [Photoshop API v2 — General Availability](/getting-started/v2-ga/index.md)
+    - [Photoshop API v2 Generally Available](/getting-started/v2-ga/index.md)
     - [Photoshop v1 Deprecation](/getting-started/deprecation-announcement/index.md)
     - Getting Started header
     - [Authentication](/getting-started/index.md)
