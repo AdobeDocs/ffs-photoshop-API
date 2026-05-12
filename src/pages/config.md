@@ -38,7 +38,11 @@
     - Learn More header
     - [Photoshop Concepts](/getting-started/concepts/index.md)
     - Guides header
-    - [Photoshop API v1 guides](/guides/index.md)
+    - [Photoshop API v2 guides](/guides/photoshop-v2/v1-to-v2/guides-v2/index.md)
+      - [Execute Actions workflow](/guides/photoshop-v2/v1-to-v2/guides-v2/execute-actions.md)
+      - [Smart Object workflow](/guides/photoshop-v2/v1-to-v2/guides-v2/smart-object-workflow.md)
+      - [v2/edit API benchmarking](/guides/photoshop-v2/v1-to-v2/guides-v2/v2-edit-api-benchmarking.md)
+    - [Photoshop API v1 guides](/guides/v1/index.md)
       - [Granular Labels](/guides/granular-labels/index.md)
       - [Photoshop Actions](/guides/photoshop-actions/index.md)
       - [Using the ActionJSON endpoint](/guides/actionjson-endpoint/index.md)
@@ -57,10 +61,6 @@
       - [Create a mask](/guides/create-mask/index.md)
       - [Inpainting with Fill Mask](/guides/using-fill-mask/index.md)
       - [Enhance image mask quality with Refine Mask](/guides/using-refine-mask/index.md)
-    - [Photoshop API v2 guides](/guides/photoshop-v2/v1-to-v2/guides-v2/index.md)
-      - [Execute Actions workflow](/guides/photoshop-v2/v1-to-v2/guides-v2/execute-actions.md)
-      - [Smart Object workflow](/guides/photoshop-v2/v1-to-v2/guides-v2/smart-object-workflow.md)
-      - [v2/edit API benchmarking](/guides/photoshop-v2/v1-to-v2/guides-v2/v2-edit-api-benchmarking.md)
     - Migrate v1 to v2 header
     - [Migrating to v2 overview](/guides/photoshop-v2/v1-to-v2/index.md)
       - [Key improvements and architecture with v2](/guides/photoshop-v2/v1-to-v2/key-improvements.md)

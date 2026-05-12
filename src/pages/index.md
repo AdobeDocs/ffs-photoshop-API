@@ -172,7 +172,7 @@ Explore our tutorials page for comprehensive guidance.
 
 <DiscoverBlock slots="link, text"/>
 
-[Photoshop API v1 guides (Deprecated)](/guides/index.md)
+[Photoshop API v1 guides (Deprecated)](/guides/v1/index.md)
 
 ⚠️ **Deprecated — End of life July 31, 2026.** Migration to v2 is required. Reference only; do not use for new integrations.
 
