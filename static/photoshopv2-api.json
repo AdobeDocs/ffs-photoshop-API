@@ -29,10 +29,6 @@
     {
       "description": "APIs for retrieving job status information",
       "name": "Job Status"
-    },
-    {
-      "description": "AI-powered background removal and subject isolation operations",
-      "name": "Remove background"
     }
   ],
   "paths": {
@@ -583,9 +579,9 @@
             "description": "Internal server error"
           }
         },
-        "summary": "Remove background v2",
+        "summary": "Remove the background from an image",
         "tags": [
-          "Remove background"
+          "Photoshop APIs"
         ]
       }
     },
