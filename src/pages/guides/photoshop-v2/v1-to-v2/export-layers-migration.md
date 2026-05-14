@@ -40,6 +40,8 @@ Controls the output bounding box for exported content. Supported for single-laye
 
 Using `layer_bounds` with multi-layer or document export returns a validation error. Use `trim_to_transparency` or `document_bounds` instead.
 
+> **V1 migration note — single-layer output dimensions:** V1 always exported single layers at **document/canvas dimensions** regardless of layer position or size. V2 defaults to `layer_bounds`, so the output is sized to the layer itself rather than the canvas. If your V1 workflow relied on canvas-sized output, set `cropMode: "document_bounds"` explicitly to preserve that behavior.
+
 ### Media type (`mediaType`)
 
 For single-layer export, V2 supports: `image/jpeg`, `image/png`, `image/tiff`, `image/vnd.adobe.photoshop` (PSD). See [Output Types Migration](output-types-migration.md) for full enum details.
