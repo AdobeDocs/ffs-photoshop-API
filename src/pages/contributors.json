@@ -1,0 +1,526 @@
+{
+  "total": 71,
+  "offset": 0,
+  "limit": 71,
+  "data": [
+    {
+      "page": "/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4",
+        "https://avatars.githubusercontent.com/u/48109457?v=4",
+        "https://avatars.githubusercontent.com/u/41382203?v=4"
+      ],
+      "lastUpdated": "5/12/2026"
+    },
+    {
+      "page": "/api/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4",
+        "https://avatars.githubusercontent.com/u/48109457?v=4",
+        "https://avatars.githubusercontent.com/u/41382203?v=4"
+      ],
+      "lastUpdated": "1/7/2026"
+    },
+    {
+      "page": "/api/photoshop-v2/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/config",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4",
+        "https://avatars.githubusercontent.com/u/43320248?v=4",
+        "https://avatars.githubusercontent.com/u/48109457?v=4",
+        "https://avatars.githubusercontent.com/u/41382203?v=4"
+      ],
+      "lastUpdated": "5/12/2026"
+    },
+    {
+      "page": "/getting-started/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/41382203?v=4"
+      ],
+      "lastUpdated": "2/12/2026"
+    },
+    {
+      "page": "/getting-started/concepts/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/41382203?v=4"
+      ],
+      "lastUpdated": "2/12/2026"
+    },
+    {
+      "page": "/getting-started/deprecation-announcement/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4",
+        "https://avatars.githubusercontent.com/u/41382203?v=4"
+      ],
+      "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/getting-started/storage-solutions/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/41382203?v=4"
+      ],
+      "lastUpdated": "2/12/2026"
+    },
+    {
+      "page": "/getting-started/technical-usage-notes/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/41382203?v=4"
+      ],
+      "lastUpdated": "2/12/2026"
+    },
+    {
+      "page": "/getting-started/uxp/",
+      "avatars": [],
+      "lastUpdated": "5/4/2026"
+    },
+    {
+      "page": "/getting-started/v2-ga/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/7/2026"
+    },
+    {
+      "page": "/getting-started/webhooks/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/41382203?v=4"
+      ],
+      "lastUpdated": "2/12/2026"
+    },
+    {
+      "page": "/guides/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4",
+        "https://avatars.githubusercontent.com/u/41382203?v=4"
+      ],
+      "lastUpdated": "5/12/2026"
+    },
+    {
+      "page": "/guides/actionjson-endpoint/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/41382203?v=4"
+      ],
+      "lastUpdated": "2/13/2026"
+    },
+    {
+      "page": "/guides/artboards/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/guides/create-mask/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4",
+        "https://avatars.githubusercontent.com/u/48109457?v=4",
+        "https://avatars.githubusercontent.com/u/41382203?v=4"
+      ],
+      "lastUpdated": "5/12/2026"
+    },
+    {
+      "page": "/guides/depthblur/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "7/24/2025"
+    },
+    {
+      "page": "/guides/document-level-edits/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/41382203?v=4"
+      ],
+      "lastUpdated": "2/12/2026"
+    },
+    {
+      "page": "/guides/edit-text/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/41382203?v=4"
+      ],
+      "lastUpdated": "2/13/2026"
+    },
+    {
+      "page": "/guides/get-job-status/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/41382203?v=4"
+      ],
+      "lastUpdated": "2/12/2026"
+    },
+    {
+      "page": "/guides/granular-labels/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/48109457?v=4"
+      ],
+      "lastUpdated": "5/1/2026"
+    },
+    {
+      "page": "/guides/layer-level-edits/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/41382203?v=4"
+      ],
+      "lastUpdated": "2/12/2026"
+    },
+    {
+      "page": "/guides/photoshop-actions/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/41382203?v=4"
+      ],
+      "lastUpdated": "2/12/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/actions-migration",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/artboard-migration",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/composite-migration",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/convenience-apis/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/convenience-apis/depth-blur",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/convenience-apis/product-crop",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/convenience-apis/smart-object-replace",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/convenience-apis/text-layer-operations",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/create-artboard-v1-reference",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/create-composite-v1-reference",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/document-creation-migration",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/document-operations-migration",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/edit-operations",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/execute-actions-v1-reference",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/export-layers-migration",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/43320248?v=4",
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/10/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/format-conversion-migration",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/guides-v2/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/guides-v2/execute-actions",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/guides-v2/pegasus-worker-v2-models",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/43320248?v=4"
+      ],
+      "lastUpdated": "5/10/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/guides-v2/smart-object-workflow",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/12/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/guides-v2/v2-edit-api-benchmarking",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/icc-profile-migration",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/key-improvements",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/layer-operations-adjustments",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/layer-operations-advanced",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/layer-operations-background",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/43320248?v=4"
+      ],
+      "lastUpdated": "5/10/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/layer-operations-image",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/layer-operations-overview",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/43320248?v=4",
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/10/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/layer-operations-smart-objects",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/43320248?v=4",
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/10/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/layer-operations-text",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/43320248?v=4",
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/10/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/llm-migration-reference",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/43320248?v=4",
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/10/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/manifest-migration",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/manifest-response-migration",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/output-types-migration",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/status-migration",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/v2-api-catalog",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/guides/photoshop-v2/v1-to-v2/v2-whats-new",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/43320248?v=4",
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/10/2026"
+    },
+    {
+      "page": "/guides/product-crop/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/41382203?v=4"
+      ],
+      "lastUpdated": "2/12/2026"
+    },
+    {
+      "page": "/guides/remove-background/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4",
+        "https://avatars.githubusercontent.com/u/48109457?v=4",
+        "https://avatars.githubusercontent.com/u/41382203?v=4"
+      ],
+      "lastUpdated": "5/12/2026"
+    },
+    {
+      "page": "/guides/rendering-and-conversions/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/41382203?v=4"
+      ],
+      "lastUpdated": "2/12/2026"
+    },
+    {
+      "page": "/guides/retrieve-manifest/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/41382203?v=4"
+      ],
+      "lastUpdated": "2/12/2026"
+    },
+    {
+      "page": "/guides/smart-objects-and-the-api/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/43320248?v=4",
+        "https://avatars.githubusercontent.com/u/48109457?v=4",
+        "https://avatars.githubusercontent.com/u/41382203?v=4"
+      ],
+      "lastUpdated": "5/7/2026"
+    },
+    {
+      "page": "/guides/triggering-an-event/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/41382203?v=4"
+      ],
+      "lastUpdated": "2/12/2026"
+    },
+    {
+      "page": "/guides/using-fill-mask/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/41382203?v=4",
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "2/13/2026"
+    },
+    {
+      "page": "/guides/using-refine-mask/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/41382203?v=4",
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "2/13/2026"
+    },
+    {
+      "page": "/guides/v1/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "5/12/2026"
+    }
+  ],
+  ":type": "sheet"
+}
