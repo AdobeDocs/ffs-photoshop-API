@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Adobe FireflyPhotoshop API",
-    "description": "This is the comprehensive API reference for Adobe Firefly's Photoshop API suite of services, including all available Photoshop endpoints, request formats, parameters, authentication requirements, and example responses to use when integrating with Firefly's services.",
+    "description": "This is the comprehensive API reference for Adobe Firefly's Photoshop API suite of services, including all available Photoshop endpoints, request formats, parameters, authentication requirements, and example responses to use when integrating with Firefly's services.\n\n---\n\n### Deprecation notice\n\nPhotoshop API v1 is scheduled for end of life in August 2026; migrate to Photoshop API v2 before then to avoid service disruptions. For official dates, FAQs, and migration resources, see the [Deprecation announcement](https://developer.adobe.com/firefly-services/docs/photoshop/getting-started/deprecation-announcement/).",
     "version": "1.0"
   },
   "servers": [
@@ -14,10 +14,8 @@
   ],
   "security": [
     {
-      "ApiKeyAuth": []
-    },
-    {
-      "BearerAuth": []
+      "AccessToken": [],
+      "X-Api-Key": []
     }
   ],
   "tags": [
@@ -30,10 +28,6 @@
       "description": "Operations for creating and manipulating masks"
     },
     {
-      "name": "Remove background",
-      "description": "AI-powered background removal and subject isolation operations"
-    },
-    {
       "name": "actionJSON",
       "description": "Operations for working with Photoshop actions in JSON format"
     },
@@ -43,602 +37,6 @@
     }
   ],
   "paths": {
-    "/sensei/status/{jobId}": {
-      "get": {
-        "tags": [
-          "Get status"
-        ],
-        "summary": "Get status - mask",
-        "description": "This endpoint returns the status of a job for a Remove Background and Create Mask operation. The schema of a 200 response varies depending on the status of the job.",
-        "operationId": "senseiJobStatus",
-        "parameters": [
-          {
-            "name": "jobId",
-            "in": "path",
-            "description": "The job ID.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "x-gw-ims-org-id",
-            "in": "header",
-            "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Job status",
-            "headers": {},
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SenseiJobApiResponse"
-                }
-              }
-            }
-          }
-        },
-        "deprecated": false
-      }
-    },
-    "/sensei/cutout": {
-      "post": {
-        "tags": [
-          "Remove background"
-        ],
-        "summary": "Remove background v1 (Deprecated)",
-        "description":  "⚠️ **DEPRECATED**: This endpoint is deprecated and will no longer be accessible after Oct 15, 2025. Use `/v2/remove-background` instead. For more information, see the [Deprecation Announcement](https://developer.adobe.com/firefly-services/docs/photoshop/getting_started/deprecation_announcement/). This endpoint will identify the main subject of your image and removes the background automatically. It also provides options to return a PNG file in 4 channel RGBA or 3 channel RGB format. To check the status of this process, utilize the `Get Status - Mask` endpoint.",
-        "operationId": "removeBackgroundAsync",
-        "parameters": [
-          {
-            "name": "x-gw-ims-org-id",
-            "in": "header",
-            "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "The input image and the cutout mask parameters",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RemoveBackgroundRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "202": {
-            "description": "Success",
-            "headers": {
-              "X-Access-Consumption-Status": {
-                "$ref": "#/components/headers/X-Access-Consumption-Status"
-              },
-              "X-Access-Applied-Until-Date": {
-                "$ref": "#/components/headers/X-Access-Applied-Until-Date"
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobStatusLinkResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Input Validation Error",
-            "headers": {},
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InputValidationError"
-                }
-              }
-            }
-          },
-          "402": {
-            "description": "Trial Limit Exceeded Error",
-            "headers": {},
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TrialLimitExceededError"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Unauthorized",
-            "headers": {
-              "X-Access-Applied-Until-Date": {
-                "$ref": "#/components/headers/X-Access-Applied-Until-Date"
-              },
-              "X-Access-Error": {
-                "$ref": "#/components/headers/X-Access-Error"
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobError"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Requested Resource Was Not Found",
-            "headers": {},
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobError"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Unable to upload asset",
-            "headers": {},
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobError"
-                }
-              }
-            }
-          },
-          "410": {
-            "description": "Asset Link Invalid",
-            "headers": {},
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobError"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too many requests",
-            "headers": {
-            "X-Access-Rate-Limit-Level": {
-              "$ref": "#/components/headers/X-Access-Rate-Limit-Level"
-              }
-            },
-            "content": {
-              "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "headers": {},
-            "content": {
-              "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
-                }
-              }
-            }
-          }
-        },
-        "deprecated": true
-      }
-    },
-    "/v2/remove-background": {
-      "post": {
-        "tags": [
-          "Remove background"
-        ],
-        "operationId": "removeBackground",
-        "summary": "Remove background v2",
-        "description": "This endpoint allows you to remove the background from an image. The request is processed asynchronously and the status of the running job can be checked with the Get Status endpoint.",
-        "x-ffs-async-job": true,
-        "x-ffs-job-status-fetcher": "facadeJobStatus",
-        "parameters": [
-          {
-            "name": "Authorization",
-            "description": "The bearer token for the user. This is the access token.",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "x-api-key",
-            "description": "The API key/Client ID",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Content-Type",
-            "description": "The content type of the request. The value is `application/json`.",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RemoveBackgroundV2Request"
-              }
-            }
-          }
-        },
-        "responses": {
-          "202": {
-            "description": "Accepted",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobLinkResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobError"
-                },
-                "examples": {
-                  "unauthorized": {
-                    "value": {
-                      "error_code": "unauthorized",
-                      "message": "User is not entitled to perform the requested operation."
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobError"
-                },
-                "examples": {
-                  "access_error": {
-                    "value": {
-                      "error_code": "access_error",
-                      "message": "User is not entitled to perform the requested operation."
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too Many Requests",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobError"
-                },
-                "examples": {
-                  "rate_limited": {
-                    "value": {
-                      "error_code": "rate_limited",
-                      "message": "Too many requests."
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobError"
-                },
-                "examples": {
-                  "runtime_error": {
-                    "value": {
-                      "error_code": "runtime_error",
-                      "message": "Internal Server Error."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v2/status/{jobId}": {
-      "get": {
-        "operationId": "facadeJobStatus",
-        "tags": [
-          "Get status",
-          "Remove background"
-        ],
-        "summary": "Get status - v2",
-        "description": "Retrieve the status of a running Remove Background job by providing the job ID. The job ID is obtained from the response of the asynchronous Remove Background API call.",
-        "x-ffs-status-fetcher": true,
-        "x-ffs-job-name": "FacadeAsyncJob",
-        "parameters": [
-          {
-            "name": "jobId",
-            "required": true,
-            "in": "path",
-            "description": "The job ID from the response of the Remove Background API call.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/JobStatusPollPayload"
-                    },
-                    {
-                      "$ref": "#/components/schemas/JobStatusSucceededResponse"
-                    }
-                  ]
-                },
-                "examples": {
-                  "pending": {
-                    "summary": "Job Pending",
-                    "value": {
-                      "status": "pending",
-                      "jobId": "urn:ff:jobs:eso851243:8d25eb96-bb4e-48cb-9656-3350ce1e29c7"
-                    }
-                  },
-                  "running": {
-                    "summary": "Job Running",
-                    "value": {
-                      "status": "running",
-                      "jobId": "urn:ff:jobs:eso851243:8d25eb96-bb4e-48cb-9656-3350ce1e29c7"
-                    }
-                  },
-                  "succeeded": {
-                    "summary": "Job Succeeded",
-                    "value": {
-                      "status": "succeeded",
-                      "jobId": "urn:ff:jobs:eso851243:8d25eb96-bb4e-48cb-9656-3350ce1e29c7",
-                      "result": {
-                        "outputs": [
-                          {
-                            "destination": {
-                              "url": "<OUTPUT_URL>"
-                            },
-                            "mediaType": "image/png"
-                          }
-                        ]
-                      }
-                    }
-                  },
-                  "failed": {
-                    "summary": "Job Failed",
-                    "value": {
-                      "status": "failed",
-                      "jobId": "urn:ff:jobs:eso851243:8d25eb96-bb4e-48cb-9656-3350ce1e29c7"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobError"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Requested Resource Was Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobError"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/sensei/mask": {
-      "post": {
-        "tags": [
-          "Masking"
-        ],
-        "summary": "Create mask",
-        "description": "⚠️ **DEPRECATED**: This endpoint is deprecated and will no longer be accessible after Oct 15, 2025. Use `/v2/remove-background` instead. For more information, see the [Deprecation Announcement](https://developer.adobe.com/firefly-services/docs/photoshop/getting_started/deprecation_announcement/).This endpoint uses the Remove Background AI/ML model to return a PNG file with a mask applied around the subject. To check the status of this process, utilize the `Get Status - Mask` endpoint.",
-        "operationId": "createMaskAsync",
-        "parameters": [
-          {
-            "name": "x-gw-ims-org-id",
-            "in": "header",
-            "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "The input image and the mask parameters",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateMaskRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "202": {
-            "description": "Success",
-            "headers": {
-              "X-Access-Consumption-Status": {
-                "$ref": "#/components/headers/X-Access-Consumption-Status"
-              },
-              "X-Access-Applied-Until-Date": {
-                "$ref": "#/components/headers/X-Access-Applied-Until-Date"
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobStatusLinkResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Input Validation Error",
-            "headers": {},
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InputValidationError"
-                }
-              }
-            }
-          },
-          "402": {
-            "description": "Trial Limit Exceeded Error",
-            "headers": {},
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TrialLimitExceededError"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Unauthorized",
-            "headers": {
-              "X-Access-Applied-Until-Date": {
-                "$ref": "#/components/headers/X-Access-Applied-Until-Date"
-              },
-              "X-Access-Error": {
-                "$ref": "#/components/headers/X-Access-Error"
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobError"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Requested Resource Was Not Found",
-            "headers": {},
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobError"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Unable to upload asset",
-            "headers": {},
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobError"
-                }
-              }
-            }
-          },
-          "410": {
-            "description": "Asset Link Invalid",
-            "headers": {},
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobError"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too many requests",
-            "headers": {
-            "X-Access-Rate-Limit-Level": {
-              "$ref": "#/components/headers/X-Access-Rate-Limit-Level"
-              }
-            },
-            "content": {
-              "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "headers": {},
-            "content": {
-              "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
-                }
-              }
-            }
-          }
-        },
-        "deprecated": true
-      }
-    },
     "/pie/psdService/status/{jobId}": {
       "get": {
         "tags": [
@@ -653,15 +51,6 @@
             "in": "path",
             "description": "The job ID.",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "x-gw-ims-org-id",
-            "in": "header",
-            "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -685,21 +74,13 @@
     },
     "/pie/psdService/documentManifest": {
       "post": {
-        "tags": ["Common operations"],
+        "tags": [
+          "Common operations"
+        ],
         "summary": "Extract document manifest",
         "description": "Extract metadata from PSD document, including general file and layer information.",
         "operationId": "getDocumentManifestAsync",
-        "parameters": [
-          {
-            "name": "x-gw-ims-org-id",
-            "in": "header",
-            "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "description": "The PSD file with the layer information you want to extract.",
           "content": {
@@ -779,8 +160,8 @@
             "headers": {},
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -791,21 +172,13 @@
     },
     "/pie/psdService/documentCreate": {
       "post": {
-        "tags": ["Common operations"],
+        "tags": [
+          "Common operations"
+        ],
         "summary": "Create PSD",
         "description": "Create new PSD with layers.",
         "operationId": "createDocumentAsync",
-        "parameters": [
-          {
-            "name": "x-gw-ims-org-id",
-            "in": "header",
-            "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "description": "The input psd file to create a new psd from",
           "content": {
@@ -907,8 +280,8 @@
             "headers": {},
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -919,21 +292,13 @@
     },
     "/pie/psdService/documentOperations": {
       "post": {
-        "tags": ["Common operations"],
+        "tags": [
+          "Common operations"
+        ],
         "summary": "Apply photoshop edits",
         "description": "Apply basic layer edits (name, state, etc.), add/edit adjustment, pixel, and shape layers.",
         "operationId": "modifyDocumentAsync",
-        "parameters": [
-          {
-            "name": "x-gw-ims-org-id",
-            "in": "header",
-            "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "description": "The input psd file to apply edits to and generate renditions and/or save as a new psd",
           "content": {
@@ -1035,8 +400,8 @@
             "headers": {},
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -1047,21 +412,13 @@
     },
     "/pie/psdService/renditionCreate": {
       "post": {
-        "tags": ["Common operations"],
+        "tags": [
+          "Common operations"
+        ],
         "summary": "Create renditions",
         "description": "Create flat image representations of a PSD in multiple formats.",
         "operationId": "createRenditionAsync",
-        "parameters": [
-          {
-            "name": "x-gw-ims-org-id",
-            "in": "header",
-            "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "description": "The input psd file to create renditions from",
           "content": {
@@ -1163,8 +520,8 @@
             "headers": {},
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -1175,21 +532,13 @@
     },
     "/pie/psdService/smartObject": {
       "post": {
-        "tags": ["Common operations"],
+        "tags": [
+          "Common operations"
+        ],
         "summary": "Replace smart object",
         "description": "Replace Smart Object in a PSD.",
         "operationId": "replaceSmartObjectAsync",
-        "parameters": [
-          {
-            "name": "x-gw-ims-org-id",
-            "in": "header",
-            "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "description": "The input psd file to apply edits for replacing embedded smart object to and generate renditions and/or save as a new psd",
           "content": {
@@ -1291,8 +640,8 @@
             "headers": {},
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -1303,21 +652,13 @@
     },
     "/pie/psdService/photoshopActions": {
       "post": {
-        "tags": ["Common operations"],
+        "tags": [
+          "Common operations"
+        ],
         "summary": "Run photoshop actions",
         "description": "Executes Photoshop Action file against a PSD, JPEG, PNG, or TIFF.",
         "operationId": "playPhotoshopActionsAsync",
-        "parameters": [
-          {
-            "name": "x-gw-ims-org-id",
-            "in": "header",
-            "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "description": "The input file to apply Photoshop Actions to and generate renditions and/or save as a new image",
           "content": {
@@ -1419,8 +760,8 @@
             "headers": {},
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -1437,17 +778,7 @@
         "summary": "Run actionJSON",
         "description": "Execute given Photoshop Action specified in actionJSON format.",
         "operationId": "playPhotoshopActionsJsonAsync",
-        "parameters": [
-          {
-            "name": "x-gw-ims-org-id",
-            "in": "header",
-            "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "description": "The input psd file to apply Photoshop actionJSON to and generate renditions and/or save as a new image",
           "content": {
@@ -1547,14 +878,14 @@
           "429": {
             "description": "Too many requests",
             "headers": {
-            "X-Access-Rate-Limit-Level": {
-              "$ref": "#/components/headers/X-Access-Rate-Limit-Level"
+              "X-Access-Rate-Limit-Level": {
+                "$ref": "#/components/headers/X-Access-Rate-Limit-Level"
               }
             },
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -1564,8 +895,8 @@
             "headers": {},
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -1582,17 +913,7 @@
         "summary": "Convert to actionJSON",
         "description": "Convert an ATN file to actionJSON format.",
         "operationId": "convertToActionsJsonAsync",
-        "parameters": [
-          {
-            "name": "x-gw-ims-org-id",
-            "in": "header",
-            "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "description": "The input ATN file to convert to actionJSON.",
           "content": {
@@ -1683,8 +1004,8 @@
             "headers": {},
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -1695,21 +1016,13 @@
     },
     "/pie/psdService/productCrop": {
       "post": {
-        "tags": ["Common operations"],
+        "tags": [
+          "Common operations"
+        ],
         "summary": "Product crop",
         "description": "This endpoint identifies the subject of the input file and automatically crops the image to keep the subject in the center. Check the status of this process with the `Get Status` endpoint.",
         "operationId": "applyAutoCropAsync",
-        "parameters": [
-          {
-            "name": "x-gw-ims-org-id",
-            "in": "header",
-            "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "description": "The input image to apply product crop to.",
           "content": {
@@ -1809,14 +1122,14 @@
           "429": {
             "description": "Too many requests",
             "headers": {
-            "X-Access-Rate-Limit-Level": {
-              "$ref": "#/components/headers/X-Access-Rate-Limit-Level"
+              "X-Access-Rate-Limit-Level": {
+                "$ref": "#/components/headers/X-Access-Rate-Limit-Level"
               }
             },
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -1826,8 +1139,8 @@
             "headers": {},
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -1838,21 +1151,13 @@
     },
     "/pie/psdService/depthBlur": {
       "post": {
-        "tags": ["Common operations"],
+        "tags": [
+          "Common operations"
+        ],
         "summary": "Depth blur",
         "description": "Apply depth blur to an image input.",
         "operationId": "applyDepthBlurAsync",
-        "parameters": [
-          {
-            "name": "x-gw-ims-org-id",
-            "in": "header",
-            "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "description": "The input image to apply depth blur to.",
           "content": {
@@ -1952,14 +1257,14 @@
           "429": {
             "description": "Too many requests",
             "headers": {
-            "X-Access-Rate-Limit-Level": {
-              "$ref": "#/components/headers/X-Access-Rate-Limit-Level"
+              "X-Access-Rate-Limit-Level": {
+                "$ref": "#/components/headers/X-Access-Rate-Limit-Level"
               }
             },
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -1969,8 +1274,8 @@
             "headers": {},
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -1981,21 +1286,13 @@
     },
     "/pie/psdService/text": {
       "post": {
-        "tags": ["Common operations"],
+        "tags": [
+          "Common operations"
+        ],
         "summary": "Edit text layer",
         "description": "Change the contents of a text layer in a PSD, e.g. for localization.",
         "operationId": "editTextLayerAsync",
-        "parameters": [
-          {
-            "name": "x-gw-ims-org-id",
-            "in": "header",
-            "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "description": "The input text to be edited.",
           "content": {
@@ -2095,14 +1392,14 @@
           "429": {
             "description": "Too many requests",
             "headers": {
-            "X-Access-Rate-Limit-Level": {
-              "$ref": "#/components/headers/X-Access-Rate-Limit-Level"
+              "X-Access-Rate-Limit-Level": {
+                "$ref": "#/components/headers/X-Access-Rate-Limit-Level"
               }
             },
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -2112,8 +1409,8 @@
             "headers": {},
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -2124,21 +1421,13 @@
     },
     "/pie/psdService/artboardCreate": {
       "post": {
-        "tags": ["Common operations"],
+        "tags": [
+          "Common operations"
+        ],
         "summary": "Create artboards",
         "description": "Create artboards from multiple PSD inputs.",
         "operationId": "createArtboardAsync",
-        "parameters": [
-          {
-            "name": "x-gw-ims-org-id",
-            "in": "header",
-            "description": "The IMS organization ID. This only needs to be sent if you want to receive the job status through Adobe I/O Events",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "description": "The input artboard to be created.",
           "content": {
@@ -2240,8 +1529,8 @@
             "headers": {},
             "content": {
               "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JobError"
+                "schema": {
+                  "$ref": "#/components/schemas/JobError"
                 }
               }
             }
@@ -2259,7 +1548,6 @@
         "summary": "Generate object and background masks",
         "description": "Given an image, this API generates semantic masks for the foreground objects and a list of background masks that segment the background elements of the image. Each mask includes a label and a URL for the mask image. To check the status of this process, utilize the `Get Status - V1` endpoint.",
         "x-ffs-async-job": true,
-        "x-ffs-job-status-fetcher": "facadeJobStatus",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -2352,9 +1640,8 @@
         ],
         "operationId": "maskBodyParts",
         "summary": "Generate human item masks",
-        "description": "This endpoint processes an input image of a human, then identifies and creates masks for various items and sections on the body including sunglasses, hats, upper body apparel, lower body apparel, left arm, right arm, and more. The API returns an array of masks corresponding to each detected item and body part. To check the status of this process, utilize the `Get Status - V1` endpoint.",
+        "description": "This endpoint processes an input image of a human, then identifies and creates masks for various items and sections on the body including sunglasses, hats, upper body apparel, lower body apparel, arms, legs, shoes, and more. The API returns an array of masks corresponding to each detected item and body part.\n\n**Granular Labels (New \u2014 GA):** Set `useGranularLabels: true` in the request body to receive side-specific masks for bilateral body parts. For example, instead of a single combined mask, the API returns separate masks for `Left Shoe` and `Right Shoe`, `Left Arm` and `Right Arm`, and so on. This capability is essential for workflows that apply independent effects \u2014 such as ground shadows or reflections \u2014 to individual limbs at scale.\n\nTo check the status of this process, utilize the `Get Status - V1` endpoint.",
         "x-ffs-async-job": true,
-        "x-ffs-job-status-fetcher": "facadeJobStatus",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -2449,7 +1736,6 @@
         "summary": "Refine mask",
         "description": "This endpoint allows you to refine and improve the quality of existing masks. The API will enhance the edges and details of the provided masks to create more precise and accurate results. To check the status of this process, utilize the `Get Status - V1` endpoint.",
         "x-ffs-async-job": true,
-        "x-ffs-job-status-fetcher": "facadeJobStatus",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -2544,7 +1830,6 @@
         "summary": "Fill masked areas",
         "description": "This endpoint allows you to inpaint masked areas within an image. The API will remove the objects represented by these masks and inpaint the specified areas. Provide a list of masks corresponding to the regions you wish to modify. To check the status of this process, utilize the `Get Status - V1` endpoint.",
         "x-ffs-async-job": true,
-        "x-ffs-job-status-fetcher": "facadeJobStatus",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -2905,122 +2190,12 @@
         },
         "description": "A file located on Adobe's cloud or a supported external service."
       },
-      "SenseiColor": {
-        "title": "SenseiColor",
-        "type": "object",
-        "properties": {
-          "space": {
-            "$ref": "#/components/schemas/ColorSpaceType"
-          }
-        },
-        "description": "Color space for output image"
-      },
-      "ColorSpaceType": {
-        "title": "ColorSpaceType",
-        "type": "string",
-        "enum": [
-          "rgb",
-          "rgba"
-        ],
-        "description": "Color space for output image"
-      },
-      "SenseiOutputDetails": {
-        "title": "SenseiOutputDetails",
-        "type": "object",
-        "required": [
-          "href",
-          "storage"
-        ],
-        "properties": {
-          "href": {
-            "type": "string",
-            "description": "A pre-signed POST URL to the output file."
-          },
-          "storage": {
-            "$ref": "#/components/schemas/StorageType"
-          },
-          "mask": {
-            "$ref": "#/components/schemas/MaskFormat"
-          },
-          "color": {
-            "$ref": "#/components/schemas/SenseiColor"
-          },
-          "overwrite": {
-            "type": "boolean",
-            "description": "If the file already exists, indicates if the output file should be overwritten. Will eventually support eTags. Only applies to CC Storage.",
-            "default": true
-          }
-        },
-        "description": "A PNG file."
-      },
-      "SenseiJobApiResponse": {
-        "title": "SenseiJobApiResponse",
-        "type": "object",
-        "properties": {
-          "jobId": {
-            "type": "string",
-            "description": "The job ID requested."
-          },
-          "created": {
-            "type": "string",
-            "description": "Created timestamp of the job (YYYY-DD-MMThh:mm:ss.mmmmmZ)."
-          },
-          "modified": {
-            "type": "string",
-            "description": "Modified timestamp of the job (YYYY-DD-MMThh:mm:ss.mmmmmZ)."
-          },
-          "status": {
-            "$ref": "#/components/schemas/JobStatus"
-          },
-          "output": {
-            "$ref": "#/components/schemas/SenseiOutputDetails"
-          },
-          "errors": {
-            "$ref": "#/components/schemas/JobError"
-          },
-          "_links": {
-            "$ref": "#/components/schemas/JobStatusLink"
-          }
-        }
-      },
       "JobStatusLink": {
         "title": "JobStatusLink",
         "type": "object",
         "properties": {
           "self": {
             "$ref": "#/components/schemas/SelfLink"
-          }
-        }
-      },
-      "RemoveBackgroundRequest": {
-        "title": "RemoveBackgroundRequest",
-        "type": "object",
-        "required": [
-          "input",
-          "output"
-        ],
-        "properties": {
-          "input": {
-            "$ref": "#/components/schemas/StorageDetails"
-          },
-          "output": {
-            "$ref": "#/components/schemas/SenseiOutputDetails"
-          }
-        }
-      },
-      "CreateMaskRequest": {
-        "title": "CreateMaskRequest",
-        "type": "object",
-        "required": [
-          "input",
-          "output"
-        ],
-        "properties": {
-          "input": {
-            "$ref": "#/components/schemas/StorageDetails"
-          },
-          "output": {
-            "$ref": "#/components/schemas/SenseiOutputDetails"
           }
         }
       },
@@ -3258,15 +2433,15 @@
       "PsJobResponse": {
         "type": "object",
         "oneOf": [
-            {
-                "$ref": "#/components/schemas/ManifestJobApiResponse"
-            },
-            {
-                "$ref": "#/components/schemas/PsJobApiResponse"
-            }
+          {
+            "$ref": "#/components/schemas/ManifestJobApiResponse"
+          },
+          {
+            "$ref": "#/components/schemas/PsJobApiResponse"
+          }
         ],
         "description": "Photoshop Job response."
-    },
+      },
       "DocumentManifestRequest": {
         "title": "DocumentManifestRequest",
         "type": "object",
@@ -4778,15 +3953,6 @@
           }
         }
       },
-      "MaskFormatType": {
-        "title": "MaskFormatType",
-        "enum": [
-          "binary",
-          "soft"
-        ],
-        "type": "string",
-        "description": "Soft mask or binary mask."
-      },
       "ImageModeType": {
         "title": "ImageModeType",
         "enum": [
@@ -5105,15 +4271,6 @@
         ],
         "type": "string",
         "description": "Action to take if there are one or more missing fonts in the document. Using `fail` - the job will not succeed and the status will be set to `failed` with the details of the error provided in the `details` section in the status. Using `useDefault` - the job will succeed, however all the missing fonts will use the font: ArialMT."
-      },
-      "MaskFormat": {
-        "title": "MaskFormat",
-        "type": "object",
-        "properties": {
-          "format": {
-            "$ref": "#/components/schemas/MaskFormatType"
-          }
-        }
       },
       "MaskDetails": {
         "title": "MaskDetails",
@@ -5911,133 +5068,6 @@
           "url"
         ]
       },
-      "RemoveBgInputImage": {
-        "type": "object",
-        "properties": {
-          "source": {
-            "description": "The source path for the input image. Dimensions of the image should not be greater than 6000px X 6000px. The image media type must be `image/jpeg`, `image/png`, `image/webp`, or `image/tiff`.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/UrlResource"
-              }
-            ]
-          }
-        },
-        "required": [
-          "source"
-        ]
-      },
-      "RemoveBgMode": {
-        "type": "string",
-        "description": "The mode of background removal.",
-        "default": "cutout",
-        "enum": [
-          "cutout",
-          "mask",
-          "psd"
-        ]
-      },
-      "RemoveBgOutputImageMediaType": {
-        "type": "string",
-        "description": "The media type of the output image. By default this will match the input source file format.",
-        "enum": [
-          "image/jpeg",
-          "image/png",
-          "image/webp",
-          "image/vnd.adobe.photoshop"
-        ]
-      },
-      "RemoveBgOutputImageOptions": {
-        "type": "object",
-        "properties": {
-          "mediaType": {
-            "$ref": "#/components/schemas/RemoveBgOutputImageMediaType"
-          }
-        }
-      },
-      "RemoveBgColor": {
-        "type": "object",
-        "properties": {
-          "red": {
-            "type": "number",
-            "description": "The red value of the color.",
-            "minimum": 0,
-            "maximum": 255
-          },
-          "green": {
-            "type": "number",
-            "description": "The green value of the color.",
-            "minimum": 0,
-            "maximum": 255
-          },
-          "blue": {
-            "type": "number",
-            "description": "The blue value of the color.",
-            "minimum": 0,
-            "maximum": 255
-          },
-          "alpha": {
-            "type": "number",
-            "description": "The transparency value. 0 is fully transparent and 1 is fully opaque.",
-            "minimum": 0,
-            "maximum": 1
-          }
-        },
-        "required": [
-          "red",
-          "green",
-          "blue",
-          "alpha"
-        ]
-      },
-      "RemoveBackgroundV2Request": {
-        "type": "object",
-        "properties": {
-          "image": {
-            "description": "The image to be processed.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/RemoveBgInputImage"
-              }
-            ]
-          },
-          "mode": {
-            "$ref": "#/components/schemas/RemoveBgMode"
-          },
-          "output": {
-            "description": "The options for the output image.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/RemoveBgOutputImageOptions"
-              }
-            ]
-          },
-          "trim": {
-            "type": "boolean",
-            "description": "If true, the image returned is cropped to the cutout border. Transparent pixels are removed.",
-            "default": false
-          },
-          "backgroundColor": {
-            "description": "The background color.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/RemoveBgColor"
-              }
-            ]
-          },
-          "colorDecontamination": {
-            "type": "number",
-            "description": "If the value is greater than 0, automatically removes colored reflections that have been left on the main subject by the background.",
-            "minimum": 0,
-            "maximum": 1,
-            "default": 1,
-            "example": 1
-          }
-        },
-        "required": [
-          "image"
-        ]
-      },
       "JobLinkResponse": {
         "type": "object",
         "properties": {
@@ -6055,64 +5085,6 @@
           "statusUrl"
         ]
       },
-      "JobStatusPollPayload": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "$ref": "#/components/schemas/JobStatus"
-          },
-          "jobId": {
-            "type": "string",
-            "description": "The job ID."
-          }
-        },
-        "required": [
-          "status",
-          "jobId"
-        ]
-      },
-      "JobStatusSucceededResponse": {
-        "type": "object",
-        "title": "Succeeded",
-        "properties": {
-          "status": {
-            "type": "string",
-            "enum": ["succeeded"]
-          },
-          "jobId": {
-            "type": "string",
-            "description": "The job ID."
-          },
-          "result": {
-            "type": "object",
-            "properties": {
-              "outputs": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "destination": {
-                      "type": "object",
-                      "properties": {
-                        "url": {
-                          "type": "string",
-                          "description": "The output URL"
-                        }
-                      }
-                    },
-                    "mediaType": {
-                      "type": "string",
-                      "description": "The media type of the output"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "required": ["status", "jobId", "result"]
-      },
-
       "FillMaskedAreasInputImage": {
         "type": "object",
         "properties": {
@@ -6218,6 +5190,11 @@
                 "$ref": "#/components/schemas/MaskBodyPartsInputMask"
               }
             ]
+          },
+          "useGranularLabels": {
+            "type": "boolean",
+            "description": "When set to true, the API returns granular side-specific labels for bilateral body parts (e.g., Left Shoe, Right Shoe, Left Arm, Right Arm). When false or omitted, the API returns the default combined label set. See the Granular Labels section of the documentation for the full label reference.",
+            "default": false
           }
         },
         "required": [
@@ -6319,7 +5296,6 @@
           "mask"
         ]
       },
-
       "OutputImageDetails": {
         "type": "object",
         "properties": {
@@ -6402,7 +5378,8 @@
         "properties": {
           "label": {
             "type": "string",
-            "description": "The label of the identified body part."
+            "description": "The label of the identified body part or item. When useGranularLabels is true, side-specific labels (e.g., Left Shoe, Right Shoe) are returned. See GranularBodyPartLabel for the full enumeration of possible values.",
+            "example": "Left Shoe"
           },
           "boundingBox": {
             "description": "The bounding box of the identified body part.",
@@ -6714,9 +5691,43 @@
           "jobId",
           "status"
         ]
+      },
+      "GranularBodyPartLabel": {
+        "type": "string",
+        "description": "The set of body part labels returned when useGranularLabels is true.",
+        "enum": [
+          "Background",
+          "Hair",
+          "Eyebrow",
+          "Eyes",
+          "Pupil",
+          "Nose",
+          "Mouth",
+          "Teeth",
+          "Face",
+          "Neck",
+          "Beard",
+          "Left Ear",
+          "Right Ear",
+          "Left Arm",
+          "Right Arm",
+          "Left Hand",
+          "Right Hand",
+          "Left Leg",
+          "Right Leg",
+          "Left Shoe",
+          "Right Shoe",
+          "Upper Clothes",
+          "Lower Clothes",
+          "Coat",
+          "Dress",
+          "Hat",
+          "Glasses",
+          "Accessories"
+        ]
       }
     },
-    "headers":{
+    "headers": {
       "X-Access-Consumption-Status": {
         "description": "This is the value of different consumption statuses based on credits remaining from the user. Possible values can be quota_available, quota_warning_hard_cap, quota_exhausted_using_daily_credits.",
         "schema": {
@@ -6762,14 +5773,16 @@
       }
     },
     "securitySchemes": {
-      "BearerAuth": {
+      "AccessToken": {
         "type": "http",
-        "scheme": "bearer"
+        "scheme": "bearer",
+        "description": "The Adobe-generated access token, S2S format."
       },
-      "ApiKeyAuth": {
+      "X-Api-Key": {
         "type": "apiKey",
         "name": "x-api-key",
-        "in": "header"
+        "in": "header",
+        "description": "The client ID for authentication."
       }
     }
   }

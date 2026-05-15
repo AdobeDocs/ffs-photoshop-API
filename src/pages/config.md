@@ -10,11 +10,16 @@
         - [Audio/Video API](https://developer.adobe.com/audio-video-firefly-services/?aio_internal) Docs and references for Audio/Video API.
         - [InDesign API](https://developer.adobe.com/firefly-services/docs/indesign-apis/?aio_internal) Docs and references for InDesign API.
         - [Substance 3D API](https://developer.adobe.com/firefly-services/docs/s3dapi/?aio_internal) Unlock generative AI for rendering and object composites.
+        - [Illustrator API](https://developer.adobe.com/firefly-services/docs/illustrator/?aio_internal) Docs and references for Illustrator API.
+        - [Creative Production API](https://developer.adobe.com/firefly-services/docs/workflow-builder-api/?aio_internal) Docs and references for Firefly Creative Production API.
+        - [Express API](https://developer.adobe.com/firefly-services/docs/express-api/?aio_internal) Docs and references for Express API.
         - [Content Tagging API](https://experienceleague.adobe.com/docs/experience-platform/intelligent-services/content-commerce-ai/overview.html) Docs and references for Content Tagging services.
     - [About Photoshop API](/index.md)
     - [Getting Started](/getting-started/index.md)
     - [Guides](/guides/index.md)
-    - [API Reference](/api/index.md)
+    - API Reference
+        - [Photoshop API v1](/api/index.md) - All v1 endpoints
+        - [Photoshop API v2](/api/photoshop-v2/index.md) - All v2 endpoints
 
 - buttons:
     - [Support](https://airtable.com/appu5RTWgdM95jynx/pagyuT1qspNJcPU2E/form)
@@ -22,30 +27,73 @@
 
 - subPages:
     - What's New header
-    - [Deprecation Announcement](/getting-started/deprecation-announcement/index.md)
+    - [Photoshop API v2 Generally Available](/getting-started/v2-ga/index.md)
+    - [Photoshop v1 Deprecation](/getting-started/deprecation-announcement/index.md)
     - Getting Started header
     - [Authentication](/getting-started/index.md)
     - [Storage Solutions](/getting-started/storage-solutions/index.md)
     - [Technical Usage Notes](/getting-started/technical-usage-notes/index.md)
     - [Webhooks and Events](/getting-started/webhooks/index.md)
+    - [UXP Scripts](/getting-started/uxp/index.md)
     - Learn More header
     - [Photoshop Concepts](/getting-started/concepts/index.md)
     - Guides header
-    - [Using these guides](/guides/index.md)
-    - [Photoshop Actions](/guides/photoshop-actions/index.md)
-    - [Using the ActionJSON endpoint](/guides/actionjson-endpoint/index.md)
-    - [Using Smart Objects](/guides/smart-objects-and-the-api/index.md)
-    - [Edit Text](/guides/edit-text/index.md)
-    - [Product Crop](/guides/product-crop/index.md)
-    - [Using Depth Blur](/guides/depthblur/index.md)
-    - [PSD Renditions and Conversions](/guides/rendering-and-conversions/index.md)
-    - [Layer level edits](/guides/layer-level-edits/index.md)
-    - [Document level edits](/guides/document-level-edits/index.md)
-    - [Artboards](/guides/artboards/index.md)
-    - [Remove Background](/guides/remove-background/index.md)
-    - [Triggering an event](/guides/triggering-an-event/index.md)
-    - [Get job status](/guides/get-job-status/index.md)
-    - [Retrieve a PSD manifest](/guides/retrieve-manifest/index.md)
-    - [Create a mask](/guides/create-mask/index.md)
-    - [Inpainting with Fill Mask](/guides/using-fill-mask/index.md)
-    - [Enhance image mask quality with Refine Mask](/guides/using-refine-mask/index.md)
+    - [Photoshop API v2 guides](/guides/photoshop-v2/v1-to-v2/guides-v2/index.md)
+      - [Execute Actions workflow](/guides/photoshop-v2/v1-to-v2/guides-v2/execute-actions.md)
+      - [Smart Object workflow](/guides/photoshop-v2/v1-to-v2/guides-v2/smart-object-workflow.md)
+      - [v2/edit API benchmarking](/guides/photoshop-v2/v1-to-v2/guides-v2/v2-edit-api-benchmarking.md)
+      - [Pegasus worker v2 model reference](/guides/photoshop-v2/v1-to-v2/guides-v2/pegasus-worker-v2-models.md)
+    - [Photoshop API v1 guides](/guides/v1/index.md)
+      - [Granular Labels](/guides/granular-labels/index.md)
+      - [Photoshop Actions](/guides/photoshop-actions/index.md)
+      - [Using the ActionJSON endpoint](/guides/actionjson-endpoint/index.md)
+      - [Using Smart Objects](/guides/smart-objects-and-the-api/index.md)
+      - [Edit Text](/guides/edit-text/index.md)
+      - [Product Crop](/guides/product-crop/index.md)
+      - [Using Depth Blur](/guides/depthblur/index.md)
+      - [PSD Renditions and Conversions](/guides/rendering-and-conversions/index.md)
+      - [Layer level edits](/guides/layer-level-edits/index.md)
+      - [Document level edits](/guides/document-level-edits/index.md)
+      - [Artboards](/guides/artboards/index.md)
+      - [Remove Background](/guides/remove-background/index.md)
+      - [Triggering an event](/guides/triggering-an-event/index.md)
+      - [Get job status](/guides/get-job-status/index.md)
+      - [Retrieve a PSD manifest](/guides/retrieve-manifest/index.md)
+      - [Create a mask](/guides/create-mask/index.md)
+      - [Inpainting with Fill Mask](/guides/using-fill-mask/index.md)
+      - [Enhance image mask quality with Refine Mask](/guides/using-refine-mask/index.md)
+    - Migrate v1 to v2 header
+    - [Migrating to v2 overview](/guides/photoshop-v2/v1-to-v2/index.md)
+      - [Key improvements and architecture with v2](/guides/photoshop-v2/v1-to-v2/key-improvements.md)
+      - [What's new in v2](/guides/photoshop-v2/v1-to-v2/v2-whats-new.md)
+      - [API v2 behavior catalog](/guides/photoshop-v2/v1-to-v2/v2-api-catalog.md)
+    - [Edit operations migration](/guides/photoshop-v2/v1-to-v2/edit-operations.md)
+    - [Document operations migration](/guides/photoshop-v2/v1-to-v2/document-operations-migration.md)
+      - [Document creation migration](/guides/photoshop-v2/v1-to-v2/document-creation-migration.md)
+    - [Layer operations migration](/guides/photoshop-v2/v1-to-v2/composite-migration.md)
+      - [Layer operations migration overview](/guides/photoshop-v2/v1-to-v2/layer-operations-overview.md)
+      - [Image layer operations migration](/guides/photoshop-v2/v1-to-v2/layer-operations-image.md)
+      - [Text layer operations migration](/guides/photoshop-v2/v1-to-v2/layer-operations-text.md)
+      - [Adjustment layer operations migration](/guides/photoshop-v2/v1-to-v2/layer-operations-adjustments.md)
+      - [Smart object operations migration](/guides/photoshop-v2/v1-to-v2/layer-operations-smart-objects.md)
+      - [Advanced layer operations migration](/guides/photoshop-v2/v1-to-v2/layer-operations-advanced.md)
+      - [Background layer operations migration](/guides/photoshop-v2/v1-to-v2/layer-operations-background.md)
+      - [Export layers migration](/guides/photoshop-v2/v1-to-v2/export-layers-migration.md)
+    - [Actions migration](/guides/photoshop-v2/v1-to-v2/actions-migration.md)
+      - [Execute Actions v1 reference](/guides/photoshop-v2/v1-to-v2/execute-actions-v1-reference.md)
+    - [Artboard migration](/guides/photoshop-v2/v1-to-v2/artboard-migration.md)
+      - [Create artboard v1 reference](/guides/photoshop-v2/v1-to-v2/create-artboard-v1-reference.md)
+    - [Output types migration](/guides/photoshop-v2/v1-to-v2/output-types-migration.md)
+      - [Format conversion migration](/guides/photoshop-v2/v1-to-v2/format-conversion-migration.md)
+      - [ICC profile migration](/guides/photoshop-v2/v1-to-v2/icc-profile-migration.md)
+    - [Manifest migration](/guides/photoshop-v2/v1-to-v2/manifest-migration.md)
+      - [Manifest response format](/guides/photoshop-v2/v1-to-v2/manifest-response-migration.md)
+    - [Status endpoint migration](/guides/photoshop-v2/v1-to-v2/status-migration.md)
+    - [Create composite v1 reference](/guides/photoshop-v2/v1-to-v2/create-composite-v1-reference.md)
+    - [Convenience APIs migration](/guides/photoshop-v2/v1-to-v2/convenience-apis/index.md)
+      - [Product crop migration](/guides/photoshop-v2/v1-to-v2/convenience-apis/product-crop.md)
+      - [Depth blur migration](/guides/photoshop-v2/v1-to-v2/convenience-apis/depth-blur.md)
+      - [Text layer operations migration](/guides/photoshop-v2/v1-to-v2/convenience-apis/text-layer-operations.md)
+      - [Smart Object Replace migration](/guides/photoshop-v2/v1-to-v2/convenience-apis/smart-object-replace.md)
+    - [LLM migration reference](/guides/photoshop-v2/v1-to-v2/llm-migration-reference.md)
+
