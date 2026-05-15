@@ -575,6 +575,14 @@ V2 allows you to override the image's embedded orientation metadata by specifyin
 3. **Document Operations** - `edits.document` with resize/crop/trim
 4. **Layer Operations** - `edits.layers` with add/move/delete/edit
 
+**V1 → V2 Document Field Mapping (`options.document.*` → `edits.document.*`):**
+
+| V1 (`options.document`) | V2 (`edits.document`) | Notes |
+|---|---|---|
+| `imageSize` | `resize` | Width/height must use `{unit, value}` object format in V2 |
+| `canvasSize` | `crop` | Use `bounds: {top, left, right, bottom}` in V2 |
+| `trim` | `trim` | Field name unchanged; `trimUpon: "transparent_pixels"` in V2 |
+
 **Request Structure Pattern:**
 ```json
 {
@@ -644,6 +652,15 @@ V2 allows you to override the image's embedded orientation metadata by specifyin
 }
 ```
 
+**V1 `parentLayer` Field:**
+V1 layer operations could include `parentLayer: {id: N}` or `parentLayer: {name: "..."}` to specify which group/layer a layer belongs to. This is a valid V1 field (not silently ignored). Never copy `parentLayer` into V2 output — use placement instead.
+
+| V1 operation | V2 equivalent |
+|---|---|
+| `add` + `parentLayer: {id: N}` | `operation.type: "add"` + `placement: {type: "into", referenceLayer: {id: N}}` |
+| `move` + `parentLayer: {id: N}` | `operation.type: "move"` + `placement: {type: "into", referenceLayer: {id: N}}` |
+| `edit` + `parentLayer: {id: N}` | `operation.type: "edit"` — drop `parentLayer` entirely (V2 targets by name/id regardless of parent) |
+
 <InlineAlert variant="warning" slots="text"/>
 
 **Layer processing order (breaking change):** V1 processed layers bottom-up (last item in array first); V2 processes layers top-down (first item in array first). If a layer uses `above`, `below`, or `into` placement with a `referenceLayer`, the referenced layer must appear **earlier** in the array (already created/existing) before the layer that references it.
@@ -683,6 +700,7 @@ For `smart_object_layer`, `opacity` and `blendMode` remain nested under `blendOp
 - **AI file requirement:** AI files are only supported when the **Create PDF Compatible File** option was enabled when saving from Adobe Illustrator.
 - **Resize with linked smart objects:** Width-only resize (no layer edits) → ALL linked SOs are rasterized to pixel layers. Edit/add a linked SO in the same request + resize → that edited SO stays linked; all other linked SOs are rasterized.
 - Cannot replace a linked SO with an embedded SO (V2 limitation)
+- **SO canvas content scaling:** `transformMode` is a document-level layer operation and does NOT control how replacement content is scaled onto the SO canvas. SO canvas scaling is determined solely by `transform.dimension`: omitting it → proportional scale (aspect ratio preserved); providing it → stretch to exact dimensions. Use `transformMode: "fit"` or `"fill"` without `transform.dimension` for cutout/transparent-background assets.
 
 **Adjustment Layer Specifics:**
 
@@ -721,6 +739,10 @@ For `smart_object_layer`, `opacity` and `blendMode` remain nested under `blendOp
 - `textOrientation` is a text-level property (not per character-style as V1's `orientation`)
 - Multi-line text: use `\r` for line breaks (same in both)
 - Font options: V1 `options.fonts` (href+storage) → V2 `fontOptions.additionalFonts` (source.url); V1 `options.globalFont` → V2 `fontOptions.defaultFontPostScriptName`; V1 `options.manageMissingFonts: "useDefault"` → V2 `fontOptions.missingFontStrategy: "use_default"` (`"fail"` unchanged)
+
+> **TRAP — fontOptions placement differs by endpoint:**
+> - `documentOperations` → `/v2/create-composite`: `fontOptions` is a **top-level field** alongside `edits`, `image`, and `outputs`. Do NOT nest it inside `edits`.
+> - `/pie/psdService/text` → `/v2/execute-actions`: `fontOptions` is inside the `options` object (i.e., `options.fontOptions`), because `ActionsOptions` owns it.
 
 **Background Layer Specifics:**
 
@@ -913,7 +935,13 @@ V2 supports up to 10 actions executed in sequence:
 ```
 
 **Additional Contents Placeholder:**
-Reference in ActionJSON or UXP scripts as `__ADDITIONAL_CONTENT_0__`, `__ADDITIONAL_CONTENT_1__`, etc. (0-based index matches position in `additionalContents` array). Binary resources (brushes, patterns, fonts) must use external URLs — inline content is not supported for these types.
+Reference in ActionJSON or UXP scripts as `__ADDITIONAL_CONTENTS_PATH_0__`, `__ADDITIONAL_CONTENTS_PATH_1__`, etc. (0-based index matches position in `additionalContents` array). Binary resources (brushes, patterns, fonts) must use external URLs — inline content is not supported for these types.
+
+V1 ActionJSON referenced additional images with positional placeholders that vary by service:
+- `ACTION_JSON_OPTIONS_ADDITIONAL_IMAGES_${index}` (used in actionJSON/execute-actions workflows)
+- `PEGASUS_ACTION_JSON_OPTIONS_ADDITIONAL_IMAGES_${index}` (used in Pegasus/Lightroom action workflows)
+
+Both map to `__ADDITIONAL_CONTENTS_PATH_${index}__` in V2 (e.g., index 0 → `__ADDITIONAL_CONTENTS_PATH_0__`). The old formats are accepted for backward compatibility but `__ADDITIONAL_CONTENTS_PATH_${index}__` is the canonical V2 form.
 
 #### Convenience API details
 
@@ -943,9 +971,20 @@ Reference in ActionJSON or UXP scripts as `__ADDITIONAL_CONTENT_0__`, `__ADDITIO
 - **What It Does**: Applies neural depth-of-field blur effect
 - **Use Case**: Portrait and product photography with bokeh effects
 
+**Smart Object Replace:**
+- **V1**: `/pie/psdService/smartObject` — dedicated endpoint for placing or replacing smart object content in a PSD
+- **V2**: `/v2/create-composite` with `edits.layers` using `type: "smart_object_layer"`
+- Key field map: `input.href` → `smartObject.smartObjectFile.source.url`; `add` block → `operation.type: "add"` + `placement`; implicit replace (no `add`) → `operation.type: "edit"` (required explicitly in V2)
+- Placement: `add.insertTop` → `placement.type: "top"`, `insertAbove: {name}` → `placement.type: "above"` + `referenceLayer: {name}`
+- V1 limitations lifted: linked smart objects (`smartObject.isLinked: true`), no 2000×2000 px rasterization limit, `transformMode` for document-level layer scaling (`"fit"`, `"fill"`, `"custom"`, `"none"`)
+
+> **Implicit smart object type:** V1 payloads sent to `/psdService/smartObject` often omit `type: "smartObject"` from the layer object. Any layer with an `input` field on this endpoint is implicitly a smart object. Always convert to `type: "smart_object_layer"` — never produce `type: "layer"` for layers on this endpoint.
+
+
 **Text Layer Operations:**
-- **V1**: `/pie/psdService/text` — declarative request with `options.layers[]` (layer name + characterStyles with `size`, `color`, `fontPostScriptName`, etc.)
+- **V1**: `/pie/psdService/text` — declarative request with `options.layers[]` supporting: `text.content` (text string), full `characterStyles` (`size`, `color`, `fontPostScriptName`, `leading`, `tracking`, `syntheticBold/Italic`, `fontCaps`, `baseline`, `strikethrough`, `underline`, `verticalScale/horizontalScale`, `ligature`, `autoKern`), `paragraphStyles.alignment`, and font management (`options.fonts[]`, `manageMissingFonts`, `globalFont`)
 - **V2**: `/v2/execute-actions` — **no equivalent declarative text endpoint exists in V2**; must use ActionJSON or UXP
+- Font management maps to `options.fontOptions`: `fonts[].href` → `additionalFonts[].source.url`, `manageMissingFonts` → `missingFontStrategy` (`"useDefault"` → `"use_default"`), `globalFont` → `defaultFontPostScriptName`
 - **Additional Contents**: No
 
 **When to use ActionJSON vs UXP for text edits:**
@@ -974,8 +1013,8 @@ For multiple layers: repeat the `select` + `set` sequence within the same string
 **Split View:**
 - **Steps**: 34 action steps
 - **Additional Contents**: Yes (2 required)
-  - `__ADDITIONAL_CONTENT_0__`: Edited/final output image
-  - `__ADDITIONAL_CONTENT_1__`: Product logo
+  - `__ADDITIONAL_CONTENTS_PATH_0__`: Edited/final output image
+  - `__ADDITIONAL_CONTENTS_PATH_1__`: Product logo
 - **Key Parameters**: Width: 1200px (resizes final output)
 - **What It Does**: Masked before/after comparison with center divider line + logo
 - **Use Case**: Demonstrating image processing effects with branding
@@ -983,8 +1022,8 @@ For multiple layers: repeat the `select` + `set` sequence within the same string
 **Side by Side:**
 - **Steps**: 19 action steps
 - **Additional Contents**: Yes (2 required)
-  - `__ADDITIONAL_CONTENT_0__`: Edited/final output image
-  - `__ADDITIONAL_CONTENT_1__`: Product logo
+  - `__ADDITIONAL_CONTENTS_PATH_0__`: Edited/final output image
+  - `__ADDITIONAL_CONTENTS_PATH_1__`: Product logo
 - **Key Parameters**: Width: 1195.0px (exact value with decimal)
 - **What It Does**: Simple side-by-side comparison without masking + logo
 - **Use Case**: Clean before/after comparisons with branding
@@ -1062,6 +1101,7 @@ Export layers via `outputs[].layers` on the `/v2/create-composite` endpoint. Beh
 - Supports all `cropMode` values: `"layer_bounds"` (default), `"trim_to_transparency"`, `"document_bounds"`
 - Supported formats: JPEG, PNG, TIFF, **PSD** (PSD is allowed for single-layer only)
 - Default JPEG quality: `photoshop_max`; default PNG compression: `default` (level 6)
+- **V1 migration note:** V1 always exported single layers at document/canvas dimensions. V2 defaults to `"layer_bounds"` (layer-sized output). To preserve V1 output dimensions, set `cropMode: "document_bounds"` explicitly.
 
 **Multi-Layer Export** — specify two or more layers in `outputs[].layers`:
 - Composites those layers to a single raster file
@@ -3578,7 +3618,7 @@ Use this checklist when migrating or validating V1 → V2 code:
 - [ ] Text layers: characterStyles wrapped in `characterStyle` object
 - [ ] Text layers: paragraphStyles wrapped in `paragraphStyle` object
 - [ ] Pixel mask offset uses `offset.horizontal`/`offset.vertical` (not `offset.x`/`offset.y`)
-- [ ] Pixel mask: V1 `mask.linked`/`enabled`/`input` → V2 `pixelMask.linked`/`enabled`/`source.url` (also: prefix changed from `mask` to `pixelMask`)
+- [ ] Pixel mask: V1 `mask.linked`/`mask.enabled` → V2 `mask.isLinked`/`mask.isEnabled`; source is `mask.source.url` (not `mask.input.href`)
 - [ ] Visibility: `visible` → `isVisible`
 - [ ] Opacity/blend mode: for most layer types, top-level `opacity` and `blendMode` (not `blendOptions`); for `smart_object_layer`, use `blendOptions.opacity` and `blendOptions.blendMode`
 - [ ] Layer transforms: V1 `bounds {left,top,width,height}` → V2 `transform {offset:{horizontal,vertical}, dimension:{width,height}}`; `transformMode: "custom"` is required
@@ -3627,7 +3667,8 @@ Use this checklist when migrating or validating V1 → V2 code:
 - [ ] ActionJSON is stringified (not array/object)
 - [ ] `contentType` specified for inline content
 - [ ] Additional contents use correct field name (`additionalContents`, not `additionalImages`)
-- [ ] Additional contents placeholder format is `__ADDITIONAL_CONTENT_0__` (not `__ADDITIONAL_IMAGES_0__` or `__ADDITIONAL_CONTENTS_PATH_0__`); preserve the numeric index from the original V1 placeholder exactly — do NOT renumber
+- [ ] Additional contents placeholder format is `__ADDITIONAL_CONTENTS_PATH_0__` (not `__ADDITIONAL_IMAGES_0__` or `__ADDITIONAL_CONTENT_0__`); preserve the numeric index from the original V1 placeholder exactly — do NOT renumber
+- [ ] V1 placeholder `ACTION_JSON_OPTIONS_ADDITIONAL_IMAGES_0` / `PEGASUS_ACTION_JSON_OPTIONS_ADDITIONAL_IMAGES_0` → `__ADDITIONAL_CONTENTS_PATH_0__` (update index suffix to match array position)
 - [ ] `additionalContents` max count is 25 (not 10)
 - [ ] UXP script uses object syntax for `options.uxp` (not array)
 - [ ] UXP script output paths use `plugin-temp:/filename.ext` (not `__UXP_OUTPUT_PATH__`)
@@ -3794,9 +3835,9 @@ curl -X GET https://photoshop-api.adobe.io/v2/status/{jobId} \
 
 ## Document version
 
-**Version:** 1.19
+**Version:** 1.20
 **Created:** October 29, 2025
-**Last Updated:** May 6, 2026
+**Last Updated:** May 12, 2026
 
 **Coverage:**
 - All migration guides consolidated
@@ -3814,7 +3855,7 @@ curl -X GET https://photoshop-api.adobe.io/v2/status/{jobId} \
 - XMP with Orientation override (V2 new capability)
 - Creative Cloud Storage (ACP) clarifications
 - Layer processing order (V2 top-down, V1 bottom-up)
-- `additionalContents` / `__ADDITIONAL_CONTENT_0__` (replaces `additionalImages`)
+- `additionalContents` / `__ADDITIONAL_CONTENTS_PATH_0__` (replaces `additionalImages`); V1 placeholders `ACTION_JSON_OPTIONS_ADDITIONAL_IMAGES_${index}` and `PEGASUS_ACTION_JSON_OPTIONS_ADDITIONAL_IMAGES_${index}` map to `__ADDITIONAL_CONTENTS_PATH_${index}__`
 - UXP object syntax and `plugin-temp:/` output path
 - `scriptOutputPattern` hosted destination (`{"validityPeriod": 3600}`)
 - `resolution` object format, integer `depth`, `"grayscale"` mode name
@@ -3866,6 +3907,9 @@ All four V1 endpoints map to `POST /v2/create-composite`.
 | `options.document.*` | `image.*` (top-level) |
 | `options.layers[]` | `edits.layers[]` |
 | `options.*` (doc ops) | `edits.document.*` |
+| `options.document.imageSize` | `edits.document.resize` |
+| `options.document.canvasSize` | `edits.document.crop` |
+| `options.document.trim` | `edits.document.trim` |
 | `outputs[].href` | `outputs[].destination.url` |
 | `outputs[].type` | `outputs[].mediaType` |
 
@@ -3925,6 +3969,12 @@ V1 accepted 0–65535 for all `fontColor` components. V2 enforces lower maximums
 
 All components are required and default to `0` when omitted. Usage: `fontColor.rgb`, `fontColor.cmyk`, `fontColor.lab`, `fontColor.gray`.
 
+> **TRAP — fontColor vs solidColor structures are inconsistent:**
+> - `characterStyle.fontColor` **keeps** the color-model wrapper: `fontColor: {rgb: {red: 0, green: 0, blue: 0}}`
+> - `solid_color_layer.fill.solidColor` **removes** the wrapper: `solidColor: {red: 0, green: 0, blue: 0}`
+>
+> Do NOT flatten fontColor components directly onto fontColor. Do NOT add an `rgb` wrapper to fill.solidColor.
+
 **V2 rejects requests where any component exceeds its maximum.** Cap values before sending:
 - `rgb`, `cmyk`, `gray`, `lab.l`: cap at **32768** — e.g. V1 `red: 40000` → V2 `red: 32768`
 - `lab.a`, `lab.b`: cap at **16384** — e.g. V1 `a: 17000` → V2 `a: 16384`
@@ -3952,6 +4002,13 @@ V1 used `fills` (plural array) with nested `solidColor.rgb` wrapper. V2 uses `fi
 **V2:** `{"fill": {"solidColor": {"red": 255, "green": 0, "blue": 0}}}`
 
 Error when using V1 structure: `"edits.layers[0].fill: fill is required when adding a solid color layer"`.
+
+> **TRAP — V1 `fillLayer` with `input.href` maps to `type: "layer"` (pixel layer), NOT `solid_color_layer`:**
+> V1 `fillLayer` accepted either a solid color fill OR an image source via `input.href`. When `input.href` is present, the layer is a pixel/image layer:
+> - Set V2 `type: "layer"` (not `solid_color_layer`)
+> - Put the image at `image.source.url` (from `input.href`)
+>
+> Only map to `solid_color_layer` when V1 uses `fills[0].solidColor.rgb.*` with **no** `input` field.
 
 ### Output format changes
 
@@ -4090,6 +4147,8 @@ The only known API-visible gap is Neural Filters (Depth Blur), which are not yet
 ### ActionJSON format (critical breaking change)
 
 V1 `options.actionJSON` was an **array of inline JSON objects**. V2 requires ActionJSON as a **stringified JSON string** inside `options.actions[].source.content` with `contentType: "application/json"`.
+
+> **Action array order is execution order.** Photoshop executes actions sequentially. Never reorder `options.actionJSON` entries during conversion — the V1 array order must be reproduced exactly in the V2 stringified content.
 
 ```json
 // V1

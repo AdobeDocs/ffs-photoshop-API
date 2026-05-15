@@ -258,12 +258,12 @@ V2 adds SVG as a new smart object source type; V1 already supported AI and PDF.
 
 ## Transform Mode
 
-V2 introduces `transformMode` property that controls how the smart object is transformed:
+V2 introduces `transformMode` property that controls how the smart object **layer** is positioned and scaled within the document:
 
 - **`"none"`** - No transform applied (use original size)
 - **`"custom"`** - Use explicit transform values (offset, dimension, angle, etc.)
-- **`"fit"`** - Fit the smart object to maintain aspect ratio
-- **`"fill"`** - Fill the available space
+- **`"fit"`** - Scale the layer to fit within its bounds while maintaining aspect ratio
+- **`"fill"`** - Scale the layer to fill its bounds (may crop)
 
 ```json
 {
@@ -278,6 +278,15 @@ V2 introduces `transformMode` property that controls how the smart object is tra
   }
 }
 ```
+
+<InlineAlert variant="warning" slots="text"/>
+
+**`transformMode` is a document-level operation and does not control how replacement content is scaled onto the smart object canvas.** SO canvas content scaling is controlled separately by `transform.dimension`:
+
+- **No `transform.dimension`** (default) — replacement image is proportionally scaled to fit the SO canvas, preserving aspect ratio. This applies regardless of `transformMode`. Use this for transparent-background assets (e.g., cutout player photos) to avoid distortion.
+- **With `transform.dimension`** — replacement image is stretched to exactly match the SO canvas dimensions. Use this when you need pixel-exact control over the SO canvas size.
+
+Example: `transformMode: "fill"` with no `transform.dimension` proportionally scales the replacement onto the SO canvas first, then `fill` is applied at the document layer level. The two operations are independent.
 
 ## Smart Object with Transformations
 
