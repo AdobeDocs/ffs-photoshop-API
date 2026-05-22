@@ -1,5 +1,5 @@
 ---
-title: Export Layers Migration
+title: Export Layers Migration Guide
 description: Migrate exporting one or more layers from a document to the V2 create-composite endpoint
 hideBreadcrumbNav: true
 keywords:
@@ -11,11 +11,9 @@ keywords:
   - v1 to v2
 ---
 
-# Export Layers Migration Guide
+# Export layers migration guide
 
-## Overview
-
-This guide describes how to migrate **exporting one or more layers** from a document to the V2 `/v2/create-composite` endpoint: schema changes, enum support for single-layer export, PSD support (single-layer only; multi-layer does not support PSD as of now), default quality and compression, and sample V1/V2 requests.
+This guide describes how to migrate **exporting one or more layers** from a document to the `/v2/create-composite` endpoint: schema changes, enum support for single-layer export, PSD support (single-layer only; multi-layer does not support PSD as of now), default quality and compression, and sample v1/v2 requests.
 
 ## Key differences (single-layer vs multi-layer export)
 
@@ -24,9 +22,15 @@ This guide describes how to migrate **exporting one or more layers** from a docu
 
 <HorizontalLine />
 
-## Enum support (V2)
+## Enum support (v2)
 
 ### Crop mode (`cropMode`)
+
+<InlineAlert variant="info" slots="header,text"/>
+
+**V1 migration note — single-layer output dimensions**
+
+V1 always exported single layers at **document/canvas dimensions** regardless of layer position or size. V2 defaults to `layer_bounds`, so the output is sized to the layer itself rather than the canvas. If your V1 workflow relied on canvas-sized output, set `cropMode: "document_bounds"` explicitly to preserve that behavior.
 
 Controls the output bounding box for exported content. Supported for single-layer, multi-layer, and document export, with one restriction: `layer_bounds` is only valid for single-layer export.
 
@@ -36,15 +40,15 @@ Controls the output bounding box for exported content. Supported for single-laye
 | `trim_to_transparency` | Crop to tight bounds of non-transparent pixels. | Yes | Yes | Yes |
 | `document_bounds` | Use full document (or artboard) bounds (default for document/multi-layer export). | Yes | Yes | Yes |
 
-<InlineAlert variant="info" slots="text"/>
+<InlineAlert variant="warning" slots="header,text"/>
+
+**INFO**
 
 Using `layer_bounds` with multi-layer or document export returns a validation error. Use `trim_to_transparency` or `document_bounds` instead.
 
-> **V1 migration note — single-layer output dimensions:** V1 always exported single layers at **document/canvas dimensions** regardless of layer position or size. V2 defaults to `layer_bounds`, so the output is sized to the layer itself rather than the canvas. If your V1 workflow relied on canvas-sized output, set `cropMode: "document_bounds"` explicitly to preserve that behavior.
-
 ### Media type (`mediaType`)
 
-For single-layer export, V2 supports: `image/jpeg`, `image/png`, `image/tiff`, `image/vnd.adobe.photoshop` (PSD). See [Output Types Migration](output-types-migration.md) for full enum details.
+For single-layer export, v2 supports: `image/jpeg`, `image/png`, `image/tiff`, `image/vnd.adobe.photoshop` (PSD). See [Output Types Migration](output-types-migration.md) for full enum details.
 
 <HorizontalLine />
 
@@ -101,7 +105,13 @@ Both single-layer and multi-layer exports support the optional `iccProfile` fiel
 
 ## Sample: single-layer export
 
-### V1 (example)
+**Schema changes (single-layer):** `inputs[].href` → `image.source.url`; `outputs[].href` → `outputs[].destination.url`; `outputs[].type` → `outputs[].mediaType`; `outputs[].layers` remains per output. Optional in V2: `cropMode`, `quality` / `compression` as string enums.
+
+**Layer identifier: mutually exclusive.** Each entry in `outputs[].layers[]` must use **either** `id` or `name` — not both. V1 tolerated both fields together as disambiguation hints; V2 rejects the payload with: `"Each layer reference must contain exactly one of id or name (not both)."` Prefer `id` when present; drop `name`.
+
+**V1 `outputs[].layers[]` with `visible` field:** Some V1 `renditionCreate`/`documentOperations` payloads included `outputs[].layers[]` entries with `{id, visible: true}` to select which layers appear in the composite export. Map these to V2 `outputs[].layers[]` as `[{id: N}, ...]` — this triggers multi-layer composite export. Do **not** move them to `edits.layers[]` (that path requires `type` + `operation` and performs layer edits, not export selection).
+
+### V1 example
 
 ```bash
 curl -X POST "https://image.adobe.io/pie/psdService/renditionCreate" \
@@ -120,7 +130,7 @@ curl -X POST "https://image.adobe.io/pie/psdService/renditionCreate" \
   }'
 ```
 
-### V2 (example)
+### V2 example
 
 ```bash
 curl -X POST "https://photoshop-api.adobe.io/v2/create-composite" \
@@ -139,17 +149,11 @@ curl -X POST "https://photoshop-api.adobe.io/v2/create-composite" \
   }'
 ```
 
-**Schema changes (single-layer):** `inputs[].href` → `image.source.url`; `outputs[].href` → `outputs[].destination.url`; `outputs[].type` → `outputs[].mediaType`; `outputs[].layers` remains per output. Optional in V2: `cropMode`, `quality` / `compression` as string enums.
-
-> **Layer identifier: mutually exclusive.** Each entry in `outputs[].layers[]` must use **either** `id` or `name` — not both. V1 tolerated both fields together as disambiguation hints; V2 rejects the payload with: `"Each layer reference must contain exactly one of id or name (not both)."` Prefer `id` when present; drop `name`.
-
-> **V1 `outputs[].layers[]` with `visible` field:** Some V1 `renditionCreate`/`documentOperations` payloads included `outputs[].layers[]` entries with `{id, visible: true}` to select which layers appear in the composite export. Map these to V2 `outputs[].layers[]` as `[{id: N}, ...]` — this triggers multi-layer composite export. Do **not** move them to `edits.layers[]` (that path requires `type` + `operation` and performs layer edits, not export selection).
-
-<HorizontalLine />
-
 ## Sample: multi-layer export
 
-### V1 (example)
+**Schema changes (multi-layer):** Multi-layer export does not support PSD as of now; use `mediaType`: `image/jpeg`, `image/png`, or `image/tiff` only. `cropMode` supports `trim_to_transparency` and `document_bounds` (not `layer_bounds`). Use string enums for `quality` (e.g., `maximum`, `photoshop_max`) and `compression` for PNG.
+
+### V1 example
 
 ```bash
 curl -X POST "https://image.adobe.io/pie/psdService/renditionCreate" \
@@ -168,7 +172,7 @@ curl -X POST "https://image.adobe.io/pie/psdService/renditionCreate" \
   }'
 ```
 
-### V2 (example)
+### V2 example
 
 ```bash
 curl -X POST "https://photoshop-api.adobe.io/v2/create-composite" \
@@ -187,10 +191,6 @@ curl -X POST "https://photoshop-api.adobe.io/v2/create-composite" \
   }'
 ```
 
-**Schema changes (multi-layer):** Same as above. **Note:** Multi-layer export does not support PSD as of now; use `mediaType`: `image/jpeg`, `image/png`, or `image/tiff` only. `cropMode` supports `trim_to_transparency` and `document_bounds` (not `layer_bounds`). Use string enums for `quality` (e.g. `maximum`, `photoshop_max`) and `compression` for PNG.
-
-<HorizontalLine />
-
 ## Migration checklist for export layers
 
 - [ ] Use `outputs[].destination.url`, `outputs[].mediaType`, and `outputs[].layers` (V2 shape).
@@ -198,8 +198,6 @@ curl -X POST "https://photoshop-api.adobe.io/v2/create-composite" \
 - [ ] `cropMode` `trim_to_transparency` and `document_bounds` work for all export types; `layer_bounds` is single-layer only.
 - [ ] Use string enums for `quality` (JPEG) and `compression` (PNG); omit for defaults (`photoshop_max` / `default`).
 - [ ] `iccProfile` is optional on layer exports — add if you need color space conversion (see [ICC Profile Migration](icc-profile-migration.md)).
-
-<HorizontalLine />
 
 ## Related guides
 
