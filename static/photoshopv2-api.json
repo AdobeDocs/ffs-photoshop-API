@@ -455,6 +455,10 @@
         "required": ["source"],
         "type": "object",
         "properties": {
+          "actionName": {
+            "type": "string",
+            "description": "The name of a specific action to execute within the action set. If omitted, all actions in the file are executed."
+          },
           "source": {
             "oneOf": [
               {
