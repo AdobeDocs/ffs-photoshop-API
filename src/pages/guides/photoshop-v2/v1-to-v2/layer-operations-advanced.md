@@ -609,6 +609,22 @@ When using `all` or `none`, the array must contain only that element. `["all","t
 
 **Group layers:** When editing a group layer, setting `protection` propagates to all descendant layers (children and nested groups).
 
+### Artboard Visibility — V1 vs V2 Behavioral Difference
+
+Setting `visible: false` on an **artboard root layer** behaves differently across API versions:
+
+| Behavior | V1 (`documentOperations`) | V2 (`create-composite`) |
+|---|---|---|
+| Artboard content rendered | **Always** (visibility ignored) | Only if `isVisible: true` |
+| Output dimensions | Full document canvas | Shrinks to visible artboards only |
+| Effect on child layers | No change | Children not composited |
+
+**V1 quirk:** In V1, hiding an artboard container by `id` (e.g., `{"id": 328, "visible": false}`) has no effect on the rendered output. The full document canvas is returned at its original pixel dimensions regardless of artboard visibility state. This is a known V1 limitation — artboard visibility is tracked but not applied at render time.
+
+**V2 behavior:** V2 correctly respects artboard visibility. A PSD with multiple artboards produces an output image sized to only the visible artboard content when other artboards are hidden.
+
+**Migration impact:** If your V1 workflow hides artboard root IDs to isolate a specific artboard for export, V2 will produce a different (smaller) output size. This is the correct and intended behavior — update any downstream size assumptions accordingly.
+
 ## Layer Transformations
 
 ### Positioning and Sizing

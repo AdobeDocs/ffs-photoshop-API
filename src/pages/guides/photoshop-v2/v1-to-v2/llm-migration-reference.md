@@ -678,6 +678,10 @@ V1 layer operations could include `parentLayer: {id: N}` or `parentLayer: {name:
 
 For `smart_object_layer`, `opacity` and `blendMode` remain nested under `blendOptions`. For all other layer types (image, text, adjustment, solid color, group, background), they are **top-level** properties in V2.
 
+<InlineAlert variant="info" slots="text"/>
+
+**Artboard visibility — V1 behavioral quirk:** In V1 `documentOperations`, setting `visible: false` on an **artboard root layer** (by `id` or `name`) does **not** suppress the artboard's rendered content. The full canvas is always returned at its original document dimensions regardless of artboard visibility state. In V2 `create-composite`, artboard visibility is respected — hidden artboards are excluded from rendering and output dimensions reflect only the visible artboard content. If migrating a workflow that hides artboard root layers expecting them to disappear from output, this is a **behavioral change in V2**, not a regression. Pixel-comparison tools will flag this as a dimension mismatch (e.g., `2930×4509` V1 vs `2930×960` V2) — this is expected.
+
 **Layer Transforms (V1 → V2):**
 
 - V1: layer-level `bounds: {left, top, width, height}`
@@ -1072,6 +1076,7 @@ Supports glob patterns: `*.json`, `result-*.png`, etc.
 - **Source options:** External URL, Creative Cloud Path, Creative Cloud File ID, Lightroom Path.
 - **Output formats:** JPEG, PNG, TIFF, PSD, PSDC, JSON manifest (6 formats).
 - **Storage options:** Same as other endpoints (External, Hosted, Embedded, Creative Cloud, Azure, Dropbox).
+- **⚠️ Artboard visibility behavior changed (V1 → V2):** In V1 `documentOperations`, toggling `visible: false` on an artboard container layer has **no effect on rendered output** — the full document canvas is always returned at its original dimensions. In V2 `create-composite`, artboard visibility is honored: hidden artboards are excluded from compositing and the output image dimensions shrink to only cover the visible artboard area. Downstream pixel-comparison tools will flag this as a dimension mismatch (e.g., `2930×4509` V1 vs `2930×960` V2 for a PSD where only one artboard row remains visible). **This is expected behavior, not a bug.**
 
 **Manifest:**
 - V1: `/pie/psdService/documentManifest`
@@ -3642,6 +3647,14 @@ Use this checklist when migrating or validating V1 → V2 code:
 - [ ] V2 default (no frame): point at canvas center — always set `text.frame` explicitly
 - [ ] `textOrientation` is text-level property (not per character-style)
 - [ ] Font options: `options.fonts` (href+storage) → `fontOptions.additionalFonts` (source.url); `options.globalFont` → `fontOptions.defaultFontPostScriptName`; `manageMissingFonts:"useDefault"` → `missingFontStrategy:"use_default"`
+- [ ] `lineHeight` / `autoLeading` (V2 only): V1 had no line height control — it always defaulted to auto. In V2, set `autoLeading: true` for the same auto behavior (line height = 120% of `fontSize`), or `autoLeading: false` with an explicit `lineHeight` for custom leading:
+  ```json
+  // auto — matches V1 behavior
+  { "characterStyle": { "fontSize": 30, "autoLeading": true } }
+
+  // custom leading
+  { "characterStyle": { "fontSize": 30, "autoLeading": false, "lineHeight": 48 } }
+  ```
 
 ### Smart object layer operations specific
 - [ ] Layer type: `"smartObject"` → `"smart_object_layer"`
@@ -3835,9 +3848,9 @@ curl -X GET https://photoshop-api.adobe.io/v2/status/{jobId} \
 
 ## Document version
 
-**Version:** 1.20
+**Version:** 1.21
 **Created:** October 29, 2025
-**Last Updated:** May 12, 2026
+**Last Updated:** May 20, 2026
 
 **Coverage:**
 - All migration guides consolidated
@@ -3871,6 +3884,7 @@ curl -X GET https://photoshop-api.adobe.io/v2/status/{jobId} \
 - Manifest response format changes: layer type renames (including `background_layer`, no `typeAttributes` on background entries), bounds format, thumbnail object, artboard `layers[]` key, document field renames
 - Composite API V1→V2 complete field-level diff (all 4 V1 endpoints, all 7 layer types, output formats)
 - Artboard API V1→V2 complete field-level diff (input restructure, storage mapping, quality/compression enums, crop mode, status response)
+- Artboard visibility behavior change: V1 ignores artboard container visibility (full canvas always rendered); V2 respects it (hidden artboards excluded, output dimensions shrink to visible content)
 - Adjustment layer operations: `adjustments.type` discriminant required, type mapping table, `exposureValue` rename, hue/sat `hueSaturationAdjustments[]` restructure, `localRange`, parameter ranges, `transformMode` not applicable
 - Text layer operations: character style range off-by-one (V1 `to`=length → V2 `apply.to`=inclusive end index), `font.postScriptName`, `text.frame` area/point types, bounds conversion, font options rename, `textOrientation`
 - Smart object operations: `smartObject.smartObjectFile.source.url` path, `isLinked`, resize-with-linked-SO rasterization behavior, SVG support, supported source file types (PSD, JPEG, PNG, TIFF, SVG, AI, PDF); SVG and AI added in V2; AI files require Create PDF Compatible File option in Illustrator
@@ -3954,6 +3968,8 @@ layers must appear earlier in the array in V2.
 | Default frame | Area at (0,0,4,4) | Point frame at canvas center |
 | Font options | `options.fonts`, `options.globalFont`, `options.manageMissingFonts` | `fontOptions.additionalFonts`, `.defaultFontPostScriptName`, `.missingFontStrategy` |
 | Missing font strategy | `"useDefault"` | `"use_default"` (Breaking: underscore) |
+| `lineHeight` | Not supported (always auto) | Supported in `characterStyle`; used when `autoLeading` is `false` |
+| `autoLeading` | Not supported | Default: `false`. `true` sets line height to auto (120% of `fontSize`); `false` uses custom `lineHeight` |
 
 #### Font color value ranges
 

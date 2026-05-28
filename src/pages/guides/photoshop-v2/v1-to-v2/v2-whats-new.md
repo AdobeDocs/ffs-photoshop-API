@@ -331,7 +331,9 @@ V2 introduces new character and paragraph style attributes not available in V1:
 | `fontAlpha` | Per-character font opacity |
 | `capsOption` | Capitalization option (e.g. `"all_caps"`) |
 
-See [Text Layer Operations Migration](layer-operations-text.md) for the complete character and paragraph style reference.
+V2 also fixes missing font detection during text layer edits. In V1, if a text layer used an unavailable font, editing that layer (changing `fontSize`, `fontName`, or any other character attribute) would not reliably trigger the configured `missingFontStrategy` — the job completed silently with the unresolved font retained. In V2, missing fonts are correctly detected in all edit scenarios and `missingFontStrategy` is applied consistently.
+
+See [Text Layer Operations Migration](layer-operations-text.md) for the complete character and paragraph style reference, including [missing font detection details](layer-operations-text.md#missing-font-detection-during-character-attribute-edits).
 
 ### Group layer create and edit
 
