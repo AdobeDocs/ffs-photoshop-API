@@ -914,6 +914,22 @@ V2 supports up to 10 actions executed in sequence:
 }
 ```
 
+**Action Name Selection (V2 New Feature):**
+Use optional `actionName` to execute a single named action within an `.atn` file instead of all actions:
+```json
+{
+  "options": {
+    "actions": [
+      {
+        "source": {"url": "<ACTION_FILE_URL>"},
+        "actionName": "Vignette Effect"
+      }
+    ]
+  }
+}
+```
+When `actionName` is omitted, all actions in the file execute. You can mix targeted and full-execution actions in the same request. Most useful with `.atn` files that bundle multiple named actions; inline actionJSON already defines exactly which operations run.
+
 **Additional Resources:**
 ```json
 {
@@ -3848,9 +3864,9 @@ curl -X GET https://photoshop-api.adobe.io/v2/status/{jobId} \
 
 ## Document version
 
-**Version:** 1.21
+**Version:** 1.22
 **Created:** October 29, 2025
-**Last Updated:** May 20, 2026
+**Last Updated:** May 28, 2026
 
 **Coverage:**
 - All migration guides consolidated

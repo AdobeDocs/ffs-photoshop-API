@@ -218,6 +218,49 @@ curl -X POST "https://photoshop-api.adobe.io/v2/execute-actions" \
 
 ## Advanced features
 
+### Executing a Specific Action by Name
+
+When an `.atn` file contains multiple named actions, use `actionName` to execute only one of them. If `actionName` is omitted, all actions in the file run in order.
+
+```json
+{
+  "options": {
+    "actions": [
+      {
+        "source": {
+          "url": "https://your-storage.com/my-actions.atn"
+        },
+        "actionName": "Vignette Effect"
+      }
+    ]
+  }
+}
+```
+
+You can mix targeted and full-execution actions in the same request:
+
+```json
+{
+  "options": {
+    "actions": [
+      {
+        "source": {
+          "url": "https://your-storage.com/my-actions.atn"
+        },
+        "actionName": "Resize to Web"
+      },
+      {
+        "source": {
+          "url": "https://your-storage.com/color-grading.atn"
+        }
+      }
+    ]
+  }
+}
+```
+
+In the example above, only `"Resize to Web"` runs from the first file, while all actions run from the second file.
+
 ### Multiple actions in sequence
 
 Execute up to 10 actions one after another:
