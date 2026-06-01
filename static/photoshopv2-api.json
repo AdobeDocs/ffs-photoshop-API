@@ -4601,8 +4601,6 @@
     "securitySchemes": {
       "Authorization": {
         "description": "User access token (Bearer xxx)",
-        "in": "header",
-        "name": "Authorization",
         "scheme": "Bearer",
         "type": "http"
       },
