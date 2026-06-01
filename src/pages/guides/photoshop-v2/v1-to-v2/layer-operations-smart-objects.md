@@ -260,10 +260,14 @@ V2 adds SVG as a new smart object source type; V1 already supported AI and PDF.
 
 V2 introduces `transformMode` property that controls how the smart object **layer** is positioned and scaled within the document:
 
-- **`"none"`** - No transform applied (use original size)
-- **`"custom"`** - Use explicit transform values (offset, dimension, angle, etc.)
-- **`"fit"`** - Scale the layer to fit within its bounds while maintaining aspect ratio
-- **`"fill"`** - Scale the layer to fill its bounds (may crop)
+- **`"none"`** - No transform applied; use original size and position
+- **`"custom"`** - Apply explicit transform values (`offset`, `dimension`, `angle`, `skew`, `anchor`, etc.); the `transform` object is required
+- **`"fit"`** - Scale the layer to fit the canvas while preserving aspect ratio; layer is always placed at `(0, 0)`. **Do not include a `transform` object** — it is rejected with 400.
+- **`"fill"`** - Scale the layer to fill the canvas (may crop); layer is always placed at `(0, 0)`. **Do not include a `transform` object** — it is rejected with 400.
+
+<InlineAlert variant="warning" slots="text1"/>
+
+For `fit` and `fill`, the layer is always positioned at `(0, 0)` after scaling. If you need the layer at a different position, omit the `transform` object on the fit/fill request and then send a **second request** targeting the same layer with `transformMode: "custom"` and the desired `transform.offset`.
 
 ```json
 {
@@ -615,8 +619,10 @@ When migrating smart object operations from V1 to V2:
 - [ ] Convert `visible` to `isVisible`
 - [ ] Lock: Change `locked` to `protection` array (see [Advanced Layer Operations](layer-operations-advanced.md))
 - [ ] Move `opacity` and `blendMode` under `blendOptions` object
-- [ ] Replace `bounds` with `transform` containing `offset` and `dimension`
-- [ ] Add `transformMode` property ("custom", "fit", "fill", or "none")
+- [ ] Replace `bounds` with `transform` containing `offset` and `dimension`; set `transformMode: "custom"`
+- [ ] `transform` object must NOT be present when `transformMode` is `fit`, `fill`, or `none` — the service returns 400
+- [ ] `fit`/`fill`: layer always positioned at (0,0) after scaling; for other positions use a second request with `transformMode: "custom"` and desired offset
+- [ ] `custom` with dimension/angle/skew: two-pass execution — geometry applied first (anchor as pivot, default (0,0)), then position set via `setOffset`; priority: offset → alignment → restore original x,y
 - [ ] Convert `smartObject.linked` to `smartObject.isLinked`
       (`true` for linked, `false` for embedded)
 - [ ] Verify supported source file types in V2

@@ -666,6 +666,19 @@ Setting `visible: false` on an **artboard root layer** behaves differently acros
 
 V2 requires `transformMode: "custom"` to be set when using the `transform` object. The `transform` object provides additional capabilities beyond basic positioning and sizing, including `anchor`, `angle` (rotation in degrees), `skew`, `horizontalAlign`, and `verticalAlign`.
 
+<InlineAlert variant="warning" slots="text1"/>
+
+**`transform` object is only valid with `transformMode: "custom"`** — sending a `transform` object with `fit`, `fill`, or `none` is rejected with a 400 error.
+
+**`fit` and `fill` always position the layer at `(0, 0)`** after scaling. For any other position, omit the `transform` object on the fit/fill request, then send a second request targeting the same layer with `transformMode: "custom"` and the desired `offset`.
+
+**Two-pass execution for `custom` mode (when `dimension`, `angle`, or `skew` is present):**
+
+1. **Pass 1** — geometry (`dimension` + `angle` + `skew`) is applied using `anchor` as the pivot. If `anchor` is omitted, PIE defaults to `(0, 0)`.
+2. **Pass 2** — position is set via `setOffset` using this priority: explicit `offset` → `horizontalAlign`/`verticalAlign` → fallback (restores original x, y so the layer does not drift).
+
+**Geometry-only** (dimension/angle/skew with no offset and no alignment): the fallback applies — original position is silently preserved. This matches V1 behaviour.
+
 ### Alignment Options
 
 **V1:** `horizontalAlign` and `verticalAlign`
@@ -747,7 +760,10 @@ When migrating advanced layer operations from V1 to V2:
 
 - [ ] Move: Replace `move: {...}` with `operation: {type: "move", placement: {...}}`
 - [ ] Delete: Replace `delete: {}` with `operation: {type: "delete"}`
-- [ ] Transforms: Replace `bounds` with `transform` using `offset` and `dimension`
+- [ ] Transforms: Replace `bounds` with `transform` using `offset` and `dimension`; set `transformMode: "custom"`
+- [ ] `transform` object must NOT be present when `transformMode` is `fit`, `fill`, or `none` — the service returns 400
+- [ ] `fit`/`fill`: layer is always placed at (0,0) after scaling; for other positions, use a second request with `transformMode: "custom"` and the desired offset
+- [ ] `custom` with dimension/angle/skew: two-pass — geometry first (anchor as pivot, default (0,0)), then position via `setOffset`; priority: offset → alignment → restore original x,y
 - [ ] Masks: Rename `mask` to `pixelMask`
 - [ ] Masks: Change `mask.input` to `pixelMask.source`
 - [ ] Masks: Change `mask.linked` to `pixelMask.isLinked`

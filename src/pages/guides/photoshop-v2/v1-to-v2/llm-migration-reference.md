@@ -689,6 +689,28 @@ For `smart_object_layer`, `opacity` and `blendMode` remain nested under `blendOp
 - Additional V2 transform fields: `angle` (rotation in degrees), `skew: {horizontal, vertical}`, `anchor: {horizontal, vertical}`
 - `transformMode` values: `"none"`, `"custom"`, `"fit"`, `"fill"` — **not applicable to adjustment layers**
 
+**Transform mode rules (violation returns 400):**
+
+- **`fit` / `fill`**: the `transform` object **must not be present**. These modes scale the layer to fit or fill the canvas and always position it at `(0, 0)`. To place the layer elsewhere after fit/fill, send a **second request** targeting the same layer with `transformMode: "custom"` and the desired offset.
+- **`custom`**: use this mode for any combination of `dimension`, `angle`, `skew`, `anchor`, or `offset`.
+- **`none`**: no scaling or repositioning; `transform` object must not be present.
+
+**Two-pass execution for `transformMode: "custom"` with dimension / angle / skew:**
+
+When `transform` includes any of `dimension`, `angle`, or `skew`, pie-worker applies a two-pass algorithm:
+
+- **Pass 1**: `dimension` + `angle` + `skew` + `anchor` (if provided) are applied together as a single geometric transform. `anchor` is the pivot point; if omitted, PIE defaults to `(0, 0)`.
+- **Pass 2**: the layer is repositioned via `setOffset` using this priority order:
+  1. **`offset` provided** → layer is moved to the user-specified absolute position (`targetOffset − postTransformBounds`)
+  2. **`horizontalAlign` / `verticalAlign` provided** → layer is moved to the alignment-computed position
+  3. **Fallback (neither offset nor alignment)** → original `x, y` is restored (`priorBounds − postTransformBounds`), so the layer does not drift after a geometry-only change (V1 parity)
+
+> **Geometry-only case** (dimension/angle/skew with no offset and no alignment): the fallback applies — original position is preserved. This matches V1 behaviour where a dimension-only change always called `setOffset` with original coordinates.
+
+> **offset + alignment both provided**: `offset` wins — alignment is ignored.
+
+**Single-pass case**: if `transform` contains only `offset` and/or `anchor` (no `dimension`, `angle`, `skew`), a single `transform()` call is made — no second pass needed.
+
 **Layer Alignment (V1 → V2):**
 
 - V1: layer-level `horizontalAlign`, `verticalAlign`
@@ -3642,7 +3664,11 @@ Use this checklist when migrating or validating V1 → V2 code:
 - [ ] Pixel mask: V1 `mask.linked`/`mask.enabled` → V2 `mask.isLinked`/`mask.isEnabled`; source is `mask.source.url` (not `mask.input.href`)
 - [ ] Visibility: `visible` → `isVisible`
 - [ ] Opacity/blend mode: for most layer types, top-level `opacity` and `blendMode` (not `blendOptions`); for `smart_object_layer`, use `blendOptions.opacity` and `blendOptions.blendMode`
-- [ ] Layer transforms: V1 `bounds {left,top,width,height}` → V2 `transform {offset:{horizontal,vertical}, dimension:{width,height}}`; `transformMode: "custom"` is required
+- [ ] Layer transforms: V1 `bounds {left,top,width,height}` → V2 `transform {offset:{horizontal,vertical}, dimension:{width,height}}`; `transformMode: "custom"` is required when using `transform`
+- [ ] `transform` object must NOT be present when `transformMode` is `fit`, `fill`, or `none` — the service returns 400 if it is
+- [ ] `fit`/`fill` always positions at (0,0); for any other position, send a second request with `transformMode: "custom"` and the desired offset
+- [ ] `custom` with dimension/angle/skew: two-pass — geometry applied first (with anchor as pivot, default `(0,0)`), then position set via `setOffset`; priority: explicit offset → alignment → fallback restore original x,y
+- [ ] Geometry-only (dimension/angle/skew, no offset, no alignment): original position is silently restored (V1 parity — layer does not drift)
 - [ ] Alignment: V1 layer-level `horizontalAlign`/`verticalAlign` → V2 placement-level `horizontalAlignment`/`verticalAlignment` within `placement: {type: "custom", ...}` (add/move only)
 
 ### Adjustment layer operations specific
@@ -3746,9 +3772,9 @@ Use this checklist when migrating or validating V1 → V2 code:
 - [ ] `depth` is an integer (e.g., `8`) not a string (e.g., `"8"`)
 - [ ] Color mode `"grayscale"` used (not `"gray"`)
 - [ ] `fill: "backgroundColor"` (V1 camelCase) → `fill: "background_color"` (V2 snake_case); camelCase is rejected in V2
-- [ ] `fill` object form (V2): `{"solidColor": {"red": N, "green": N, "blue": N}}` for custom color
+- [ ] `fill` object form (V2): `{"solidColor": {"rgb": {"red": N, "green": N, "blue": N}}}` for custom color
 - [ ] `depth` value is mode-dependent: `bitmap`→1 only; `grayscale`/`rgb`/`hsb`→8,16,32; `cmyk`/`lab`/`multichannel`→8,16; `indexed`/`duotone`→8 only
-- [ ] `solid_color_layer` fill uses `fill.solidColor.{red,green,blue}` (not `fills[0].solidColor.rgb.*`)
+- [ ] `solid_color_layer` fill uses `fill.solidColor.rgb.{red,green,blue}` — structure unchanged from V1; the `rgb` wrapper is required in both V1 and V2
 - [ ] `fontColor.cmyk.yellowColor` → `fontColor.cmyk.yellow`; `fontColor.lab.luminance` → `fontColor.lab.l`
 - [ ] `fontColor` rgb/cmyk/gray/lab-l: V1 accepted 0–65535; V2 max is 32768 (use 32768 if V1 value exceeds it)
 - [ ] `fontColor` lab `a`/`b`: V1 accepted 0–65535; V2 max is 16384 (use 16384 if V1 value exceeds it)
@@ -3906,7 +3932,7 @@ curl -X GET https://photoshop-api.adobe.io/v2/status/{jobId} \
 - Smart object operations: `smartObject.smartObjectFile.source.url` path, `isLinked`, resize-with-linked-SO rasterization behavior, SVG support, supported source file types (PSD, JPEG, PNG, TIFF, SVG, AI, PDF); SVG and AI added in V2; AI files require Create PDF Compatible File option in Illustrator
 - `/pie/psdService/text` migration: no declarative V2 equivalent; use `execute-actions` with ActionJSON (fixed edits) or UXP (conditional/iterative); decision table
 - Blend mode location: top-level `opacity`/`blendMode` for most layers; `blendOptions` for `smart_object_layer`
-- Layer transforms: V1 `bounds` → V2 `transform {offset, dimension}` with required `transformMode: "custom"`
+- Layer transforms: V1 `bounds` → V2 `transform {offset, dimension}` with required `transformMode: "custom"`; `transform` forbidden on `fit`/`fill`/`none` (400); fit/fill always at (0,0), use second request for custom positioning; two-pass for dimension/angle/skew (geometry first, then setOffset with priority: offset > alignment > restore original); anchor default (0,0)
 - Alignment: V1 layer-level → V2 placement-level `horizontalAlignment`/`verticalAlignment` with `placement.type: "custom"`
 - Document creation `fill` rename: `"backgroundColor"` → `"background_color"`; object form `{solidColor:{...}}`; depth-by-mode table
 
@@ -4003,9 +4029,9 @@ All components are required and default to `0` when omitted. Usage: `fontColor.r
 
 > **TRAP — fontColor vs solidColor structures are inconsistent:**
 > - `characterStyle.fontColor` **keeps** the color-model wrapper: `fontColor: {rgb: {red: 0, green: 0, blue: 0}}`
-> - `solid_color_layer.fill.solidColor` **removes** the wrapper: `solidColor: {red: 0, green: 0, blue: 0}`
+> - `solid_color_layer.fill.solidColor` **also keeps** the `rgb` wrapper: `solidColor: {rgb: {red: 0, green: 0, blue: 0}}`
 >
-> Do NOT flatten fontColor components directly onto fontColor. Do NOT add an `rgb` wrapper to fill.solidColor.
+> Do NOT flatten fontColor components directly onto fontColor. DO keep the `rgb` wrapper on `fill.solidColor` — both structures use the same `{rgb: {...}}` nesting.
 
 **V2 rejects requests where any component exceeds its maximum.** Cap values before sending:
 - `rgb`, `cmyk`, `gray`, `lab.l`: cap at **32768** — e.g. V1 `red: 40000` → V2 `red: 32768`
@@ -4025,22 +4051,20 @@ All components are required and default to `0` when omitted. Usage: `fontColor.r
 
 | V1 | V2 | Impact |
 |---|---|---|
-| `fills[0].solidColor.rgb.red/green/blue` | `fill.solidColor.red/green/blue` | Breaking: plural→singular, `rgb` wrapper removed |
+| `type: "fillLayer"` | `type: "solid_color_layer"` | Type rename only |
+| `fill.solidColor.rgb.red/green/blue` | `fill.solidColor.rgb.red/green/blue` | Unchanged — `rgb` wrapper required in both |
 
-V1 used `fills` (plural array) with nested `solidColor.rgb` wrapper. V2 uses `fill` (singular object) with `solidColor` directly containing color components.
+V1 and V2 use the same `fill.solidColor.rgb.{red, green, blue}` structure — no structural change is needed. Only the layer type name changes.
 
-**V1:** `{"fills": [{"solidColor": {"rgb": {"red": 255, "green": 0, "blue": 0}}}]}`
+**V1 and V2 (identical structure):**
+```json
+{"fill": {"solidColor": {"rgb": {"red": 255, "green": 0, "blue": 0}}}}
+```
+Error when the `rgb` wrapper is omitted: `"edits.layers[1].fill.solidColor.rgb: rgb is required"`.
 
-**V2:** `{"fill": {"solidColor": {"red": 255, "green": 0, "blue": 0}}}`
-
-Error when using V1 structure: `"edits.layers[0].fill: fill is required when adding a solid color layer"`.
-
-> **TRAP — V1 `fillLayer` with `input.href` maps to `type: "layer"` (pixel layer), NOT `solid_color_layer`:**
-> V1 `fillLayer` accepted either a solid color fill OR an image source via `input.href`. When `input.href` is present, the layer is a pixel/image layer:
-> - Set V2 `type: "layer"` (not `solid_color_layer`)
-> - Put the image at `image.source.url` (from `input.href`)
->
-> Only map to `solid_color_layer` when V1 uses `fills[0].solidColor.rgb.*` with **no** `input` field.
+> **TRAP — V1 `fillLayer` always maps to `type: "solid_color_layer"`, even if `input.href` is present:**
+> V1 `fillLayer` may carry a layer-level `input.href` alongside `fill.solidColor.rgb.*`. In V2, `solid_color_layer` has no `input` field — drop the layer-level `input.href` entirely.
+> If V1 also has `mask.input.href` (inside V1 `MaskDetails`), that is a pixel mask — map it to `pixelMask.source.url`.
 
 ### Output format changes
 

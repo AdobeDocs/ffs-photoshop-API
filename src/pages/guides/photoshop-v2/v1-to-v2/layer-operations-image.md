@@ -447,7 +447,7 @@ curl -X POST \
 }
 ```
 
-**V2:** `type: "solid_color_layer"` with direct color properties
+**V2:** `type: "solid_color_layer"` with the same `rgb`-wrapped structure
 
 ```json
 {
@@ -463,6 +463,8 @@ curl -X POST \
   }
 }
 ```
+
+> **Note:** V1 `fillLayer` (identified by `type: "fillLayer"` or `fill.solidColor.rgb.*`) always maps to V2 `type: "solid_color_layer"`. If the V1 layer also carries a layer-level `input.href`, drop it — `solid_color_layer` has no `input` field in V2. Only `mask.input.href` (inside V1 `MaskDetails`) carries forward, as `pixelMask.source.url`.
 
 ## Editing Existing Layers
 
