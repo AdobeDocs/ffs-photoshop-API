@@ -123,7 +123,7 @@ curl -X POST \
 }'
 ```
 
-### Executing a Specific Action by Name
+### Executing a specific action by name
 
 When an `.atn` file contains multiple named actions, use the optional `actionName` field to execute only one of them. If omitted, all actions in the file execute in order.
 
