@@ -123,6 +123,71 @@ curl -X POST \
 }'
 ```
 
+### Executing a specific action by name
+
+When an `.atn` file contains multiple named actions, use the optional `actionName` field to execute only one of them. If omitted, all actions in the file execute in order.
+
+```shell
+curl -X POST \
+  https://photoshop-api.adobe.io/v2/execute-actions \
+  -H "Authorization: Bearer $token" \
+  -H "x-api-key: $apiKey" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "image": {
+    "source": {
+      "url": "<SIGNED_GET_URL>"
+    }
+  },
+  "options": {
+    "actions": [
+      {
+        "source": {
+          "url": "<ACTION_FILE_URL>"
+        },
+        "actionName": "<ACTION_NAME>"
+      }
+    ]
+  },
+  "outputs": [
+    {
+      "destination": {
+        "url": "<SIGNED_POST_URL>"
+      },
+      "mediaType": "image/vnd.adobe.photoshop"
+    }
+  ]
+}'
+```
+
+You can also mix targeted and full-execution actions in the same request. Actions execute in array order:
+
+```json
+{
+  "options": {
+    "actions": [
+      {
+        "source": {
+          "url": "<ACTION_FILE_URL>"
+        },
+        "actionName": "Resize to Web"
+      },
+      {
+        "source": {
+          "url": "<SECOND_ACTION_FILE_URL>"
+        }
+      }
+    ]
+  }
+}
+```
+
+In this example, only `"Resize to Web"` runs from the first file, while all actions run from the second file.
+
+<InlineAlert variant="info" slots="text"/>
+
+`actionName` is most useful with `.atn` files that bundle multiple named actions. For inline actionJSON, the content already defines exactly which operations run.
+
 ### Multiple actions
 
 In the v2 API, you can execute multiple actions in sequence. A maximum of 10 actions allowed per request. Actions execute in the order specified.

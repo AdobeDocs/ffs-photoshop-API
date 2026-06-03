@@ -382,6 +382,64 @@ In both V1 and V2, the default fallback font is **ArialMT** when no global/defau
 | Use default | `"useDefault"` | `"use_default"` (default) | Missing fonts are replaced by the default font (or ArialMT). Job completes. |
 | Fail | `"fail"` | `"fail"` | Job fails with an error listing the missing fonts. |
 
+#### Improved missing font detection in V2
+
+V2 correctly identifies missing fonts during text layer edits in all cases — whether the edit changes `fontName`, `fontSize`, or any other character attribute. V1 did not reliably detect missing fonts in this context, so the configured strategy was not consistently applied.
+
+**Scenario:** A PSD contains a text layer using `AdobeClean-Regular`. The font is not available on the server. An edit is sent to the layer — for example changing only `fontSize`, or changing `fontName` to another unavailable font:
+
+```json
+{
+  "characterStyles": [
+    { "fontSize": 24 }
+  ]
+}
+```
+
+**V1 behavior:** The missing font is not detected. The job completes without applying `missingFontStrategy`, and the output document silently retains `AdobeClean-Regular` as the font name even though it was unavailable.
+
+**V2 behavior:** The missing font is correctly detected. The configured `missingFontStrategy` is applied:
+- `"use_default"` — `AdobeClean-Regular` is replaced by `defaultFontPostScriptName` (or `ArialMT` if unset). Job completes.
+- `"fail"` — Job fails with an error identifying `AdobeClean-Regular` as missing.
+
+### 5. Line Height and autoLeading
+
+In V1, `lineHeight` was not supported in character attributes; the line height always defaulted to auto (120% of the font size).
+
+In V2, line height support has been added alongside a new `autoLeading` parameter:
+
+| Parameter | Description |
+|-----------|-------------|
+| `autoLeading` | `true` — line height is set to auto (120% of `fontSize`). `false` — the custom `lineHeight` value is used. |
+| `lineHeight` | Custom line height in pixels. Only applied when `autoLeading` is `false`. |
+
+**Default behavior:** When a text layer is created with the default font size of 30, the line height is automatically calculated as 120% × 30 = 36 pixels.
+
+**V1:** `lineHeight` was not supported; auto-leading was always used.
+
+**V2:** To match V1 auto behavior, use `autoLeading: true`. For custom leading, set `autoLeading: false` with an explicit `lineHeight`:
+
+```json
+// V2 — auto-leading (matches V1 behavior)
+{
+  "characterStyle": {
+    "fontSize": 30,
+    "autoLeading": true
+  }
+}
+```
+
+```json
+// V2 — custom line height
+{
+  "characterStyle": {
+    "fontSize": 30,
+    "autoLeading": false,
+    "lineHeight": 48
+  }
+}
+```
+
 ## Adding text to existing document
 
 ### V1 approach: documentOperations
@@ -680,7 +738,8 @@ V2 has expanded character style options beyond V1:
 | `syntheticBold` | ❌ | ✅ | V2 only |
 | `syntheticItalic` | ❌ | ✅ | V2 only |
 | `letterSpacing` | ❌ | ✅ | V2 only |
-| `lineHeight` | ❌ | ✅ | V2 only |
+| `lineHeight` | ❌ | ✅ | V2 only. Custom line height in pixels. Used when `autoLeading` is `false`. |
+| `autoLeading` | ❌ | ✅ | V2 only. Default: `false`. When `true`, line height is set to auto (120% of `fontSize`). When `false`, the custom `lineHeight` value is used. |
 | `fontAlpha` | ❌ | ✅ | V2 only |
 | `capsOption` | ❌ | ✅ | V2 only (e.g. `all_caps`) |
 

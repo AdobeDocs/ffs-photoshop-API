@@ -678,12 +678,38 @@ V1 layer operations could include `parentLayer: {id: N}` or `parentLayer: {name:
 
 For `smart_object_layer`, `opacity` and `blendMode` remain nested under `blendOptions`. For all other layer types (image, text, adjustment, solid color, group, background), they are **top-level** properties in V2.
 
+<InlineAlert variant="info" slots="text"/>
+
+**Artboard visibility — V1 behavioral quirk:** In V1 `documentOperations`, setting `visible: false` on an **artboard root layer** (by `id` or `name`) does **not** suppress the artboard's rendered content. The full canvas is always returned at its original document dimensions regardless of artboard visibility state. In V2 `create-composite`, artboard visibility is respected — hidden artboards are excluded from rendering and output dimensions reflect only the visible artboard content. If migrating a workflow that hides artboard root layers expecting them to disappear from output, this is a **behavioral change in V2**, not a regression. Pixel-comparison tools will flag this as a dimension mismatch (e.g., `2930×4509` V1 vs `2930×960` V2) — this is expected.
+
 **Layer Transforms (V1 → V2):**
 
 - V1: layer-level `bounds: {left, top, width, height}`
 - V2: `transformMode: "custom"` (required) + `transform: {offset: {horizontal, vertical}, dimension: {width, height}}`
 - Additional V2 transform fields: `angle` (rotation in degrees), `skew: {horizontal, vertical}`, `anchor: {horizontal, vertical}`
 - `transformMode` values: `"none"`, `"custom"`, `"fit"`, `"fill"` — **not applicable to adjustment layers**
+
+**Transform mode rules (violation returns 400):**
+
+- **`fit` / `fill`**: the `transform` object **must not be present**. These modes scale the layer to fit or fill the canvas and always position it at `(0, 0)`. To place the layer elsewhere after fit/fill, send a **second request** targeting the same layer with `transformMode: "custom"` and the desired offset.
+- **`custom`**: use this mode for any combination of `dimension`, `angle`, `skew`, `anchor`, or `offset`.
+- **`none`**: no scaling or repositioning; `transform` object must not be present.
+
+**Two-pass execution for `transformMode: "custom"` with dimension / angle / skew:**
+
+When `transform` includes any of `dimension`, `angle`, or `skew`, pie-worker applies a two-pass algorithm:
+
+- **Pass 1**: `dimension` + `angle` + `skew` + `anchor` (if provided) are applied together as a single geometric transform. `anchor` is the pivot point; if omitted, PIE defaults to `(0, 0)`.
+- **Pass 2**: the layer is repositioned via `setOffset` using this priority order:
+  1. **`offset` provided** → layer is moved to the user-specified absolute position (`targetOffset − postTransformBounds`)
+  2. **`horizontalAlign` / `verticalAlign` provided** → layer is moved to the alignment-computed position
+  3. **Fallback (neither offset nor alignment)** → original `x, y` is restored (`priorBounds − postTransformBounds`), so the layer does not drift after a geometry-only change (V1 parity)
+
+> **Geometry-only case** (dimension/angle/skew with no offset and no alignment): the fallback applies — original position is preserved. This matches V1 behaviour where a dimension-only change always called `setOffset` with original coordinates.
+
+> **offset + alignment both provided**: `offset` wins — alignment is ignored.
+
+**Single-pass case**: if `transform` contains only `offset` and/or `anchor` (no `dimension`, `angle`, `skew`), a single `transform()` call is made — no second pass needed.
 
 **Layer Alignment (V1 → V2):**
 
@@ -910,6 +936,22 @@ V2 supports up to 10 actions executed in sequence:
 }
 ```
 
+**Action Name Selection (V2 New Feature):**
+Use optional `actionName` to execute a single named action within an `.atn` file instead of all actions:
+```json
+{
+  "options": {
+    "actions": [
+      {
+        "source": {"url": "<ACTION_FILE_URL>"},
+        "actionName": "Vignette Effect"
+      }
+    ]
+  }
+}
+```
+When `actionName` is omitted, all actions in the file execute. You can mix targeted and full-execution actions in the same request. Most useful with `.atn` files that bundle multiple named actions; inline actionJSON already defines exactly which operations run.
+
 **Additional Resources:**
 ```json
 {
@@ -1072,6 +1114,7 @@ Supports glob patterns: `*.json`, `result-*.png`, etc.
 - **Source options:** External URL, Creative Cloud Path, Creative Cloud File ID, Lightroom Path.
 - **Output formats:** JPEG, PNG, TIFF, PSD, PSDC, JSON manifest (6 formats).
 - **Storage options:** Same as other endpoints (External, Hosted, Embedded, Creative Cloud, Azure, Dropbox).
+- **⚠️ Artboard visibility behavior changed (V1 → V2):** In V1 `documentOperations`, toggling `visible: false` on an artboard container layer has **no effect on rendered output** — the full document canvas is always returned at its original dimensions. In V2 `create-composite`, artboard visibility is honored: hidden artboards are excluded from compositing and the output image dimensions shrink to only cover the visible artboard area. Downstream pixel-comparison tools will flag this as a dimension mismatch (e.g., `2930×4509` V1 vs `2930×960` V2 for a PSD where only one artboard row remains visible). **This is expected behavior, not a bug.**
 
 **Manifest:**
 - V1: `/pie/psdService/documentManifest`
@@ -3621,7 +3664,11 @@ Use this checklist when migrating or validating V1 → V2 code:
 - [ ] Pixel mask: V1 `mask.linked`/`mask.enabled` → V2 `mask.isLinked`/`mask.isEnabled`; source is `mask.source.url` (not `mask.input.href`)
 - [ ] Visibility: `visible` → `isVisible`
 - [ ] Opacity/blend mode: for most layer types, top-level `opacity` and `blendMode` (not `blendOptions`); for `smart_object_layer`, use `blendOptions.opacity` and `blendOptions.blendMode`
-- [ ] Layer transforms: V1 `bounds {left,top,width,height}` → V2 `transform {offset:{horizontal,vertical}, dimension:{width,height}}`; `transformMode: "custom"` is required
+- [ ] Layer transforms: V1 `bounds {left,top,width,height}` → V2 `transform {offset:{horizontal,vertical}, dimension:{width,height}}`; `transformMode: "custom"` is required when using `transform`
+- [ ] `transform` object must NOT be present when `transformMode` is `fit`, `fill`, or `none` — the service returns 400 if it is
+- [ ] `fit`/`fill` always positions at (0,0); for any other position, send a second request with `transformMode: "custom"` and the desired offset
+- [ ] `custom` with dimension/angle/skew: two-pass — geometry applied first (with anchor as pivot, default `(0,0)`), then position set via `setOffset`; priority: explicit offset → alignment → fallback restore original x,y
+- [ ] Geometry-only (dimension/angle/skew, no offset, no alignment): original position is silently restored (V1 parity — layer does not drift)
 - [ ] Alignment: V1 layer-level `horizontalAlign`/`verticalAlign` → V2 placement-level `horizontalAlignment`/`verticalAlignment` within `placement: {type: "custom", ...}` (add/move only)
 
 ### Adjustment layer operations specific
@@ -3642,6 +3689,14 @@ Use this checklist when migrating or validating V1 → V2 code:
 - [ ] V2 default (no frame): point at canvas center — always set `text.frame` explicitly
 - [ ] `textOrientation` is text-level property (not per character-style)
 - [ ] Font options: `options.fonts` (href+storage) → `fontOptions.additionalFonts` (source.url); `options.globalFont` → `fontOptions.defaultFontPostScriptName`; `manageMissingFonts:"useDefault"` → `missingFontStrategy:"use_default"`
+- [ ] `lineHeight` / `autoLeading` (V2 only): V1 had no line height control — it always defaulted to auto. In V2, set `autoLeading: true` for the same auto behavior (line height = 120% of `fontSize`), or `autoLeading: false` with an explicit `lineHeight` for custom leading:
+  ```json
+  // auto — matches V1 behavior
+  { "characterStyle": { "fontSize": 30, "autoLeading": true } }
+
+  // custom leading
+  { "characterStyle": { "fontSize": 30, "autoLeading": false, "lineHeight": 48 } }
+  ```
 
 ### Smart object layer operations specific
 - [ ] Layer type: `"smartObject"` → `"smart_object_layer"`
@@ -3717,9 +3772,9 @@ Use this checklist when migrating or validating V1 → V2 code:
 - [ ] `depth` is an integer (e.g., `8`) not a string (e.g., `"8"`)
 - [ ] Color mode `"grayscale"` used (not `"gray"`)
 - [ ] `fill: "backgroundColor"` (V1 camelCase) → `fill: "background_color"` (V2 snake_case); camelCase is rejected in V2
-- [ ] `fill` object form (V2): `{"solidColor": {"red": N, "green": N, "blue": N}}` for custom color
+- [ ] `fill` object form (V2): `{"solidColor": {"rgb": {"red": N, "green": N, "blue": N}}}` for custom color
 - [ ] `depth` value is mode-dependent: `bitmap`→1 only; `grayscale`/`rgb`/`hsb`→8,16,32; `cmyk`/`lab`/`multichannel`→8,16; `indexed`/`duotone`→8 only
-- [ ] `solid_color_layer` fill uses `fill.solidColor.{red,green,blue}` (not `fills[0].solidColor.rgb.*`)
+- [ ] `solid_color_layer` fill uses `fill.solidColor.rgb.{red,green,blue}` — structure unchanged from V1; the `rgb` wrapper is required in both V1 and V2
 - [ ] `fontColor.cmyk.yellowColor` → `fontColor.cmyk.yellow`; `fontColor.lab.luminance` → `fontColor.lab.l`
 - [ ] `fontColor` rgb/cmyk/gray/lab-l: V1 accepted 0–65535; V2 max is 32768 (use 32768 if V1 value exceeds it)
 - [ ] `fontColor` lab `a`/`b`: V1 accepted 0–65535; V2 max is 16384 (use 16384 if V1 value exceeds it)
@@ -3835,9 +3890,9 @@ curl -X GET https://photoshop-api.adobe.io/v2/status/{jobId} \
 
 ## Document version
 
-**Version:** 1.20
+**Version:** 1.22
 **Created:** October 29, 2025
-**Last Updated:** May 12, 2026
+**Last Updated:** May 28, 2026
 
 **Coverage:**
 - All migration guides consolidated
@@ -3871,12 +3926,13 @@ curl -X GET https://photoshop-api.adobe.io/v2/status/{jobId} \
 - Manifest response format changes: layer type renames (including `background_layer`, no `typeAttributes` on background entries), bounds format, thumbnail object, artboard `layers[]` key, document field renames
 - Composite API V1→V2 complete field-level diff (all 4 V1 endpoints, all 7 layer types, output formats)
 - Artboard API V1→V2 complete field-level diff (input restructure, storage mapping, quality/compression enums, crop mode, status response)
+- Artboard visibility behavior change: V1 ignores artboard container visibility (full canvas always rendered); V2 respects it (hidden artboards excluded, output dimensions shrink to visible content)
 - Adjustment layer operations: `adjustments.type` discriminant required, type mapping table, `exposureValue` rename, hue/sat `hueSaturationAdjustments[]` restructure, `localRange`, parameter ranges, `transformMode` not applicable
 - Text layer operations: character style range off-by-one (V1 `to`=length → V2 `apply.to`=inclusive end index), `font.postScriptName`, `text.frame` area/point types, bounds conversion, font options rename, `textOrientation`
 - Smart object operations: `smartObject.smartObjectFile.source.url` path, `isLinked`, resize-with-linked-SO rasterization behavior, SVG support, supported source file types (PSD, JPEG, PNG, TIFF, SVG, AI, PDF); SVG and AI added in V2; AI files require Create PDF Compatible File option in Illustrator
 - `/pie/psdService/text` migration: no declarative V2 equivalent; use `execute-actions` with ActionJSON (fixed edits) or UXP (conditional/iterative); decision table
 - Blend mode location: top-level `opacity`/`blendMode` for most layers; `blendOptions` for `smart_object_layer`
-- Layer transforms: V1 `bounds` → V2 `transform {offset, dimension}` with required `transformMode: "custom"`
+- Layer transforms: V1 `bounds` → V2 `transform {offset, dimension}` with required `transformMode: "custom"`; `transform` forbidden on `fit`/`fill`/`none` (400); fit/fill always at (0,0), use second request for custom positioning; two-pass for dimension/angle/skew (geometry first, then setOffset with priority: offset > alignment > restore original); anchor default (0,0)
 - Alignment: V1 layer-level → V2 placement-level `horizontalAlignment`/`verticalAlignment` with `placement.type: "custom"`
 - Document creation `fill` rename: `"backgroundColor"` → `"background_color"`; object form `{solidColor:{...}}`; depth-by-mode table
 
@@ -3954,6 +4010,8 @@ layers must appear earlier in the array in V2.
 | Default frame | Area at (0,0,4,4) | Point frame at canvas center |
 | Font options | `options.fonts`, `options.globalFont`, `options.manageMissingFonts` | `fontOptions.additionalFonts`, `.defaultFontPostScriptName`, `.missingFontStrategy` |
 | Missing font strategy | `"useDefault"` | `"use_default"` (Breaking: underscore) |
+| `lineHeight` | Not supported (always auto) | Supported in `characterStyle`; used when `autoLeading` is `false` |
+| `autoLeading` | Not supported | Default: `false`. `true` sets line height to auto (120% of `fontSize`); `false` uses custom `lineHeight` |
 
 #### Font color value ranges
 
@@ -3971,9 +4029,9 @@ All components are required and default to `0` when omitted. Usage: `fontColor.r
 
 > **TRAP — fontColor vs solidColor structures are inconsistent:**
 > - `characterStyle.fontColor` **keeps** the color-model wrapper: `fontColor: {rgb: {red: 0, green: 0, blue: 0}}`
-> - `solid_color_layer.fill.solidColor` **removes** the wrapper: `solidColor: {red: 0, green: 0, blue: 0}`
+> - `solid_color_layer.fill.solidColor` **also keeps** the `rgb` wrapper: `solidColor: {rgb: {red: 0, green: 0, blue: 0}}`
 >
-> Do NOT flatten fontColor components directly onto fontColor. Do NOT add an `rgb` wrapper to fill.solidColor.
+> Do NOT flatten fontColor components directly onto fontColor. DO keep the `rgb` wrapper on `fill.solidColor` — both structures use the same `{rgb: {...}}` nesting.
 
 **V2 rejects requests where any component exceeds its maximum.** Cap values before sending:
 - `rgb`, `cmyk`, `gray`, `lab.l`: cap at **32768** — e.g. V1 `red: 40000` → V2 `red: 32768`
@@ -3993,22 +4051,20 @@ All components are required and default to `0` when omitted. Usage: `fontColor.r
 
 | V1 | V2 | Impact |
 |---|---|---|
-| `fills[0].solidColor.rgb.red/green/blue` | `fill.solidColor.red/green/blue` | Breaking: plural→singular, `rgb` wrapper removed |
+| `type: "fillLayer"` | `type: "solid_color_layer"` | Type rename only |
+| `fill.solidColor.rgb.red/green/blue` | `fill.solidColor.rgb.red/green/blue` | Unchanged — `rgb` wrapper required in both |
 
-V1 used `fills` (plural array) with nested `solidColor.rgb` wrapper. V2 uses `fill` (singular object) with `solidColor` directly containing color components.
+V1 and V2 use the same `fill.solidColor.rgb.{red, green, blue}` structure — no structural change is needed. Only the layer type name changes.
 
-**V1:** `{"fills": [{"solidColor": {"rgb": {"red": 255, "green": 0, "blue": 0}}}]}`
+**V1 and V2 (identical structure):**
+```json
+{"fill": {"solidColor": {"rgb": {"red": 255, "green": 0, "blue": 0}}}}
+```
+Error when the `rgb` wrapper is omitted: `"edits.layers[1].fill.solidColor.rgb: rgb is required"`.
 
-**V2:** `{"fill": {"solidColor": {"red": 255, "green": 0, "blue": 0}}}`
-
-Error when using V1 structure: `"edits.layers[0].fill: fill is required when adding a solid color layer"`.
-
-> **TRAP — V1 `fillLayer` with `input.href` maps to `type: "layer"` (pixel layer), NOT `solid_color_layer`:**
-> V1 `fillLayer` accepted either a solid color fill OR an image source via `input.href`. When `input.href` is present, the layer is a pixel/image layer:
-> - Set V2 `type: "layer"` (not `solid_color_layer`)
-> - Put the image at `image.source.url` (from `input.href`)
->
-> Only map to `solid_color_layer` when V1 uses `fills[0].solidColor.rgb.*` with **no** `input` field.
+> **TRAP — V1 `fillLayer` always maps to `type: "solid_color_layer"`, even if `input.href` is present:**
+> V1 `fillLayer` may carry a layer-level `input.href` alongside `fill.solidColor.rgb.*`. In V2, `solid_color_layer` has no `input` field — drop the layer-level `input.href` entirely.
+> If V1 also has `mask.input.href` (inside V1 `MaskDetails`), that is a pixel mask — map it to `pixelMask.source.url`.
 
 ### Output format changes
 

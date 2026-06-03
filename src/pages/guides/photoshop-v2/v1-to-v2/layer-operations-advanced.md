@@ -23,7 +23,7 @@ This guide helps you migrate advanced layer operations from V1's `/documentOpera
 
 **V2 Endpoint:** `/v2/create-composite` with `edits.layers`
 
-### Operations Covered
+**Operations covered in this guide:**
 
 - Moving layers
 - Deleting layers
@@ -32,7 +32,7 @@ This guide helps you migrate advanced layer operations from V1's `/documentOpera
 - Blend modes and opacity
 - Layer transformations
 
-## Moving Layers
+## Moving layers
 
 ### V1 approach
 
@@ -103,7 +103,7 @@ curl -X POST \
 }'
 ```
 
-### Move Operation Changes
+### Move operation changes
 
 **V1:** Separate `move` block
 
@@ -130,7 +130,7 @@ curl -X POST \
 }
 ```
 
-### Move Placement Options
+### Move placement options
 
 **V1 → V2 Mapping:**
 
@@ -142,7 +142,7 @@ curl -X POST \
 | `move: {insertBelow: {id: 123}}`      | `operation: {type: "move", placement: {type: "below", referenceLayer: {id: 123}}}`        |
 | `move: {insertInto: {name: "Group"}}` | `operation: {type: "move", placement: {type: "into", referenceLayer: {name: "Group"}}}` |
 
-## Deleting Layers
+## Deleting layers
 
 ### V1 approach
 
@@ -176,7 +176,7 @@ curl -X POST \
 }
 ```
 
-### Delete Operation Changes
+### Delete operation changes
 
 **V1:** `delete: {}` block (potentially with `includeChildren`)
 
@@ -200,7 +200,7 @@ curl -X POST \
 }
 ```
 
-### Deleting Multiple Layers
+### Deleting multiple layers
 
 Both V1 and V2 support deleting multiple layers in one request:
 
@@ -227,7 +227,7 @@ Both V1 and V2 support deleting multiple layers in one request:
 }
 ```
 
-## Layer Masks (Pixel Masks)
+## Layer masks (pixel masks)
 
 ### V1 approach
 
@@ -282,7 +282,7 @@ Both V1 and V2 support deleting multiple layers in one request:
 }
 ```
 
-### Mask Property Changes
+### Mask property changes
 
 **V1:**
 
@@ -333,7 +333,7 @@ Both V1 and V2 support deleting multiple layers in one request:
 
 The `clip` property has been restructured in V2. Instead of `mask.clip`, use the top-level layer property `isClipped` to control clipping mask behavior.
 
-### Deleting a Pixel Mask
+### Deleting a pixel mask
 
 V2 supports removing a pixel mask from a layer during an edit operation. Set `pixelMask.delete` to `true` on the layer — this removes the pixel mask entirely. When `delete` is `true`, all other `pixelMask` properties (`source`, `isEnabled`, `isLinked`, `offset`) are ignored.
 
@@ -407,7 +407,7 @@ You can delete a pixel mask while also modifying other layer properties in the s
 - `delete` must be a boolean (`true` or `false`).
 - When `delete` is `false` (or omitted on add operations), the other `pixelMask` properties (`source`, `isEnabled`, `isLinked`, `offset`) are applied normally.
 
-### Mask Requirements
+### Mask requirements
 
 Both V1 and V2:
 
@@ -415,7 +415,7 @@ Both V1 and V2:
 - Supported formats: JPEG, PNG, PSD
 - White = visible, Black = hidden
 
-## Layer Groups
+## Layer groups
 
 <InlineAlert variant="warning" slots="text"/>
 
@@ -423,7 +423,7 @@ Both V1 and V2:
 
 ### Adding a layer into an existing group
 
-When **editing an existing document** (e.g. create-composite with an existing PSD), you can add a new layer inside a group that already exists: use `operation.type: "add"` with `placement.type: "into"` and `referenceLayer` pointing to the group:
+When **editing an existing document** (e.g., create-composite with an existing PSD), you can add a new layer inside a group that already exists: use `operation.type: "add"` with `placement.type: "into"` and `referenceLayer` pointing to the group:
 
 ```json
 {
@@ -440,9 +440,9 @@ When **editing an existing document** (e.g. create-composite with an existing PS
 }
 ```
 
-The group must already exist in the document (e.g. from the PSD). Creating a new document with a group layer is not yet supported (upcoming feature).
+The group must already exist in the document (e.g., from the PSD). Creating a new document with a group layer is not yet supported (upcoming feature).
 
-### Editing Group Layers
+### Editing group layers
 
 When editing an existing group layer (`operation.type: "edit"`), you can modify these properties:
 
@@ -474,7 +474,7 @@ When editing an existing group layer (`operation.type: "edit"`), you can modify 
 }
 ```
 
-## Blend Modes and Opacity
+## Blend modes and opacity
 
 ### V1 approach
 
@@ -511,7 +511,7 @@ When editing an existing group layer (`operation.type: "edit"`), you can modify 
 }
 ```
 
-### Blend Property Changes
+### Blend property changes
 
 **V1:** Nested in `blendOptions`
 
@@ -533,7 +533,7 @@ When editing an existing group layer (`operation.type: "edit"`), you can modify 
 }
 ```
 
-### Supported Blend Modes
+### Supported blend modes
 
 Both V1 and V2 support the same blend modes:
 
@@ -544,7 +544,7 @@ Both V1 and V2 support the same blend modes:
 - `difference`, `exclusion`, `subtract`, `divide`
 - `hue`, `saturation`, `color`, `luminosity`
 
-## Layer Visibility and Lock
+## Layer visibility and lock
 
 ### V1 approach
 
@@ -579,7 +579,7 @@ Both V1 and V2 support the same blend modes:
 }
 ```
 
-### Property Name Changes
+### Property name changes
 
 | V1        | V2          |
 | --------- | ----------- |
@@ -609,9 +609,25 @@ When using `all` or `none`, the array must contain only that element. `["all","t
 
 **Group layers:** When editing a group layer, setting `protection` propagates to all descendant layers (children and nested groups).
 
-## Layer Transformations
+### Artboard visibility — V1 vs V2 behavioral difference
 
-### Positioning and Sizing
+Setting `visible: false` on an **artboard root layer** behaves differently across API versions:
+
+| Behavior | V1 (`documentOperations`) | V2 (`create-composite`) |
+|---|---|---|
+| Artboard content rendered | **Always** (visibility ignored) | Only if `isVisible: true` |
+| Output dimensions | Full document canvas | Shrinks to visible artboards only |
+| Effect on child layers | No change | Children not composited |
+
+**V1 quirk:** In V1, hiding an artboard container by `id` (e.g., `{"id": 328, "visible": false}`) has no effect on the rendered output. The full document canvas is returned at its original pixel dimensions regardless of artboard visibility state. This is a known V1 limitation — artboard visibility is tracked but not applied at render time.
+
+**V2 behavior:** V2 correctly respects artboard visibility. A PSD with multiple artboards produces an output image sized to only the visible artboard content when other artboards are hidden.
+
+**Migration impact:** If your V1 workflow hides artboard root IDs to isolate a specific artboard for export, V2 will produce a different (smaller) output size. This is the correct and intended behavior — update any downstream size assumptions accordingly.
+
+## Layer transformations
+
+### Positioning and sizing
 
 **V1:** Uses `bounds` for positioning and sizing
 
@@ -650,7 +666,20 @@ When using `all` or `none`, the array must contain only that element. `["all","t
 
 V2 requires `transformMode: "custom"` to be set when using the `transform` object. The `transform` object provides additional capabilities beyond basic positioning and sizing, including `anchor`, `angle` (rotation in degrees), `skew`, `horizontalAlign`, and `verticalAlign`.
 
-### Alignment Options
+<InlineAlert variant="warning" slots="text1"/>
+
+**`transform` object is only valid with `transformMode: "custom"`** — sending a `transform` object with `fit`, `fill`, or `none` is rejected with a 400 error.
+
+**`fit` and `fill` always position the layer at `(0, 0)`** after scaling. For any other position, omit the `transform` object on the fit/fill request, then send a second request targeting the same layer with `transformMode: "custom"` and the desired `offset`.
+
+**Two-pass execution for `custom` mode (when `dimension`, `angle`, or `skew` is present):**
+
+1. **Pass 1** — geometry (`dimension` + `angle` + `skew`) is applied using `anchor` as the pivot. If `anchor` is omitted, PIE defaults to `(0, 0)`.
+2. **Pass 2** — position is set via `setOffset` using this priority: explicit `offset` → `horizontalAlign`/`verticalAlign` → fallback (restores original x, y so the layer does not drift).
+
+**Geometry-only** (dimension/angle/skew with no offset and no alignment): the fallback applies — original position is silently preserved. This matches V1 behaviour.
+
+### Alignment options
 
 **V1:** `horizontalAlign` and `verticalAlign`
 
@@ -678,7 +707,7 @@ V2 requires `transformMode: "custom"` to be set when using the `transform` objec
 }
 ```
 
-## Clipping Masks
+## Clipping masks
 
 ### V1 approach
 
@@ -725,13 +754,16 @@ In V2, clipping mask is now a top-level layer property instead of being nested u
 
 The clipping mask functionality has been restructured in V2. Use the `isClipped` boolean property directly on the layer (not nested under `mask`).
 
-## Migration Checklist
+## Migration checklist
 
 When migrating advanced layer operations from V1 to V2:
 
 - [ ] Move: Replace `move: {...}` with `operation: {type: "move", placement: {...}}`
 - [ ] Delete: Replace `delete: {}` with `operation: {type: "delete"}`
-- [ ] Transforms: Replace `bounds` with `transform` using `offset` and `dimension`
+- [ ] Transforms: Replace `bounds` with `transform` using `offset` and `dimension`; set `transformMode: "custom"`
+- [ ] `transform` object must NOT be present when `transformMode` is `fit`, `fill`, or `none` — the service returns 400
+- [ ] `fit`/`fill`: layer is always placed at (0,0) after scaling; for other positions, use a second request with `transformMode: "custom"` and the desired offset
+- [ ] `custom` with dimension/angle/skew: two-pass — geometry first (anchor as pivot, default (0,0)), then position via `setOffset`; priority: offset → alignment → restore original x,y
 - [ ] Masks: Rename `mask` to `pixelMask`
 - [ ] Masks: Change `mask.input` to `pixelMask.source`
 - [ ] Masks: Change `mask.linked` to `pixelMask.isLinked`
@@ -748,9 +780,9 @@ When migrating advanced layer operations from V1 to V2:
 - [ ] Remove explicit `edit: {}` blocks
 - [ ] Update storage syntax (`href`/`storage` → `url`/`storageType`)
 
-## Common Migration Issues
+## Common migration issues
 
-### Issue: Multiple operations on same layer
+### Issue: multiple operations on same layer
 
 **Problem:** V1 allowed edit + move in one layer block
 
@@ -770,7 +802,7 @@ When migrating advanced layer operations from V1 to V2:
 }
 ```
 
-### Issue: Group children structure
+### Issue: group children structure
 
 **Problem:** V1 used nested `children` array
 
@@ -800,13 +832,13 @@ When migrating advanced layer operations from V1 to V2:
 }
 ```
 
-### Issue: Blend mode naming
+### Issue: blend mode naming
 
 **Problem:** Some blend modes have different names
 
 **Solution:** Use exact names from the supported list (same in V1 and V2)
 
-## Complete Migration Example
+## Complete migration example
 
 **V1 documentOperations:**
 
@@ -948,7 +980,7 @@ When migrating advanced layer operations from V1 to V2:
 }
 ```
 
-## Feature Availability
+## Feature availability
 
 ### Currently available in V2
 

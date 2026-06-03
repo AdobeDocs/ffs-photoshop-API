@@ -81,7 +81,7 @@ All execute-actions requests follow this pattern:
 
 Actions allow you to automate Photoshop operations using JSON-formatted descriptors or traditional `.atn` files. You can provide actions inline or reference external files.
 
-### Example: Warm vintage film look
+### Example: warm vintage film look
 
 Apply a warm vintage effect with sepia tones and adjusted levels:
 
@@ -121,7 +121,7 @@ curl -X POST "https://photoshop-api.adobe.io/v2/execute-actions" \
 
 The execute-actions endpoint supports UXP (Unified Extensibility Platform) scripts, allowing you to leverage modern JavaScript (ES6+) for advanced automation.
 
-### Example: Flatten document and export
+### Example: flatten document and export
 
 Flatten all layers in a PSD file and export as JPEG:
 
@@ -160,6 +160,7 @@ curl -X POST "https://photoshop-api.adobe.io/v2/execute-actions" \
 UXP scripts run in a sandboxed environment for security. The sandbox restricts file system access (limited to `plugin-temp:/` for output and `additionalContents` for input), blocks network requests, prevents shell command execution, and isolates scripts from system resources.
 
 **Restricted operations:**
+
 - Cannot access arbitrary file paths on the server
 - Cannot make network requests (fetch, HTTP calls)
 - Cannot execute shell commands or external processes
@@ -168,7 +169,7 @@ UXP scripts run in a sandboxed environment for security. The sandbox restricts f
 
 To work with files in UXP scripts, use the `plugin-temp:/` directory for all file I/O operations. Write any output files (JSON, text, logs, metadata) to `plugin-temp:/filename`, and they will be automatically captured as outputs when you specify a matching `scriptOutputPattern`. For reading files, use the `additionalContents` array with placeholder syntax (`__ADDITIONAL_CONTENTS_PATH_0__`) to access external files passed to your script.
 
-**Example: Writing and reading files**
+**Example: writing and reading files**
 
 This example demonstrates file I/O within the sandbox by writing processing results and reading configuration data:
 
@@ -217,6 +218,49 @@ curl -X POST "https://photoshop-api.adobe.io/v2/execute-actions" \
 ```
 
 ## Advanced features
+
+### Executing a specific action by name
+
+When an `.atn` file contains multiple named actions, use `actionName` to execute only one of them. If `actionName` is omitted, all actions in the file run in order.
+
+```json
+{
+  "options": {
+    "actions": [
+      {
+        "source": {
+          "url": "https://your-storage.com/my-actions.atn"
+        },
+        "actionName": "Vignette Effect"
+      }
+    ]
+  }
+}
+```
+
+You can mix targeted and full-execution actions in the same request:
+
+```json
+{
+  "options": {
+    "actions": [
+      {
+        "source": {
+          "url": "https://your-storage.com/my-actions.atn"
+        },
+        "actionName": "Resize to Web"
+      },
+      {
+        "source": {
+          "url": "https://your-storage.com/color-grading.atn"
+        }
+      }
+    ]
+  }
+}
+```
+
+In the example above, only `"Resize to Web"` runs from the first file, while all actions run from the second file.
 
 ### Multiple actions in sequence
 
@@ -350,6 +394,7 @@ Capture files created by UXP scripts using glob patterns:
 ```
 
 **Brushes and patterns:**
+
 ```json
 {
   "options": {
@@ -373,19 +418,19 @@ Capture files created by UXP scripts using glob patterns:
 
 ## Common issues
 
-### Issue: Invalid content type
+### Issue: invalid content type
 
 **Error**: `Invalid contentType for inline action`
 
 **Solution**: Always specify `"contentType": "application/json"` for actions and `"contentType": "application/javascript"` for UXP scripts.
 
-### Issue: Placeholder not replaced
+### Issue: placeholder not replaced
 
 **Error**: File path contains literal `__ADDITIONAL_CONTENTS_PATH_0__`
 
 **Solution**: Ensure you've provided `additionalContents` array in `options` and the index matches (0-based).
 
-### Issue: Script output not found
+### Issue: script output not found
 
 **Error**: `No files matching pattern`
 
