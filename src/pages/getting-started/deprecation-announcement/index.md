@@ -10,7 +10,7 @@ keywords:
 ---
 # V1 deprecation announcement
 
-Photoshop API v1 will be reaching **end‑of‑life (EoL) in August of 2026**.
+Photoshop API v1 will be reaching **end‑of‑life (EoL) on July 31 of 2026**.
 
 Customers currently relying on v1 endpoints are encouraged to begin planning their migration to Photoshop API v2, which provides the following benefits:
 
@@ -37,7 +37,7 @@ Photoshop API v1 was the first‑generation set of Firefly‑powered Photoshop A
 ### When is this happening?
 
 Deprecation Notice: April 20, 2026. \<br /\>
-End of Life (EOL): August 31, 2026.
+End of Life (EOL): July 31, 2026.
 
 <AccordionItem slots="heading, text" />
 
