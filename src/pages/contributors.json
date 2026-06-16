@@ -1,7 +1,7 @@
 {
-  "total": 71,
+  "total": 72,
   "offset": 0,
-  "limit": 71,
+  "limit": 72,
   "data": [
     {
       "page": "/",
@@ -10,7 +10,7 @@
         "https://avatars.githubusercontent.com/u/48109457?v=4",
         "https://avatars.githubusercontent.com/u/41382203?v=4"
       ],
-      "lastUpdated": "5/12/2026"
+      "lastUpdated": "6/16/2026"
     },
     {
       "page": "/api/",
@@ -36,7 +36,7 @@
         "https://avatars.githubusercontent.com/u/48109457?v=4",
         "https://avatars.githubusercontent.com/u/41382203?v=4"
       ],
-      "lastUpdated": "5/12/2026"
+      "lastUpdated": "6/16/2026"
     },
     {
       "page": "/getting-started/",
@@ -115,6 +115,13 @@
         "https://avatars.githubusercontent.com/u/195011431?v=4"
       ],
       "lastUpdated": "5/6/2026"
+    },
+    {
+      "page": "/guides/autocrop/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/195011431?v=4"
+      ],
+      "lastUpdated": "6/16/2026"
     },
     {
       "page": "/guides/create-mask/",
