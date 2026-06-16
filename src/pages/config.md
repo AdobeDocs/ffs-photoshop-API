@@ -43,7 +43,7 @@
       - [Smart Object workflow](/guides/photoshop-v2/v1-to-v2/guides-v2/smart-object-workflow.md)
       - [v2/edit API benchmarking](/guides/photoshop-v2/v1-to-v2/guides-v2/v2-edit-api-benchmarking.md)
       - [Pegasus worker v2 model reference](/guides/photoshop-v2/v1-to-v2/guides-v2/pegasus-worker-v2-models.md)
-      - [Autocrop feature guide](/guides/autocrop/index.md)
+      - [AutoCrop feature guide](/guides/autocrop/index.md)
     - [Photoshop API v1 guides](/guides/v1/index.md)
       - [Granular Labels](/guides/granular-labels/index.md)
       - [Photoshop Actions](/guides/photoshop-actions/index.md)
