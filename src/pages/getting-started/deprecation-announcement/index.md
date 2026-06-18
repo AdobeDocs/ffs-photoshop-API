@@ -43,7 +43,7 @@ End of Life (EOL): July 31, 2026.
 
 ### Where can I find resources?
 
-The latest comprehensive [information about all Photoshop APIs is available on the API Reference page](https://developer.adobe.com/firefly-services/docs/photoshop/api/photoshop-v2/index.md). \<br /\> \<br /\>
+The latest comprehensive [information about all Photoshop V2 APIs is available on the API Reference page](https://developer.adobe.com/firefly-services/docs/photoshop/api/photoshop-v2/). \<br /\> \<br /\>
 Migration guides for the Photoshop API v2 are available on the [Photoshop API v2 guides page](/guides/photoshop-v2/index.md).
 
 <AccordionItem slots="heading, text"/>
