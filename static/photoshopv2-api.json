@@ -27,6 +27,112 @@
     }
   ],
   "paths": {
+    "/v1/auto-crop": {
+      "post": {
+        "description": "Generates smart crops, subject bounding boxes, and detects objects for an input image. The request is processed asynchronously. Poll GET /v2/status/{jobId} with the returned jobId for completion.",
+        "operationId": "autoCrop",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AutoCropRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobAcceptedResponse"
+                }
+              }
+            },
+            "description": "Job accepted for processing"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad request - Invalid request payload"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized - Invalid or missing access token"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden - User not authorized or quota exhausted"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not found - Requested resource was not found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Validation error - Invalid input data"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Too many requests - Rate limit exceeded. When present, Retry-After header (seconds) indicates delay before retrying."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "servers": [
+          {
+            "description": "Production server.",
+            "url": "https://image.adobe.io"
+          }
+        ],
+        "summary": "Auto crop",
+        "tags": ["Photoshop APIs"]
+      }
+    },
     "/v2/create-artboard": {
       "post": {
         "operationId": "createArtboard",
@@ -458,7 +564,7 @@
     },
     "/v2/status/{jobId}": {
       "get": {
-        "description": "Retrieves the current status and details of a specific job including metadata, outputs, and processing information",
+        "description": "Retrieves the current status and details of a specific job including metadata, outputs, and processing information. Use this endpoint to poll jobs submitted to Photoshop v2 operations and POST /v1/auto-crop.",
         "operationId": "getJobStatus",
         "parameters": [
           {
@@ -1309,6 +1415,208 @@
           }
         },
         "description": "Auto straighten configuration with options"
+      },
+      "AutoCropAspectRatio": {
+        "type": "string",
+        "description": "Desired aspect ratio for generated crops.",
+        "enum": [
+          "1:1",
+          "16:9",
+          "9:16",
+          "4:3",
+          "3:4",
+          "4:5",
+          "5:4",
+          "3:2",
+          "2:3",
+          "21:9"
+        ]
+      },
+      "AutoCropBoundingBox": {
+        "required": ["x", "y", "width", "height"],
+        "type": "object",
+        "properties": {
+          "height": {
+            "type": "number",
+            "description": "Height of the bounding box."
+          },
+          "url": {
+            "type": "string",
+            "description": "Presigned URL for the cropped image. Only present when outputType is 'images'."
+          },
+          "width": {
+            "type": "number",
+            "description": "Width of the bounding box."
+          },
+          "x": {
+            "type": "number",
+            "description": "X coordinate of the bounding box."
+          },
+          "y": {
+            "type": "number",
+            "description": "Y coordinate of the bounding box."
+          }
+        }
+      },
+      "AutoCropCrop": {
+        "required": ["boundingBoxes"],
+        "type": "object",
+        "properties": {
+          "boundingBoxes": {
+            "type": "array",
+            "description": "List of bounding boxes for the generated crop.",
+            "items": {
+              "$ref": "#/components/schemas/AutoCropBoundingBox"
+            }
+          }
+        }
+      },
+      "AutoCropImageMediaType": {
+        "type": "string",
+        "description": "The media type of the input image. Supported values are image/jpeg, image/png, and image/webp.",
+        "enum": ["image/jpeg", "image/png", "image/webp"]
+      },
+      "AutoCropInputImage": {
+        "required": ["source"],
+        "type": "object",
+        "properties": {
+          "mediaType": {
+            "$ref": "#/components/schemas/AutoCropImageMediaType"
+          },
+          "source": {
+            "$ref": "#/components/schemas/AutoCropUrlResource"
+          }
+        },
+        "description": "The input image for the auto-crop operation."
+      },
+      "AutoCropMode": {
+        "type": "string",
+        "description": "Mode for the auto crop operation. 'smartCrop' and 'subjectCrop' generate crops using aspectRatio with optional zoom. 'fullSceneDetection' and 'objectDetection' detect subjects or objects in the scene.",
+        "enum": [
+          "smartCrop",
+          "subjectCrop",
+          "fullSceneDetection",
+          "objectDetection"
+        ]
+      },
+      "AutoCropObjectDetection": {
+        "required": ["objectName", "boundingBoxes", "confidence"],
+        "type": "object",
+        "properties": {
+          "boundingBoxes": {
+            "type": "array",
+            "description": "Bounding boxes enclosing the detected object in {x, y, width, height} format.",
+            "items": {
+              "$ref": "#/components/schemas/AutoCropBoundingBox"
+            }
+          },
+          "confidence": {
+            "type": "number",
+            "description": "Confidence score for the detected object."
+          },
+          "objectName": {
+            "type": "string",
+            "description": "Name of the detected object."
+          }
+        }
+      },
+      "AutoCropOutput": {
+        "required": ["subject", "objects", "crops"],
+        "type": "object",
+        "properties": {
+          "crops": {
+            "type": "array",
+            "description": "Generated crops for the input image.",
+            "items": {
+              "$ref": "#/components/schemas/AutoCropCrop"
+            }
+          },
+          "objects": {
+            "type": "array",
+            "description": "Detected objects in the input image.",
+            "items": {
+              "$ref": "#/components/schemas/AutoCropObjectDetection"
+            }
+          },
+          "subject": {
+            "type": "array",
+            "description": "Subject crops detected in the input image.",
+            "items": {
+              "$ref": "#/components/schemas/AutoCropCrop"
+            }
+          }
+        },
+        "description": "Auto crop output details."
+      },
+      "AutoCropOutputType": {
+        "type": "string",
+        "description": "Output type for the auto crop operation. 'images' returns cropped images with presigned URLs (default). 'boundingBoxes' returns only bounding box coordinates.",
+        "default": "images",
+        "enum": ["images", "boundingBoxes"]
+      },
+      "AutoCropRequest": {
+        "required": ["image", "mode"],
+        "type": "object",
+        "properties": {
+          "aspectRatio": {
+            "description": "Desired aspect ratio(s) for generated crops. Accepts either a single enum string or an array of up to 20 strings. Allowed only for 'smartCrop' and 'subjectCrop'. When omitted, the service defaults to 1:1. An empty array is treated as absent.",
+            "example": ["16:9", "1:1", "4:3"],
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AutoCropAspectRatio"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/AutoCropAspectRatio"
+                }
+              }
+            ]
+          },
+          "focus": {
+            "type": "array",
+            "description": "Focus labels, ordered by preference, used to prioritize objects during cropping or as detection targets. Required for 'subjectCrop' and 'objectDetection'; must be empty for 'smartCrop' and 'fullSceneDetection'.",
+            "example": ["logo", "person"],
+            "items": {
+              "type": "string"
+            }
+          },
+          "image": {
+            "$ref": "#/components/schemas/AutoCropInputImage"
+          },
+          "mode": {
+            "$ref": "#/components/schemas/AutoCropMode"
+          },
+          "outputType": {
+            "$ref": "#/components/schemas/AutoCropOutputType"
+          },
+          "zoom": {
+            "description": "Optional zoom level(s) paired with aspectRatio. Accepts either a number or an array of up to 20 numbers in (0, 1]. Must not be sent without aspectRatio. When aspectRatio is an array, zoom may be omitted or must be a matching non-empty array.",
+            "example": [0.9, 0.8, 0.85],
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "AutoCropUrlResource": {
+        "required": ["url"],
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "The URL of the resource. Only allow-listed domains are accepted as input URLs (e.g. amazonaws.com, windows.net, dropboxusercontent.com, assets.frame.io, storage.googleapis.com, adobe.io, azureedge.net, smartcreatives.stg.walmart.com)."
+          }
+        },
+        "description": "The source of the input image."
       },
       "BaseAdjustment": {
         "required": ["type"],
