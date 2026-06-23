@@ -721,12 +721,13 @@ When `transform` includes any of `dimension`, `angle`, or `skew`, pie-worker app
 - Layer type: V1 `"smartObject"` → V2 `"smart_object_layer"`
 - Source: V1 `input: {href, storage}` → V2 `smartObject.smartObjectFile.source.url` (nested deeper)
 - Linked flag: V1 `smartObject.linked` → V2 `smartObject.isLinked`
-- V2 adds SVG and AI as new source formats; V1 supported PSD, JPEG, PNG, and PDF
-- **Supported source file types:** PSD (`image/vnd.adobe.photoshop`), JPEG (`image/jpeg`), PNG (`image/png`), TIFF (`image/tiff`), SVG (`image/svg+xml`), AI (`application/illustrator`), PDF (`application/pdf`)
-- **AI file requirement:** AI files are only supported when the **Create PDF Compatible File** option was enabled when saving from Adobe Illustrator.
+- V2 adds SVG and TIFF as new source formats; V1 supported PSD, JPEG, and PNG
+- **Supported source file types:** PSD (`image/vnd.adobe.photoshop`), JPEG (`image/jpeg`), PNG (`image/png`), TIFF (`image/tiff`), SVG (`image/svg+xml`)
 - **Resize with linked smart objects:** Width-only resize (no layer edits) → ALL linked SOs are rasterized to pixel layers. Edit/add a linked SO in the same request + resize → that edited SO stays linked; all other linked SOs are rasterized.
 - Cannot replace a linked SO with an embedded SO (V2 limitation)
-- **SO canvas content scaling:** `transformMode` is a document-level layer operation and does NOT control how replacement content is scaled onto the SO canvas. SO canvas scaling is determined solely by `transform.dimension`: omitting it → proportional scale (aspect ratio preserved); providing it → stretch to exact dimensions. Use `transformMode: "fit"` or `"fill"` without `transform.dimension` for cutout/transparent-background assets.
+- **SO canvas content scaling:** `transformMode` is a document-level layer operation and does NOT control how replacement content is scaled onto the SO canvas. SO canvas scaling is determined by `transform.dimension`: omitting it → proportional scale (aspect ratio preserved); providing it → stretch to exact dimensions. Use `transformMode: "fit"` or `"fill"` without `transform.dimension` for cutout/transparent-background assets.
+- **`autoResize` (embedded SO only):** Controls whether the SO canvas resizes to the replacement file's native dimensions. `true` (default) — SO canvas stays at original dimensions, replacement is scaled to fit. `false` — SO canvas adopts replacement's native dims/dpi (Photoshop-like). Rejected with error when `isLinked: true`. Only affects raster (PNG, JPEG, TIFF, PSD) and PDF/AI replacements.
+- **`instanceId` in manifest response:** V2 includes `smartObjectData.instanceId` (sourced from `xmpMM:InstanceID` in the embedded SO's XMP) for embedded smart objects only (`isLinked: false`). Not present for linked SOs. V1 had `instanceId` at the top level of the `smartObject` block.
 
 **Adjustment Layer Specifics:**
 
@@ -3703,8 +3704,7 @@ Use this checklist when migrating or validating V1 → V2 code:
 - [ ] Source: V1 `input: {href, storage}` → V2 `smartObject.smartObjectFile.source.url`
 - [ ] Linked flag: `smartObject.linked` → `smartObject.isLinked`
 - [ ] `transformMode` required when using `transform` object: `"none"`, `"custom"`, `"fit"`, or `"fill"`
-- [ ] V2 adds SVG and AI as new source file types (not in V1); PSD, JPEG, PNG, TIFF, and PDF were already supported in V1
-- [ ] AI files require **Create PDF Compatible File** to have been enabled when saving from Illustrator
+- [ ] V2 adds SVG and TIFF as new source file types (not in V1); PSD, JPEG, and PNG were already supported in V1
 - [ ] Width-only resize: linked SOs are rasterized to pixel layers unless their content is provided in the same request
 
 ### Text endpoint migration specific (`/pie/psdService/text`)
@@ -3890,9 +3890,9 @@ curl -X GET https://photoshop-api.adobe.io/v2/status/{jobId} \
 
 ## Document version
 
-**Version:** 1.22
+**Version:** 1.23
 **Created:** October 29, 2025
-**Last Updated:** May 28, 2026
+**Last Updated:** June 15, 2026
 
 **Coverage:**
 - All migration guides consolidated
@@ -3929,7 +3929,7 @@ curl -X GET https://photoshop-api.adobe.io/v2/status/{jobId} \
 - Artboard visibility behavior change: V1 ignores artboard container visibility (full canvas always rendered); V2 respects it (hidden artboards excluded, output dimensions shrink to visible content)
 - Adjustment layer operations: `adjustments.type` discriminant required, type mapping table, `exposureValue` rename, hue/sat `hueSaturationAdjustments[]` restructure, `localRange`, parameter ranges, `transformMode` not applicable
 - Text layer operations: character style range off-by-one (V1 `to`=length → V2 `apply.to`=inclusive end index), `font.postScriptName`, `text.frame` area/point types, bounds conversion, font options rename, `textOrientation`
-- Smart object operations: `smartObject.smartObjectFile.source.url` path, `isLinked`, resize-with-linked-SO rasterization behavior, SVG support, supported source file types (PSD, JPEG, PNG, TIFF, SVG, AI, PDF); SVG and AI added in V2; AI files require Create PDF Compatible File option in Illustrator
+- Smart object operations: `smartObject.smartObjectFile.source.url` path, `isLinked`, resize-with-linked-SO rasterization behavior, SVG support, supported source file types (PSD, JPEG, PNG, TIFF, SVG); SVG and TIFF added in V2
 - `/pie/psdService/text` migration: no declarative V2 equivalent; use `execute-actions` with ActionJSON (fixed edits) or UXP (conditional/iterative); decision table
 - Blend mode location: top-level `opacity`/`blendMode` for most layers; `blendOptions` for `smart_object_layer`
 - Layer transforms: V1 `bounds` → V2 `transform {offset, dimension}` with required `transformMode: "custom"`; `transform` forbidden on `fit`/`fill`/`none` (400); fit/fill always at (0,0), use second request for custom positioning; two-pass for dimension/angle/skew (geometry first, then setOffset with priority: offset > alignment > restore original); anchor default (0,0)

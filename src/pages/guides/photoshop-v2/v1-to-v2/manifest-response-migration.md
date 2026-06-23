@@ -398,7 +398,8 @@ Artboards were plain `layerSection` nodes, indistinguishable from regular groups
       "path": "foo.psd",
       "fileType": "ps3",
       "linked": false
-    }
+    },
+    "instanceId": "1EAD362C2961E401217146F61D505B14"
   },
   "extracted": {
     "mediaType": "application/octet-stream",
@@ -407,13 +408,13 @@ Artboards were plain `layerSection` nodes, indistinguishable from regular groups
 }
 ```
 
-`extracted` is only present for non-linked (embedded) smart objects. `ccLibrariesElement` inside `fileInfo` is only present for CC Library-linked assets.
+`extracted` and `smartObjectData.instanceId` are only present for non-linked (embedded) smart objects. `ccLibrariesElement` inside `fileInfo` is only present for CC Library-linked assets.
 
 ### Field-by-field comparison
 
 | Old field     | New field                           | Status  | Notes                                                          |
 | ------------- | ----------------------------------- | ------- | -------------------------------------------------------------- |
-| `instanceId`  | —                                   | REMOVED | Identity now inferred from `fileInfo`                          |
+| `instanceId`  | `smartObjectData.instanceId`        | CHANGED | Moved into `smartObjectData`; only present for embedded SOs    |
 | `linked`      | `isLinked`                          | CHANGED | Renamed; promoted to top level                                 |
 | `name`        | `smartObjectData.fileInfo.name`     | CHANGED | Moved into nested `fileInfo`                                   |
 | `path`        | `smartObjectData.fileInfo.path`     | CHANGED | Moved into nested `fileInfo`                                   |
