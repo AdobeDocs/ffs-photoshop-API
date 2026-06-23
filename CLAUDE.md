@@ -45,30 +45,15 @@ Resolve the spec path explicitly (`static/photoshop_api.json` or `static/photosh
 
 ## Conventions enforced by Cursor rules
 
-These `.cursor/rules/*.mdc` are `alwaysApply: true` and apply to Claude too:
+These `.cursor/rules/*.mdc` are `alwaysApply: true` and apply to Claude too. They are the single source of truth and imported directly below (don't paraphrase them here — edit the rule files):
 
-**Commit messages** (`commit-rules.mdc`): imperative subject ≤50 chars, blank line, body bullets wrapped at ~72 chars. Every body bullet must start with exactly one of these markers:
+- **Commit messages** — subject, body wrapping, and the 📖 / ✏️ / 🆕 / 🗑️ markers:
 
-- **📖 (adds)** — net-new content: new files, sections, features, headers, or net-new lines.
-- **✏️ (modifies)** — edits to existing lines, sections, or content; refactors. Use this for small wording tweaks inside a section.
-- **🆕 (TOC / feature registration)** — adds an entry to a table-of-contents or nav config file (e.g. `config.md`, `TOC.md`) that registers a new feature, topic, or page.
-- **🗑️ (removes)** — entire content removed (not a light edit): a whole section under a heading, an image/asset reference, a code block, or a component/include that no longer appears at all.
+  @.cursor/rules/commit-rules.mdc
 
-Example:
+- **Pull requests** — Jira derivation, `{type}/{JIRA-ID}- {desc}` titles, required `# Summary` / `# Changes` / `# Context` body sections:
 
-```text
-Add AJO for GenStudio extensibility topic
-
-- 📖 Add journey-optimizer-for-genstudio.md and screenshot assets.
-- 🆕 Add Journey Optimizer for GenStudio to help/extensibility/TOC.md.
-- ✏️ Link the topic from use-templates.md and extensibility home.md.
-```
-
-**Pull requests** (`pr-rules.mdc`):
-- Derive the Jira ID from the **branch name** (e.g. `FFENT-12856`). Never invent a ticket.
-- Title: `{type}/{JIRA-ID}- {description}` (e.g. `docs/FFENT-8001- ...`). If no Jira ID in branch: `{type}- {description}`. Types: `feat`, `fix`, `refactor`, `perf`, `style`, `test`, `docs`, `build`, `ops`, `chore` (for content additions use `docs`/`feat`).
-- Body sections, exactly: `# Summary`, `# Changes` (a `## ` per touched file path in backticks, with bullets), `# Context` → `## Jira` (clickable issue link, or literally `No ticket`).
-- When a Jira ticket applies, comment the PR URL on that ticket once the PR is created; skip when `No ticket`.
+  @.cursor/rules/pr-rules.mdc
 
 **New Cursor rules** go in `.cursor/rules/`, kebab-case, `.mdc` extension, with `description`/`globs`/`alwaysApply` frontmatter.
 
