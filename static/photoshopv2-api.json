@@ -751,14 +751,7 @@
         "type": "object",
         "properties": {
           "image": {
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/ImageParameters"
-              },
-              {
-                "$ref": "#/components/schemas/ImageSource"
-              }
-            ]
+            "$ref": "#/components/schemas/ImageSource"
           },
           "options": {
             "$ref": "#/components/schemas/ActionsOptions"
@@ -3826,19 +3819,12 @@
           "source"
         ],
         "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/ImageInput"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "source": {
-                "$ref": "#/components/schemas/FileResourceInput"
-              }
-            }
+        "properties": {
+          "source": {
+            "$ref": "#/components/schemas/FileResourceInput"
           }
-        ]
+        },
+        "description": "The image input for the actions operation. Required."
       },
       "InlineContentResourceInput": {
         "required": [
@@ -4897,10 +4883,10 @@
           "unit": {
             "type": "string",
             "description": "The unit of measurement for resolution. 'density_unit' represents pixel density measurements like DPI (dots per inch) or PPI (pixels per inch). Defaults to density_unit when omitted.",
-            "default": "density_unit",
             "enum": [
               "density_unit"
-            ]
+            ],
+            "default": "density_unit"
           },
           "value": {
             "minimum": 1,
@@ -4909,11 +4895,7 @@
             "format": "int32"
           }
         },
-        "description": "Represents a resolution measurement with density unit.",
-        "default": {
-          "value": 72,
-          "unit": "density_unit"
-        }
+        "description": "Represents a resolution measurement with density unit."
       },
       "ResourceInput": {
         "type": "object",

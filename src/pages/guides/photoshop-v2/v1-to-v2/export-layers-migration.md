@@ -187,6 +187,12 @@ When the single layer in `outputs[].layers[]` is a **group layer or artboard lay
 | `document_bounds` | Canvas sized to the full source document dimensions. Group/artboard layers are placed at their absolute position within the document canvas. |
 | `trim_to_transparency` | Behaves the same as `layer_bounds` for group and artboard PSD export. Unlike raster exports where this crops to the tightest non-transparent bounding box, the PSD export uses the full group or artboard rect as the canvas. This is because the output is an editable layer tree, not a flat composite, so pixel-level trimming cannot be applied without rasterizing. |
 
+### Linked Smart Objects Inside Groups and Artboards
+
+<InlineAlert variant="warning" slots="text"/>
+
+If the group or artboard layer contains a **linked smart object**, the export job will fail. The Photoshop API does not have access to the linked file at processing time, so the layer tree cannot be written to the output PSD. Ensure any linked smart objects inside the group or artboard are converted to embedded smart objects before exporting.
+
 ## Sample: multi-layer export
 
 **Schema changes (multi-layer):** Multi-layer export does not support PSD as of now; use `mediaType`: `image/jpeg`, `image/png`, or `image/tiff` only. `cropMode` supports `trim_to_transparency` and `document_bounds` (not `layer_bounds`). Use string enums for `quality` (e.g., `maximum`, `photoshop_max`) and `compression` for PNG.

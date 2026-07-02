@@ -189,6 +189,29 @@ Include XMP metadata in the manifest:
 
 Default: `false`
 
+When `includeXmp` is `true`, XMP metadata is returned in two places:
+
+- **`document.xmp`** — XMP metadata for the parent PSD document itself
+- **`layers[].smartObject.xmp`** — XMP metadata for each **embedded** smart object layer (not present for linked smart objects, whose source file may not be available in the processing environment)
+
+Example smart object layer with XMP:
+
+```json
+{
+  "type": "smart_object_layer",
+  "name": "logo",
+  "smartObject": {
+    "isSmartObject": true,
+    "isLinked": false,
+    "isValid": true,
+    "smartObjectData": { "...": "..." },
+    "xmp": "<?xpacket begin=\"﻿\" ...?>\n<x:xmpmeta xmlns:x=\"adobe:ns:meta/\" ...>...</x:xmpmeta>"
+  }
+}
+```
+
+The XMP string is the raw XMP packet as stored in the embedded asset, including standard fields such as `dc:format`, `xmp:CreatorTool`, `xmp:CreateDate`, `xmpMM:InstanceID`, and `xmpMM:DocumentID`.
+
 ### Trim to transparency
 
 Trim layer thumbnails to remove transparent pixels, cropping each thumbnail tightly to its visible content:

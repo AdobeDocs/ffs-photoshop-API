@@ -595,8 +595,12 @@ V2 allows you to override the image's embedded orientation metadata by specifyin
     "fill": "white",  // Also: "transparent", "background_color" (NOT "backgroundColor" — camelCase is rejected in V2)
                       // Or object: {"solidColor": {"red": 255, "green": 255, "blue": 255}}
     "mode": "rgb",    // Use "grayscale" (not "gray") for grayscale documents
-    "depth": 8        // Integer, not string. Valid values depend on mode:
+    "depth": 8,       // Integer, not string. Valid values depend on mode:
                       // bitmap: 1; grayscale/rgb/hsb: 8, 16, 32; cmyk/lab/multichannel: 8, 16; indexed/duotone: 8
+    "unit": "pixels_unit"  // Optional. "pixels_unit" (default) | "points_unit". Controls unit for width/height.
+                           // points_unit conversion: Math.round(points × (DPI / 72)).
+                           // DPI from: resolution.value → source doc native DPI → 72 fallback.
+                           // Converted value must not exceed 32000 px.
   },
   "edits": {
     "document": {
@@ -688,6 +692,7 @@ For `smart_object_layer`, `opacity` and `blendMode` remain nested under `blendOp
 - V2: `transformMode: "custom"` (required) + `transform: {offset: {horizontal, vertical}, dimension: {width, height}}`
 - Additional V2 transform fields: `angle` (rotation in degrees), `skew: {horizontal, vertical}`, `anchor: {horizontal, vertical}`
 - `transformMode` values: `"none"`, `"custom"`, `"fit"`, `"fill"` — **not applicable to adjustment layers**
+- `transform.dimension.unit` (optional): `"pixels_unit"` (default) | `"points_unit"` — controls unit for `transform.dimension.width` and `transform.dimension.height`. Conversion: `Math.round(points × (DPI / 72))`; DPI resolved from `image.resolution.value` → source doc native DPI → 72 fallback.
 
 **Transform mode rules (violation returns 400):**
 
@@ -1122,6 +1127,7 @@ Supports glob patterns: `*.json`, `result-*.png`, etc.
 - V2: `/v2/generate-manifest`
 - Pattern: Returns manifest to specified output destination
 - Options: `includeLayerThumbnails`, `includeXmp`, `maximumThumbnailDepth`, `trimToTransparency` (boolean, crops layer thumbnails to visible content; requires `includeLayerThumbnails: true`; has no effect on adjustment layers or layers with no pixel data — those always return a blank white canvas thumbnail; specific to `/v2/generate-manifest` — for trimming exported images in `/v2/create-composite` or `/v2/execute-actions`, use `cropMode: "trim_to_transparency"` in output options instead)
+- **`includeXmp: true`** returns XMP metadata in two places: (1) `document.xmp` — the parent PSD's XMP; (2) `layers[].smartObject.xmp` — the embedded asset's XMP for each **embedded** smart object layer (`isLinked: false`). Linked smart object layers never include `xmp` since their external file may not be available. XMP string is the raw packet format including `<?xpacket>` envelope.
 - V1 manifest had `locked` (boolean) on layers → V2 returns `protection` (array of flags: `none`, `all`, `transparency`, `composite`, `position`, `artboard_autonest`)
 - V1 manifest had `mask` property with `offset.x`/`offset.y` → V2 uses `pixelMask` with `offset.horizontal`/`offset.vertical`, plus new read-only fields `hasMask`, `extendOpaque`, `bounds`, and editable fields `enabled` (boolean, default `true`, toggles mask visibility without deleting data) and `linked` (boolean, default `true`, whether mask transforms with the layer); density/feather moved to separate `userMask` property: `density` (integer, 0–100, mask opacity/strength) and `feather` (number, 0–250, edge softness in pixels); to delete a pixel mask in edit operations use `pixelMask: { "delete": true }` (edit only, not valid on add; supported on all layer types)
 - Clipping mask: V1 `mask.clip` → V2 `layerSettings.clippingMask` in manifest; use top-level `isClipped: true` in edit operations
@@ -3890,9 +3896,9 @@ curl -X GET https://photoshop-api.adobe.io/v2/status/{jobId} \
 
 ## Document version
 
-**Version:** 1.23
+**Version:** 1.24
 **Created:** October 29, 2025
-**Last Updated:** June 15, 2026
+**Last Updated:** June 25, 2026
 
 **Coverage:**
 - All migration guides consolidated
@@ -3935,6 +3941,7 @@ curl -X GET https://photoshop-api.adobe.io/v2/status/{jobId} \
 - Layer transforms: V1 `bounds` → V2 `transform {offset, dimension}` with required `transformMode: "custom"`; `transform` forbidden on `fit`/`fill`/`none` (400); fit/fill always at (0,0), use second request for custom positioning; two-pass for dimension/angle/skew (geometry first, then setOffset with priority: offset > alignment > restore original); anchor default (0,0)
 - Alignment: V1 layer-level → V2 placement-level `horizontalAlignment`/`verticalAlignment` with `placement.type: "custom"`
 - Document creation `fill` rename: `"backgroundColor"` → `"background_color"`; object form `{solidColor:{...}}`; depth-by-mode table
+- `image.unit` and `transform.dimension.unit`: `"pixels_unit"` (default) | `"points_unit"`; DPI-based conversion `Math.round(points × DPI / 72)`; 32000 px cap on converted value
 
 ## Composite API (`/v2/create-composite`) — key breaking changes reference
 
