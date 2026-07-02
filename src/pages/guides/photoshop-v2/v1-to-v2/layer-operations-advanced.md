@@ -662,6 +662,13 @@ Setting `visible: false` on an **artboard root layer** behaves differently acros
 }
 ```
 
+**`transform.dimension.unit`** *(optional)*
+
+- Type: String
+- Default: `"pixels_unit"`
+- Values: `"pixels_unit"` | `"points_unit"`
+- Description: Unit for `transform.dimension.width` and `transform.dimension.height`. When `"points_unit"`, dimensions are converted to pixels: `Math.round(points × (DPI / 72))`. DPI is resolved from `image.resolution.value`, the source document's native DPI, or 72 as a fallback.
+
 <InlineAlert variant="info" slots="text"/>
 
 V2 requires `transformMode: "custom"` to be set when using the `transform` object. The `transform` object provides additional capabilities beyond basic positioning and sizing, including `anchor`, `angle` (rotation in degrees), `skew`, `horizontalAlign`, and `verticalAlign`.

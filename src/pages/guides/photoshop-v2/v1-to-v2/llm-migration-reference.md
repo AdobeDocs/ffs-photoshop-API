@@ -595,8 +595,12 @@ V2 allows you to override the image's embedded orientation metadata by specifyin
     "fill": "white",  // Also: "transparent", "background_color" (NOT "backgroundColor" — camelCase is rejected in V2)
                       // Or object: {"solidColor": {"red": 255, "green": 255, "blue": 255}}
     "mode": "rgb",    // Use "grayscale" (not "gray") for grayscale documents
-    "depth": 8        // Integer, not string. Valid values depend on mode:
+    "depth": 8,       // Integer, not string. Valid values depend on mode:
                       // bitmap: 1; grayscale/rgb/hsb: 8, 16, 32; cmyk/lab/multichannel: 8, 16; indexed/duotone: 8
+    "unit": "pixels_unit"  // Optional. "pixels_unit" (default) | "points_unit". Controls unit for width/height.
+                           // points_unit conversion: Math.round(points × (DPI / 72)).
+                           // DPI from: resolution.value → source doc native DPI → 72 fallback.
+                           // Converted value must not exceed 32000 px.
   },
   "edits": {
     "document": {
@@ -688,6 +692,7 @@ For `smart_object_layer`, `opacity` and `blendMode` remain nested under `blendOp
 - V2: `transformMode: "custom"` (required) + `transform: {offset: {horizontal, vertical}, dimension: {width, height}}`
 - Additional V2 transform fields: `angle` (rotation in degrees), `skew: {horizontal, vertical}`, `anchor: {horizontal, vertical}`
 - `transformMode` values: `"none"`, `"custom"`, `"fit"`, `"fill"` — **not applicable to adjustment layers**
+- `transform.dimension.unit` (optional): `"pixels_unit"` (default) | `"points_unit"` — controls unit for `transform.dimension.width` and `transform.dimension.height`. Conversion: `Math.round(points × (DPI / 72))`; DPI resolved from `image.resolution.value` → source doc native DPI → 72 fallback.
 
 **Transform mode rules (violation returns 400):**
 
@@ -721,12 +726,13 @@ When `transform` includes any of `dimension`, `angle`, or `skew`, pie-worker app
 - Layer type: V1 `"smartObject"` → V2 `"smart_object_layer"`
 - Source: V1 `input: {href, storage}` → V2 `smartObject.smartObjectFile.source.url` (nested deeper)
 - Linked flag: V1 `smartObject.linked` → V2 `smartObject.isLinked`
-- V2 adds SVG and AI as new source formats; V1 supported PSD, JPEG, PNG, and PDF
-- **Supported source file types:** PSD (`image/vnd.adobe.photoshop`), JPEG (`image/jpeg`), PNG (`image/png`), TIFF (`image/tiff`), SVG (`image/svg+xml`), AI (`application/illustrator`), PDF (`application/pdf`)
-- **AI file requirement:** AI files are only supported when the **Create PDF Compatible File** option was enabled when saving from Adobe Illustrator.
+- V2 adds SVG and TIFF as new source formats; V1 supported PSD, JPEG, and PNG
+- **Supported source file types:** PSD (`image/vnd.adobe.photoshop`), JPEG (`image/jpeg`), PNG (`image/png`), TIFF (`image/tiff`), SVG (`image/svg+xml`)
 - **Resize with linked smart objects:** Width-only resize (no layer edits) → ALL linked SOs are rasterized to pixel layers. Edit/add a linked SO in the same request + resize → that edited SO stays linked; all other linked SOs are rasterized.
 - Cannot replace a linked SO with an embedded SO (V2 limitation)
-- **SO canvas content scaling:** `transformMode` is a document-level layer operation and does NOT control how replacement content is scaled onto the SO canvas. SO canvas scaling is determined solely by `transform.dimension`: omitting it → proportional scale (aspect ratio preserved); providing it → stretch to exact dimensions. Use `transformMode: "fit"` or `"fill"` without `transform.dimension` for cutout/transparent-background assets.
+- **SO canvas content scaling:** `transformMode` is a document-level layer operation and does NOT control how replacement content is scaled onto the SO canvas. SO canvas scaling is determined by `transform.dimension`: omitting it → proportional scale (aspect ratio preserved); providing it → stretch to exact dimensions. Use `transformMode: "fit"` or `"fill"` without `transform.dimension` for cutout/transparent-background assets.
+- **`autoResize` (embedded SO only):** Controls whether the SO canvas resizes to the replacement file's native dimensions. `true` (default) — SO canvas stays at original dimensions, replacement is scaled to fit. `false` — SO canvas adopts replacement's native dims/dpi (Photoshop-like). Rejected with error when `isLinked: true`. Only affects raster (PNG, JPEG, TIFF, PSD) and PDF/AI replacements.
+- **`instanceId` in manifest response:** V2 includes `smartObjectData.instanceId` (sourced from `xmpMM:InstanceID` in the embedded SO's XMP) for embedded smart objects only (`isLinked: false`). Not present for linked SOs. V1 had `instanceId` at the top level of the `smartObject` block.
 
 **Adjustment Layer Specifics:**
 
@@ -1121,6 +1127,7 @@ Supports glob patterns: `*.json`, `result-*.png`, etc.
 - V2: `/v2/generate-manifest`
 - Pattern: Returns manifest to specified output destination
 - Options: `includeLayerThumbnails`, `includeXmp`, `maximumThumbnailDepth`, `trimToTransparency` (boolean, crops layer thumbnails to visible content; requires `includeLayerThumbnails: true`; has no effect on adjustment layers or layers with no pixel data — those always return a blank white canvas thumbnail; specific to `/v2/generate-manifest` — for trimming exported images in `/v2/create-composite` or `/v2/execute-actions`, use `cropMode: "trim_to_transparency"` in output options instead)
+- **`includeXmp: true`** returns XMP metadata in two places: (1) `document.xmp` — the parent PSD's XMP; (2) `layers[].smartObject.xmp` — the embedded asset's XMP for each **embedded** smart object layer (`isLinked: false`). Linked smart object layers never include `xmp` since their external file may not be available. XMP string is the raw packet format including `<?xpacket>` envelope.
 - V1 manifest had `locked` (boolean) on layers → V2 returns `protection` (array of flags: `none`, `all`, `transparency`, `composite`, `position`, `artboard_autonest`)
 - V1 manifest had `mask` property with `offset.x`/`offset.y` → V2 uses `pixelMask` with `offset.horizontal`/`offset.vertical`, plus new read-only fields `hasMask`, `extendOpaque`, `bounds`, and editable fields `enabled` (boolean, default `true`, toggles mask visibility without deleting data) and `linked` (boolean, default `true`, whether mask transforms with the layer); density/feather moved to separate `userMask` property: `density` (integer, 0–100, mask opacity/strength) and `feather` (number, 0–250, edge softness in pixels); to delete a pixel mask in edit operations use `pixelMask: { "delete": true }` (edit only, not valid on add; supported on all layer types)
 - Clipping mask: V1 `mask.clip` → V2 `layerSettings.clippingMask` in manifest; use top-level `isClipped: true` in edit operations
@@ -3703,8 +3710,7 @@ Use this checklist when migrating or validating V1 → V2 code:
 - [ ] Source: V1 `input: {href, storage}` → V2 `smartObject.smartObjectFile.source.url`
 - [ ] Linked flag: `smartObject.linked` → `smartObject.isLinked`
 - [ ] `transformMode` required when using `transform` object: `"none"`, `"custom"`, `"fit"`, or `"fill"`
-- [ ] V2 adds SVG and AI as new source file types (not in V1); PSD, JPEG, PNG, TIFF, and PDF were already supported in V1
-- [ ] AI files require **Create PDF Compatible File** to have been enabled when saving from Illustrator
+- [ ] V2 adds SVG and TIFF as new source file types (not in V1); PSD, JPEG, and PNG were already supported in V1
 - [ ] Width-only resize: linked SOs are rasterized to pixel layers unless their content is provided in the same request
 
 ### Text endpoint migration specific (`/pie/psdService/text`)
@@ -3890,9 +3896,9 @@ curl -X GET https://photoshop-api.adobe.io/v2/status/{jobId} \
 
 ## Document version
 
-**Version:** 1.22
+**Version:** 1.24
 **Created:** October 29, 2025
-**Last Updated:** May 28, 2026
+**Last Updated:** June 25, 2026
 
 **Coverage:**
 - All migration guides consolidated
@@ -3929,12 +3935,13 @@ curl -X GET https://photoshop-api.adobe.io/v2/status/{jobId} \
 - Artboard visibility behavior change: V1 ignores artboard container visibility (full canvas always rendered); V2 respects it (hidden artboards excluded, output dimensions shrink to visible content)
 - Adjustment layer operations: `adjustments.type` discriminant required, type mapping table, `exposureValue` rename, hue/sat `hueSaturationAdjustments[]` restructure, `localRange`, parameter ranges, `transformMode` not applicable
 - Text layer operations: character style range off-by-one (V1 `to`=length → V2 `apply.to`=inclusive end index), `font.postScriptName`, `text.frame` area/point types, bounds conversion, font options rename, `textOrientation`
-- Smart object operations: `smartObject.smartObjectFile.source.url` path, `isLinked`, resize-with-linked-SO rasterization behavior, SVG support, supported source file types (PSD, JPEG, PNG, TIFF, SVG, AI, PDF); SVG and AI added in V2; AI files require Create PDF Compatible File option in Illustrator
+- Smart object operations: `smartObject.smartObjectFile.source.url` path, `isLinked`, resize-with-linked-SO rasterization behavior, SVG support, supported source file types (PSD, JPEG, PNG, TIFF, SVG); SVG and TIFF added in V2
 - `/pie/psdService/text` migration: no declarative V2 equivalent; use `execute-actions` with ActionJSON (fixed edits) or UXP (conditional/iterative); decision table
 - Blend mode location: top-level `opacity`/`blendMode` for most layers; `blendOptions` for `smart_object_layer`
 - Layer transforms: V1 `bounds` → V2 `transform {offset, dimension}` with required `transformMode: "custom"`; `transform` forbidden on `fit`/`fill`/`none` (400); fit/fill always at (0,0), use second request for custom positioning; two-pass for dimension/angle/skew (geometry first, then setOffset with priority: offset > alignment > restore original); anchor default (0,0)
 - Alignment: V1 layer-level → V2 placement-level `horizontalAlignment`/`verticalAlignment` with `placement.type: "custom"`
 - Document creation `fill` rename: `"backgroundColor"` → `"background_color"`; object form `{solidColor:{...}}`; depth-by-mode table
+- `image.unit` and `transform.dimension.unit`: `"pixels_unit"` (default) | `"points_unit"`; DPI-based conversion `Math.round(points × DPI / 72)`; 32000 px cap on converted value
 
 ## Composite API (`/v2/create-composite`) — key breaking changes reference
 

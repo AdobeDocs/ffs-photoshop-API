@@ -262,7 +262,7 @@ V1 smart object behavior was inconsistent across add, edit, and replace operatio
 
 **New features in V2:**
 
-1. **Expanded File Type Support** — V2 adds SVG (`image/svg+xml`) and AI / Adobe Illustrator (`application/illustrator`) as new smart object source types. V1 supported PSD, JPEG, PNG, and PDF.
+1. **Expanded File Type Support** — V2 adds SVG (`image/svg+xml`) and TIFF (`image/tiff`) as new smart object source types. V1 supported PSD, JPEG, and PNG.
 
 2. **Linked Smart Objects** — V2 provides full support for linked smart objects (external files referenced by the PSD rather than embedded). Add new linked smart objects using `isLinked: true`:
 
@@ -364,6 +364,36 @@ V2 introduces `type: "group_layer"` (V1 used `"layerSection"`) and a unified `op
 Placement options for ordering within groups: `into`, `above`, `below`, `top`, `bottom`.
 
 See [Advanced Layer Operations Migration](layer-operations-advanced.md) for the full group layer reference.
+
+### Group and Artboard Layer Export as Editable PSD
+
+<InlineAlert variant="info" slots="text1"/>
+
+V2 exports group and artboard layers as editable PSDs — preserving the layer hierarchy. In V1, exporting any group layer to PSD always rasterized it to a single flat layer.
+
+When specifying a group or artboard layer in `outputs[].layers[]` with `mediaType: "image/vnd.adobe.photoshop"`, the exported PSD retains all child layers within the group or artboard, making the output fully editable in Photoshop.
+
+```json
+{
+  "image": {"source": {"url": "https://example.com/input.psd"}},
+  "outputs": [
+    {
+      "destination": {"url": "https://example.com/group-export.psd"},
+      "mediaType": "image/vnd.adobe.photoshop",
+      "layers": [{"id": 1076}]
+    },
+    {
+      "destination": {"url": "https://example.com/artboard-export.psd"},
+      "mediaType": "image/vnd.adobe.photoshop",
+      "layers": [{"id": 18}]
+    }
+  ]
+}
+```
+
+The default `cropMode` for group/artboard PSD export is `layer_bounds` (canvas sized to the group or artboard bounds). Use `document_bounds` to export within the full document canvas. `trim_to_transparency` behaves the same as `layer_bounds` for group/artboard PSD export since the output is an editable layer tree, not a flat composite.
+
+See [Export Layers Migration](export-layers-migration.md) for full crop mode details and ICC profile interaction.
 
 ### Delete pixel mask
 
