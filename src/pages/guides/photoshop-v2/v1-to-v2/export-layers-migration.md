@@ -149,6 +149,50 @@ curl -X POST "https://photoshop-api.adobe.io/v2/create-composite" \
   }'
 ```
 
+## Group and Artboard Layer PSD Export
+
+When the single layer in `outputs[].layers[]` is a **group layer or artboard layer** and `mediaType` is `image/vnd.adobe.photoshop`, the exported PSD is **editable** — the layer hierarchy inside the group or artboard is preserved in the output file.
+
+### Example: Export Group Layer as Editable PSD
+
+```json
+{
+  "image": {"source": {"url": "https://example.com/input.psd"}},
+  "outputs": [{
+    "destination": {"url": "https://example.com/group-export.psd"},
+    "mediaType": "image/vnd.adobe.photoshop",
+    "layers": [{"id": 1076}]
+  }]
+}
+```
+
+### Example: Export Artboard Layer as Editable PSD
+
+```json
+{
+  "image": {"source": {"url": "https://example.com/input.psd"}},
+  "outputs": [{
+    "destination": {"url": "https://example.com/artboard-export.psd"},
+    "mediaType": "image/vnd.adobe.photoshop",
+    "layers": [{"id": 18}]
+  }]
+}
+```
+
+### Crop Mode for Group/Artboard PSD Export
+
+| `cropMode` | Behavior |
+|------------|----------|
+| `layer_bounds` (default) | Canvas sized to the bounds of the group or artboard layer. |
+| `document_bounds` | Canvas sized to the full source document dimensions. Group/artboard layers are placed at their absolute position within the document canvas. |
+| `trim_to_transparency` | Behaves the same as `layer_bounds` for group and artboard PSD export. Unlike raster exports where this crops to the tightest non-transparent bounding box, the PSD export uses the full group or artboard rect as the canvas. This is because the output is an editable layer tree, not a flat composite, so pixel-level trimming cannot be applied without rasterizing. |
+
+### Linked Smart Objects Inside Groups and Artboards
+
+<InlineAlert variant="warning" slots="text"/>
+
+If the group or artboard layer contains a **linked smart object**, the export job will fail. The Photoshop API does not have access to the linked file at processing time, so the layer tree cannot be written to the output PSD. Ensure any linked smart objects inside the group or artboard are converted to embedded smart objects before exporting.
+
 ## Sample: multi-layer export
 
 **Schema changes (multi-layer):** Multi-layer export does not support PSD as of now; use `mediaType`: `image/jpeg`, `image/png`, or `image/tiff` only. `cropMode` supports `trim_to_transparency` and `document_bounds` (not `layer_bounds`). Use string enums for `quality` (e.g., `maximum`, `photoshop_max`) and `compression` for PNG.

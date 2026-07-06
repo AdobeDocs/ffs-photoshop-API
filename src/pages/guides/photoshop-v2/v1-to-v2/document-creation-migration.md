@@ -116,14 +116,14 @@ curl -X POST \
 **`width`**
 
 - Type: Integer
-- Range: 1-32000 pixels
-- Description: Width of the document in pixels
+- Range: 1–32000 (in the unit specified by `unit`; after conversion, must not exceed 32000 px)
+- Description: Width of the document. Interpreted as pixels unless `unit` is `"points_unit"`.
 
 **`height`**
 
 - Type: Integer
-- Range: 1-32000 pixels
-- Description: Height of the document in pixels
+- Range: 1–32000 (in the unit specified by `unit`; after conversion, must not exceed 32000 px)
+- Description: Height of the document. Interpreted as pixels unless `unit` is `"points_unit"`.
 
 **`resolution`**
 
@@ -134,6 +134,34 @@ curl -X POST \
 - Example: `{"unit": "density_unit", "value": 72}`
 
 ### Optional parameters
+
+**`unit`**
+
+- Type: String
+- Default: `"pixels_unit"`
+- Values: `"pixels_unit"` | `"points_unit"`
+- Description: Unit for `width` and `height`. When `"points_unit"`, dimensions are converted to pixels using `Math.round(points × (DPI / 72))`, where DPI comes from `resolution.value` (if provided), the source document's native resolution, or 72 as a fallback. The converted value must not exceed 32000 px.
+
+<InlineAlert variant="info" slots="text"/>
+
+Omitting `unit` is equivalent to `"pixels_unit"` — existing requests are unaffected.
+
+**Points-unit example** (300 DPI print document, 8.5 × 11 inches = 612 × 792 pt):
+
+```json
+{
+  "image": {
+    "width": 612,
+    "height": 792,
+    "unit": "points_unit",
+    "resolution": {"unit": "density_unit", "value": 300},
+    "fill": "white",
+    "mode": "rgb",
+    "depth": 8
+  },
+  "outputs": [{"destination": {"url": "<SIGNED_POST_URL>"}, "mediaType": "image/vnd.adobe.photoshop"}]
+}
+```
 
 **`fill`**
 
