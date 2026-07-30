@@ -12,10 +12,6 @@ keywords:
 
 # Photoshop API webhooks and Adobe I/O Events
 
-<InlineAlert variant="warning" slots="text"/>
-
-**For Enterprise Adobe Clients Only**. Firefly Services Events (Adobe I/O Events) requires an active Enterprise contract with Firefly Services. See [Getting Started](/getting-started/index.md) for prerequisites.
-
 These instructions describe how to set up and get started using Adobe I/O Events for Firefly Services for Photoshop and Lightroom job processing events. You can use Adobe I/O for streaming Firefly Services job processing events such as job creation, processing, completion, and failure status updates.
 
 ## Introduction
