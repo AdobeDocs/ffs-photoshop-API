@@ -199,7 +199,7 @@ You can filter events based on:
 
 ## Support and Resources
 
-- **Adobe I/O Events Documentation**: [https://developer.adobe.com/io/docs/guides/events/](https://developer.adobe.com/io/docs/guides/events/)
+- **Adobe I/O Events Documentation**: [https://developer.adobe.com/events/docs/guides/](https://developer.adobe.com/events/docs/guides/)
 - **Firefly Services Documentation**: [https://developer.adobe.com/firefly-services/docs/photoshop/](https://developer.adobe.com/firefly-services/docs/photoshop/)
 - **CloudEvents Specification**: [https://cloudevents.io/](https://cloudevents.io/)
 
