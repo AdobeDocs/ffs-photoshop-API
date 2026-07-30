@@ -196,7 +196,7 @@ You can filter events based on:
 
 For technical support or questions about Firefly Services Events for Photoshop and Lightroom, please contact the Adobe Developer Support team.
 
----
+<HorizontalLine />
 
 **Last Updated**: July 2026
 **Version**: 1.0
