@@ -1,16 +1,4 @@
----
-title: Using Webhooks and Events with Photoshop API
-description: Learn more about the webhooks and events with the Photoshop API to help you build your applications.
-hideBreadcrumbNav: true
-keywords:
-  - webhooks
-  - events
-  - Adobe I/O Events
-  - Photoshop API events
-  - Imaging API events
----
-
-# Photoshop API webhooks and Adobe I/O Events
+# Setting up Firefly Services Events for Photoshop and Lightroom with Adobe I/O Events
 
 These instructions describe how to set up and get started using Adobe I/O Events for Firefly Services for Photoshop and Lightroom job processing events. You can use Adobe I/O for streaming Firefly Services job processing events such as job creation, processing, completion, and failure status updates.
 
@@ -71,7 +59,7 @@ _When prompted, click the designated button to proceed_:
      * Select a pre-made runtime action/runtime namespace
    * After Saving
    ![After Saving](after_save.png)
-
+   
    * **Verify setup**
      * Verify that the Status is `Active`
      * If Webhook was selected, verify that it successfully passed the challenge without errors
@@ -196,11 +184,21 @@ You can filter events based on:
   - Ensure webhook endpoint returns 200 OK
   - Check webhook signature verification
   - Verify event types are correctly selected
-
+  
 ## Support and Resources
 
 - **Adobe I/O Events Documentation**: [https://developer.adobe.com/events/docs/guides/](https://developer.adobe.com/events/docs/guides/)
 - **Firefly Services Documentation**: [https://developer.adobe.com/firefly-services/docs/photoshop/](https://developer.adobe.com/firefly-services/docs/photoshop/)
 - **CloudEvents Specification**: [https://cloudevents.io/](https://cloudevents.io/)
+- **Kafka Documentation**: [https://kafka.apache.org/documentation/](https://kafka.apache.org/documentation/)
 
-Next, see [the guide on triggering an event from the APIs](/guides/triggering-an-event/index.md) to learn how to put this concept into practice.
+## Contact
+
+For technical support or questions about Firefly Services Events for Photoshop and Lightroom, please contact the Adobe Developer Support team.
+
+---
+
+**Last Updated**: July 2026
+**Version**: 1.0
+**Provider**: Firefly Services Events for Photoshop and Lightroom
+
