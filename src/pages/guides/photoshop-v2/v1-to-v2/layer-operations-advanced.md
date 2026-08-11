@@ -178,7 +178,7 @@ curl -X POST \
 
 ### Delete operation changes
 
-**V1:** `delete: {}` block (potentially with `includeChildren`)
+**V1:** `delete: {}` block, optionally with `includeChildren` (default `false`)
 
 ```json
 {
@@ -189,16 +189,24 @@ curl -X POST \
 }
 ```
 
-**V2:** `operation: {type: "delete"}` (check V2 docs for child handling)
+**V2:** `operation: {type: "delete"}`, with `shouldIncludeChildren` controlling child-handling behavior for `group_layer` deletes:
+
+- `shouldIncludeChildren: true` (default) — the group and all descendants are deleted.
+- `shouldIncludeChildren: false` — only the group shell is removed; children are promoted out and remain in the document at the same stack position, unchanged.
 
 ```json
 {
   "name": "Group Layer",
   "operation": {
-    "type": "delete"
+    "type": "delete",
+    "shouldIncludeChildren": false
   }
 }
 ```
+
+<InlineAlert variant="info" slots="text"/>
+
+The default flips between versions: V1 `includeChildren` defaults to `false` (children kept), V2 `shouldIncludeChildren` defaults to `true` (children deleted). Set it explicitly when migrating to avoid a behavior change.
 
 ### Deleting multiple layers
 
@@ -993,6 +1001,7 @@ When migrating advanced layer operations from V1 to V2:
 
 - ✅ Move layers
 - ✅ Delete layers
+- ✅ Group children deletion options (via `shouldIncludeChildren`)
 - ✅ Layer masks (pixel masks) — add, edit, and delete
 - ✅ Clipping masks (via `isClipped` property)
 - ✅ Layer groups
@@ -1002,7 +1011,6 @@ When migrating advanced layer operations from V1 to V2:
 
 ### V1 features - status TBD
 
-- ⏳ Group children deletion options
 - ⏳ Some alignment options
 
 ## Next steps

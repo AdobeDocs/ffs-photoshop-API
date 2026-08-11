@@ -94,6 +94,7 @@ curl -X POST \
 - V1: `inputs[].href` → V2: `images[].source.url`
 - V1: `inputs[].storage` → V2: `outputs[].destination.storageType` (only for Azure/Dropbox)
 - V2 adds optional `artboardSpacing` parameter for controlling horizontal spacing
+- V2 adds optional `images[].name` to label an individual artboard
 
 **Output structure:**
 
@@ -240,6 +241,35 @@ Control the horizontal spacing between artboards using the optional `artboardSpa
   ]
 }
 ```
+
+## Artboard Naming
+
+Give an individual artboard image a name using the optional `name` field on that image.
+
+```json
+{
+  "images": [
+    {
+      "name": "Front View",
+      "source": {
+        "url": "<IMAGE_1_URL>"
+      }
+    },
+    {
+      "source": {
+        "url": "<IMAGE_2_URL>"
+      }
+    }
+  ]
+}
+```
+
+**Name Parameter:**
+
+- **Type:** String
+- **Length:** 1–255 characters
+- **Optional:** Yes
+- **Default:** Rendition dimensions (e.g. `"1920 x 1080"`)
 
 ## Validation rules
 

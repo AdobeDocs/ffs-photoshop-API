@@ -79,6 +79,7 @@ For a guided walkthrough with examples and best practices, see [Artboard Migrati
 | `storage: "dropbox"` | `url` (Dropbox URL) | Input side: no storageType needed |
 | `storage: "cclib"` | `creativeCloudFileId: "urn:aaid:sc:…"` | CC Library → file ID |
 | *(not in V1)* | `lightroomPath` | New: Lightroom catalog path |
+| *(not in V1)* | `images[n].name` (sibling of `source`, not nested under it) | New: optional string, 1–255 chars, defaults to rendition dimensions (e.g. "1920 x 1080") |
 
 ### Array constraints
 

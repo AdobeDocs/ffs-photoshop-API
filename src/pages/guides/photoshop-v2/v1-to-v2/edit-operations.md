@@ -1053,13 +1053,6 @@ The following Lightroom v1 endpoints have been deprecated or removed and have no
 - Status: Removed
 - No v2 equivalent available
 
-### Coming soon
-
-**`/lrService/xmpToPreset`**
-
-- Status: To be implemented
-- Expected: V2 equivalent is planned for a future release
-
 <InlineAlert variant="info" slots="text"/>
 
 If your application depends on any of these deprecated or removed endpoints, please contact Adobe support to discuss alternative solutions.

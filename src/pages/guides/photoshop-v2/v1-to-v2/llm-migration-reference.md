@@ -627,7 +627,7 @@ V2 allows you to override the image's embedded orientation metadata by specifyin
 **Layer Operation Types:**
 - `"type": "add"` - Add new layer
 - `"type": "edit"` - Edit existing layer properties (**required** — the `operation` field is mandatory for edit operations; it cannot be inferred)
-- `"type": "delete"` - Remove layer
+- `"type": "delete"` - Remove layer. `group_layer` child handling: V1 `delete.includeChildren` (default `false`) → V2 `operation.shouldIncludeChildren` (default `true`). `true` deletes the group and all children; `false` deletes only the group, children stay in place.
 - `"type": "move"` - Move layer to a new position
 
 <InlineAlert variant="info" slots="text"/>
@@ -1108,6 +1108,66 @@ Use `plugin-temp:/filename.ext` path in UXP scripts to write output files to the
 
 Supports glob patterns: `*.json`, `result-*.png`, etc.
 
+**Generative AI Workflows (Gen Fill, Generate Similar, Generative Expand, etc.)**
+
+Generative workflows (`syntheticFill`, `syntheticGenerateSimilar`, `syntheticGenHarmonize`, etc.) run through `/v2/execute-actions` via ActionJSON or UXP, the same as any other action. One thing is easy to get wrong specifically for generative workflows:
+
+1. **Chaining two generative steps in one action/UXP call can silently no-op the second step.** A workflow like Generate Similar needs to run against a layer that already has a committed generative result — if you fire `syntheticFill` and `syntheticGenerateSimilar` back-to-back inside the *same* action array or the *same* `batchPlay([...])` call, the second step's precondition can be checked before the first step's generation has actually landed, and it fails **silently**: the job reports success, but the output image is unchanged from the input, with no error and no Content Credentials manifest (there is nothing to sign). This is not a timing/retry issue you can fix with polling from your client — it must be fixed by giving Photoshop an explicit synchronization boundary between the two steps.
+
+**Wrong — one action/UXP call with both generative steps:**
+```json
+{
+  "options": {
+    "actions": [
+      {
+        "source": {
+          "content": "[{\"_obj\":\"syntheticFill\",\"_target\":[{\"_enum\":\"ordinal\",\"_ref\":\"document\",\"_value\":\"targetEnum\"}],\"prompt\":\"a small red ball\",\"workflowType\":{\"_enum\":\"genWorkflow\",\"_value\":\"in_painting\"}},{\"_obj\":\"syntheticGenerateSimilar\",\"_target\":[{\"_enum\":\"ordinal\",\"_ref\":\"layer\",\"_value\":\"targetEnum\"}],\"prompt\":\"a small red ball\",\"workflow\":\"generate_similar\",\"workflowType\":{\"_enum\":\"genWorkflow\",\"_value\":\"generate_similar\"}}]",
+          "contentType": "application/json"
+        }
+      }
+    ]
+  }
+}
+```
+
+**Right — two sequential entries in `options.actions[]`** (each entry is awaited as its own action-file execution before the next one starts):
+```json
+{
+  "options": {
+    "actions": [
+      {
+        "source": {
+          "content": "[{\"_obj\":\"syntheticFill\",\"_target\":[{\"_enum\":\"ordinal\",\"_ref\":\"document\",\"_value\":\"targetEnum\"}],\"prompt\":\"a small red ball\",\"workflowType\":{\"_enum\":\"genWorkflow\",\"_value\":\"in_painting\"}}]",
+          "contentType": "application/json"
+        }
+      },
+      {
+        "source": {
+          "content": "[{\"_obj\":\"syntheticGenerateSimilar\",\"_target\":[{\"_enum\":\"ordinal\",\"_ref\":\"layer\",\"_value\":\"targetEnum\"}],\"prompt\":\"a small red ball\",\"workflow\":\"generate_similar\",\"workflowType\":{\"_enum\":\"genWorkflow\",\"_value\":\"generate_similar\"}}]",
+          "contentType": "application/json"
+        }
+      }
+    ]
+  }
+}
+```
+
+**Right — UXP equivalent** (two separate `await action.batchPlay(...)` calls, not one array with both descriptors):
+```json
+{
+  "options": {
+    "uxp": {
+      "source": {
+        "content": "const { action, core } = require('photoshop'); await core.executeAsModal(async () => { await action.batchPlay([{\"_obj\":\"syntheticFill\",\"_target\":[{\"_enum\":\"ordinal\",\"_ref\":\"document\",\"_value\":\"targetEnum\"}],\"prompt\":\"a small red ball\",\"workflowType\":{\"_enum\":\"genWorkflow\",\"_value\":\"in_painting\"}}], { synchronousExecution: true }); await action.batchPlay([{\"_obj\":\"syntheticGenerateSimilar\",\"_target\":[{\"_enum\":\"ordinal\",\"_ref\":\"layer\",\"_value\":\"targetEnum\"}],\"prompt\":\"a small red ball\",\"workflow\":\"generate_similar\",\"workflowType\":{\"_enum\":\"genWorkflow\",\"_value\":\"generate_similar\"}}], { synchronousExecution: true }); }, { commandName: 'Generate Similar' });",
+        "contentType": "application/javascript"
+      }
+    }
+  }
+}
+```
+
+This same split-into-separate-steps pattern applies to any workflow that generates a variant of, or acts on, a result produced by a prior generative step in the same request (e.g. Generate Similar, or Gen Harmonize following an out-painting fill) — it does not apply to a single standalone generative step (e.g. Generative Fill or Generative Expand alone), which can stay as one action/UXP call.
+
 ### D. Other operations
 
 **Artboards:**
@@ -1116,6 +1176,7 @@ Supports glob patterns: `*.json`, `result-*.png`, etc.
 - **Input structure:** V1 `inputs[].href` → V2 `images[].source.url` (or `creativeCloudPath`, `creativeCloudFileId`, `lightroomPath`). V1 `inputs[].storage` → only needed for Azure/Dropbox in outputs; omit for standard URLs.
 - **Output structure:** Same as other endpoints — `outputs[].href` → `outputs[].destination.url`, `outputs[].type` → `outputs[].mediaType`.
 - **New V2 parameter:** `artboardSpacing` (optional integer, pixels, default 50) — horizontal spacing between artboards.
+- **New V2 parameter:** `images[].name` (optional string, 1–255 chars) — names an individual artboard image; defaults to rendition dimensions (e.g. `"1920 x 1080"`).
 - **Validation:** 1–25 images, 1–25 outputs.
 - **Source options:** External URL, Creative Cloud Path, Creative Cloud File ID, Lightroom Path.
 - **Output formats:** JPEG, PNG, TIFF, PSD, PSDC, JSON manifest (6 formats).
@@ -2073,6 +2134,134 @@ Embedded is only for XMP metadata and JSON manifests.
       "type": "top"
     }
   }
+}
+```
+
+#### Issue: `documentOperations` no-op layer converted into a V2 edit operation
+
+**Problem:** This applies to V1's `/pie/psdService/documentOperations` endpoint. A `options.layers[]` entry with no `edit`, `add`, `move`, or `delete` key is a no-op — V1 never touches it. Converting every layer entry to an edit operation regardless makes it active in V2.
+
+V1 (`documentOperations`, no-op — `type: "layer"` with no operation key):
+```json
+{
+  "inputs": [{"href": "<SIGNED_GET_URL>", "storage": "external"}],
+  "options": {
+    "layers": [
+      {
+        "name": "Layer 0",
+        "bounds": {"width": 340, "top": 1642, "left": 370, "height": 86},
+        "visible": true,
+        "type": "layer"
+      }
+    ]
+  },
+  "outputs": [{"href": "<SIGNED_POST_URL>", "storage": "external", "type": "image/vnd.adobe.photoshop"}]
+}
+```
+
+Incorrectly converted to V2 (this now actively edits the layer, which V1 never did):
+```json
+{
+  "image": {"source": {"url": "<SIGNED_GET_URL>"}},
+  "edits": {
+    "layers": [
+      {
+        "name": "Layer 0",
+        "transform": {
+          "offset": {"horizontal": 370, "vertical": 1642},
+          "dimension": {"width": 340, "height": 86}
+        },
+        "transformMode": "custom",
+        "isVisible": true,
+        "type": "layer",
+        "operation": {"type": "edit"}
+      }
+    ]
+  },
+  "outputs": [{"destination": {"url": "<SIGNED_POST_URL>"}, "mediaType": "image/vnd.adobe.photoshop"}]
+}
+```
+
+**Solution:** Only convert a V1 layer entry to a V2 edit operation if it carries `edit`, `add`, `move`, or `delete`. If none of those keys are present, omit the entry from `edits.layers` entirely — do not emit it.
+
+#### Issue: `documentCreate` no-op layer must map to add, not be omitted
+
+**Problem:** This applies to `/pie/psdService/documentCreate`, not `documentOperations`. `documentCreate` builds a brand-new document, so a layer with no `add`/`edit`/`move`/`delete` key is still being added, not skipped.
+
+V1:
+```json
+{
+  "options": {
+    "document": {
+      "depth": 8,
+      "fill": "transparent",
+      "height": 1000,
+      "mode": "rgb",
+      "resolution": 72,
+      "width": 1000
+    },
+    "layers": [
+      {
+        "input": {
+          "href": "<IMAGE_URL>",
+          "storage": "external"
+        },
+        "type": "layer"
+      }
+    ]
+  },
+  "outputs": [
+    {
+      "href": "<SIGNED_POST_URL>",
+      "overwrite": true,
+      "storage": "external",
+      "type": "vnd.adobe.photoshop"
+    }
+  ]
+}
+```
+
+**Solution:** Convert to `operation.type: "add"`:
+```json
+{
+  "edits": {
+    "layers": [
+      {
+        "type": "layer",
+        "operation": {
+          "type": "add",
+          "placement": {
+            "type": "top"
+          }
+        },
+        "name": "Image Above Reference BG",
+        "image": {
+          "source": {
+            "url": "<IMAGE_URL>"
+          }
+        }
+      }
+    ]
+  },
+  "image": {
+    "width": 1000,
+    "height": 1000,
+    "resolution": {
+      "unit": "density_unit",
+      "value": 72
+    },
+    "fill": "transparent",
+    "mode": "rgb",
+    "depth": 8
+  },
+  "outputs": [
+    {
+      "destination": {
+        "url": "<SIGNED_POST_URL>"
+      },
+      "mediaType": "image/vnd.adobe.photoshop"
+    }
+  ]
 }
 ```
 
@@ -3657,6 +3846,7 @@ Use this checklist when migrating or validating V1 → V2 code:
 - [ ] Operation type specified (`add`, `edit`, `delete`) — `operation` field is **required** for edits, not inferred
 - [ ] Move operations use `operation.type: "move"` with `placement` (not `move: {...}`)
 - [ ] V1 layers with `edit: {}` and no add/delete → V2 with `operation.type: "edit"`
+- [ ] `documentOperations` V1 layers with none of `edit`/`add`/`move`/`delete` (no-op entries) → omit from `edits.layers` entirely; do not synthesize `operation.type: "edit"`
 - [ ] Placement structure uses `operation.placement` format
 - [ ] Relative placement uses `referenceLayer` (not `relativeTo`)
 - [ ] Layer processing order is top-down in V2 (not bottom-up); layers used as `referenceLayer` must appear earlier in the array
@@ -3715,13 +3905,14 @@ Use this checklist when migrating or validating V1 → V2 code:
 
 ### Text endpoint migration specific (`/pie/psdService/text`)
 - [ ] No declarative text endpoint exists in V2 — use `/v2/execute-actions`
-- [ ] Choose ActionJSON for fixed edits on known layers; choose UXP for conditional/iterative logic
+- [ ] Choose ActionJSON for fixed single-property edits on known layers; choose UXP for conditional/iterative logic OR for full-fidelity multi-property/multi-layer migration (see "Full-Fidelity Migration via UXP" in the Text Layer Operations convenience-api guide) — a single UXP script covering content, textType, character styles, and paragraph styles per layer is more maintainable than a long per-layer ActionJSON chain once more than one or two properties are involved.
 - [ ] ActionJSON must be stringified; include `contentType: "application/json"`
-- [ ] UXP: use `core.executeAsModal()` for document modifications; include `contentType: "application/javascript"`
-- [ ] **Multi-layer edits:** V1 `options.layers[]` often contains many layers (10–50+). The V2 ActionJSON MUST contain one `select`+`set` step pair per layer — do NOT deduplicate layers that share the same text content, and do NOT drop any layers. Select by `_id` (integer), not `_name` (layer names are non-unique). Example for a two-layer payload: `[{"_obj":"select","_target":[{"_ref":"layer","_id":71}],"makeVisible":false},{"_obj":"set","_target":[{"_ref":"textLayer","_enum":"ordinal","_value":"targetEnum"}],"to":{"_obj":"textLayer","textKey":"Hello"}},{"_obj":"select","_target":[{"_ref":"layer","_id":44}],"makeVisible":false},{"_obj":"set","_target":[{"_ref":"textLayer","_enum":"ordinal","_value":"targetEnum"}],"to":{"_obj":"textLayer","textKey":"World"}}]`
-- [ ] **Bounds/visibility-only edits:** When the V1 payload only changes layer bounds or visibility (no text content/style fields), V2 still requires a non-empty `options` with ActionJSON or UXP — an empty `options` object is rejected with `"options: At least one of actions or uxp must be provided"`. Generate ActionJSON that selects each target layer by `_id` and applies: `translate`/`transform` for bounds changes, `hide`/`show` for visibility. Do NOT attempt a declarative V2 text-layer edit without at least one entry in `options.actions` or `options.uxp`.
+- [ ] **UXP: `core.executeAsModal()` is REQUIRED, not just recommended, for any document-mutating batchPlay call** (`select`, `set`, `show`/`hide`). Confirmed by direct testing: omitting it does not raise an error — the job reports `succeeded` and produces an output file, but every batchPlay call inside the script silently no-ops and the output is the untouched input document. Include `contentType: "application/javascript"`.
+- [ ] **Multi-layer edits:** V1 `options.layers[]` often contains many layers (10–50+). The V2 ActionJSON MUST contain one `select`+`set` step pair per layer — do NOT deduplicate layers that share the same text content, and do NOT drop any layers. Layers may be targeted by `_id` (integer) or `_name` (string) — V1's schema allows either (`oneOf`) and both appear in real traffic; prefer `_id` when available since layer names are not guaranteed unique. Example for a two-layer payload: `[{"_obj":"select","_target":[{"_ref":"layer","_id":71}],"makeVisible":false},{"_obj":"set","_target":[{"_ref":"textLayer","_enum":"ordinal","_value":"targetEnum"}],"to":{"_obj":"textLayer","textKey":"Hello"}},{"_obj":"select","_target":[{"_ref":"layer","_id":44}],"makeVisible":false},{"_obj":"set","_target":[{"_ref":"textLayer","_enum":"ordinal","_value":"targetEnum"}],"to":{"_obj":"textLayer","textKey":"World"}}]`
+- [ ] **Bounds/visibility-only edits:** When the V1 payload only changes layer bounds or visibility (no text content/style fields), V2 still requires a non-empty `options` with ActionJSON or UXP — an empty `options` object is rejected with `"options: At least one of actions or uxp must be provided"`. Generate ActionJSON that selects each target layer by `_id` or `_name` and applies: `translate`/`transform` for bounds changes, `hide`/`show` for visibility. Do NOT attempt a declarative V2 text-layer edit without at least one entry in `options.actions` or `options.uxp`.
 - [ ] `options.fonts[]` → `options.fontOptions.additionalFonts[]` with `{source: {url}}` structure
 - [ ] `options.manageMissingFonts: "useDefault"` → `options.fontOptions.missingFontStrategy: "use_default"`
+- [ ] **Known limitation:** even with an identical field-for-field conversion, expect a small (a few pixels) difference in the auto-computed text-frame bounding box between V1 and V2 outputs for the same font/size/content — confirmed independent of `textType` conversion logic, consistent with a text-shaping/glyph-metrics difference between the underlying Photoshop host versions rather than a conversion defect. Content, font, size, color, and alignment are unaffected.
 
 ### Action operations specific
 - [ ] Actions use `source` object not `href`
@@ -3741,6 +3932,7 @@ Use this checklist when migrating or validating V1 → V2 code:
 - [ ] Image count between 1 and 25
 - [ ] Output count between 1 and 25
 - [ ] `artboardSpacing` (if used) is integer in pixels
+- [ ] `images[].name` (if used) is 1–255 characters
 - [ ] Output structure uses `destination.url` and `mediaType` (not href/type)
 
 ### Storage configuration
@@ -3774,6 +3966,7 @@ Use this checklist when migrating or validating V1 → V2 code:
 - [ ] Only structural field changes applied
 
 ### Document creation specific
+- [ ] `documentCreate` V1 layers with none of `edit`/`add`/`move`/`delete` → still convert to `operation.type: "add"`; do not omit (unlike the `documentOperations` no-op case)
 - [ ] `resolution` is an object `{"unit": "density_unit", "value": 72}` (not an integer)
 - [ ] `depth` is an integer (e.g., `8`) not a string (e.g., `"8"`)
 - [ ] Color mode `"grayscale"` used (not `"gray"`)
@@ -3896,13 +4089,14 @@ curl -X GET https://photoshop-api.adobe.io/v2/status/{jobId} \
 
 ## Document version
 
-**Version:** 1.24
+**Version:** 1.26
 **Created:** October 29, 2025
-**Last Updated:** June 25, 2026
+**Last Updated:** August 11, 2026
 
 **Coverage:**
+- `group_layer` delete child-handling control: `shouldIncludeChildren` (`true` default deletes descendants; `false` deletes only the group shell and promotes children in place)
 - All migration guides consolidated
-- Artboard migration: images/source structure, artboardSpacing, validation rules, common issues
+- Artboard migration: images/source structure, artboardSpacing, `images[].name` (optional artboard naming, 1–255 chars), validation rules, common issues
 - Execute-actions migration: ActionJSON stringification, additionalContents rename, resource limits
 - Complete endpoint mappings (depth blur marked not yet supported)
 - Storage options reference (with ACP clarification, no leading slash in CC paths)
@@ -3922,6 +4116,8 @@ curl -X GET https://photoshop-api.adobe.io/v2/status/{jobId} \
 - `resolution` object format, integer `depth`, `"grayscale"` mode name
 - `protection` array replaces `locked`/`isLocked`; `group_layer` type
 - `operation.type: "edit"` required (not inferred)
+- No-op V1 `documentOperations` layer entries (no `edit`/`add`/`move`/`delete`) must be omitted from `edits.layers`, not converted to `operation.type: "edit"`
+- Same no-op shape in V1 `documentCreate` layer entries must convert to `operation.type: "add"` instead — it is not omitted there
 - `referenceLayer` (not `relativeTo`) for relative placement
 - Pixel mask: `pixelMask`, `offset.horizontal`/`offset.vertical`, `userMask`, `isClipped`, `pixelMask.delete` for removal (all edit layer types)
 - Font color value ranges: rgb/cmyk/gray 0–32768, lab `l` 0–32768 / `a`,`b` -16384–16384
@@ -4299,5 +4495,9 @@ Several Photoshop filter actions use an internal random seed that differs betwee
 | Patterns | Undocumented | **10** |
 | Fonts | Undocumented | **10** |
 | Outputs | Undocumented | **25** |
+
+### Generative Workflows (V2 New Capability)
+
+Not a V1→V2 migration concern (generative actions did not exist in V1), but a common integration mistake: chaining two generative descriptors (e.g. `syntheticFill` then `syntheticGenerateSimilar`) in a single `options.actions[]` entry or a single UXP `batchPlay([...])` call can silently no-op the second step (job succeeds, output unchanged, no error, no C2PA manifest). Split chained generative steps into separate sequential `options.actions[]` entries or separate awaited `action.batchPlay(...)` calls. See the "Generative AI Workflows" section above for the full pattern.
 
 **End of LLM Migration Reference Guide**
