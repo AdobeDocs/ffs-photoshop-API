@@ -1763,7 +1763,7 @@
         "properties": {
           "url": {
             "type": "string",
-            "description": "The URL of the resource. Only allow-listed domains are accepted as input URLs (e.g. amazonaws.com, windows.net, dropboxusercontent.com, assets.frame.io, storage.googleapis.com, adobe.io, azureedge.net, smartcreatives.stg.walmart.com)."
+            "description": "The URL of the resource. Only allow-listed domains are accepted as input URLs (e.g. amazonaws.com, windows.net, dropboxusercontent.com, assets.frame.io, storage.googleapis.com, adobe.io, azureedge.net)."
           }
         },
         "description": "The source of the input image."

@@ -37,6 +37,8 @@
     - [UXP Scripts](/getting-started/uxp/index.md)
     - Learn More header
     - [Photoshop Concepts](/getting-started/concepts/index.md)
+    - Release notes header
+      - [Release notes](/guides/release-notes/index.md)
     - Guides header
     - [Photoshop API v2 guides](/guides/photoshop-v2/v1-to-v2/guides-v2/index.md)
       - [Execute Actions workflow](/guides/photoshop-v2/v1-to-v2/guides-v2/execute-actions.md)
