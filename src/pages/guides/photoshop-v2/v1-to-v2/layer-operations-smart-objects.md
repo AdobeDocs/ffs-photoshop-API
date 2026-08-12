@@ -238,7 +238,6 @@ Smart objects can contain various file types:
 - PSD (image/vnd.adobe.photoshop)
 - JPEG (image/jpeg)
 - PNG (image/png)
-- PDF (application/pdf)
 
 **V2 Supported:**
 
@@ -247,14 +246,10 @@ Smart objects can contain various file types:
 - PNG (image/png)
 - TIFF (image/tiff)
 - SVG (image/svg+xml)
-- AI / Adobe Illustrator (application/illustrator) — requires **Create PDF Compatible File** option when saving from Illustrator
-- PDF (application/pdf)
 
 <InlineAlert variant="info" slots="text"/>
 
-V2 adds SVG as a new smart object source type; V1 already supported AI and PDF.
-
-**Note:** AI files are only supported when the **Create PDF Compatible File** option was enabled when saving from Adobe Illustrator.
+V2 supports SVG files as smart object sources, which can be useful for scalable graphics.
 
 ## Transform Mode
 
@@ -291,6 +286,51 @@ For `fit` and `fill`, the layer is always positioned at `(0, 0)` after scaling. 
 - **With `transform.dimension`** — replacement image is stretched to exactly match the SO canvas dimensions. Use this when you need pixel-exact control over the SO canvas size.
 
 Example: `transformMode: "fill"` with no `transform.dimension` proportionally scales the replacement onto the SO canvas first, then `fill` is applied at the document layer level. The two operations are independent.
+
+## Embedded Smart Object Canvas Sizing (`autoResize`)
+
+When replacing an embedded smart object's content, `smartObject.autoResize` controls whether the SO canvas itself resizes to the replacement file's native dimensions.
+
+| Value | Behavior | Use when |
+|-------|----------|----------|
+| `true` (default) | SO canvas scales to match the **original** smart object canvas dimensions and resolution. | Backward-compatible behavior; caller controls canvas size via `transform.dimension`. |
+| `false` | SO canvas is set to the replacement file's **native** dimensions and dpi (Photoshop-like). Avoids upscaling small assets and reduces PSD file size. | Replacement file is the authoritative size; native resolution must be preserved. |
+
+**Constraints:**
+
+- Applies only to **embedded** smart objects (`isLinked: false` or omitted). Setting `autoResize` when `isLinked: true` is rejected with an error.
+- Applies to raster replacements (PNG, JPEG, TIFF, PSD) and PDF/AI. SVG and vector formats without intrinsic raster dimensions are unaffected.
+- `autoResize: null` (field omitted) is treated as `true` — fully backward-compatible.
+
+**Example — preserve native dimensions (Photoshop-like):**
+
+```json
+{
+  "edits": {
+    "layers": [
+      {
+        "type": "smart_object_layer",
+        "name": "Product Photo",
+        "operation": {
+          "type": "edit"
+        },
+        "smartObject": {
+          "autoResize": false,
+          "smartObjectFile": {
+            "source": {
+              "url": "<REPLACEMENT_PNG_URL>"
+            }
+          }
+        }
+      }
+    ]
+  }
+}
+```
+
+<InlineAlert variant="info" slots="text1"/>
+
+`autoResize` and `transform.dimension` are independent. `autoResize` controls whether the SO canvas matches the replacement file's native size; `transform.dimension` scales that canvas (or the original canvas) to an explicit pixel dimension within the document layer. Both can be combined if needed.
 
 ## Smart Object with Transformations
 
@@ -965,9 +1005,10 @@ When you edit or add a linked smart object in the same request as a resize, the 
 - ✅ Blend options (opacity, blendMode)
 - ✅ Placement options (top, bottom, above, below, into)
 - ✅ Reference layer by name or ID
-- ✅ Multiple source file types (PSD, JPEG, PNG, TIFF, SVG, AI, PDF)
+- ✅ Multiple source file types (PSD, JPEG, PNG, TIFF, SVG)
 - ✅ Linked and embedded smart objects (`smartObject.isLinked`)
 - ✅ Resize (`width`/`maxWidth`) documents containing linked smart objects
+- ✅ `autoResize` flag for embedded SO replacement (preserve native dims/dpi vs legacy scale-to-canvas)
 
 ### Coming soon
 

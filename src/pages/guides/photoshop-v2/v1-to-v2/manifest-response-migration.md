@@ -398,22 +398,24 @@ Artboards were plain `layerSection` nodes, indistinguishable from regular groups
       "path": "foo.psd",
       "fileType": "ps3",
       "linked": false
-    }
+    },
+    "instanceId": "1EAD362C2961E401217146F61D505B14"
   },
   "extracted": {
     "mediaType": "application/octet-stream",
     "url": "https://photoshop-api.adobe.io/v2/short-url/urn:..."
-  }
+  },
+  "xmp": "<?xpacket begin=\"﻿\" ...?>\n<x:xmpmeta xmlns:x=\"adobe:ns:meta/\" ...>...</x:xmpmeta>"
 }
 ```
 
-`extracted` is only present for non-linked (embedded) smart objects. `ccLibrariesElement` inside `fileInfo` is only present for CC Library-linked assets.
+`extracted`, `smartObjectData.instanceId`, and `xmp` are only present for non-linked (embedded) smart objects. `ccLibrariesElement` inside `fileInfo` is only present for CC Library-linked assets. `xmp` is only present when `includeXmp: true` is set in the request.
 
 ### Field-by-field comparison
 
 | Old field     | New field                           | Status  | Notes                                                          |
 | ------------- | ----------------------------------- | ------- | -------------------------------------------------------------- |
-| `instanceId`  | —                                   | REMOVED | Identity now inferred from `fileInfo`                          |
+| `instanceId`  | `smartObjectData.instanceId`        | CHANGED | Moved into `smartObjectData`; only present for embedded SOs    |
 | `linked`      | `isLinked`                          | CHANGED | Renamed; promoted to top level                                 |
 | `name`        | `smartObjectData.fileInfo.name`     | CHANGED | Moved into nested `fileInfo`                                   |
 | `path`        | `smartObjectData.fileInfo.path`     | CHANGED | Moved into nested `fileInfo`                                   |
@@ -422,6 +424,7 @@ Artboards were plain `layerSection` nodes, indistinguishable from regular groups
 | —             | `isValid`                           | NEW     | Validity state                                                 |
 | —             | `smartObjectData.transform`         | NEW     | 8-element quad `[x0,y0, x1,y1, x2,y2, x3,y3]`                |
 | —             | `extracted.mediaType` + `.url`      | NEW     | Download URL for embedded smart object content                 |
+| —             | `xmp`                               | NEW     | XMP metadata of the embedded SO; only present when `includeXmp: true` and SO is not linked |
 
 ## Text layer detail
 

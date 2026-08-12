@@ -188,6 +188,49 @@ When creating a new document via `/v2/create-composite` (no `image.source`), add
 
 `iccProfile` on the `image` block sets the document's embedded profile. `iccProfile` on an `output` converts the exported file's color space. Both can be used independently or together.
 
+### Group and Artboard Layer PSD Export with ICC Profile
+
+When combining `iccProfile` with a **group or artboard layer PSD export** (`outputs[].layers[]` containing a group or artboard, `mediaType: "image/vnd.adobe.photoshop"`), the conversion behavior depends on the profile type:
+
+- **Standard profiles** (e.g., `Adobe RGB (1998)`): layer hierarchy is preserved — the ICC conversion is applied in-place across all layers. The output PSD remains fully editable.
+- **Custom profiles**: the document is rasterized to a single layer before the profile is applied. If preserving layer hierarchy is required, use a standard profile instead.
+
+**Example: Group Layer PSD Export with Standard ICC (hierarchy preserved)**
+
+```json
+{
+  "image": {"source": {"url": "https://example.com/input.psd"}},
+  "outputs": [{
+    "destination": {"url": "https://example.com/group-out.psd"},
+    "mediaType": "image/vnd.adobe.photoshop",
+    "layers": [{"id": 1076}],
+    "iccProfile": {
+      "type": "standard",
+      "name": "Adobe RGB (1998)",
+      "imageMode": "rgb"
+    }
+  }]
+}
+```
+
+**Example: Artboard Layer PSD Export with Standard ICC (hierarchy preserved)**
+
+```json
+{
+  "image": {"source": {"url": "https://example.com/input.psd"}},
+  "outputs": [{
+    "destination": {"url": "https://example.com/artboard-out.psd"},
+    "mediaType": "image/vnd.adobe.photoshop",
+    "layers": [{"id": 18}],
+    "iccProfile": {
+      "type": "standard",
+      "name": "Adobe RGB (1998)",
+      "imageMode": "rgb"
+    }
+  }]
+}
+```
+
 ## Complete examples
 
 ### Create composite with standard ICC profile

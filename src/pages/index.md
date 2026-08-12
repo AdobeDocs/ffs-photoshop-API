@@ -128,6 +128,7 @@ Many useful Photoshop operations are available in the v2 API. Here are just a fe
 - **[Smart Objects](/guides/smart-objects-and-the-api/index.md)** — Create and replace embedded and linked Smart Objects in a PSD so new imagery fits the original layer bounds and keeps its aspect ratio.
 - **[Product Crop](/guides/product-crop/index.md)** — Smart-crop images by detecting the subject and framing it as the focal point.
 - **[ActionJSON](/guides/actionjson-endpoint/index.md)** — Apply Photoshop Actions from an ATN file programmatically and adjust the action payload for more flexible, dynamic edits.
+- **[Autocrop](/guides/autocrop/index.md)** — Auto-crop images by detecting the subject and framing it as the focal point.
 
 Explore all available services in the [Photoshop API v2 guides](/guides/photoshop-v2/index.md) or browse endpoints in the [Photoshop API v2 reference](/api/photoshop-v2/index.md).
 
