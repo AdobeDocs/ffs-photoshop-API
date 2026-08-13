@@ -829,6 +829,10 @@ Maximum of 25 additional contents allowed per request. Use the array index to re
 
 Never hardcode file paths or use platform-specific path separators in UXP scripts. Always use `path.join()` for constructing paths (e.g., `path.join(outputFolder, "result.json")` instead of `outputFolder + "/result.json"`). This prevents runtime issues across different operating systems.
 
+<InlineAlert variant="info" slots="text"/>
+
+**Generative AI actions/UXP (Gen Fill, Generate Similar, etc.) with Content Credentials:** if your action or UXP script chains two generative steps together (e.g. `syntheticFill` followed by `syntheticGenerateSimilar`), send them as separate sequential `options.actions[]` entries or separate awaited `action.batchPlay(...)` calls rather than one combined action/batch — otherwise the second step can silently no-op.
+
 ## Multiple outputs
 
 You can specify multiple outputs in different formats. A maximum of 25 outputs are allowed per request.

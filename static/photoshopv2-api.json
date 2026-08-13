@@ -135,9 +135,7 @@
           }
         ],
         "summary": "Auto crop",
-        "tags": [
-          "Photoshop APIs"
-        ]
+        "tags": ["Photoshop APIs"]
       }
     },
     "/v2/create-artboard": {
@@ -317,9 +315,7 @@
           }
         },
         "summary": "Create or edit a composite",
-        "tags": [
-          "Photoshop APIs"
-        ]
+        "tags": ["Photoshop APIs"]
       }
     },
     "/v2/edit": {
@@ -408,9 +404,7 @@
           }
         },
         "summary": "Edit an image with various adjustments",
-        "tags": [
-          "Photoshop APIs"
-        ]
+        "tags": ["Photoshop APIs"]
       }
     },
     "/v2/execute-actions": {
@@ -499,9 +493,7 @@
           }
         },
         "summary": "Execute Photoshop actions, scripts, and transformations",
-        "tags": [
-          "Photoshop APIs"
-        ]
+        "tags": ["Photoshop APIs"]
       }
     },
     "/v2/generate-manifest": {
@@ -590,9 +582,7 @@
           }
         },
         "summary": "Generate a manifest for given input image",
-        "tags": [
-          "Photoshop APIs"
-        ]
+        "tags": ["Photoshop APIs"]
       }
     },
     "/v2/status/{jobId}": {
@@ -654,18 +644,14 @@
           }
         },
         "summary": "Get Job Status",
-        "tags": [
-          "Job Status"
-        ]
+        "tags": ["Job Status"]
       }
     }
   },
   "components": {
     "schemas": {
       "ActionResource": {
-        "required": [
-          "source"
-        ],
+        "required": ["source"],
         "type": "object",
         "properties": {
           "actionName": {
@@ -743,11 +729,7 @@
         "description": "Options configuration for the actions execution. At least one of actions or uxp is required."
       },
       "ActionsRequest": {
-        "required": [
-          "image",
-          "options",
-          "outputs"
-        ],
+        "required": ["image", "options", "outputs"],
         "type": "object",
         "properties": {
           "image": {
@@ -787,10 +769,7 @@
         }
       },
       "AddAdjustmentLayer": {
-        "required": [
-          "adjustments",
-          "operation"
-        ],
+        "required": ["adjustments", "operation"],
         "type": "object",
         "description": "Adjustment layer for applying image adjustments like brightness, contrast, hue/saturation, etc.",
         "allOf": [
@@ -851,13 +830,8 @@
               },
               "transformMode": {
                 "type": "string",
-                "description": "Transform mode applied to the layer. Defaults to 'none' when adding layers. Optional for edits. Modes: 'none' \u2014 applies no scaling. 'fit' \u2014 scales the layer uniformly to fit within the canvas bounds while preserving aspect ratio. 'fill' \u2014 scales the layer uniformly to fill the canvas bounds while preserving aspect ratio, cropping overflow if the layer's aspect ratio differs from the canvas. 'custom' \u2014 applies the exact width and height from the Transform without preserving aspect ratio. Important for text layers: Any mode other than 'none' (or any non-identity scale on the Transform) causes the type engine to render glyphs and leading multiplied by the layer's scale factors. fontSize and lineHeight in CharacterStyle are stored unscaled. The rendered output becomes: fontSize x horizontalScale and lineHeight x verticalScale. To produce text at exact pixel sizes, use transformMode 'none' and avoid scaling Transforms on text layers.",
-                "enum": [
-                  "fit",
-                  "fill",
-                  "custom",
-                  "none"
-                ]
+                "description": "Transform mode applied to the layer. Defaults to 'none' when adding layers. Optional for edits. Modes: 'none' — applies no scaling. 'fit' — scales the layer uniformly to fit within the canvas bounds while preserving aspect ratio. 'fill' — scales the layer uniformly to fill the canvas bounds while preserving aspect ratio, cropping overflow if the layer's aspect ratio differs from the canvas. 'custom' — applies the exact width and height from the Transform without preserving aspect ratio. Important for text layers: Any mode other than 'none' (or any non-identity scale on the Transform) causes the type engine to render glyphs and leading multiplied by the layer's scale factors. fontSize and lineHeight in CharacterStyle are stored unscaled. The rendered output becomes: fontSize x horizontalScale and lineHeight x verticalScale. To produce text at exact pixel sizes, use transformMode 'none' and avoid scaling Transforms on text layers.",
+                "enum": ["fit", "fill", "custom", "none"]
               },
               "type": {
                 "type": "string",
@@ -877,9 +851,7 @@
         ]
       },
       "AddBackgroundLayer": {
-        "required": [
-          "operation"
-        ],
+        "required": ["operation"],
         "type": "object",
         "description": "Background layer for adding a background to the document.",
         "allOf": [
@@ -923,13 +895,8 @@
               },
               "transformMode": {
                 "type": "string",
-                "description": "Transform mode applied to the layer. Defaults to 'none' when adding layers. Optional for edits. Modes: 'none' \u2014 applies no scaling. 'fit' \u2014 scales the layer uniformly to fit within the canvas bounds while preserving aspect ratio. 'fill' \u2014 scales the layer uniformly to fill the canvas bounds while preserving aspect ratio, cropping overflow if the layer's aspect ratio differs from the canvas. 'custom' \u2014 applies the exact width and height from the Transform without preserving aspect ratio. Important for text layers: Any mode other than 'none' (or any non-identity scale on the Transform) causes the type engine to render glyphs and leading multiplied by the layer's scale factors. fontSize and lineHeight in CharacterStyle are stored unscaled. The rendered output becomes: fontSize x horizontalScale and lineHeight x verticalScale. To produce text at exact pixel sizes, use transformMode 'none' and avoid scaling Transforms on text layers.",
-                "enum": [
-                  "fit",
-                  "fill",
-                  "custom",
-                  "none"
-                ]
+                "description": "Transform mode applied to the layer. Defaults to 'none' when adding layers. Optional for edits. Modes: 'none' — applies no scaling. 'fit' — scales the layer uniformly to fit within the canvas bounds while preserving aspect ratio. 'fill' — scales the layer uniformly to fill the canvas bounds while preserving aspect ratio, cropping overflow if the layer's aspect ratio differs from the canvas. 'custom' — applies the exact width and height from the Transform without preserving aspect ratio. Important for text layers: Any mode other than 'none' (or any non-identity scale on the Transform) causes the type engine to render glyphs and leading multiplied by the layer's scale factors. fontSize and lineHeight in CharacterStyle are stored unscaled. The rendered output becomes: fontSize x horizontalScale and lineHeight x verticalScale. To produce text at exact pixel sizes, use transformMode 'none' and avoid scaling Transforms on text layers.",
+                "enum": ["fit", "fill", "custom", "none"]
               },
               "type": {
                 "type": "string",
@@ -949,9 +916,7 @@
         ]
       },
       "AddGroupLayer": {
-        "required": [
-          "operation"
-        ],
+        "required": ["operation"],
         "type": "object",
         "description": "Group layer for organizing layers hierarchically.",
         "allOf": [
@@ -1048,13 +1013,8 @@
               },
               "transformMode": {
                 "type": "string",
-                "description": "Transform mode applied to the layer. Defaults to 'none' when adding layers. Optional for edits. Modes: 'none' \u2014 applies no scaling. 'fit' \u2014 scales the layer uniformly to fit within the canvas bounds while preserving aspect ratio. 'fill' \u2014 scales the layer uniformly to fill the canvas bounds while preserving aspect ratio, cropping overflow if the layer's aspect ratio differs from the canvas. 'custom' \u2014 applies the exact width and height from the Transform without preserving aspect ratio. Important for text layers: Any mode other than 'none' (or any non-identity scale on the Transform) causes the type engine to render glyphs and leading multiplied by the layer's scale factors. fontSize and lineHeight in CharacterStyle are stored unscaled. The rendered output becomes: fontSize x horizontalScale and lineHeight x verticalScale. To produce text at exact pixel sizes, use transformMode 'none' and avoid scaling Transforms on text layers.",
-                "enum": [
-                  "fit",
-                  "fill",
-                  "custom",
-                  "none"
-                ]
+                "description": "Transform mode applied to the layer. Defaults to 'none' when adding layers. Optional for edits. Modes: 'none' — applies no scaling. 'fit' — scales the layer uniformly to fit within the canvas bounds while preserving aspect ratio. 'fill' — scales the layer uniformly to fill the canvas bounds while preserving aspect ratio, cropping overflow if the layer's aspect ratio differs from the canvas. 'custom' — applies the exact width and height from the Transform without preserving aspect ratio. Important for text layers: Any mode other than 'none' (or any non-identity scale on the Transform) causes the type engine to render glyphs and leading multiplied by the layer's scale factors. fontSize and lineHeight in CharacterStyle are stored unscaled. The rendered output becomes: fontSize x horizontalScale and lineHeight x verticalScale. To produce text at exact pixel sizes, use transformMode 'none' and avoid scaling Transforms on text layers.",
+                "enum": ["fit", "fill", "custom", "none"]
               },
               "type": {
                 "type": "string",
@@ -1074,10 +1034,7 @@
         ]
       },
       "AddLayer": {
-        "required": [
-          "image",
-          "operation"
-        ],
+        "required": ["image", "operation"],
         "type": "object",
         "description": "Image layer for adding raster images to the document.",
         "allOf": [
@@ -1125,13 +1082,8 @@
               },
               "transformMode": {
                 "type": "string",
-                "description": "Transform mode applied to the layer. Defaults to 'none' when adding layers. Optional for edits. Modes: 'none' \u2014 applies no scaling. 'fit' \u2014 scales the layer uniformly to fit within the canvas bounds while preserving aspect ratio. 'fill' \u2014 scales the layer uniformly to fill the canvas bounds while preserving aspect ratio, cropping overflow if the layer's aspect ratio differs from the canvas. 'custom' \u2014 applies the exact width and height from the Transform without preserving aspect ratio. Important for text layers: Any mode other than 'none' (or any non-identity scale on the Transform) causes the type engine to render glyphs and leading multiplied by the layer's scale factors. fontSize and lineHeight in CharacterStyle are stored unscaled. The rendered output becomes: fontSize x horizontalScale and lineHeight x verticalScale. To produce text at exact pixel sizes, use transformMode 'none' and avoid scaling Transforms on text layers.",
-                "enum": [
-                  "fit",
-                  "fill",
-                  "custom",
-                  "none"
-                ]
+                "description": "Transform mode applied to the layer. Defaults to 'none' when adding layers. Optional for edits. Modes: 'none' — applies no scaling. 'fit' — scales the layer uniformly to fit within the canvas bounds while preserving aspect ratio. 'fill' — scales the layer uniformly to fill the canvas bounds while preserving aspect ratio, cropping overflow if the layer's aspect ratio differs from the canvas. 'custom' — applies the exact width and height from the Transform without preserving aspect ratio. Important for text layers: Any mode other than 'none' (or any non-identity scale on the Transform) causes the type engine to render glyphs and leading multiplied by the layer's scale factors. fontSize and lineHeight in CharacterStyle are stored unscaled. The rendered output becomes: fontSize x horizontalScale and lineHeight x verticalScale. To produce text at exact pixel sizes, use transformMode 'none' and avoid scaling Transforms on text layers.",
+                "enum": ["fit", "fill", "custom", "none"]
               },
               "type": {
                 "type": "string",
@@ -1151,10 +1103,7 @@
         ]
       },
       "AddOperation": {
-        "required": [
-          "placement",
-          "type"
-        ],
+        "required": ["placement", "type"],
         "type": "object",
         "description": "Add operation for adding layers.",
         "allOf": [
@@ -1172,10 +1121,7 @@
         ]
       },
       "AddSmartObjectLayer": {
-        "required": [
-          "operation",
-          "smartObject"
-        ],
+        "required": ["operation", "smartObject"],
         "type": "object",
         "description": "Smart object layer for embedding external files or vector graphics.",
         "allOf": [
@@ -1223,13 +1169,8 @@
               },
               "transformMode": {
                 "type": "string",
-                "description": "Transform mode applied to the layer. Defaults to 'none' when adding layers. Optional for edits. Modes: 'none' \u2014 applies no scaling. 'fit' \u2014 scales the layer uniformly to fit within the canvas bounds while preserving aspect ratio. 'fill' \u2014 scales the layer uniformly to fill the canvas bounds while preserving aspect ratio, cropping overflow if the layer's aspect ratio differs from the canvas. 'custom' \u2014 applies the exact width and height from the Transform without preserving aspect ratio. Important for text layers: Any mode other than 'none' (or any non-identity scale on the Transform) causes the type engine to render glyphs and leading multiplied by the layer's scale factors. fontSize and lineHeight in CharacterStyle are stored unscaled. The rendered output becomes: fontSize x horizontalScale and lineHeight x verticalScale. To produce text at exact pixel sizes, use transformMode 'none' and avoid scaling Transforms on text layers.",
-                "enum": [
-                  "fit",
-                  "fill",
-                  "custom",
-                  "none"
-                ]
+                "description": "Transform mode applied to the layer. Defaults to 'none' when adding layers. Optional for edits. Modes: 'none' — applies no scaling. 'fit' — scales the layer uniformly to fit within the canvas bounds while preserving aspect ratio. 'fill' — scales the layer uniformly to fill the canvas bounds while preserving aspect ratio, cropping overflow if the layer's aspect ratio differs from the canvas. 'custom' — applies the exact width and height from the Transform without preserving aspect ratio. Important for text layers: Any mode other than 'none' (or any non-identity scale on the Transform) causes the type engine to render glyphs and leading multiplied by the layer's scale factors. fontSize and lineHeight in CharacterStyle are stored unscaled. The rendered output becomes: fontSize x horizontalScale and lineHeight x verticalScale. To produce text at exact pixel sizes, use transformMode 'none' and avoid scaling Transforms on text layers.",
+                "enum": ["fit", "fill", "custom", "none"]
               },
               "type": {
                 "type": "string",
@@ -1249,10 +1190,7 @@
         ]
       },
       "AddSolidColorLayer": {
-        "required": [
-          "fill",
-          "operation"
-        ],
+        "required": ["fill", "operation"],
         "type": "object",
         "description": "Fill layer for adding solid color layer.",
         "allOf": [
@@ -1300,13 +1238,8 @@
               },
               "transformMode": {
                 "type": "string",
-                "description": "Transform mode applied to the layer. Defaults to 'none' when adding layers. Optional for edits. Modes: 'none' \u2014 applies no scaling. 'fit' \u2014 scales the layer uniformly to fit within the canvas bounds while preserving aspect ratio. 'fill' \u2014 scales the layer uniformly to fill the canvas bounds while preserving aspect ratio, cropping overflow if the layer's aspect ratio differs from the canvas. 'custom' \u2014 applies the exact width and height from the Transform without preserving aspect ratio. Important for text layers: Any mode other than 'none' (or any non-identity scale on the Transform) causes the type engine to render glyphs and leading multiplied by the layer's scale factors. fontSize and lineHeight in CharacterStyle are stored unscaled. The rendered output becomes: fontSize x horizontalScale and lineHeight x verticalScale. To produce text at exact pixel sizes, use transformMode 'none' and avoid scaling Transforms on text layers.",
-                "enum": [
-                  "fit",
-                  "fill",
-                  "custom",
-                  "none"
-                ]
+                "description": "Transform mode applied to the layer. Defaults to 'none' when adding layers. Optional for edits. Modes: 'none' — applies no scaling. 'fit' — scales the layer uniformly to fit within the canvas bounds while preserving aspect ratio. 'fill' — scales the layer uniformly to fill the canvas bounds while preserving aspect ratio, cropping overflow if the layer's aspect ratio differs from the canvas. 'custom' — applies the exact width and height from the Transform without preserving aspect ratio. Important for text layers: Any mode other than 'none' (or any non-identity scale on the Transform) causes the type engine to render glyphs and leading multiplied by the layer's scale factors. fontSize and lineHeight in CharacterStyle are stored unscaled. The rendered output becomes: fontSize x horizontalScale and lineHeight x verticalScale. To produce text at exact pixel sizes, use transformMode 'none' and avoid scaling Transforms on text layers.",
+                "enum": ["fit", "fill", "custom", "none"]
               },
               "type": {
                 "type": "string",
@@ -1326,10 +1259,7 @@
         ]
       },
       "AddTextLayer": {
-        "required": [
-          "operation",
-          "text"
-        ],
+        "required": ["operation", "text"],
         "type": "object",
         "description": "Text layer for adding text content in the document.",
         "allOf": [
@@ -1377,13 +1307,8 @@
               },
               "transformMode": {
                 "type": "string",
-                "description": "Transform mode applied to the layer. Defaults to 'none' when adding layers. Optional for edits. Modes: 'none' \u2014 applies no scaling. 'fit' \u2014 scales the layer uniformly to fit within the canvas bounds while preserving aspect ratio. 'fill' \u2014 scales the layer uniformly to fill the canvas bounds while preserving aspect ratio, cropping overflow if the layer's aspect ratio differs from the canvas. 'custom' \u2014 applies the exact width and height from the Transform without preserving aspect ratio. Important for text layers: Any mode other than 'none' (or any non-identity scale on the Transform) causes the type engine to render glyphs and leading multiplied by the layer's scale factors. fontSize and lineHeight in CharacterStyle are stored unscaled. The rendered output becomes: fontSize x horizontalScale and lineHeight x verticalScale. To produce text at exact pixel sizes, use transformMode 'none' and avoid scaling Transforms on text layers.",
-                "enum": [
-                  "fit",
-                  "fill",
-                  "custom",
-                  "none"
-                ]
+                "description": "Transform mode applied to the layer. Defaults to 'none' when adding layers. Optional for edits. Modes: 'none' — applies no scaling. 'fit' — scales the layer uniformly to fit within the canvas bounds while preserving aspect ratio. 'fill' — scales the layer uniformly to fill the canvas bounds while preserving aspect ratio, cropping overflow if the layer's aspect ratio differs from the canvas. 'custom' — applies the exact width and height from the Transform without preserving aspect ratio. Important for text layers: Any mode other than 'none' (or any non-identity scale on the Transform) causes the type engine to render glyphs and leading multiplied by the layer's scale factors. fontSize and lineHeight in CharacterStyle are stored unscaled. The rendered output becomes: fontSize x horizontalScale and lineHeight x verticalScale. To produce text at exact pixel sizes, use transformMode 'none' and avoid scaling Transforms on text layers.",
+                "enum": ["fit", "fill", "custom", "none"]
               },
               "type": {
                 "type": "string",
@@ -1403,9 +1328,7 @@
         ]
       },
       "AdditionalContentResource": {
-        "required": [
-          "source"
-        ],
+        "required": ["source"],
         "type": "object",
         "properties": {
           "source": {
@@ -1424,10 +1347,7 @@
         "description": "Array of custom fonts needed in this document. Optional."
       },
       "Anchor": {
-        "required": [
-          "horizontal",
-          "vertical"
-        ],
+        "required": ["horizontal", "vertical"],
         "type": "object",
         "properties": {
           "horizontal": {
@@ -1444,10 +1364,7 @@
         "description": "Anchor point coordinates for transformations and positioning."
       },
       "Apply": {
-        "required": [
-          "from",
-          "to"
-        ],
+        "required": ["from", "to"],
         "type": "object",
         "properties": {
           "from": {
@@ -1466,9 +1383,7 @@
         "description": "Inclusive range (from/to) for character or paragraph styling. When present, both 'from' and 'to' are required."
       },
       "AreaFrame": {
-        "required": [
-          "type"
-        ],
+        "required": ["type"],
         "type": "object",
         "description": "Area text frame defining a bounded rectangular region for text content. Text will wrap within the specified bounds",
         "allOf": [
@@ -1486,11 +1401,15 @@
         ]
       },
       "ArtboardImageInput": {
-        "required": [
-          "source"
-        ],
+        "required": ["source"],
         "type": "object",
         "properties": {
+          "name": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string",
+            "description": "Name of the artboard. Optional. Defaults to rendition dimensions (e.g. \"1920 x 1080\")."
+          },
           "source": {
             "$ref": "#/components/schemas/FileResourceInput"
           }
@@ -1498,9 +1417,7 @@
         "description": "List of input images for the artboard. Each image must have a source with an external file reference (URL, Creative Cloud file ID, or Creative Cloud path). Required."
       },
       "AutoStraighten": {
-        "required": [
-          "enabled"
-        ],
+        "required": ["enabled"],
         "type": "object",
         "properties": {
           "constrainCrop": {
@@ -1516,12 +1433,7 @@
           "uprightMode": {
             "type": "string",
             "description": "Upright mode options for auto straighten",
-            "enum": [
-              "auto",
-              "full",
-              "level",
-              "vertical"
-            ]
+            "enum": ["auto", "full", "level", "vertical"]
           }
         },
         "description": "Auto straighten configuration with options"
@@ -1543,12 +1455,7 @@
         ]
       },
       "AutoCropBoundingBox": {
-        "required": [
-          "x",
-          "y",
-          "width",
-          "height"
-        ],
+        "required": ["x", "y", "width", "height"],
         "type": "object",
         "properties": {
           "height": {
@@ -1574,9 +1481,7 @@
         }
       },
       "AutoCropCrop": {
-        "required": [
-          "boundingBoxes"
-        ],
+        "required": ["boundingBoxes"],
         "type": "object",
         "properties": {
           "boundingBoxes": {
@@ -1591,16 +1496,10 @@
       "AutoCropImageMediaType": {
         "type": "string",
         "description": "The media type of the input image. Supported values are image/jpeg, image/png, and image/webp.",
-        "enum": [
-          "image/jpeg",
-          "image/png",
-          "image/webp"
-        ]
+        "enum": ["image/jpeg", "image/png", "image/webp"]
       },
       "AutoCropInputImage": {
-        "required": [
-          "source"
-        ],
+        "required": ["source"],
         "type": "object",
         "properties": {
           "mediaType": {
@@ -1623,11 +1522,7 @@
         ]
       },
       "AutoCropObjectDetection": {
-        "required": [
-          "objectName",
-          "boundingBoxes",
-          "confidence"
-        ],
+        "required": ["objectName", "boundingBoxes", "confidence"],
         "type": "object",
         "properties": {
           "boundingBoxes": {
@@ -1648,11 +1543,7 @@
         }
       },
       "AutoCropOutput": {
-        "required": [
-          "subject",
-          "objects",
-          "crops"
-        ],
+        "required": ["subject", "objects", "crops"],
         "type": "object",
         "properties": {
           "crops": {
@@ -1683,25 +1574,15 @@
         "type": "string",
         "description": "Output type for the auto crop operation. 'images' returns cropped images with presigned URLs (default). 'boundingBoxes' returns only bounding box coordinates.",
         "default": "images",
-        "enum": [
-          "images",
-          "boundingBoxes"
-        ]
+        "enum": ["images", "boundingBoxes"]
       },
       "AutoCropRequest": {
-        "required": [
-          "image",
-          "mode"
-        ],
+        "required": ["image", "mode"],
         "type": "object",
         "properties": {
           "aspectRatio": {
             "description": "Desired aspect ratio(s) for generated crops. Accepts either a single enum string or an array of up to 20 strings. Allowed only for 'smartCrop' and 'subjectCrop'. When omitted, the service defaults to 1:1. An empty array is treated as absent.",
-            "example": [
-              "16:9",
-              "1:1",
-              "4:3"
-            ],
+            "example": ["16:9", "1:1", "4:3"],
             "oneOf": [
               {
                 "$ref": "#/components/schemas/AutoCropAspectRatio"
@@ -1717,10 +1598,7 @@
           "focus": {
             "type": "array",
             "description": "Focus labels, ordered by preference, used to prioritize objects during cropping or as detection targets. Required for 'subjectCrop' and 'objectDetection'; must be empty for 'smartCrop' and 'fullSceneDetection'.",
-            "example": [
-              "logo",
-              "person"
-            ],
+            "example": ["logo", "person"],
             "items": {
               "type": "string"
             }
@@ -1736,11 +1614,7 @@
           },
           "zoom": {
             "description": "Optional zoom level(s) paired with aspectRatio. Accepts either a number or an array of up to 20 numbers in (0, 1]. Must not be sent without aspectRatio. When aspectRatio is an array, zoom may be omitted or must be a matching non-empty array.",
-            "example": [
-              0.9,
-              0.8,
-              0.85
-            ],
+            "example": [0.9, 0.8, 0.85],
             "oneOf": [
               {
                 "type": "number"
@@ -1756,9 +1630,7 @@
         }
       },
       "AutoCropUrlResource": {
-        "required": [
-          "url"
-        ],
+        "required": ["url"],
         "type": "object",
         "properties": {
           "url": {
@@ -1769,9 +1641,7 @@
         "description": "The source of the input image."
       },
       "BaseAdjustment": {
-        "required": [
-          "type"
-        ],
+        "required": ["type"],
         "type": "object",
         "properties": {
           "type": {
@@ -1882,10 +1752,7 @@
         "description": "Brightness and contrast adjustment settings"
       },
       "BrightnessContrastAdjustments": {
-        "required": [
-          "brightnessContrast",
-          "type"
-        ],
+        "required": ["brightnessContrast", "type"],
         "type": "object",
         "description": "Brightness and contrast adjustment",
         "allOf": [
@@ -1903,9 +1770,7 @@
         ]
       },
       "BrushResource": {
-        "required": [
-          "source"
-        ],
+        "required": ["source"],
         "type": "object",
         "properties": {
           "source": {
@@ -1925,12 +1790,7 @@
           "capsOption": {
             "type": "string",
             "description": "Text capitalization option",
-            "enum": [
-              "normal_caps",
-              "small_caps",
-              "all_caps",
-              "all_small_caps"
-            ]
+            "enum": ["normal_caps", "small_caps", "all_caps", "all_small_caps"]
           },
           "font": {
             "$ref": "#/components/schemas/Font"
@@ -2089,10 +1949,7 @@
         "description": "Color balance adjustment settings"
       },
       "ColorBalanceAdjustments": {
-        "required": [
-          "colorBalance",
-          "type"
-        ],
+        "required": ["colorBalance", "type"],
         "type": "object",
         "description": "Color balance adjustment",
         "allOf": [
@@ -2110,10 +1967,7 @@
         ]
       },
       "CreateArtboardRequest": {
-        "required": [
-          "images",
-          "outputs"
-        ],
+        "required": ["images", "outputs"],
         "type": "object",
         "properties": {
           "artboardSpacing": {
@@ -2161,10 +2015,7 @@
         }
       },
       "CreateCompositeRequest": {
-        "required": [
-          "image",
-          "outputs"
-        ],
+        "required": ["image", "outputs"],
         "type": "object",
         "properties": {
           "edits": {
@@ -2214,9 +2065,7 @@
         }
       },
       "CreativeCloudDestination": {
-        "required": [
-          "creativeCloudPath"
-        ],
+        "required": ["creativeCloudPath"],
         "type": "object",
         "allOf": [
           {
@@ -2239,9 +2088,7 @@
         ]
       },
       "CreativeCloudFileIdResourceInput": {
-        "required": [
-          "creativeCloudFileId"
-        ],
+        "required": ["creativeCloudFileId"],
         "type": "object",
         "description": "Creative Cloud file ID resource input. References a resource via Creative Cloud file ID (URN).",
         "allOf": [
@@ -2261,9 +2108,7 @@
         ]
       },
       "CreativeCloudResourceInput": {
-        "required": [
-          "creativeCloudPath"
-        ],
+        "required": ["creativeCloudPath"],
         "type": "object",
         "description": "Creative Cloud resource input. References a resource via Creative Cloud path.",
         "allOf": [
@@ -2287,9 +2132,7 @@
         ]
       },
       "Crop": {
-        "required": [
-          "bounds"
-        ],
+        "required": ["bounds"],
         "type": "object",
         "properties": {
           "bounds": {
@@ -2303,11 +2146,7 @@
         "description": "Options for cropping a document, specifying the bounds to crop to."
       },
       "CustomIccProfile": {
-        "required": [
-          "name",
-          "source",
-          "type"
-        ],
+        "required": ["name", "source", "type"],
         "type": "object",
         "description": "Custom ICC profile with user-provided profile file",
         "allOf": [
@@ -2321,11 +2160,7 @@
                 "type": "string",
                 "description": "Image mode for custom ICC profiles. Allowed values: rgb, grayscale, cmyk. Optional",
                 "example": "rgb",
-                "enum": [
-                  "rgb",
-                  "grayscale",
-                  "cmyk"
-                ]
+                "enum": ["rgb", "grayscale", "cmyk"]
               },
               "name": {
                 "maxLength": 255,
@@ -2342,9 +2177,7 @@
         ]
       },
       "DeleteLayer": {
-        "required": [
-          "operation"
-        ],
+        "required": ["operation"],
         "type": "object",
         "description": "Layer for delete operations",
         "allOf": [
@@ -2354,9 +2187,7 @@
         ]
       },
       "DeleteOperation": {
-        "required": [
-          "type"
-        ],
+        "required": ["type"],
         "type": "object",
         "description": "Delete operation for removing layers.",
         "allOf": [
@@ -2388,6 +2219,19 @@
             "description": "Height after transformation. Optional.",
             "format": "int32"
           },
+          "unit": {
+            "type": "string",
+            "description": "Unit for width and height. Accepted values for transform dimensions: 'pixels_unit' (default) and 'points_unit'. Optional — omitting this field defaults to pixels_unit.",
+            "default": "pixels_unit",
+            "enum": [
+              "pixels_unit",
+              "percent_unit",
+              "distance_unit",
+              "points_unit",
+              "pixels_unit",
+              "points_unit"
+            ]
+          },
           "width": {
             "maximum": 32000,
             "minimum": 0,
@@ -2399,19 +2243,18 @@
         "description": "Offset coordinates for positioning elements."
       },
       "DimensionMeasurement": {
-        "required": [
-          "unit"
-        ],
+        "required": ["unit"],
         "type": "object",
         "properties": {
           "unit": {
             "type": "string",
-            "description": "The unit of measurement for the dimension. 'pixels_unit' for absolute pixel measurements, 'percent_unit' for percentage-based scaling, 'distance_unit' for physical measurements using formula: Physical Size (points) = Pixels \u00d7 (72 \u00f7 DPI). Defaults to pixels_unit when omitted.",
+            "description": "The unit of measurement for the dimension. 'pixels_unit' for absolute pixel measurements (default), 'percent_unit' for percentage-based scaling, 'distance_unit' for physical measurements, 'points_unit' for typographic points — converted to pixels using pixels = round(value × dpi / 72) before processing. Defaults to pixels_unit when omitted.",
             "default": "pixels_unit",
             "enum": [
               "pixels_unit",
               "percent_unit",
-              "distance_unit"
+              "distance_unit",
+              "points_unit"
             ]
           },
           "value": {
@@ -2439,9 +2282,7 @@
         "description": "Represents the editable document structure, including resize, crop and trim options. Each field corresponds to a specific type of document edit operation."
       },
       "EditAdjustmentLayer": {
-        "required": [
-          "operation"
-        ],
+        "required": ["operation"],
         "type": "object",
         "description": "Adjustment layer for applying image adjustments like brightness, contrast, hue/saturation, etc.",
         "allOf": [
@@ -2502,13 +2343,8 @@
               },
               "transformMode": {
                 "type": "string",
-                "description": "Transform mode applied to the layer. Defaults to 'none' when adding layers. Optional for edits. Modes: 'none' \u2014 applies no scaling. 'fit' \u2014 scales the layer uniformly to fit within the canvas bounds while preserving aspect ratio. 'fill' \u2014 scales the layer uniformly to fill the canvas bounds while preserving aspect ratio, cropping overflow if the layer's aspect ratio differs from the canvas. 'custom' \u2014 applies the exact width and height from the Transform without preserving aspect ratio. Important for text layers: Any mode other than 'none' (or any non-identity scale on the Transform) causes the type engine to render glyphs and leading multiplied by the layer's scale factors. fontSize and lineHeight in CharacterStyle are stored unscaled. The rendered output becomes: fontSize x horizontalScale and lineHeight x verticalScale. To produce text at exact pixel sizes, use transformMode 'none' and avoid scaling Transforms on text layers.",
-                "enum": [
-                  "fit",
-                  "fill",
-                  "custom",
-                  "none"
-                ]
+                "description": "Transform mode applied to the layer. Defaults to 'none' when adding layers. Optional for edits. Modes: 'none' — applies no scaling. 'fit' — scales the layer uniformly to fit within the canvas bounds while preserving aspect ratio. 'fill' — scales the layer uniformly to fill the canvas bounds while preserving aspect ratio, cropping overflow if the layer's aspect ratio differs from the canvas. 'custom' — applies the exact width and height from the Transform without preserving aspect ratio. Important for text layers: Any mode other than 'none' (or any non-identity scale on the Transform) causes the type engine to render glyphs and leading multiplied by the layer's scale factors. fontSize and lineHeight in CharacterStyle are stored unscaled. The rendered output becomes: fontSize x horizontalScale and lineHeight x verticalScale. To produce text at exact pixel sizes, use transformMode 'none' and avoid scaling Transforms on text layers.",
+                "enum": ["fit", "fill", "custom", "none"]
               },
               "type": {
                 "type": "string",
@@ -2528,9 +2364,7 @@
         ]
       },
       "EditBackgroundLayer": {
-        "required": [
-          "operation"
-        ],
+        "required": ["operation"],
         "type": "object",
         "description": "Background layer for editing an existing background layer.",
         "allOf": [
@@ -2582,13 +2416,8 @@
               },
               "transformMode": {
                 "type": "string",
-                "description": "Transform mode applied to the layer. Defaults to 'none' when adding layers. Optional for edits. Modes: 'none' \u2014 applies no scaling. 'fit' \u2014 scales the layer uniformly to fit within the canvas bounds while preserving aspect ratio. 'fill' \u2014 scales the layer uniformly to fill the canvas bounds while preserving aspect ratio, cropping overflow if the layer's aspect ratio differs from the canvas. 'custom' \u2014 applies the exact width and height from the Transform without preserving aspect ratio. Important for text layers: Any mode other than 'none' (or any non-identity scale on the Transform) causes the type engine to render glyphs and leading multiplied by the layer's scale factors. fontSize and lineHeight in CharacterStyle are stored unscaled. The rendered output becomes: fontSize x horizontalScale and lineHeight x verticalScale. To produce text at exact pixel sizes, use transformMode 'none' and avoid scaling Transforms on text layers.",
-                "enum": [
-                  "fit",
-                  "fill",
-                  "custom",
-                  "none"
-                ]
+                "description": "Transform mode applied to the layer. Defaults to 'none' when adding layers. Optional for edits. Modes: 'none' — applies no scaling. 'fit' — scales the layer uniformly to fit within the canvas bounds while preserving aspect ratio. 'fill' — scales the layer uniformly to fill the canvas bounds while preserving aspect ratio, cropping overflow if the layer's aspect ratio differs from the canvas. 'custom' — applies the exact width and height from the Transform without preserving aspect ratio. Important for text layers: Any mode other than 'none' (or any non-identity scale on the Transform) causes the type engine to render glyphs and leading multiplied by the layer's scale factors. fontSize and lineHeight in CharacterStyle are stored unscaled. The rendered output becomes: fontSize x horizontalScale and lineHeight x verticalScale. To produce text at exact pixel sizes, use transformMode 'none' and avoid scaling Transforms on text layers.",
+                "enum": ["fit", "fill", "custom", "none"]
               },
               "type": {
                 "type": "string",
@@ -2608,9 +2437,7 @@
         ]
       },
       "EditGroupLayer": {
-        "required": [
-          "operation"
-        ],
+        "required": ["operation"],
         "type": "object",
         "description": "Group layer for organizing layers hierarchically.",
         "allOf": [
@@ -2651,13 +2478,8 @@
               },
               "transformMode": {
                 "type": "string",
-                "description": "Transform mode applied to the layer. Defaults to 'none' when adding layers. Optional for edits. Modes: 'none' \u2014 applies no scaling. 'fit' \u2014 scales the layer uniformly to fit within the canvas bounds while preserving aspect ratio. 'fill' \u2014 scales the layer uniformly to fill the canvas bounds while preserving aspect ratio, cropping overflow if the layer's aspect ratio differs from the canvas. 'custom' \u2014 applies the exact width and height from the Transform without preserving aspect ratio. Important for text layers: Any mode other than 'none' (or any non-identity scale on the Transform) causes the type engine to render glyphs and leading multiplied by the layer's scale factors. fontSize and lineHeight in CharacterStyle are stored unscaled. The rendered output becomes: fontSize x horizontalScale and lineHeight x verticalScale. To produce text at exact pixel sizes, use transformMode 'none' and avoid scaling Transforms on text layers.",
-                "enum": [
-                  "fit",
-                  "fill",
-                  "custom",
-                  "none"
-                ]
+                "description": "Transform mode applied to the layer. Defaults to 'none' when adding layers. Optional for edits. Modes: 'none' — applies no scaling. 'fit' — scales the layer uniformly to fit within the canvas bounds while preserving aspect ratio. 'fill' — scales the layer uniformly to fill the canvas bounds while preserving aspect ratio, cropping overflow if the layer's aspect ratio differs from the canvas. 'custom' — applies the exact width and height from the Transform without preserving aspect ratio. Important for text layers: Any mode other than 'none' (or any non-identity scale on the Transform) causes the type engine to render glyphs and leading multiplied by the layer's scale factors. fontSize and lineHeight in CharacterStyle are stored unscaled. The rendered output becomes: fontSize x horizontalScale and lineHeight x verticalScale. To produce text at exact pixel sizes, use transformMode 'none' and avoid scaling Transforms on text layers.",
+                "enum": ["fit", "fill", "custom", "none"]
               },
               "type": {
                 "type": "string",
@@ -2677,9 +2499,7 @@
         ]
       },
       "EditImageInput": {
-        "required": [
-          "source"
-        ],
+        "required": ["source"],
         "type": "object",
         "properties": {
           "source": {
@@ -2689,9 +2509,7 @@
         "description": "The image input for the edit operation. Supported input source mime types: image/jpeg, image/png, image/x-adobe-dng, image/webp, image/tiff, image/vnd.adobe.photoshop, image/x-sony-arw, and other supported raw/camera formats. Required."
       },
       "EditLayer": {
-        "required": [
-          "operation"
-        ],
+        "required": ["operation"],
         "type": "object",
         "description": "Image layer for editing existing image layers.",
         "allOf": [
@@ -2739,13 +2557,8 @@
               },
               "transformMode": {
                 "type": "string",
-                "description": "Transform mode applied to the layer. Defaults to 'none' when adding layers. Optional for edits. Modes: 'none' \u2014 applies no scaling. 'fit' \u2014 scales the layer uniformly to fit within the canvas bounds while preserving aspect ratio. 'fill' \u2014 scales the layer uniformly to fill the canvas bounds while preserving aspect ratio, cropping overflow if the layer's aspect ratio differs from the canvas. 'custom' \u2014 applies the exact width and height from the Transform without preserving aspect ratio. Important for text layers: Any mode other than 'none' (or any non-identity scale on the Transform) causes the type engine to render glyphs and leading multiplied by the layer's scale factors. fontSize and lineHeight in CharacterStyle are stored unscaled. The rendered output becomes: fontSize x horizontalScale and lineHeight x verticalScale. To produce text at exact pixel sizes, use transformMode 'none' and avoid scaling Transforms on text layers.",
-                "enum": [
-                  "fit",
-                  "fill",
-                  "custom",
-                  "none"
-                ]
+                "description": "Transform mode applied to the layer. Defaults to 'none' when adding layers. Optional for edits. Modes: 'none' — applies no scaling. 'fit' — scales the layer uniformly to fit within the canvas bounds while preserving aspect ratio. 'fill' — scales the layer uniformly to fill the canvas bounds while preserving aspect ratio, cropping overflow if the layer's aspect ratio differs from the canvas. 'custom' — applies the exact width and height from the Transform without preserving aspect ratio. Important for text layers: Any mode other than 'none' (or any non-identity scale on the Transform) causes the type engine to render glyphs and leading multiplied by the layer's scale factors. fontSize and lineHeight in CharacterStyle are stored unscaled. The rendered output becomes: fontSize x horizontalScale and lineHeight x verticalScale. To produce text at exact pixel sizes, use transformMode 'none' and avoid scaling Transforms on text layers.",
+                "enum": ["fit", "fill", "custom", "none"]
               },
               "type": {
                 "type": "string",
@@ -2765,9 +2578,7 @@
         ]
       },
       "EditOperation": {
-        "required": [
-          "type"
-        ],
+        "required": ["type"],
         "type": "object",
         "description": "Edit operation for modifying existing layer properties",
         "allOf": [
@@ -2777,9 +2588,7 @@
         ]
       },
       "EditPixelMask": {
-        "required": [
-          "delete"
-        ],
+        "required": ["delete"],
         "type": "object",
         "properties": {
           "delete": {
@@ -2804,10 +2613,7 @@
         "description": "Pixel mask settings for edit operations. Extends PixelMask with the ability to delete the mask."
       },
       "EditRequest": {
-        "required": [
-          "image",
-          "outputs"
-        ],
+        "required": ["image", "outputs"],
         "type": "object",
         "properties": {
           "edits": {
@@ -2840,10 +2646,27 @@
           }
         }
       },
+      "EditSmartObject": {
+        "type": "object",
+        "properties": {
+          "autoResize": {
+            "type": "boolean",
+            "description": "Controls how the embedded smart object content is sized when a replacement file is provided. Only applies to embedded smart objects (isLinked=false) with raster (PNG, JPEG, TIFF, PSD) or PDF/AI replacement files. SVG, vector formats without intrinsic dimensions, and linked smart objects are unaffected. true (default): scales the replacement to match the original smart object's canvas dimensions and resolution. false: preserves the replacement file's native dimensions and dpi.",
+            "default": true
+          },
+          "isLinked": {
+            "type": "boolean",
+            "description": "Whether the smart object is linked to the layer.",
+            "default": false
+          },
+          "smartObjectFile": {
+            "$ref": "#/components/schemas/SmartObjectFile"
+          }
+        },
+        "description": "Smart object settings and file reference for edit operations."
+      },
       "EditSmartObjectLayer": {
-        "required": [
-          "operation"
-        ],
+        "required": ["operation"],
         "type": "object",
         "description": "Smart object layer for embedding external files or vector graphics.",
         "allOf": [
@@ -2891,13 +2714,8 @@
               },
               "transformMode": {
                 "type": "string",
-                "description": "Transform mode applied to the layer. Defaults to 'none' when adding layers. Optional for edits. Modes: 'none' \u2014 applies no scaling. 'fit' \u2014 scales the layer uniformly to fit within the canvas bounds while preserving aspect ratio. 'fill' \u2014 scales the layer uniformly to fill the canvas bounds while preserving aspect ratio, cropping overflow if the layer's aspect ratio differs from the canvas. 'custom' \u2014 applies the exact width and height from the Transform without preserving aspect ratio. Important for text layers: Any mode other than 'none' (or any non-identity scale on the Transform) causes the type engine to render glyphs and leading multiplied by the layer's scale factors. fontSize and lineHeight in CharacterStyle are stored unscaled. The rendered output becomes: fontSize x horizontalScale and lineHeight x verticalScale. To produce text at exact pixel sizes, use transformMode 'none' and avoid scaling Transforms on text layers.",
-                "enum": [
-                  "fit",
-                  "fill",
-                  "custom",
-                  "none"
-                ]
+                "description": "Transform mode applied to the layer. Defaults to 'none' when adding layers. Optional for edits. Modes: 'none' — applies no scaling. 'fit' — scales the layer uniformly to fit within the canvas bounds while preserving aspect ratio. 'fill' — scales the layer uniformly to fill the canvas bounds while preserving aspect ratio, cropping overflow if the layer's aspect ratio differs from the canvas. 'custom' — applies the exact width and height from the Transform without preserving aspect ratio. Important for text layers: Any mode other than 'none' (or any non-identity scale on the Transform) causes the type engine to render glyphs and leading multiplied by the layer's scale factors. fontSize and lineHeight in CharacterStyle are stored unscaled. The rendered output becomes: fontSize x horizontalScale and lineHeight x verticalScale. To produce text at exact pixel sizes, use transformMode 'none' and avoid scaling Transforms on text layers.",
+                "enum": ["fit", "fill", "custom", "none"]
               },
               "type": {
                 "type": "string",
@@ -2917,9 +2735,7 @@
         ]
       },
       "EditSolidColorLayer": {
-        "required": [
-          "operation"
-        ],
+        "required": ["operation"],
         "type": "object",
         "description": "Fill layer for editing solid color layer.",
         "allOf": [
@@ -2967,13 +2783,8 @@
               },
               "transformMode": {
                 "type": "string",
-                "description": "Transform mode applied to the layer. Defaults to 'none' when adding layers. Optional for edits. Modes: 'none' \u2014 applies no scaling. 'fit' \u2014 scales the layer uniformly to fit within the canvas bounds while preserving aspect ratio. 'fill' \u2014 scales the layer uniformly to fill the canvas bounds while preserving aspect ratio, cropping overflow if the layer's aspect ratio differs from the canvas. 'custom' \u2014 applies the exact width and height from the Transform without preserving aspect ratio. Important for text layers: Any mode other than 'none' (or any non-identity scale on the Transform) causes the type engine to render glyphs and leading multiplied by the layer's scale factors. fontSize and lineHeight in CharacterStyle are stored unscaled. The rendered output becomes: fontSize x horizontalScale and lineHeight x verticalScale. To produce text at exact pixel sizes, use transformMode 'none' and avoid scaling Transforms on text layers.",
-                "enum": [
-                  "fit",
-                  "fill",
-                  "custom",
-                  "none"
-                ]
+                "description": "Transform mode applied to the layer. Defaults to 'none' when adding layers. Optional for edits. Modes: 'none' — applies no scaling. 'fit' — scales the layer uniformly to fit within the canvas bounds while preserving aspect ratio. 'fill' — scales the layer uniformly to fill the canvas bounds while preserving aspect ratio, cropping overflow if the layer's aspect ratio differs from the canvas. 'custom' — applies the exact width and height from the Transform without preserving aspect ratio. Important for text layers: Any mode other than 'none' (or any non-identity scale on the Transform) causes the type engine to render glyphs and leading multiplied by the layer's scale factors. fontSize and lineHeight in CharacterStyle are stored unscaled. The rendered output becomes: fontSize x horizontalScale and lineHeight x verticalScale. To produce text at exact pixel sizes, use transformMode 'none' and avoid scaling Transforms on text layers.",
+                "enum": ["fit", "fill", "custom", "none"]
               },
               "type": {
                 "type": "string",
@@ -2993,9 +2804,7 @@
         ]
       },
       "EditTextLayer": {
-        "required": [
-          "operation"
-        ],
+        "required": ["operation"],
         "type": "object",
         "description": "Text layer for adding text content in the document.",
         "allOf": [
@@ -3043,13 +2852,8 @@
               },
               "transformMode": {
                 "type": "string",
-                "description": "Transform mode applied to the layer. Defaults to 'none' when adding layers. Optional for edits. Modes: 'none' \u2014 applies no scaling. 'fit' \u2014 scales the layer uniformly to fit within the canvas bounds while preserving aspect ratio. 'fill' \u2014 scales the layer uniformly to fill the canvas bounds while preserving aspect ratio, cropping overflow if the layer's aspect ratio differs from the canvas. 'custom' \u2014 applies the exact width and height from the Transform without preserving aspect ratio. Important for text layers: Any mode other than 'none' (or any non-identity scale on the Transform) causes the type engine to render glyphs and leading multiplied by the layer's scale factors. fontSize and lineHeight in CharacterStyle are stored unscaled. The rendered output becomes: fontSize x horizontalScale and lineHeight x verticalScale. To produce text at exact pixel sizes, use transformMode 'none' and avoid scaling Transforms on text layers.",
-                "enum": [
-                  "fit",
-                  "fill",
-                  "custom",
-                  "none"
-                ]
+                "description": "Transform mode applied to the layer. Defaults to 'none' when adding layers. Optional for edits. Modes: 'none' — applies no scaling. 'fit' — scales the layer uniformly to fit within the canvas bounds while preserving aspect ratio. 'fill' — scales the layer uniformly to fill the canvas bounds while preserving aspect ratio, cropping overflow if the layer's aspect ratio differs from the canvas. 'custom' — applies the exact width and height from the Transform without preserving aspect ratio. Important for text layers: Any mode other than 'none' (or any non-identity scale on the Transform) causes the type engine to render glyphs and leading multiplied by the layer's scale factors. fontSize and lineHeight in CharacterStyle are stored unscaled. The rendered output becomes: fontSize x horizontalScale and lineHeight x verticalScale. To produce text at exact pixel sizes, use transformMode 'none' and avoid scaling Transforms on text layers.",
+                "enum": ["fit", "fill", "custom", "none"]
               },
               "type": {
                 "type": "string",
@@ -3172,9 +2976,7 @@
         "description": "Effects adjustments for image editing."
       },
       "EmbeddedDestination": {
-        "required": [
-          "embedded"
-        ],
+        "required": ["embedded"],
         "type": "object",
         "allOf": [
           {
@@ -3187,11 +2989,7 @@
                 "type": "string",
                 "description": "Embedded format (string, base64, or json). Defaults to string when omitted.",
                 "default": "string",
-                "enum": [
-                  "string",
-                  "base64",
-                  "json"
-                ]
+                "enum": ["string", "base64", "json"]
               }
             }
           }
@@ -3230,9 +3028,7 @@
         "description": "Error response containing error code, message, and optional list of validation errors.\n\nError Code Reference:\n| Error Code                    | Message                             |\n| ----------------------------- | ------------------------------------|\n|                               |                                     |\n| 401013                        | Oauth token is not valid            |\n| validation_error              | Validation failed                   |\n| unsupported_method            | Method not allowed                  |\n| invalid_content_type          | Unsupported media type              |\n| unknown_job_id                | Job not found                       |\n| unauthorized_forbidden        | The quota for the calling user has exhausted OR\n|                               | The Service is experiencing high traffic. please retry after a brief wait OR\n|                               | The user is not entitled to call this service OR\n|                               | The user is currently blocked by the admin OR\n|                               | The user is having an invalid subscription OR\n|                               | The user is blocked due to a violation OR\n|                               | The user is having an invalid scope |\n| unauthorized_legal_reasons    | The user is unauthorised due to geo ip blocking failure OR\n|                               | The user is unauthorised due to user profile region failure from floodgate |\n| unauthorized_rate_limited     | The user is unauthorised due to rate limit. When present, Retry-After header (seconds) indicates delay before retrying. |\n| runtime_error                 | There was a problem while attempting to perform the operation. Please try again. |\n| invalid_json                  | The request payload is having invalid JSON (fallback) |\n"
       },
       "ExportOptions": {
-        "required": [
-          "mediaType"
-        ],
+        "required": ["mediaType"],
         "type": "object",
         "properties": {
           "mediaType": {
@@ -3288,10 +3084,7 @@
         "description": "Exposure adjustment settings"
       },
       "ExposureAdjustments": {
-        "required": [
-          "exposure",
-          "type"
-        ],
+        "required": ["exposure", "type"],
         "type": "object",
         "description": "Exposure adjustment",
         "allOf": [
@@ -3346,12 +3139,7 @@
         "description": "Font definition with PostScript name."
       },
       "FontCmyk": {
-        "required": [
-          "black",
-          "cyan",
-          "magenta",
-          "yellow"
-        ],
+        "required": ["black", "cyan", "magenta", "yellow"],
         "type": "object",
         "description": "CMYK color values for fonts with 16-bit depth (cyan, magenta, yellow, black components).",
         "allOf": [
@@ -3402,9 +3190,7 @@
         "description": "Font color definition supporting RGB, CMYK, LAB, and Grayscale color models in 16-bit depth."
       },
       "FontGray": {
-        "required": [
-          "gray"
-        ],
+        "required": ["gray"],
         "type": "object",
         "description": "Grayscale color value for fonts with 16-bit depth.",
         "allOf": [
@@ -3427,11 +3213,7 @@
         ]
       },
       "FontLab": {
-        "required": [
-          "a",
-          "b",
-          "l"
-        ],
+        "required": ["a", "b", "l"],
         "type": "object",
         "description": "LAB color values for fonts with 16-bit depth (lightness and color channels).",
         "allOf": [
@@ -3486,20 +3268,13 @@
           "missingFontStrategy": {
             "type": "string",
             "description": "Action to take if there are missing fonts. Optional.",
-            "enum": [
-              "fail",
-              "use_default"
-            ]
+            "enum": ["fail", "use_default"]
           }
         },
         "description": "Font options configuration. Optional."
       },
       "FontRgb": {
-        "required": [
-          "blue",
-          "green",
-          "red"
-        ],
+        "required": ["blue", "green", "red"],
         "type": "object",
         "description": "RGB color values for fonts with 16-bit depth (red, green, blue components).",
         "allOf": [
@@ -3538,10 +3313,7 @@
         ]
       },
       "GenerateManifestRequest": {
-        "required": [
-          "image",
-          "outputs"
-        ],
+        "required": ["image", "outputs"],
         "type": "object",
         "properties": {
           "exportOptions": {
@@ -3603,9 +3375,7 @@
         }
       },
       "HostedDestination": {
-        "required": [
-          "validityPeriod"
-        ],
+        "required": ["validityPeriod"],
         "type": "object",
         "allOf": [
           {
@@ -3669,10 +3439,7 @@
         "description": "Array of hue/saturation adjustments. For master channel, LocalRange is not applicable."
       },
       "HueSaturationAdjustments": {
-        "required": [
-          "hueSaturation",
-          "type"
-        ],
+        "required": ["hueSaturation", "type"],
         "type": "object",
         "description": "Hue and saturation adjustment",
         "allOf": [
@@ -3690,9 +3457,7 @@
         ]
       },
       "IccProfile": {
-        "required": [
-          "type"
-        ],
+        "required": ["type"],
         "type": "object",
         "properties": {
           "type": {
@@ -3700,10 +3465,7 @@
             "description": "Type of ICC profile. 'standard' for predefined profiles, 'custom' for user-provided profiles. Defaults to standard when omitted; explicit null is invalid.",
             "example": "standard",
             "default": "standard",
-            "enum": [
-              "standard",
-              "custom"
-            ]
+            "enum": ["standard", "custom"]
           }
         },
         "description": "ICC profile configuration for color management",
@@ -3712,9 +3474,7 @@
         }
       },
       "Image": {
-        "required": [
-          "source"
-        ],
+        "required": ["source"],
         "type": "object",
         "properties": {
           "source": {
@@ -3728,10 +3488,7 @@
         "description": "Image input configuration. Can be either a source image or parameters to create a new image."
       },
       "ImageParameters": {
-        "required": [
-          "height",
-          "width"
-        ],
+        "required": ["height", "width"],
         "type": "object",
         "allOf": [
           {
@@ -3743,27 +3500,18 @@
               "depth": {
                 "type": "string",
                 "description": "Bit depth options for image processing",
-                "enum": [
-                  "1",
-                  "8",
-                  "16",
-                  "32"
-                ]
+                "enum": ["1", "8", "16", "32"]
               },
               "fill": {
                 "type": "string",
                 "description": "Type of fill for the background layer",
-                "enum": [
-                  "white",
-                  "background_color",
-                  "transparent"
-                ]
+                "enum": ["white", "background_color", "transparent"]
               },
               "height": {
                 "maximum": 32000,
                 "minimum": 1,
                 "type": "integer",
-                "description": "Height in pixels. Defaults to 100 when omitted.",
+                "description": "Height of the canvas in pixels (or points when unit is points_unit). Defaults to 100.",
                 "format": "int32",
                 "default": 100
               },
@@ -3802,11 +3550,22 @@
               "resolution": {
                 "$ref": "#/components/schemas/ResolutionMeasurement"
               },
+              "unit": {
+                "type": "string",
+                "description": "Unit applied to width and height values. Use 'points_unit' for V1 payloads where dimensions are in typographic points. Defaults to pixels_unit.",
+                "default": "pixels_unit",
+                "enum": [
+                  "pixels_unit",
+                  "percent_unit",
+                  "distance_unit",
+                  "points_unit"
+                ]
+              },
               "width": {
                 "maximum": 32000,
                 "minimum": 1,
                 "type": "integer",
-                "description": "Width in pixels. Defaults to 100 when omitted.",
+                "description": "Width of the canvas in pixels (or points when unit is points_unit). Defaults to 100.",
                 "format": "int32",
                 "default": 100
               }
@@ -3815,9 +3574,7 @@
         ]
       },
       "ImageSource": {
-        "required": [
-          "source"
-        ],
+        "required": ["source"],
         "type": "object",
         "properties": {
           "source": {
@@ -3827,9 +3584,7 @@
         "description": "The image input for the actions operation. Required."
       },
       "InlineContentResourceInput": {
-        "required": [
-          "content"
-        ],
+        "required": ["content"],
         "type": "object",
         "description": "Inline content resource input. Allows embedding content directly in the request.",
         "allOf": [
@@ -3893,9 +3648,7 @@
         }
       },
       "JpegExportOptions": {
-        "required": [
-          "mediaType"
-        ],
+        "required": ["mediaType"],
         "type": "object",
         "description": "Jpeg Export options for the image.",
         "allOf": [
@@ -3923,10 +3676,7 @@
         ]
       },
       "JpegOutput": {
-        "required": [
-          "destination",
-          "mediaType"
-        ],
+        "required": ["destination", "mediaType"],
         "type": "object",
         "allOf": [
           {
@@ -3953,10 +3703,7 @@
         ]
       },
       "JsonOutput": {
-        "required": [
-          "destination",
-          "mediaType"
-        ],
+        "required": ["destination", "mediaType"],
         "type": "object",
         "description": "JSON output configuration",
         "allOf": [
@@ -4067,10 +3814,7 @@
         "description": "Lightroom edit adjustments including XMP, presets, and all adjustment parameters. Optional."
       },
       "LightroomOutput": {
-        "required": [
-          "destination",
-          "mediaType"
-        ],
+        "required": ["destination", "mediaType"],
         "type": "object",
         "properties": {
           "destination": {
@@ -4106,9 +3850,7 @@
         }
       },
       "LightroomResourceInput": {
-        "required": [
-          "lightroomPath"
-        ],
+        "required": ["lightroomPath"],
         "type": "object",
         "description": "Lightroom resource input. References a resource via Lightroom path.",
         "allOf": [
@@ -4119,17 +3861,16 @@
             "type": "object",
             "properties": {
               "lightroomPath": {
+                "pattern": "^/v2/.*",
                 "type": "string",
-                "description": "The path to the asset in Lightroom. Required."
+                "description": "The path to the asset in Lightroom. Required. Must be a partial path that starts with '/v2/'. The host/domain is always fixed server-side and cannot be supplied by the caller: absolute URLs, scheme prefixes, protocol-relative '//host/...' forms, and '..' path segments are all rejected."
               }
             }
           }
         ]
       },
       "LocalRange": {
-        "required": [
-          "channelId"
-        ],
+        "required": ["channelId"],
         "type": "object",
         "properties": {
           "beginRamp": {
@@ -4150,14 +3891,7 @@
             "type": "string",
             "description": "Channel for local range color adjustments. Allowed values: REDS, YELLOWS, GREENS, CYANS, BLUES, MAGENTAS",
             "default": "REDS",
-            "enum": [
-              "REDS",
-              "YELLOWS",
-              "GREENS",
-              "CYANS",
-              "BLUES",
-              "MAGENTAS"
-            ]
+            "enum": ["REDS", "YELLOWS", "GREENS", "CYANS", "BLUES", "MAGENTAS"]
           },
           "endRamp": {
             "maximum": 360,
@@ -4177,10 +3911,7 @@
         "description": "Local range settings for targeted color adjustments. Defines the hue range boundaries for the adjustment."
       },
       "LrDngOutput": {
-        "required": [
-          "destination",
-          "mediaType"
-        ],
+        "required": ["destination", "mediaType"],
         "type": "object",
         "allOf": [
           {
@@ -4189,10 +3920,7 @@
         ]
       },
       "LrJpegOutput": {
-        "required": [
-          "destination",
-          "mediaType"
-        ],
+        "required": ["destination", "mediaType"],
         "type": "object",
         "allOf": [
           {
@@ -4219,10 +3947,7 @@
         ]
       },
       "LrPngOutput": {
-        "required": [
-          "destination",
-          "mediaType"
-        ],
+        "required": ["destination", "mediaType"],
         "type": "object",
         "allOf": [
           {
@@ -4252,10 +3977,7 @@
         ]
       },
       "ManifestJsonOutput": {
-        "required": [
-          "destination",
-          "mediaType"
-        ],
+        "required": ["destination", "mediaType"],
         "type": "object",
         "description": "JSON manifest output configuration",
         "allOf": [
@@ -4265,10 +3987,7 @@
         ]
       },
       "ManifestOutput": {
-        "required": [
-          "destination",
-          "mediaType"
-        ],
+        "required": ["destination", "mediaType"],
         "type": "object",
         "properties": {
           "destination": {
@@ -4291,9 +4010,7 @@
             "type": "string",
             "description": "Supported media types for manifest output",
             "default": "application/json",
-            "enum": [
-              "application/json"
-            ]
+            "enum": ["application/json"]
           }
         },
         "description": "Export options for manifest output.",
@@ -4302,10 +4019,7 @@
         }
       },
       "Mask": {
-        "required": [
-          "digest",
-          "source"
-        ],
+        "required": ["digest", "source"],
         "type": "object",
         "properties": {
           "digest": {
@@ -4319,9 +4033,7 @@
         "description": "Mask input for XMP operations. Contains source file reference and digest for dictionary lookup."
       },
       "MoveLayer": {
-        "required": [
-          "operation"
-        ],
+        "required": ["operation"],
         "type": "object",
         "description": "Layer for move operations",
         "allOf": [
@@ -4331,10 +4043,7 @@
         ]
       },
       "MoveOperation": {
-        "required": [
-          "placement",
-          "type"
-        ],
+        "required": ["placement", "type"],
         "type": "object",
         "description": "Move operation for moving layers.",
         "allOf": [
@@ -4394,20 +4103,13 @@
         "description": "Offset coordinates for positioning elements."
       },
       "Operation": {
-        "required": [
-          "type"
-        ],
+        "required": ["type"],
         "type": "object",
         "properties": {
           "type": {
             "type": "string",
             "description": "Operation type enum",
-            "enum": [
-              "add",
-              "edit",
-              "delete",
-              "move"
-            ]
+            "enum": ["add", "edit", "delete", "move"]
           }
         },
         "description": "Layer operation settings including placement, delete, move and edit operations.",
@@ -4416,9 +4118,7 @@
         }
       },
       "OperationBase": {
-        "required": [
-          "operation"
-        ],
+        "required": ["operation"],
         "type": "object",
         "properties": {
           "id": {
@@ -4509,10 +4209,7 @@
           "writingDirection": {
             "type": "string",
             "description": "Text writing direction",
-            "enum": [
-              "left_to_right",
-              "right_to_left"
-            ]
+            "enum": ["left_to_right", "right_to_left"]
           }
         },
         "description": "Paragraph style properties."
@@ -4530,9 +4227,7 @@
         "description": "Paragraph style range defining paragraph formatting for specific text ranges."
       },
       "PatternResource": {
-        "required": [
-          "source"
-        ],
+        "required": ["source"],
         "type": "object",
         "properties": {
           "source": {
@@ -4542,20 +4237,13 @@
         "description": "External pattern file reference. Requires source (URL, Creative Cloud path, or Creative Cloud file ID). Inline content is not supported."
       },
       "PhotoshopOutput": {
-        "required": [
-          "destination",
-          "mediaType"
-        ],
+        "required": ["destination", "mediaType"],
         "type": "object",
         "properties": {
           "cropMode": {
             "type": "string",
             "description": "Crop mode for export output",
-            "enum": [
-              "trim_to_transparency",
-              "document_bounds",
-              "layer_bounds"
-            ]
+            "enum": ["trim_to_transparency", "document_bounds", "layer_bounds"]
           },
           "destination": {
             "oneOf": [
@@ -4672,9 +4360,7 @@
         "description": "Pixel mask settings for layer operations, including source input and pixel mask properties."
       },
       "Placement": {
-        "required": [
-          "type"
-        ],
+        "required": ["type"],
         "type": "object",
         "properties": {
           "referenceLayer": {
@@ -4684,21 +4370,13 @@
             "type": "string",
             "description": "Type of placement operation (below, into, top, bottom, above). Defaults to top when omitted.",
             "default": "top",
-            "enum": [
-              "below",
-              "into",
-              "top",
-              "bottom",
-              "above"
-            ]
+            "enum": ["below", "into", "top", "bottom", "above"]
           }
         },
         "description": "Placement settings for positioning elements with alignment and insertion point."
       },
       "PngExportOptions": {
-        "required": [
-          "mediaType"
-        ],
+        "required": ["mediaType"],
         "type": "object",
         "description": "Png Export options for the image.",
         "allOf": [
@@ -4729,10 +4407,7 @@
         ]
       },
       "PngOutput": {
-        "required": [
-          "destination",
-          "mediaType"
-        ],
+        "required": ["destination", "mediaType"],
         "type": "object",
         "allOf": [
           {
@@ -4762,9 +4437,7 @@
         ]
       },
       "PointFrame": {
-        "required": [
-          "type"
-        ],
+        "required": ["type"],
         "type": "object",
         "description": "Point frame for text starting at a single point",
         "allOf": [
@@ -4797,10 +4470,7 @@
         ]
       },
       "PsdOutput": {
-        "required": [
-          "destination",
-          "mediaType"
-        ],
+        "required": ["destination", "mediaType"],
         "type": "object",
         "allOf": [
           {
@@ -4809,10 +4479,7 @@
         ]
       },
       "PsdcOutput": {
-        "required": [
-          "destination",
-          "mediaType"
-        ],
+        "required": ["destination", "mediaType"],
         "type": "object",
         "allOf": [
           {
@@ -4875,18 +4542,14 @@
         "description": "Options for resizing a document, including width, height, resolution, resample type, and additional flags."
       },
       "ResolutionMeasurement": {
-        "required": [
-          "unit"
-        ],
+        "required": ["unit"],
         "type": "object",
         "properties": {
           "unit": {
             "type": "string",
             "description": "The unit of measurement for resolution. 'density_unit' represents pixel density measurements like DPI (dots per inch) or PPI (pixels per inch). Defaults to density_unit when omitted.",
-            "enum": [
-              "density_unit"
-            ],
-            "default": "density_unit"
+            "default": "density_unit",
+            "enum": ["density_unit"]
           },
           "value": {
             "minimum": 1,
@@ -4916,11 +4579,7 @@
         }
       },
       "Rgb": {
-        "required": [
-          "blue",
-          "green",
-          "red"
-        ],
+        "required": ["blue", "green", "red"],
         "type": "object",
         "properties": {
           "blue": {
@@ -4983,10 +4642,7 @@
         "description": "Sharpen adjustments for image editing."
       },
       "Skew": {
-        "required": [
-          "horizontal",
-          "vertical"
-        ],
+        "required": ["horizontal", "vertical"],
         "type": "object",
         "properties": {
           "horizontal": {
@@ -5026,9 +4682,7 @@
         "description": "File reference for the smart object. Supported file formats: PSD, PNG, JPEG, TIFF, SVG. Optional."
       },
       "SolidColor": {
-        "required": [
-          "rgb"
-        ],
+        "required": ["rgb"],
         "type": "object",
         "properties": {
           "rgb": {
@@ -5038,10 +4692,7 @@
         "description": "Solid color definition using RGB values."
       },
       "StandardIccProfile": {
-        "required": [
-          "name",
-          "type"
-        ],
+        "required": ["name", "type"],
         "type": "object",
         "description": "Standard ICC profile with predefined profile names",
         "allOf": [
@@ -5055,10 +4706,7 @@
                 "type": "string",
                 "description": "Image mode for standard ICC profiles. Allowed values: rgb, grayscale. Optional",
                 "example": "rgb",
-                "enum": [
-                  "rgb",
-                  "grayscale"
-                ]
+                "enum": ["rgb", "grayscale"]
               },
               "name": {
                 "type": "string",
@@ -5089,13 +4737,7 @@
           "antiAliasing": {
             "type": "string",
             "description": "Anti-aliasing mode for text rendering",
-            "enum": [
-              "none",
-              "sharp",
-              "crisp",
-              "strong",
-              "smooth"
-            ]
+            "enum": ["none", "sharp", "crisp", "strong", "smooth"]
           },
           "characterStyles": {
             "type": "array",
@@ -5128,27 +4770,19 @@
           "textOrientation": {
             "type": "string",
             "description": "Text orientation",
-            "enum": [
-              "horizontal",
-              "vertical"
-            ]
+            "enum": ["horizontal", "vertical"]
           }
         },
         "description": "Text content and formatting settings for text layers."
       },
       "TextFrame": {
-        "required": [
-          "type"
-        ],
+        "required": ["type"],
         "type": "object",
         "properties": {
           "type": {
             "type": "string",
             "description": "Text frame type",
-            "enum": [
-              "point",
-              "area"
-            ]
+            "enum": ["point", "area"]
           }
         },
         "description": "Frame configuration for text layers",
@@ -5157,10 +4791,7 @@
         }
       },
       "TiffOutput": {
-        "required": [
-          "destination",
-          "mediaType"
-        ],
+        "required": ["destination", "mediaType"],
         "type": "object",
         "allOf": [
           {
@@ -5185,11 +4816,7 @@
           "horizontalAlign": {
             "type": "string",
             "description": "Horizontal alignment options",
-            "enum": [
-              "left",
-              "center",
-              "right"
-            ]
+            "enum": ["left", "center", "right"]
           },
           "offset": {
             "$ref": "#/components/schemas/Offset"
@@ -5200,11 +4827,7 @@
           "verticalAlign": {
             "type": "string",
             "description": "Vertical alignment options",
-            "enum": [
-              "top",
-              "center",
-              "bottom"
-            ]
+            "enum": ["top", "center", "bottom"]
           }
         },
         "description": "Transformation applied to the smart object or layer, optional"
@@ -5215,17 +4838,13 @@
           "trimUpon": {
             "type": "string",
             "description": "The basis for the trim operation (background or transparent). Optional.",
-            "enum": [
-              "transparent_pixels"
-            ]
+            "enum": ["transparent_pixels"]
           }
         },
         "description": "Options for trimming a document, specifying the basis for the trim operation."
       },
       "UrlDestination": {
-        "required": [
-          "url"
-        ],
+        "required": ["url"],
         "type": "object",
         "allOf": [
           {
@@ -5237,10 +4856,7 @@
               "storageType": {
                 "type": "string",
                 "description": "Storage type for the destination. Optional.",
-                "enum": [
-                  "azure",
-                  "dropbox"
-                ]
+                "enum": ["azure", "dropbox"]
               },
               "url": {
                 "type": "string",
@@ -5251,9 +4867,7 @@
         ]
       },
       "UrlResourceInput": {
-        "required": [
-          "url"
-        ],
+        "required": ["url"],
         "type": "object",
         "description": "URL resource input. References a resource via a pre-signed URL.",
         "allOf": [
@@ -5272,9 +4886,7 @@
         ]
       },
       "UxpResource": {
-        "required": [
-          "source"
-        ],
+        "required": ["source"],
         "type": "object",
         "properties": {
           "source": {
@@ -5314,9 +4926,7 @@
         "description": "Represents a single validation error with error code and message"
       },
       "XmpInput": {
-        "required": [
-          "source"
-        ],
+        "required": ["source"],
         "type": "object",
         "properties": {
           "masks": {
@@ -5347,35 +4957,13 @@
         "description": "XMP metadata input. Requires source (external file reference). Inline content is not supported."
       },
       "XmpOutput": {
-        "required": [
-          "destination",
-          "mediaType"
-        ],
+        "required": ["destination", "mediaType"],
         "type": "object",
         "allOf": [
           {
             "$ref": "#/components/schemas/LightroomOutput"
           }
         ]
-      },
-      "EditSmartObject": {
-        "type": "object",
-        "properties": {
-          "autoResize": {
-            "type": "boolean",
-            "description": "Controls how the embedded smart object content is sized when a replacement file is provided. Only applies to embedded smart objects (isLinked=false) with raster (PNG, JPEG, TIFF, PSD) or PDF/AI replacement files. SVG, vector formats without intrinsic dimensions, and linked smart objects are unaffected. true (default): scales the replacement to match the original smart object's canvas dimensions and resolution. false: preserves the replacement file's native dimensions and dpi.",
-            "default": true
-          },
-          "isLinked": {
-            "type": "boolean",
-            "description": "Whether the smart object is linked to the layer.",
-            "default": false
-          },
-          "smartObjectFile": {
-            "$ref": "#/components/schemas/SmartObjectFile"
-          }
-        },
-        "description": "Smart object settings and file reference for edit operations."
       }
     },
     "securitySchemes": {

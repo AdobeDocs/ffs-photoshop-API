@@ -39,13 +39,12 @@ V1 supported `.atn` action files and ActionJSON. V2 adds UXP scripts — JavaScr
     "source": { "url": "https://example.com/input.psd" }
   },
   "options": {
-    "uxp": [
-      {
-        "source": {
-          "content": "const doc = require('photoshop').app.activeDocument;\nconst layers = doc.layers;\nconst info = layers.map(l => ({ name: l.name, kind: l.kind }));\nrequire('uxp').storage.localFileSystem.getTemporaryFolder()\n  .then(tmp => tmp.createFile('info.json'))\n  .then(f => f.write(JSON.stringify(info)));"
-        }
+    "uxp": {
+      "source": {
+        "content": "const doc = require('photoshop').app.activeDocument;\nconst layers = doc.layers;\nconst info = layers.map(l => ({ name: l.name, kind: l.kind }));\nrequire('uxp').storage.localFileSystem.getTemporaryFolder()\n  .then(tmp => tmp.createFile('info.json'))\n  .then(f => f.write(JSON.stringify(info)));",
+        "contentType": "application/javascript"
       }
-    ]
+    }
   },
   "outputs": [
     {

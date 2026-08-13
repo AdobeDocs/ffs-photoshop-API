@@ -224,6 +224,7 @@ V2 `/v2/create-artboard` uses a dedicated `images[]` array where each entry has 
 | Input specification | `inputs[].href` + `storage` | `images[].source.url` | Breaking Change |
 | Image identifier | Order-based (array index) | `images[].id` field | Breaking Change |
 | Artboard spacing control | Not available | `artboardSpacing` field | Net New |
+| Artboard naming | Not available | `images[].name` field (optional) | Net New |
 | At least one image required | Not enforced | Validated — error if `images[]` is empty | Breaking Change |
 
 ### Guide

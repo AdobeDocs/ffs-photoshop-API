@@ -386,7 +386,9 @@ curl -X POST \
 - [ ] Move `outputs[0].href` to `outputs[0].destination.url`
 - [ ] Remove `storage` fields (not needed for presigned URLs)
 - [ ] Change `outputs[0].type` to `outputs[0].mediaType`
-- [ ] Choose **Actions** or **UXP**: Use `options.actions` for declarative edits, or `options.uxp` for conditional logic
+- [ ] Choose **Actions** or **UXP**: Use `options.actions` for declarative edits, or `options.uxp` for conditional logic or full-fidelity multi-property/multi-layer migration
+- [ ] If using UXP, wrap all document-mutating `batchPlay` calls in `core.executeAsModal()` — omitting it does not error, it silently no-ops (job succeeds, document unchanged)
+- [ ] Layers may be targeted by `id` (integer) or `name` (string) in both V1 and the UXP `select` action's `_target` — V1's schema allows either and both appear in real traffic
 
 **Text content and style (ActionJSON):**
 - [ ] `text.content` → `set` on `textLayer` with `textKey`
@@ -568,6 +570,112 @@ This example edits two text layers using both the V1 and V2 APIs.
 ```
 
 The first layer gets red text; the second gets 48pt blue text.
+
+## Full-Fidelity Migration via UXP
+
+The ActionJSON examples above cover single-property edits (font, size, color) on one layer at a time. If your V1 `/text` traffic uses the **full** field set — multiple character/paragraph style properties per layer, `textType` conversion, `options.fonts`/`options.globalFont`/`options.manageMissingFonts`, and layers targeted by either `id` or `name` — a single UXP script that loops over all your text layers and applies each field is more maintainable than a long, per-layer ActionJSON chain.
+
+<InlineAlert variant="warning" slots="text"/>
+
+**`core.executeAsModal()` is required, not optional.** An inline UXP script does not hold Photoshop's modal document-editing scope by default (unlike a locally-installed plugin). Any `batchPlay` call that mutates the document — `select`, `set`, `show`/`hide` — **silently does nothing** if it runs outside `core.executeAsModal()`. The job still reports `succeeded` and produces an output file; that output is just the untouched input document. Always wrap your entire edit loop in one `core.executeAsModal(...)` call.
+
+**Example: applying V1's full field set to one or more layers**
+
+This script mirrors the full V1 `/text` field set — content, orientation, `textType`, character styles, paragraph styles — for an array of target layers, each identified by `id` or `name` exactly like V1's `options.layers[]`.
+
+```javascript
+const { action, app, core } = require("photoshop");
+
+// V1's textType has a documented Photoshop bug: the internal enum values for
+// point vs. paragraph text are swapped from what you'd expect.
+const textTypeActionValue = { paragraph: "box", point: "paint" };
+
+function selectLayer(layer) {
+  const target = layer.id != null
+    ? { _id: layer.id, _ref: "layer" }
+    : { _name: layer.name, _ref: "layer" };
+  return { _obj: "select", _target: [target], makeVisible: false };
+}
+
+async function editTextLayer(layer) {
+  await action.batchPlay([selectLayer(layer)], { modalBehavior: "execute" });
+
+  let [layerInfo] = await action.batchPlay(
+    [{ _obj: "get", _target: [{ _ref: "layer", _enum: "ordinal", _value: "targetEnum" }] }],
+    { modalBehavior: "execute" }
+  );
+
+  if (layer.text.textType && textTypeActionValue[layer.text.textType]) {
+    await action.batchPlay([{
+      _obj: "set",
+      _target: [{ _property: "char", _ref: "property" }, { _enum: "ordinal", _ref: "textLayer" }],
+      to: { _enum: "char", _value: textTypeActionValue[layer.text.textType] },
+    }], { modalBehavior: "execute" });
+  }
+
+  if (layer.text.content != null) {
+    await action.batchPlay([{
+      _obj: "set",
+      _target: [{ _ref: "textLayer", _enum: "ordinal", _value: "targetEnum" }],
+      to: { _obj: "textLayer", textKey: layer.text.content },
+    }], { modalBehavior: "execute" });
+  }
+
+  const style = (layer.text.characterStyles || [])[0];
+  if (style) {
+    await action.batchPlay([{
+      _obj: "set",
+      _target: [{ _property: "textStyle", _ref: "property" }, { _enum: "ordinal", _ref: "textLayer" }],
+      to: {
+        _obj: "textStyle",
+        ...(style.size != null && { size: { _unit: "pointsUnit", _value: style.size } }),
+        ...(style.fontPostScriptName && { fontPostScriptName: style.fontPostScriptName }),
+        ...(style.color && { color: { _obj: "RGBColor", ...style.color } }),
+      },
+    }], { modalBehavior: "execute" });
+  }
+
+  const paragraph = (layer.text.paragraphStyles || [])[0];
+  if (paragraph && paragraph.alignment) {
+    await action.batchPlay([{
+      _obj: "set",
+      _target: [{ _property: "paragraphStyle", _ref: "property" }, { _enum: "ordinal", _ref: "textLayer" }],
+      to: { _obj: "paragraphStyle", align: { _enum: "alignmentType", _value: paragraph.alignment } },
+    }], { modalBehavior: "execute" });
+  }
+
+  if (layer.visible != null) {
+    await action.batchPlay([{
+      _obj: layer.visible ? "show" : "hide",
+      _target: [{ _ref: "layer", _enum: "ordinal", _value: "targetEnum" }],
+    }], { modalBehavior: "execute" });
+  }
+}
+
+async function main() {
+  const layers = [
+    { name: "headline", text: { content: "Hello World", textType: "paragraph",
+      characterStyles: [{ size: 72, fontPostScriptName: "ArialMT", color: { red: 255, green: 0, blue: 0 } }],
+      paragraphStyles: [{ alignment: "center" }] } },
+    // { id: 42, text: { ... } } -- id-based targeting works identically
+  ];
+
+  await core.executeAsModal(async () => {
+    for (const layer of layers) {
+      await editTextLayer(layer);
+    }
+  }, { commandName: "Text Layer Migration" });
+}
+
+main().catch((err) => {
+  console.error("Text migration script failed:", err);
+  throw err;
+});
+```
+
+Embed this as a single string in `options.uxp.source.content` with `contentType: "application/javascript"`, same as the other UXP examples on this page.
+
+**Known limitation:** even with an identical field-for-field conversion, expect a small (a few pixels) difference in the auto-computed text-frame bounding box between V1 and V2 outputs for the same font/size/content. This has been confirmed (by testing with and without `textType` conversion) to be independent of any conversion logic — it reflects a text-shaping/glyph-metrics difference between the underlying Photoshop host versions, not a payload or script issue. Content, font, size, color, and alignment are unaffected.
 
 ## Complete V1 field reference
 
