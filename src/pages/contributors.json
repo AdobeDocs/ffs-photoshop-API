@@ -1,7 +1,7 @@
 {
-  "total": 73,
+  "total": 74,
   "offset": 0,
-  "limit": 73,
+  "limit": 74,
   "data": [
     {
       "page": "/",
@@ -189,6 +189,13 @@
       "lastUpdated": "5/6/2026"
     },
     {
+      "page": "/guides/photoshop-v2/manifest-response-reference",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/40157092?v=4"
+      ],
+      "lastUpdated": "8/13/2026"
+    },
+    {
       "page": "/guides/photoshop-v2/v1-to-v2/",
       "avatars": [
         "https://avatars.githubusercontent.com/u/195011431?v=4"
@@ -198,16 +205,18 @@
     {
       "page": "/guides/photoshop-v2/v1-to-v2/actions-migration",
       "avatars": [
+        "https://avatars.githubusercontent.com/u/40157092?v=4",
         "https://avatars.githubusercontent.com/u/195011431?v=4"
       ],
-      "lastUpdated": "6/2/2026"
+      "lastUpdated": "8/13/2026"
     },
     {
       "page": "/guides/photoshop-v2/v1-to-v2/artboard-migration",
       "avatars": [
+        "https://avatars.githubusercontent.com/u/40157092?v=4",
         "https://avatars.githubusercontent.com/u/195011431?v=4"
       ],
-      "lastUpdated": "5/6/2026"
+      "lastUpdated": "8/13/2026"
     },
     {
       "page": "/guides/photoshop-v2/v1-to-v2/composite-migration",
@@ -247,16 +256,18 @@
     {
       "page": "/guides/photoshop-v2/v1-to-v2/convenience-apis/text-layer-operations",
       "avatars": [
+        "https://avatars.githubusercontent.com/u/40157092?v=4",
         "https://avatars.githubusercontent.com/u/195011431?v=4"
       ],
-      "lastUpdated": "5/6/2026"
+      "lastUpdated": "8/13/2026"
     },
     {
       "page": "/guides/photoshop-v2/v1-to-v2/create-artboard-v1-reference",
       "avatars": [
+        "https://avatars.githubusercontent.com/u/40157092?v=4",
         "https://avatars.githubusercontent.com/u/195011431?v=4"
       ],
-      "lastUpdated": "5/6/2026"
+      "lastUpdated": "8/13/2026"
     },
     {
       "page": "/guides/photoshop-v2/v1-to-v2/create-composite-v1-reference",
@@ -284,9 +295,10 @@
     {
       "page": "/guides/photoshop-v2/v1-to-v2/edit-operations",
       "avatars": [
+        "https://avatars.githubusercontent.com/u/40157092?v=4",
         "https://avatars.githubusercontent.com/u/195011431?v=4"
       ],
-      "lastUpdated": "5/6/2026"
+      "lastUpdated": "8/13/2026"
     },
     {
       "page": "/guides/photoshop-v2/v1-to-v2/execute-actions-v1-reference",
@@ -370,10 +382,11 @@
     {
       "page": "/guides/photoshop-v2/v1-to-v2/layer-operations-advanced",
       "avatars": [
+        "https://avatars.githubusercontent.com/u/40157092?v=4",
         "https://avatars.githubusercontent.com/u/43320248?v=4",
         "https://avatars.githubusercontent.com/u/195011431?v=4"
       ],
-      "lastUpdated": "7/2/2026"
+      "lastUpdated": "8/13/2026"
     },
     {
       "page": "/guides/photoshop-v2/v1-to-v2/layer-operations-background",
@@ -416,10 +429,11 @@
     {
       "page": "/guides/photoshop-v2/v1-to-v2/llm-migration-reference",
       "avatars": [
+        "https://avatars.githubusercontent.com/u/40157092?v=4",
         "https://avatars.githubusercontent.com/u/43320248?v=4",
         "https://avatars.githubusercontent.com/u/195011431?v=4"
       ],
-      "lastUpdated": "7/2/2026"
+      "lastUpdated": "8/13/2026"
     },
     {
       "page": "/guides/photoshop-v2/v1-to-v2/manifest-migration",
@@ -454,17 +468,19 @@
     {
       "page": "/guides/photoshop-v2/v1-to-v2/v2-api-catalog",
       "avatars": [
+        "https://avatars.githubusercontent.com/u/40157092?v=4",
         "https://avatars.githubusercontent.com/u/195011431?v=4"
       ],
-      "lastUpdated": "5/6/2026"
+      "lastUpdated": "8/13/2026"
     },
     {
       "page": "/guides/photoshop-v2/v1-to-v2/v2-whats-new",
       "avatars": [
+        "https://avatars.githubusercontent.com/u/40157092?v=4",
         "https://avatars.githubusercontent.com/u/43320248?v=4",
         "https://avatars.githubusercontent.com/u/195011431?v=4"
       ],
-      "lastUpdated": "6/23/2026"
+      "lastUpdated": "8/13/2026"
     },
     {
       "page": "/guides/product-crop/",
