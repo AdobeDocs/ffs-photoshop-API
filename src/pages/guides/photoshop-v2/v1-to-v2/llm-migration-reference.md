@@ -1223,6 +1223,13 @@ Export layers via `outputs[].layers` on the `/v2/create-composite` endpoint. Beh
 **Document Export** — no `layers` specified (exports full document):
 - `cropMode` supports `"document_bounds"` (default) and `"trim_to_transparency"` — `"layer_bounds"` returns a validation error
 
+**Layer nested inside a group** — requesting a layer's id shows that layer and its ancestor groups; sibling layers in the same group stay hidden.
+
+**Requesting a group's own id — `shouldIncludeChildren`:** optional boolean on a layer entry, default `true`.
+- `true` (default) — show the group and everything inside it.
+- `false` — show only the group itself; its children stay hidden, unless one of them is requested separately.
+- `true` always wins: if a group is requested with `true`, everything inside it is shown even if a child inside was separately requested with `false`.
+
 ```json
 // Single-layer: V2 example with cropMode
 {

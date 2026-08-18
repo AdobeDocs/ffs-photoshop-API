@@ -3050,6 +3050,24 @@
           "propertyName": "mediaType"
         }
       },
+      "ExportReferenceLayer": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "shouldIncludeChildren": {
+            "type": "boolean",
+            "description": "When this layer is a group, whether to include its children in the export. Defaults to true. Optional.",
+            "default": true
+          }
+        },
+        "description": "Layers to export. Specify layers by id, name, or both. Optional."
+      },
       "Exposure": {
         "type": "object",
         "properties": {
@@ -3861,9 +3879,9 @@
             "type": "object",
             "properties": {
               "lightroomPath": {
-                "pattern": "^/v2/.*",
+                "pattern": "^/v2/[A-Za-z0-9_.-]+(?:/[A-Za-z0-9_.-]+)*$",
                 "type": "string",
-                "description": "The path to the asset in Lightroom. Required. Must be a partial path that starts with '/v2/'. The host/domain is always fixed server-side and cannot be supplied by the caller: absolute URLs, scheme prefixes, protocol-relative '//host/...' forms, and '..' path segments are all rejected."
+                "description": "The path to the asset in Lightroom. Required. Must be a partial path that starts with '/v2/', e.g. '/v2/catalogs/{catalogId}/assets/{assetId}/revisions/{revisionId}/proxies/{proxyId}'. The host/domain is always fixed server-side and cannot be supplied by the caller. Only letters, digits, '.', '_', '-' and '/' are allowed — query strings, fragments, schemes, hosts, percent-encoding, and '..' path segments are all rejected."
               }
             }
           }
@@ -4283,7 +4301,7 @@
             "type": "array",
             "description": "Layers to export. Specify layers by id, name, or both. Optional.",
             "items": {
-              "$ref": "#/components/schemas/ReferenceLayer"
+              "$ref": "#/components/schemas/ExportReferenceLayer"
             }
           },
           "maxWidth": {
@@ -4497,8 +4515,7 @@
           "name": {
             "type": "string"
           }
-        },
-        "description": "Layers to export. Specify layers by id, name, or both. Optional."
+        }
       },
       "Resize": {
         "type": "object",
