@@ -1,7 +1,7 @@
 {
-  "total": 74,
+  "total": 75,
   "offset": 0,
-  "limit": 74,
+  "limit": 75,
   "data": [
     {
       "page": "/",
@@ -152,6 +152,13 @@
         "https://avatars.githubusercontent.com/u/41382203?v=4"
       ],
       "lastUpdated": "2/13/2026"
+    },
+    {
+      "page": "/guides/fonts/",
+      "avatars": [
+        "https://avatars.githubusercontent.com/u/48109457?v=4"
+      ],
+      "lastUpdated": "8/27/2026"
     },
     {
       "page": "/guides/get-job-status/",
