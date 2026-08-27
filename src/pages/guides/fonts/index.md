@@ -2,6 +2,8 @@
 
 Photoshop API v2 supports rendering text layers using fonts from the Adobe Fonts library. This lets you reference fonts by PostScript name directly in your API request without uploading or hosting font files yourself. Font access is resolved automatically through your Adobe entitlement.
 
+> **Beta**: This feature is in beta and may change before general availability.
+
 ## Prerequisites
 
 - A valid Firefly Services API key and access token
