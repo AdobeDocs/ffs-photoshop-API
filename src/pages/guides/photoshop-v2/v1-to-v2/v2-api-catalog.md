@@ -82,6 +82,7 @@ All three operations are unified under `/v2/create-composite`. The request struc
 | Group layer type name | `layerSection` | `group_layer` | Renamed |
 | `isClipped` for clipping masks | Not available | Supported | Net New |
 | `pixelMask.delete` to remove a pixel mask | Not available | `pixelMask: { "delete": true }` on edit operations | Net New |
+| `layerEffects` (drop shadow) | Not available | Supported on content layers; ⚠️ not functional on `group_layer` (known limitation — silently ignored on add and edit) | Net New |
 | Multiple outputs per request | Single output | Up to N outputs | Net New |
 
 ### Guide

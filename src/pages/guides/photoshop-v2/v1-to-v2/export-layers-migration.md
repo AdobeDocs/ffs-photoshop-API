@@ -193,6 +193,69 @@ When the single layer in `outputs[].layers[]` is a **group layer or artboard lay
 
 If the group or artboard layer contains a **linked smart object**, the export job will fail. The Photoshop API does not have access to the linked file at processing time, so the layer tree cannot be written to the output PSD. Ensure any linked smart objects inside the group or artboard are converted to embedded smart objects before exporting.
 
+## Exporting a Layer Nested Inside a Group
+
+If a requested layer lives inside a group, only that layer (and the group(s) containing it) is shown — other layers in the same group stay hidden.
+
+Sample PSD structure:
+
+```
+Document
+└── Group 40
+    ├── Layer 41
+    ├── Layer 42
+    ├── Layer 43
+    └── Group 44
+        ├── Layer 45
+        └── Layer 46
+```
+
+Requesting layers 41 and 43 shows both, group 40 is auto made visible to reveal them, layer 42 stays hidden:
+
+```json
+{
+  "outputs": [{
+    "destination": {"url": "https://example.com/out.png"},
+    "mediaType": "image/png",
+    "layers": [{"id": 41}, {"id": 43}]
+  }]
+}
+```
+
+### Requesting a group's own id: `shouldIncludeChildren`
+
+Optional boolean on a layer entry, default `true`.
+
+- `true` (default) — shows the group and everything inside it.
+- `false` — shows only the group; its children stay hidden.
+
+```json
+{
+  "outputs": [{
+    "destination": {"url": "https://example.com/out.png"},
+    "mediaType": "image/png",
+    "layers": [{"id": 40, "shouldIncludeChildren": false}]
+  }]
+}
+```
+
+If a group and something nested inside it are both requested, `true` always wins:
+
+```json
+{
+  "outputs": [{
+    "destination": {"url": "https://example.com/out.png"},
+    "mediaType": "image/png",
+    "layers": [
+      {"id": 40, "shouldIncludeChildren": true},
+      {"id": 44, "shouldIncludeChildren": false}
+    ]
+  }]
+}
+```
+
+Group 40 forces everything inside it visible, including Group 44 and its children — even though Group 44 was requested with `false`.
+
 ## Sample: multi-layer export
 
 **Schema changes (multi-layer):** Multi-layer export does not support PSD as of now; use `mediaType`: `image/jpeg`, `image/png`, or `image/tiff` only. `cropMode` supports `trim_to_transparency` and `document_bounds` (not `layer_bounds`). Use string enums for `quality` (e.g., `maximum`, `photoshop_max`) and `compression` for PNG.
