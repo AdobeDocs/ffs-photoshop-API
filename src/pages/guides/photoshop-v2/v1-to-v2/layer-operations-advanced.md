@@ -1,6 +1,6 @@
 ---
 title: Advanced Layer Operations Migration
-description: Migrate advanced layer operations including move, delete, masks, groups, blend modes, and transforms from V1 to V2
+description: Migrate advanced layer operations including move, delete, masks, groups, blend modes, transforms, and layer effects from V1 to V2
 hideBreadcrumbNav: true
 keywords:
   - move layers
@@ -9,6 +9,8 @@ keywords:
   - layer groups
   - blend modes
   - transforms
+  - layer effects
+  - drop shadow
   - migration
   - v1 to v2
 ---
@@ -459,6 +461,7 @@ When editing an existing group layer (`operation.type: "edit"`), you can modify 
 - `protection` - Protection flags (propagates to all descendant layers)
 - `blendOptions` - Opacity and blend mode
 - `pixelMask` - Mask settings
+- `layerEffects` - Accepted by the schema but not functional on group layers (known limitation) — see [Layer effects](#layer-effects) below
 
 <InlineAlert variant="warning" slots="text"/>
 
@@ -481,6 +484,83 @@ When editing an existing group layer (`operation.type: "edit"`), you can modify 
   }
 }
 ```
+
+## Layer effects
+
+### V1 approach
+
+V1 had no equivalent capability — layer effects (layer styles) could not be applied via `/documentOperations`.
+
+### V2 approach
+
+V2 adds a `layerEffects` object, available on `add` and `edit` operations for `layer`, `text_layer`, `smart_object_layer`, `adjustment_layer`, and `solid_color_layer`:
+
+```json
+{
+  "edits": {
+    "layers": [
+      {
+        "name": "Card Background",
+        "operation": { "type": "edit" },
+        "layerEffects": {
+          "dropShadow": [
+            {
+              "enabled": true,
+              "blendMode": "multiply",
+              "color": { "rgb": { "red": 0, "green": 0, "blue": 0 } },
+              "opacity": 75,
+              "angle": 120,
+              "useGlobalLight": false,
+              "distance": 10,
+              "spread": 0,
+              "size": 20,
+              "noise": 0,
+              "antiAliased": false,
+              "layerKnocksOut": true,
+              "contour": {
+                "name": "Custom",
+                "curve": [
+                  { "horizontal": 0, "vertical": 0, "continuity": false },
+                  { "horizontal": 255, "vertical": 255, "continuity": false }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
+```
+
+### `layerEffects` fields
+
+| Field | Type | Notes |
+| ----- | ---- | ----- |
+| `dropShadow` | array | 1–10 drop shadow effects. Multiple entries stack shadows on the same layer. |
+
+### `dropShadow[]` fields
+
+| Field | Type | Range/Values | Notes |
+| ----- | ---- | ------------ | ----- |
+| `enabled` | boolean | — | Whether this shadow is active. |
+| `blendMode` | string | Same blend mode enum as layer-level `blendMode` | Blend mode of the shadow. |
+| `color.rgb` | object | `{red, green, blue}` | Shadow color. |
+| `opacity` | integer | 0–100 | Percentage. |
+| `angle` | integer | -180 to 180 | Ignored when `useGlobalLight` is `true`. |
+| `useGlobalLight` | boolean | — | Use the document's global light angle instead of `angle`. |
+| `distance` | integer | 0–30000 | Pixels. |
+| `spread` | integer | 0–100 | Percentage. |
+| `size` | integer | 0–250 | Pixels. |
+| `noise` | integer | 0–100 | Percentage. |
+| `antiAliased` | boolean | — | Anti-aliases the shadow contour. |
+| `layerKnocksOut` | boolean | — | Whether the layer's own content knocks out (hides) the shadow beneath it. |
+| `contour.name` | string | `"Custom"` (only value currently supported) | Transparency shape (contour) applied to the shadow. Required. |
+| `contour.curve` | array | Points — `{continuity, horizontal, vertical}`, each 0–255 | Required. |
+
+<InlineAlert variant="warning" slots="text"/>
+
+**`layerEffects` is not supported on `group_layer`.** Although the schema accepts `layerEffects` on both add and edit group layer operations, a known limitation means the effect is silently ignored on group layers on both add and edit operations — the job succeeds, but no drop shadow is rendered on the group. Apply layer effects to the individual content layers inside the group instead. This is a known issue, not an intentional validation rule, so no error is returned.
 
 ## Blend modes and opacity
 
@@ -786,6 +866,7 @@ When migrating advanced layer operations from V1 to V2:
 - [ ] Masks: Change `offset.x`/`offset.y` to `offset.horizontal`/`offset.vertical`
 - [ ] Masks: To delete a pixel mask, use `pixelMask: { "delete": true }` on an edit operation
 - [ ] Clipping: Move `mask.clip` to top-level `isClipped` property
+- [ ] Layer Effects: New in V2 — add `layerEffects.dropShadow[]` to add/edit operations for content layers; **not functional on `group_layer`** (known limitation, silently ignored)
 - [ ] Groups: Change `type: "layerSection"` to `type: "group_layer"`
 - [ ] Groups: Replace `children` array with `into` placement and `referenceLayer`
 - [ ] Blend: Move `blendOptions.opacity` to top-level `opacity`
@@ -1008,6 +1089,7 @@ When migrating advanced layer operations from V1 to V2:
 - ✅ Blend modes and opacity
 - ✅ Layer visibility and lock
 - ✅ Layer positioning (bounds)
+- ✅ Layer effects (drop shadow) — content layers only; ⚠️ not functional on `group_layer` (known limitation, silently ignored on add and edit)
 
 ### V1 features - status TBD
 

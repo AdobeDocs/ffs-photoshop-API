@@ -94,7 +94,7 @@ Authentication remains unchanged. Continue using your existing OAuth Server-to-S
      - [Text Layer Operations](layer-operations-text.md) - Text layers with styling
      - [Adjustment Layer Operations](layer-operations-adjustments.md) - Non-destructive adjustments
      - [Smart Object Operations](layer-operations-smart-objects.md) - Smart object layers
-     - [Advanced Layer Operations](layer-operations-advanced.md) - Masks, groups, transforms, blend modes
+     - [Advanced Layer Operations](layer-operations-advanced.md) - Masks, groups, transforms, blend modes, layer effects
    - **Other Operations:**
      - [Actions Migration](actions-migration.md) - Photoshop actions and convenience APIs
      - [Output Types Migration](output-types-migration.md) - JPEG, PNG, PSD, TIFF output format changes
