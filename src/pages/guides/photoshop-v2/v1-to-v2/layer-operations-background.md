@@ -597,4 +597,4 @@ When migrating background layer operations from V1 to V2:
 
 - [Layer Operations Overview](layer-operations-overview.md) — General layer concepts and processing order
 - [Image Layer Operations](layer-operations-image.md) — Standard image/pixel layers
-- [Advanced Layer Operations](layer-operations-advanced.md) — Protection, masks, blend modes
+- [Advanced Layer Operations](layer-operations-advanced.md) — Protection, masks, blend modes, layer effects

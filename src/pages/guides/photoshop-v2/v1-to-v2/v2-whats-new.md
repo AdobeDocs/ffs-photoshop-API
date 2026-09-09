@@ -12,6 +12,8 @@ keywords:
   - group layers
   - pixel mask
   - delete pixel mask
+  - layer effects
+  - drop shadow
   - text rendering
   - UXP scripts
   - GenAI
@@ -424,6 +426,38 @@ Key constraints:
 - Can be combined with other layer edits (opacity, visibility, etc.) in the same layer entry
 
 See [Advanced Layer Operations Migration](layer-operations-advanced.md#deleting-a-pixel-mask) for full examples and validation rules.
+
+### Layer effects (drop shadow)
+
+<InlineAlert variant="info" slots="text"/>
+
+V2 adds layer effects (layer styles) — starting with drop shadow — as a first-class `layerEffects` object on layer add/edit operations. V1 had no equivalent capability.
+
+Apply one or more drop shadows to a layer using `layerEffects.dropShadow` (array, 1–10 entries):
+
+```json
+{
+  "edits": {
+    "layers": [
+      {
+        "name": "Card",
+        "operation": { "type": "edit" },
+        "layerEffects": {
+          "dropShadow": [
+            { "enabled": true, "distance": 10, "size": 20, "opacity": 75 }
+          ]
+        }
+      }
+    ]
+  }
+}
+```
+
+<InlineAlert variant="warning" slots="text"/>
+
+`layerEffects` is not currently supported on `group_layer` — a known limitation causes it to be silently ignored (no error) on both add and edit operations. Apply drop shadow to the individual layers within a group instead.
+
+See [Advanced Layer Operations Migration](layer-operations-advanced.md#layer-effects) for the full field reference.
 
 ### ICC profile control
 

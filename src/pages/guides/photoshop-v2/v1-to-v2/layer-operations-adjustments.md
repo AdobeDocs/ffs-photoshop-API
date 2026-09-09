@@ -775,5 +775,5 @@ When migrating adjustment layer operations from V1 to V2:
 
 - Review [Layer Operations Overview](layer-operations-overview.md) for general concepts
 - Check [Image Layers](layer-operations-image.md) for combining with image layers
-- See [Advanced Operations](layer-operations-advanced.md) for masks and blend modes
+- See [Advanced Operations](layer-operations-advanced.md) for masks, blend modes, and layer effects
 

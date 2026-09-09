@@ -212,7 +212,7 @@ For detailed information on working with specific layer types, see these guides:
 - **[Text Layers](layer-operations-text.md)** - Text layers with character and paragraph styles
 - **[Adjustment Layers](layer-operations-adjustments.md)** - Non-destructive adjustment layers
 - **[Smart Objects](layer-operations-smart-objects.md)** - Smart object layers
-- **[Advanced Operations](layer-operations-advanced.md)** - Masks, groups, blend modes, and transformations
+- **[Advanced Operations](layer-operations-advanced.md)** - Masks, groups, blend modes, transformations, and layer effects
 
 ## Related migration guides
 

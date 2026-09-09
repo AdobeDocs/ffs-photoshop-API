@@ -1223,6 +1223,13 @@ Export layers via `outputs[].layers` on the `/v2/create-composite` endpoint. Beh
 **Document Export** — no `layers` specified (exports full document):
 - `cropMode` supports `"document_bounds"` (default) and `"trim_to_transparency"` — `"layer_bounds"` returns a validation error
 
+**Layer nested inside a group** — requesting a layer's id shows that layer and its ancestor groups; sibling layers in the same group stay hidden.
+
+**Requesting a group's own id — `shouldIncludeChildren`:** optional boolean on a layer entry, default `true`.
+- `true` (default) — show the group and everything inside it.
+- `false` — show only the group itself; its children stay hidden, unless one of them is requested separately.
+- `true` always wins: if a group is requested with `true`, everything inside it is shown even if a child inside was separately requested with `false`.
+
 ```json
 // Single-layer: V2 example with cropMode
 {
@@ -4199,6 +4206,18 @@ layers must appear earlier in the array in V2.
 | `mask.clip: true` | `isClipped: true` (top-level) | Breaking |
 | `mask.linked`/`enabled`/`input` | `pixelMask.linked`/`enabled`/`source.url` | Breaking (also: prefix changed from `mask` to `pixelMask`) |
 | `fillToCanvas: true` | **Not supported** | Feature gap |
+
+### Layer effects (net new)
+
+V2 adds `layerEffects.dropShadow[]` (1–10 entries) on `add`/`edit` for `layer`, `text_layer`, `smart_object_layer`, `adjustment_layer`, `solid_color_layer`. Not available in V1 at all. Not supported on `background_layer`.
+
+`dropShadow[]` fields: `enabled`, `blendMode`, `color.rgb`, `opacity` (0–100), `angle` (-180–180, ignored if `useGlobalLight`), `useGlobalLight`, `distance` (0–30000), `spread` (0–100), `size` (0–250), `noise` (0–100), `antiAliased`, `layerKnocksOut`, `contour.name` (`"Custom"` only value currently supported, required), `contour.curve` (points, required).
+
+<InlineAlert variant="warning" slots="text"/>
+
+**`layerEffects` is not functional on `group_layer`.** The schema accepts it on add/edit group layer operations, but a known limitation silently ignores it on both add and edit — job succeeds, no error, no shadow rendered. Do not suggest `layerEffects` for group layers; apply it to the content layers inside the group instead.
+
+See [Advanced Layer Operations Migration](layer-operations-advanced.md#layer-effects) for the full field reference.
 
 ### Text layer critical changes
 

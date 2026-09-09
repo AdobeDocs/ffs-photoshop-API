@@ -940,4 +940,4 @@ The v2 API requires explicit placement for an add operation. Always specify plac
 
 - Review [Layer Operations Overview](layer-operations-overview.md) for general concepts
 - Check [Text Layers](layer-operations-text.md) for text operations
-- See [Advanced Operations](layer-operations-advanced.md) for masks and transforms
+- See [Advanced Operations](layer-operations-advanced.md) for masks, transforms, and layer effects
