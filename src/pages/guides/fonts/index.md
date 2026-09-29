@@ -1,22 +1,22 @@
 # Using Adobe Fonts with Photoshop API v2
 
-Photoshop API v2 supports rendering text layers using free fonts from the Adobe Fonts library. This lets you reference fonts by PostScript name directly in your API request without uploading or hosting font files yourself. Font access is resolved automatically through your Adobe entitlement.
+Photoshop API v2 supports rendering text layers using fonts from the Adobe Fonts Free library. This lets you reference fonts by PostScript name directly in your API request without uploading or hosting font files yourself. Font access is resolved automatically through your Adobe entitlement.
 
-> **Beta**: This feature is in beta and currently only support Adobe Free Fonts. This service may change before general availability.
+> **Beta**: This feature is in beta and currently only supports fonts in the Free tier of the Adobe Fonts library. This service may change before general availability.
 
-> **Note**: The Adobe Fonts feature is currently limited to Adobe free fonts. You can browse the supported fonts in the [Adobe Fonts basic library](https://fonts.adobe.com/fonts?library=basic). Fonts outside this library are not supported through Adobe Fonts. To use any other font, see [Using custom fonts](#using-custom-fonts).
+> **Note**: The Adobe Fonts feature is currently limited to fonts in the Adobe Fonts Free library. [Browse supported fonts here](https://fonts.adobe.com/fonts?library=basic). To use any other font, including fonts in the Adobe Fonts Paid library, see [Using custom fonts](#using-custom-fonts).
 
 ## Prerequisites
 
 - A valid Firefly Services API key and access token
 - An Adobe entitlement that includes Adobe Fonts access
-- A font from the [Adobe Fonts basic library](https://fonts.adobe.com/fonts?library=basic), which contains the free fonts supported by this feature
+- A font from the [Adobe Fonts Free library](https://fonts.adobe.com/fonts?library=basic)
 - A Fonts product profile configured in the Adobe Admin Console and added to your credential in the Adobe Developer Console
 - A PSD file with one or more text layers
 
 ## Admin Console setup
 
-Before you can use free Adobe Fonts in API calls, your organization must have a Fonts service enabled on a product profile in the Adobe Admin Console, and that profile must be associated with your API credential.
+Before you can use fonts from the Free library of Adobe Fonts in API calls, your organization must have a Fonts service enabled on a product profile in the Adobe Admin Console, and that profile must be associated with your API credential.
 
 ### Step 1: Create a product profile with Fonts enabled
 
@@ -40,7 +40,7 @@ Once the profile is linked to your project, API calls made with that credential 
 
 ## How it works
 
-When your request includes a font PostScript name in `fontOptions` or `characterStyles`, the service resolves the font through Adobe Fonts at render time. No file URL is required. Only free fonts from the [Adobe Fonts basic library](https://fonts.adobe.com/fonts?library=basic) can be resolved. If the font cannot be resolved because the PostScript name is incorrect, the font is not a free Adobe font, or the font is not covered by your entitlement, the job will fail or fall back to a default font depending on your `missingFontStrategy` setting.
+When your request includes a font PostScript name in `fontOptions` or `characterStyles`, the service resolves the font through Adobe Fonts at render time. No file URL is required. Only fonts from the [Adobe Fonts Free library](https://fonts.adobe.com/fonts?library=basic) can be resolved. If the font cannot be resolved because the PostScript name is incorrect, the font is not in the Adobe Fonts Free library, or the font is not covered by your entitlement, the job will fail or fall back to a default font depending on your `missingFontStrategy` setting.
 
 ## Request structure
 
@@ -102,11 +102,11 @@ Use the `fontOptions` object to specify the font at the document level, and refe
 
 PostScript names follow the pattern `FamilyName-Weight`, for example `AdobeCaslon-Regular` or `SourceSans3-Bold`. The PostScript name is the exact identifier the API expects, and it is not always the same as the display name shown on Adobe Fonts. For example, the font displayed as "Phudu Regular" has the PostScript name `Phudu-Regular`.
 
-Only free fonts from the [Adobe Fonts basic library](https://fonts.adobe.com/fonts?library=basic) are supported, so start your search there.
+Only fonts from the [Adobe Fonts Free library](https://fonts.adobe.com/fonts?library=basic) are supported, so start your search there.
 
 To find the PostScript name for a specific font:
 
-1. Go to the [Adobe Fonts basic library](https://fonts.adobe.com/fonts?library=basic).
+1. Go to the [Adobe Fonts Free library](https://fonts.adobe.com/fonts?library=basic).
 2. Browse or search for the font family you want, then open the family page.
 3. Locate the specific style you need, such as Regular, Bold, or Black. Each style has its own PostScript name.
 4. Hover over the **Try in Adobe Express** button for that style. The link URL appears in the status bar at the bottom of your browser. You can also right click the button and choose **Copy link address**.
@@ -214,7 +214,7 @@ A completed job returns a `succeeded` status with an output URL:
 
 ## Using custom fonts
 
-If you need a font that is not in the free Adobe Fonts basic library, including any Adobe Fonts that are not free, supply it as a file reference in `additionalFonts`. The font file must be accessible via a pre-signed URL.
+If you need a font that is not in the Adobe Fonts Free library, including any Adobe Fonts that are in the Paid library, supply it as a file reference in `additionalFonts`. The font file must be accessible via a pre-signed URL.
 
 ```json
 "fontOptions": {
