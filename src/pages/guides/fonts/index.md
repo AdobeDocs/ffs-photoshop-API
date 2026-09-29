@@ -112,7 +112,7 @@ To find the PostScript name for a specific font:
 4. Hover over the **Try in Adobe Express** button for that style. The link URL appears in the status bar at the bottom of your browser. You can also right click the button and choose **Copy link address**.
 5. Find the `fontPostscriptName` parameter in the URL. Its value is the PostScript name. In the example below, the value is `Phudu-Regular`.
 
-![Adobe Fonts page for Phudu with the Try in Adobe Express link and the fontPostscriptName parameter highlighted](../assets/fonts_postscript_name.png)
+![Adobe Fonts page for Phudu with the Try in Adobe Express link and the fontPostscriptName parameter highlighted](../../assets/fonts_postscript_name.png?raw=true "Finding the PostScript name")
 
 Use the value exactly as shown, including capitalization and the hyphen, when you pass the font name in your request.
 
