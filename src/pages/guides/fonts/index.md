@@ -36,7 +36,7 @@ For detailed instructions on creating product profiles, see [Create product prof
 4. On the API detail page, click **Edit product profiles**
 5. Add the Fonts-enabled profile you created in Step 1 and save
 
-Once the profile is linked to your project, API calls made with that credential will have access to the free fonts in the Adobe Fonts basic library.
+Once the profile is linked to your project, API calls made with that credential will have access to the free fonts in the Adobe Fonts Free library. 
 
 ## How it works
 
@@ -96,7 +96,7 @@ Use the `fontOptions` object to specify the font at the document level, and refe
 |---|---|---|---|
 | `defaultFontPostScriptName` | string | No | PostScript name of the font to use as the document-level default. |
 | `missingFontStrategy` | string | No | What to do when a font cannot be resolved. `fail` returns an error. `use_default` silently substitutes a fallback font. |
-| `additionalFonts` | array | No | Custom fonts to supply as file references. Use this for fonts that are not in the free Adobe Fonts basic library. |
+| `additionalFonts` | array | No | Custom fonts to supply as file references. Use this for fonts that are not in the free Adobe Fonts Free library. |
 
 ## Finding a font's PostScript name
 
@@ -209,8 +209,8 @@ A completed job returns a `succeeded` status with an output URL:
 | Error | Likely cause |
 |---|---|
 | `validation_error` Missing required field `type` | The layer object is missing `"type": "text_layer"`. Add it alongside the `operation` field. |
-| `unauthorized_forbidden` | Your entitlement does not cover Adobe Fonts access, or the font is not a free font from the Adobe Fonts basic library. Verify the Fonts service is enabled on the product profile linked to your credential. |
-| Font missing or substituted | The PostScript name is incorrect or the font is not in the free Adobe Fonts basic library. Use `missingFontStrategy: "fail"` to surface this as an explicit error rather than a silent fallback. |
+| `unauthorized_forbidden` | Your entitlement does not cover Adobe Fonts access, or the font is not a free font from the Adobe Fonts Free library. Verify the Fonts service is enabled on the product profile linked to your credential. |
+| Font missing or substituted | The PostScript name is incorrect or the font is not in the free Adobe Fonts Free library. Use `missingFontStrategy: "fail"` to surface this as an explicit error rather than a silent fallback. |
 
 ## Using custom fonts
 
