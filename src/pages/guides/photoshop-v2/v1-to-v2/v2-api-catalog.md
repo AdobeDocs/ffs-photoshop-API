@@ -244,7 +244,7 @@ Each V1 service had its own status endpoint. Photoshop jobs used `/pie/psdServic
 
 ### V2 behavior
 
-All V2 jobs use a single `/v2/status/{jobId}` endpoint regardless of which operation created the job. The response includes a `status` field (`pending`, `running`, `succeeded`, `failed`), an `outputs` array with per-output status and destination URLs, and a structured `errors` array.
+All V2 jobs use a single `/v2/status/{jobId}` endpoint regardless of which operation created the job. The response includes a `status` field (`not_started`, `running`, `succeeded`, `failed`), an `outputs` array with per-output status and destination URLs, and a structured `errors` array.
 
 ### Behavioral changes
 
@@ -300,11 +300,12 @@ Authentication is **unchanged** between V1 and V2. Continue using your existing 
 | Format | V1 | V2 | Type |
 |--------|----|-----|------|
 | JPEG quality | Numeric `1–100` | String enum: `"low"`, `"medium"`, `"high"`, `"maximum"` | Breaking Change |
+| JPEG scan encoding | Not available | `scan: {type: "baseline"/"progressive", ...}` — Create Composite, Create Artboard, Generate Manifest only | Net New |
 | PNG compression | Scale `0–2` (3 levels) | Scale `"default"`, or `0–9` (10 levels) | Breaking Change |
 | TIFF compression | Named string | Named string (unchanged) | Unchanged |
 | PSD output | Supported | Supported (unchanged) | Unchanged |
 | Cloud PSD (`.psdc`) | Supported via Sensei engine | `mediaType: "document/vnd.adobe.cpsd+dcxucf"` | Renamed |
-| ICC profile per output | Not available | `iccProfile: {standard: "..."}` or `{custom: {...}}` | Net New |
+| ICC profile per output | Not available | `iccProfile: {type: "standard", name: "..."}` or `{type: "custom", ...}` | Net New |
 
 ### Error response structure
 

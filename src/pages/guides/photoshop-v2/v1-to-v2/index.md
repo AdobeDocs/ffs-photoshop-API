@@ -97,7 +97,7 @@ Authentication remains unchanged. Continue using your existing OAuth Server-to-S
      - [Advanced Layer Operations](layer-operations-advanced.md) - Masks, groups, transforms, blend modes, layer effects
    - **Other Operations:**
      - [Actions Migration](actions-migration.md) - Photoshop actions and convenience APIs
-     - [Output Types Migration](output-types-migration.md) - JPEG, PNG, PSD, TIFF output format changes
+     - [Output Types Migration](output-types-migration.md) - JPEG, PNG, PSD, TIFF output format changes, including progressive JPEG scan encoding (net new)
      - [Artboard Migration](artboard-migration.md) - Artboard operations
      - [Manifest Migration](manifest-migration.md) - Manifest generation
      - [Status Migration](status-migration.md) - Job status checking

@@ -43,6 +43,7 @@
     - [Photoshop API v2 guides](/guides/photoshop-v2/v1-to-v2/guides-v2/index.md)
       - [Using Adobe fonts (beta)](/guides/fonts/index.md)
       - [Execute Actions workflow](/guides/photoshop-v2/v1-to-v2/guides-v2/execute-actions.md)
+      - [Smart Filters with Execute Actions](/guides/workflows/smart_filters/index.md)
       - [Smart Object workflow](/guides/photoshop-v2/v1-to-v2/guides-v2/smart-object-workflow.md)
       - [v2/edit API benchmarking](/guides/photoshop-v2/v1-to-v2/guides-v2/v2-edit-api-benchmarking.md)
       - [Execute Actions models reference](/guides/photoshop-v2/v1-to-v2/guides-v2/execute-actions-models.md)
