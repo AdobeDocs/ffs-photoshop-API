@@ -262,6 +262,47 @@ The quality parameter is optional. If not specified, the API uses different defa
 }
 ```
 
+### Progressive JPEG Scan Encoding (V2 New Feature)
+
+V2 adds an optional `scan` field for JPEG outputs, controlling the JPEG scan/encoding type — a capability with no V1 equivalent. This mirrors the "Format Options" in Photoshop's own "Save As" JPEG dialog: Baseline ("Standard"), Baseline Optimized, and Progressive.
+
+<InlineAlert variant="info" slots="text1" />
+
+`scan` is only supported on **Create Composite** (`/v2/create-composite`), **Create Artboard** (`/v2/create-artboard`), and **Generate Manifest** (`/v2/generate-manifest`, for layer thumbnails). It is not supported on **Execute Actions** (`/v2/execute-actions`) or **Edit** (`/v2/edit`) — including it in a request to those endpoints returns a `400` error.
+
+**Baseline Optimized:**
+```json
+{
+  "mediaType": "image/jpeg",
+  "quality": "photoshop_max",
+  "scan": {
+    "type": "baseline",
+    "optimized": true
+  }
+}
+```
+
+**Progressive:**
+```json
+{
+  "mediaType": "image/jpeg",
+  "quality": "photoshop_max",
+  "scan": {
+    "type": "progressive",
+    "scans": 5
+  }
+}
+```
+
+`scan` fields:
+- `type` (required if `scan` is present) — `"baseline"` or `"progressive"`
+- `optimized` (optional boolean) — only valid when `type` is `"baseline"`. Uses optimized Huffman tables for a smaller file at the same quality. Default: `false`.
+- `scans` (optional integer) — only valid when `type` is `"progressive"`. Number of progressive scans; allowed values: `3`, `4`, `5`. If omitted while `type` is `"progressive"`, defaults to `3` scans.
+
+<InlineAlert variant="info" slots="text1" />
+
+`scan` is entirely optional. Omitting it produces the same Baseline ("Standard") JPEG output as before this feature existed — fully backward compatible. Sending `optimized` with `type: "progressive"`, `scans` with `type: "baseline"`, or a `scans` value outside `3`–`5` all return a `422` validation error.
+
 <HorizontalLine />
 
 ## PNG output migration

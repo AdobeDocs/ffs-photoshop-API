@@ -205,7 +205,7 @@ references. **Inline content is not supported for binary resources in V2.**
 |---|---|---|
 | `options.costOptimization` (boolean) | **Removed** | No equivalent; optimization is internal in V2 |
 | `outputs[].includeMetadata` (boolean) | **Removed** | No equivalent; implicit behavior |
-| `outputs[].embedICCProfiles` (boolean) | **Replaced** | Use `outputs[].iccProfile` object instead |
+| `outputs[].embedICCProfiles` (boolean) | **Removed** | `iccProfile` is not yet supported on `/v2/execute-actions` outputs; support is planned in a future release |
 
 ## 8. Output fields
 
@@ -218,9 +218,8 @@ references. **Inline content is not supported for binary resources in V2.**
 | `compression` (`small`/`medium`/`large`) | `compression` (10-level enum) | Breaking |
 | `overwrite` (boolean) | `shouldOverwrite` (boolean) | Breaking: renamed |
 | `includeMetadata` (boolean) | **Removed** | No equivalent |
-| `embedICCProfiles` (boolean) | **Removed** | Use `iccProfile` object |
+| `embedICCProfiles` (boolean) | **Removed** | `iccProfile` is not yet supported on `/v2/execute-actions` outputs; support is planned in a future release |
 | *(not in V1)* | `width`, `height`, `maxWidth` | New |
-| *(not in V1)* | `iccProfile` object | New (replaces `embedICCProfiles`) |
 | *(not in V1)* | `destination.embedded` (`base64`/`string`/`json`) | New |
 | *(not in V1)* | `destination.validityPeriod` (60–86400 sec) | New |
 | *(not in V1)* | `scriptOutputPattern` (glob string) | New; UXP only; hosted/embedded destinations only |
@@ -300,7 +299,7 @@ complete ActionJSON definitions.
 - [ ] Change JPEG `quality` from numeric (1–12) to string enum
 - [ ] Change PNG `compression` from `small`/`medium`/`large` to V2 enum
 - [ ] Rename `overwrite` to `shouldOverwrite` on outputs
-- [ ] Remove `includeMetadata` and `embedICCProfiles` from outputs; add `iccProfile` object if needed
+- [ ] Remove `includeMetadata` and `embedICCProfiles` from outputs (`iccProfile` is not yet supported on execute-actions outputs; support is planned in a future release)
 - [ ] Check resource counts are within V2 limits (10 for brushes/patterns/fonts, 25 for outputs)
 
 ## 15. New and noteworthy additional features

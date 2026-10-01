@@ -342,6 +342,23 @@ The quality parameter is optional. If not specified, the API uses different defa
 }
 ```
 
+### JPEG Scan Encoding Settings *(not in V1)*
+
+Optional `scan` field on JPEG outputs, controlling Baseline Standard/Optimized or Progressive (3/4/5 scans) encoding. Omit for unchanged Baseline behavior. See [Output Types Migration](output-types-migration.md#progressive-jpeg-scan-encoding-v2-new-feature) for the full field reference.
+
+**Example:**
+
+```json
+{
+  "mediaType": "image/jpeg",
+  "quality": "high",
+  "scan": {
+    "type": "progressive",
+    "scans": 5
+  }
+}
+```
+
 ### PNG compression settings
 
 V2 offers ten compression levels (following zlib/libpng standards):

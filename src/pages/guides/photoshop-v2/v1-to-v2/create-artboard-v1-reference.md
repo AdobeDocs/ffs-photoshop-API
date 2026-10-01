@@ -157,6 +157,7 @@ artboards. Total output width = sum of image widths + (spacing × (image count �
 | *(not in V1)* | `cropMode` | New: `trim_to_transparency`, `document_bounds`, `layer_bounds` |
 | `layers` | `layers` (max 100 items) | Same concept; V2 enforces 100 item limit |
 | `iccProfile` | `iccProfile` (not for PSDC output) | Same concept; V2 restricts PSDC |
+| *(not in V1)* | `scan` (JPEG only) | New: Baseline Standard/Optimized or Progressive (3/4/5 scans) encoding |
 
 ### Output array constraints
 
@@ -177,6 +178,10 @@ Both V1 and V2 require 1–25 outputs per request.
 <InlineAlert variant="info" slots="text"/>
 
 Use `"photoshop_max"` as the default for production workflows — it produces the highest quality JPEG output. Passing a numeric value (e.g., `7`) will return a validation error in V2.
+
+### JPEG Scan Encoding *(not in V1)*
+
+Optional `scan` field on JPEG outputs, e.g. `{"type": "progressive", "scans": 5}` or `{"type": "baseline", "optimized": true}`. Omit for unchanged Baseline ("Standard") behavior. See [Output Types Migration](output-types-migration.md#progressive-jpeg-scan-encoding-v2-new-feature) for the full field reference.
 
 ## 7. PNG compression mapping
 
@@ -248,7 +253,7 @@ The V2 status response structure is substantially different from V1:
 | | V1 | V2 | Notes |
 |---|---|---|---|
 | **Status location** | `outputs[n].status` | `status` (top-level) | Breaking |
-| **Status values** | `succeeded`, `failed`, `pending` | `pending`, `running`, `succeeded`, `failed` | `running` added |
+| **Status values** | `succeeded`, `failed`, `pending` | `not_started`, `running`, `succeeded`, `failed` | `running` added |
 | **Timestamps** | `outputs[n].created`, `outputs[n].modified` | `createdTime`, `modifiedTime` (top-level) | Breaking |
 | **Output URL** | `outputs[n]._links.renditions[m].href` | `result.outputs[n].destination.url` | Breaking |
 | **Outputs location** | `outputs[]` (top-level) | `result.outputs[]` | Breaking |
