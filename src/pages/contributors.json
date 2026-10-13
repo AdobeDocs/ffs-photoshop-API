@@ -1,7 +1,7 @@
 {
-  "total": 75,
+  "total": 76,
   "offset": 0,
-  "limit": 75,
+  "limit": 76,
   "data": [
     {
       "page": "/",
@@ -36,7 +36,7 @@
         "https://avatars.githubusercontent.com/u/43320248?v=4",
         "https://avatars.githubusercontent.com/u/41382203?v=4"
       ],
-      "lastUpdated": "9/29/2026"
+      "lastUpdated": "10/1/2026"
     },
     {
       "page": "/getting-started/",
@@ -78,7 +78,7 @@
     {
       "page": "/getting-started/uxp/",
       "avatars": [],
-      "lastUpdated": "5/4/2026"
+      "lastUpdated": "10/1/2026"
     },
     {
       "page": "/getting-started/v2-ga/",
@@ -207,7 +207,7 @@
       "avatars": [
         "https://avatars.githubusercontent.com/u/195011431?v=4"
       ],
-      "lastUpdated": "8/31/2026"
+      "lastUpdated": "10/1/2026"
     },
     {
       "page": "/guides/photoshop-v2/v1-to-v2/actions-migration",
@@ -215,7 +215,7 @@
         "https://avatars.githubusercontent.com/u/40157092?v=4",
         "https://avatars.githubusercontent.com/u/195011431?v=4"
       ],
-      "lastUpdated": "8/13/2026"
+      "lastUpdated": "10/1/2026"
     },
     {
       "page": "/guides/photoshop-v2/v1-to-v2/artboard-migration",
@@ -274,7 +274,7 @@
         "https://avatars.githubusercontent.com/u/40157092?v=4",
         "https://avatars.githubusercontent.com/u/195011431?v=4"
       ],
-      "lastUpdated": "8/13/2026"
+      "lastUpdated": "10/1/2026"
     },
     {
       "page": "/guides/photoshop-v2/v1-to-v2/create-composite-v1-reference",
@@ -282,7 +282,7 @@
         "https://avatars.githubusercontent.com/u/43320248?v=4",
         "https://avatars.githubusercontent.com/u/195011431?v=4"
       ],
-      "lastUpdated": "7/2/2026"
+      "lastUpdated": "10/1/2026"
     },
     {
       "page": "/guides/photoshop-v2/v1-to-v2/document-creation-migration",
@@ -312,7 +312,7 @@
       "avatars": [
         "https://avatars.githubusercontent.com/u/195011431?v=4"
       ],
-      "lastUpdated": "5/6/2026"
+      "lastUpdated": "10/1/2026"
     },
     {
       "page": "/guides/photoshop-v2/v1-to-v2/export-layers-migration",
@@ -320,14 +320,14 @@
         "https://avatars.githubusercontent.com/u/43320248?v=4",
         "https://avatars.githubusercontent.com/u/195011431?v=4"
       ],
-      "lastUpdated": "8/31/2026"
+      "lastUpdated": "10/1/2026"
     },
     {
       "page": "/guides/photoshop-v2/v1-to-v2/format-conversion-migration",
       "avatars": [
         "https://avatars.githubusercontent.com/u/195011431?v=4"
       ],
-      "lastUpdated": "5/6/2026"
+      "lastUpdated": "10/1/2026"
     },
     {
       "page": "/guides/photoshop-v2/v1-to-v2/guides-v2/",
@@ -341,7 +341,7 @@
       "avatars": [
         "https://avatars.githubusercontent.com/u/195011431?v=4"
       ],
-      "lastUpdated": "6/2/2026"
+      "lastUpdated": "10/1/2026"
     },
     {
       "page": "/guides/photoshop-v2/v1-to-v2/guides-v2/execute-actions-models",
@@ -368,7 +368,7 @@
         "https://avatars.githubusercontent.com/u/43320248?v=4",
         "https://avatars.githubusercontent.com/u/195011431?v=4"
       ],
-      "lastUpdated": "6/23/2026"
+      "lastUpdated": "10/1/2026"
     },
     {
       "page": "/guides/photoshop-v2/v1-to-v2/key-improvements",
@@ -421,7 +421,7 @@
         "https://avatars.githubusercontent.com/u/43320248?v=4",
         "https://avatars.githubusercontent.com/u/195011431?v=4"
       ],
-      "lastUpdated": "6/23/2026"
+      "lastUpdated": "10/1/2026"
     },
     {
       "page": "/guides/photoshop-v2/v1-to-v2/layer-operations-text",
@@ -438,7 +438,7 @@
         "https://avatars.githubusercontent.com/u/43320248?v=4",
         "https://avatars.githubusercontent.com/u/195011431?v=4"
       ],
-      "lastUpdated": "8/31/2026"
+      "lastUpdated": "10/1/2026"
     },
     {
       "page": "/guides/photoshop-v2/v1-to-v2/manifest-migration",
@@ -446,7 +446,7 @@
         "https://avatars.githubusercontent.com/u/43320248?v=4",
         "https://avatars.githubusercontent.com/u/195011431?v=4"
       ],
-      "lastUpdated": "7/2/2026"
+      "lastUpdated": "10/1/2026"
     },
     {
       "page": "/guides/photoshop-v2/v1-to-v2/manifest-response-migration",
@@ -461,14 +461,14 @@
       "avatars": [
         "https://avatars.githubusercontent.com/u/195011431?v=4"
       ],
-      "lastUpdated": "5/6/2026"
+      "lastUpdated": "10/1/2026"
     },
     {
       "page": "/guides/photoshop-v2/v1-to-v2/status-migration",
       "avatars": [
         "https://avatars.githubusercontent.com/u/195011431?v=4"
       ],
-      "lastUpdated": "5/6/2026"
+      "lastUpdated": "10/1/2026"
     },
     {
       "page": "/guides/photoshop-v2/v1-to-v2/v2-api-catalog",
@@ -476,7 +476,7 @@
         "https://avatars.githubusercontent.com/u/40157092?v=4",
         "https://avatars.githubusercontent.com/u/195011431?v=4"
       ],
-      "lastUpdated": "8/31/2026"
+      "lastUpdated": "10/1/2026"
     },
     {
       "page": "/guides/photoshop-v2/v1-to-v2/v2-whats-new",
@@ -485,7 +485,7 @@
         "https://avatars.githubusercontent.com/u/43320248?v=4",
         "https://avatars.githubusercontent.com/u/195011431?v=4"
       ],
-      "lastUpdated": "8/31/2026"
+      "lastUpdated": "10/1/2026"
     },
     {
       "page": "/guides/product-crop/",
@@ -562,6 +562,11 @@
         "https://avatars.githubusercontent.com/u/195011431?v=4"
       ],
       "lastUpdated": "5/12/2026"
+    },
+    {
+      "page": "/guides/workflows/smart_filters/",
+      "avatars": [],
+      "lastUpdated": "10/1/2026"
     }
   ],
   ":type": "sheet"
