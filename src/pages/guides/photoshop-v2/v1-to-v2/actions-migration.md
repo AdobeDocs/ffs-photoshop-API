@@ -686,8 +686,9 @@ const { app } = require("photoshop");
 const fs = require("fs");
 const path = require("path");
 
-// using plugin-temp: to access plugin temporary directory
-const outputFile = 'plugin-temp:/generated.json';
+// plugin-temp:/ is the only writable path in the sandbox.
+// Absolute paths (e.g. C:/Users/...) and relative paths throw "Route not found".
+const outputFile = "plugin-temp:/generated.json";
 
 async function main() {
 
@@ -698,15 +699,15 @@ async function main() {
     timestamp: new Date().toISOString(),
   };
 
-  // Save output files to the UXP temp folder
-  fs.writeFileSync(outputFile, JSON.stringify(result, null, 2));
+  // Save output files to the UXP plugin-temp:/ directory
+  fs.writeFileSync(outputFile, JSON.stringify(result, null, 2), "utf8");
 
   console.log("Output saved to:", outputFile);
 }
 
 main().catch((err) => {
   console.error("Error:", err);
-  process.exit(1);
+  throw err; // propagate — process.exit() is not available in the sandbox
 });
 ```
 
@@ -815,8 +816,8 @@ Maximum of 25 additional contents allowed per request. Use the array index to re
 
 1. **File Extension:** UXP scripts use `.psjs` extension (Photoshop JavaScript) to distinguish them from generic JavaScript files
 2. **Output Path:** Write output files to `plugin-temp:/filename` (e.g., `plugin-temp:/result.json`)
-3. **Path Handling:** Use `path.join()` to construct file paths - NEVER use hardcoded separators like `"/"` or `"\\"`
-4. **Path Utilities:** Use `path.dirname()`, `path.basename()`, and other Node.js path module functions
+3. **Path Handling:** Write output files directly to `plugin-temp:/filename` — only `path.resolve` and `path.basename` are available in the sandbox; `path.join`, `path.dirname`, and `path.extname` are not available
+4. **Path Utilities:** Only `path.resolve()` and `path.basename()` are available in the execute-actions sandbox
 5. **Platform-Agnostic:** Avoid platform-specific code or APIs (Windows/macOS/Linux)
 6. **Descriptive Names:** Use descriptive filenames for outputs
 7. **Output Patterns:** Specify the filename or pattern in `scriptOutputPattern` parameter
@@ -827,7 +828,7 @@ Maximum of 25 additional contents allowed per request. Use the array index to re
 
 <InlineAlert variant="warning" slots="text"/>
 
-Never hardcode file paths or use platform-specific path separators in UXP scripts. Always use `path.join()` for constructing paths (e.g., `path.join(outputFolder, "result.json")` instead of `outputFolder + "/result.json"`). This prevents runtime issues across different operating systems.
+`path.join()`, `path.dirname()`, and `path.extname()` are **not available** in the execute-actions sandbox. Only `path.resolve()` and `path.basename()` are supported. Write output files directly to `plugin-temp:/filename` (e.g., `"plugin-temp:/result.json"`) rather than constructing paths dynamically.
 
 <InlineAlert variant="info" slots="text"/>
 

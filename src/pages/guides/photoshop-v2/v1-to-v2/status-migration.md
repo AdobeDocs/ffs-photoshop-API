@@ -88,7 +88,7 @@ curl -X GET \
 
 **Possible Status Values:**
 
-- `pending` - Job is queued but not yet started
+- `not_started` - Job is queued but not yet started
 - `running` - Job is currently processing
 - `succeeded` - Job completed successfully
 - `failed` - Job failed with errors
@@ -167,7 +167,7 @@ async function pollJobStatus(jobId, maxAttempts = 60, intervalMs = 5000) {
       throw new Error(`Job failed: ${JSON.stringify(status.errorDetails)}`);
     }
 
-    // Status is 'pending' or 'running', wait and retry
+    // Status is 'not_started' or 'running', wait and retry
     await new Promise((resolve) => setTimeout(resolve, intervalMs));
   }
 
@@ -180,7 +180,7 @@ async function pollJobStatus(jobId, maxAttempts = 60, intervalMs = 5000) {
 - Start with a 5-second polling interval
 - Implement exponential backoff for longer jobs
 - Set a reasonable maximum polling time
-- Handle all status values (pending, running, succeeded, failed)
+- Handle all status values (not_started, running, succeeded, failed)
 
 ### Polling with exponential backoff
 
@@ -382,7 +382,7 @@ Understanding the job lifecycle helps with proper status handling:
 ```text
 1. Job Submitted
    ↓
-2. pending → Job queued, waiting to start
+2. not_started → Job queued, waiting to start
    ↓
 3. running → Job actively processing
    ↓
@@ -442,7 +442,7 @@ async function processJob(jobId) {
               .join(", ")}`
           );
 
-        case "pending":
+        case "not_started":
         case "running":
           // Continue polling
           await new Promise((resolve) => setTimeout(resolve, pollInterval));
@@ -475,7 +475,7 @@ try {
 
 - [ ] Update base URL from `image.adobe.io` to `photoshop-api.adobe.io`
 - [ ] Change endpoint path to `/v2/status/{jobId}`
-- [ ] Update status value handling (pending, running, succeeded, failed)
+- [ ] Update status value handling (not_started, running, succeeded, failed)
 - [ ] Implement proper error handling for new error structure
 - [ ] Update polling logic with appropriate intervals
 - [ ] Handle different output types (external, hosted, embedded)
@@ -509,7 +509,7 @@ const url = `https://photoshop-api.adobe.io/v2/status/${jobId}`;
 ```javascript
 if (status.status === 'succeeded') { ... }
 else if (status.status === 'failed') { ... }
-else if (status.status === 'running' || status.status === 'pending') {
+else if (status.status === 'running' || status.status === 'not_started') {
   // Continue polling
 }
 ```

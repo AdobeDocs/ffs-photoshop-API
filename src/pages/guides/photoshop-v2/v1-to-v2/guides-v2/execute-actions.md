@@ -15,6 +15,8 @@ Learn how to automate Photoshop operations using Actions and UXP Scripts with th
 
 The **execute-actions workflow** allows you to execute Photoshop operations programmatically using Actions (JSON-formatted action descriptors and traditional binary `.atn` files) and UXP Scripts (modern JavaScript automation).
 
+To apply filters nondestructively to Smart Objects, see [Smart Filters with Execute Actions](../../../workflows/smart_filters/index.md).
+
 Key capabilities include:
 
 * **Actions and UXP Scripts**: Execute both traditional Actions (recorded operations) and modern UXP Scripts (JavaScript automation)
@@ -159,6 +161,19 @@ curl -X POST "https://photoshop-api.adobe.io/v2/execute-actions" \
 
 UXP scripts run in a sandboxed environment for security. The sandbox restricts file system access (limited to `plugin-temp:/` for output and `additionalContents` for input), blocks network requests, prevents shell command execution, and isolates scripts from system resources.
 
+**Supported `require()` modules (allowlist):**
+
+Only the following UXP shim modules are available inside the execute-actions sandbox. All other Node.js built-ins (`crypto`, `util`, `events`, `http`, `child_process`, etc.) throw `Module not found`. The `node:` prefix form (e.g. `node:fs`) is also not supported.
+
+| Module | Import | Available exports |
+|--------|--------|-------------------|
+| `photoshop` | `require("photoshop")` | Full Photoshop app, document, action, batchPlay API |
+| `uxp` | `require("uxp")` | `storage.localFileSystem`, shell, and other UXP platform APIs |
+| `fs` | `require("fs")` | `writeFileSync`, `readFileSync`, `readdirSync`, `unlinkSync` — writes are limited to **`plugin-temp:/`** paths; reads also work with `additionalContents` placeholder paths (`__ADDITIONAL_CONTENTS_PATH_0__`); absolute/relative paths throw `Route not found` |
+| `path` | `require("path")` | `resolve`, `basename` only — `join`, `dirname`, `extname` not available |
+| `os` | `require("os")` | `platform()` only (returns `"win32"`) |
+| `process` | `require("process")` | `version`, `platform` only |
+
 **Restricted operations:**
 
 - Cannot access arbitrary file paths on the server
@@ -194,7 +209,7 @@ curl -X POST "https://photoshop-api.adobe.io/v2/execute-actions" \
     ],
     "uxp": {
       "source": {
-        "content": "const { app } = require(\"photoshop\"); const fs = require(\"fs\"); async function main() { const configPath = \"__ADDITIONAL_CONTENTS_PATH_0__\"; const config = JSON.parse(fs.readFileSync(configPath, \"utf-8\")); const doc = app.activeDocument; if (config.applyResize && doc.width > config.maxWidth) { await app.batchPlay([{\"_obj\":\"imageSize\",\"width\":{\"_unit\":\"pixelsUnit\",\"_value\":config.maxWidth},\"constrainProportions\":true}], {}); } const report = { originalSize: { width: doc.width, height: doc.height }, configApplied: config, processedAt: new Date().toISOString() }; fs.writeFileSync(\"plugin-temp:/process-report.json\", JSON.stringify(report, null, 2)); } main();",
+        "content": "const { app } = require(\"photoshop\"); const fs = require(\"fs\"); async function main() { const configPath = \"__ADDITIONAL_CONTENTS_PATH_0__\"; const config = JSON.parse(fs.readFileSync(configPath, \"utf-8\")); const doc = app.activeDocument; if (config.applyResize && doc.width > config.maxWidth) { await app.batchPlay([{\"_obj\":\"imageSize\",\"width\":{\"_unit\":\"pixelsUnit\",\"_value\":config.maxWidth},\"constrainProportions\":true}], {}); } const report = { originalSize: { width: doc.width, height: doc.height }, configApplied: config, processedAt: new Date().toISOString() }; fs.writeFileSync(\"plugin-temp:/process-report.json\", JSON.stringify(report, null, 2), \"utf8\"); } main();",
         "contentType": "application/javascript"
       }
     }

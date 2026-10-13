@@ -19,6 +19,8 @@ keywords:
   - GenAI
   - hosted storage
   - cropMode
+  - progressive jpeg
+  - jpeg scan encoding
 ---
 
 # What's new in V2
@@ -263,7 +265,7 @@ V1 smart object behavior was inconsistent across add, edit, and replace operatio
 
 **New features in V2:**
 
-1. **Expanded File Type Support** — V2 adds SVG (`image/svg+xml`) and TIFF (`image/tiff`) as new smart object source types. V1 supported PSD, JPEG, and PNG.
+1. **Expanded File Type Support** — V2 adds SVG (`image/svg+xml`), TIFF (`image/tiff`), and AI / Adobe Illustrator (`application/illustrator`) ([AI file note](layer-operations-smart-objects.md#ai-file-note)) as new smart object source types. V1 supported PSD, JPEG, PNG, and PDF.
 
 2. **Linked Smart Objects** — V2 provides full support for linked smart objects (external files referenced by the PSD rather than embedded). Add new linked smart objects using `isLinked: true`:
 
@@ -474,14 +476,15 @@ Every output destination in V2 can specify an `iccProfile`:
       "mediaType": "image/jpeg",
       "destination": { "url": "https://storage.example.com/output.jpg" },
       "iccProfile": {
-        "standard": "sRGB IEC61966-2.1"
+        "type": "standard",
+        "name": "sRGB IEC61966-2.1"
       }
     }
   ]
 }
 ```
 
-Standard profiles include `sRGB IEC61966-2.1`, `Adobe RGB (1998)`, `ProPhoto RGB`, and others. You can also supply a custom `.icc` file via `iccProfile.custom.source.url`.
+Standard profiles include `sRGB IEC61966-2.1`, `Adobe RGB (1998)`, `Apple RGB`, `ColorMatch RGB`, and others. You can also supply a custom `.icc` file via `iccProfile.source.url` with `"type": "custom"`.
 
 See [ICC Profile Migration](icc-profile-migration.md) for the full list and constraints.
 
@@ -517,6 +520,33 @@ V2 consolidates these into a single `cropMode` enum on any output:
 `layer_bounds` is restricted to single-layer export and returns a validation error for multi-layer or document export.
 
 See [Export Layers Migration](export-layers-migration.md) for the full cropMode reference.
+### Progressive JPEG Scan Encoding
+
+<InlineAlert variant="info" slots="text1" />
+
+
+V2 lets you control the JPEG scan/encoding type per output — Baseline ("Standard"), Baseline Optimized, or Progressive with a configurable scan count. V1 had no equivalent; every JPEG was Baseline Standard.
+
+JPEG outputs from the supported endpoints can specify an optional `scan` field:
+
+```json
+{
+  "outputs": [
+    {
+      "mediaType": "image/jpeg",
+      "destination": { "url": "https://storage.example.com/output.jpg" },
+      "quality": "photoshop_max",
+      "scan": { "type": "progressive", "scans": 5 }
+    }
+  ]
+}
+```
+
+`scan` is available on `/v2/create-composite`, `/v2/create-artboard`, and `/v2/generate-manifest` (`exportOptions.scan`, for layer thumbnails) — not on `/v2/execute-actions` or `/v2/edit`. Omit `scan` entirely for unchanged Baseline Standard behavior.
+
+See [Output Types Migration](output-types-migration.md#progressive-jpeg-scan-encoding-v2-new-feature) for the full field reference.
+
+
 
 ## Architectural improvements
 

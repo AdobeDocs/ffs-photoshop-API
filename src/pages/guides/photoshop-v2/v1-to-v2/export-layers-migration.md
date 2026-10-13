@@ -56,6 +56,7 @@ For single-layer export, v2 supports: `image/jpeg`, `image/png`, `image/tiff`, `
 
 - **JPEG quality (when omitted):** `photoshop_max`. Allowed values: `very_poor`, `poor`, `low`, `medium`, `high`, `maximum`, `photoshop_max`.
 - **PNG compression (when omitted):** `default` (level 6); you can also set `medium`, `maximum`, etc. See [Output Types Migration – PNG](output-types-migration.md#png-output-migration).
+- **JPEG scan encoding (when omitted):** Baseline ("Standard"), unchanged from prior behavior. Both single-layer and multi-layer JPEG export accept the optional `scan` field for Baseline Optimized or Progressive (3/4/5 scans) encoding. See [Output Types Migration – Progressive JPEG Scan Encoding](output-types-migration.md#progressive-jpeg-scan-encoding-v2-new-feature).
 
 <HorizontalLine />
 
@@ -304,6 +305,7 @@ curl -X POST "https://photoshop-api.adobe.io/v2/create-composite" \
 - [ ] For multi-layer export, do not request PSD; use JPEG, PNG, or TIFF.
 - [ ] `cropMode` `trim_to_transparency` and `document_bounds` work for all export types; `layer_bounds` is single-layer only.
 - [ ] Use string enums for `quality` (JPEG) and `compression` (PNG); omit for defaults (`photoshop_max` / `default`).
+- [ ] `scan` is optional on JPEG layer exports — add for Baseline Optimized or Progressive encoding; omit for unchanged Baseline behavior.
 - [ ] `iccProfile` is optional on layer exports — add if you need color space conversion (see [ICC Profile Migration](icc-profile-migration.md)).
 
 ## Related guides
@@ -316,4 +318,4 @@ curl -X POST "https://photoshop-api.adobe.io/v2/create-composite" \
 
 <HorizontalLine />
 
-**Last Updated:** March 2026
+**Last Updated:** September 8, 2026

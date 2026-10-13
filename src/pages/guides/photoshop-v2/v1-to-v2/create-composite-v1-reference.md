@@ -444,6 +444,10 @@ V2: `{"apply": {"from": 0, "to": 4}, "characterStyle": {"font": {"postScriptName
 | 5–6 | `"high"` |
 | 7 | `"maximum"` |
 | *(not in V1)* | `"photoshop_max"` (recommended default for production) |
+### JPEG Scan Encoding *(not in V1)*
+
+Optional `scan` field on JPEG outputs, e.g. `{"type": "progressive", "scans": 5}` or `{"type": "baseline", "optimized": true}`. Omit for unchanged Baseline ("Standard") behavior. See [Output Types Migration](output-types-migration.md#progressive-jpeg-scan-encoding-v2-new-feature) for the full field reference.
+
 
 ### PNG compression
 
@@ -476,6 +480,7 @@ V1 accepted TIFF output via `renditionCreate`. TIFF is supported in V2 as an out
 | Feature | Notes |
 |---|---|
 | `iccProfile` on output | `{type: "standard", name: "..."}` or `{type: "custom", ...}` (CMYK supported via custom) |
+| `scan` on JPEG output | Baseline Standard/Optimized or Progressive (3/4/5 scans) encoding |
 | `cropMode: "bounds_of_layer"` | Single-layer export only — exports the bounding box of that layer |
 | `layers` filter | Supported in both V1 and V2; controls which layers are rendered |
 | Up to 25 outputs per request | vs. lower/unspecified V1 limit |

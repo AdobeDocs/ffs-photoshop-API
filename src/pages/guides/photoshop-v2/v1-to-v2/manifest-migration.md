@@ -244,6 +244,21 @@ Control thumbnail export quality:
 }
 ```
 
+For JPEG thumbnails, an optional `scan` field also controls the JPEG scan/encoding type (Baseline Standard/Optimized or Progressive) — see [Output Types Migration](output-types-migration.md#progressive-jpeg-scan-encoding-v2-new-feature) for the full field reference:
+
+```json
+{
+  "exportOptions": {
+    "mediaType": "image/jpeg",
+    "quality": "high",
+    "scan": {
+      "type": "progressive",
+      "scans": 5
+    }
+  }
+}
+```
+
 or
 
 ```json

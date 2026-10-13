@@ -726,8 +726,9 @@ When `transform` includes any of `dimension`, `angle`, or `skew`, pie-worker app
 - Layer type: V1 `"smartObject"` → V2 `"smart_object_layer"`
 - Source: V1 `input: {href, storage}` → V2 `smartObject.smartObjectFile.source.url` (nested deeper)
 - Linked flag: V1 `smartObject.linked` → V2 `smartObject.isLinked`
-- V2 adds SVG and TIFF as new source formats; V1 supported PSD, JPEG, and PNG
-- **Supported source file types:** PSD (`image/vnd.adobe.photoshop`), JPEG (`image/jpeg`), PNG (`image/png`), TIFF (`image/tiff`), SVG (`image/svg+xml`)
+- V2 adds SVG, TIFF, and AI (PDF-compatible saving required) as new source formats; V1 supported PSD, JPEG, PNG, and PDF
+- **Supported source file types:** PSD (`image/vnd.adobe.photoshop`), JPEG (`image/jpeg`), PNG (`image/png`), TIFF (`image/tiff`), SVG (`image/svg+xml`), AI (`application/illustrator`) (PDF-compatible saving required), PDF (`application/pdf`)
+- **AI file requirement:** AI files are only supported when the **Create PDF Compatible File** option was enabled when saving from Adobe Illustrator.
 - **Resize with linked smart objects:** Width-only resize (no layer edits) → ALL linked SOs are rasterized to pixel layers. Edit/add a linked SO in the same request + resize → that edited SO stays linked; all other linked SOs are rasterized.
 - Cannot replace a linked SO with an embedded SO (V2 limitation)
 - **SO canvas content scaling:** `transformMode` is a document-level layer operation and does NOT control how replacement content is scaled onto the SO canvas. SO canvas scaling is determined by `transform.dimension`: omitting it → proportional scale (aspect ratio preserved); providing it → stretch to exact dimensions. Use `transformMode: "fit"` or `"fill"` without `transform.dimension` for cutout/transparent-background assets.
@@ -1092,6 +1093,21 @@ For multiple layers: repeat the `select` + `set` sequence within the same string
 ```
 
 Use `plugin-temp:/filename.ext` path in UXP scripts to write output files to the plugin temporary directory (e.g., `plugin-temp:/result.json`). Then reference them in `scriptOutputPattern`.
+
+**Supported `require()` modules in the execute-actions UXP sandbox:**
+
+Only the following modules are available. Everything else (`crypto`, `util`, `events`, `http`, `child_process`, etc.) throws `Module not found`. `node:` prefix imports (e.g. `node:fs`) are not supported.
+
+| Module | Available exports |
+|--------|-------------------|
+| `require("photoshop")` | Full Photoshop app, document, action, batchPlay API |
+| `require("uxp")` | UXP platform — `storage.localFileSystem`, shell, etc. |
+| `require("fs")` | `writeFileSync`, `readFileSync`, `readdirSync`, `unlinkSync` — writes limited to **`plugin-temp:/`**; reads also work with `additionalContents` placeholder paths |
+| `require("path")` | `resolve`, `basename` only — `join`, `dirname`, `extname` not available |
+| `require("os")` | `platform()` only |
+| `require("process")` | `version`, `platform` only |
+
+`Buffer`, `__dirname`, `__filename` are **not** available as globals.
 
 **Script Output Discovery:**
 ```json
@@ -1508,6 +1524,37 @@ All output types share these common structural changes:
   "width": 2000
 }
 ```
+### Progressive JPEG Scan Encoding (V2 New Feature)
+
+Not a V1→V2 migration concern (no V1 equivalent) — a new optional `scan` field on JPEG outputs, controlling the JPEG scan/encoding type. Mirrors Photoshop's own "Save As" JPEG dialog Format Options: Baseline ("Standard"), Baseline Optimized, and Progressive.
+
+**Scope:** only `/v2/create-composite`, `/v2/create-artboard`, and `/v2/generate-manifest` (`exportOptions.scan`, for layer thumbnails). Sending `scan` to `/v2/execute-actions` or `/v2/edit` returns a `400` error (unrecognized field) — it is not silently ignored there.
+
+**Baseline Optimized:**
+```json
+{
+  "mediaType": "image/jpeg",
+  "quality": "photoshop_max",
+  "scan": { "type": "baseline", "optimized": true }
+}
+```
+
+**Progressive:**
+```json
+{
+  "mediaType": "image/jpeg",
+  "quality": "photoshop_max",
+  "scan": { "type": "progressive", "scans": 5 }
+}
+```
+
+**Fields:**
+- `type` (required if `scan` present): `"baseline"` or `"progressive"`
+- `optimized` (optional boolean, only valid with `type: "baseline"`): default `false`
+- `scans` (optional integer, only valid with `type: "progressive"`): allowed values `3`, `4`, `5`; defaults to `3` if omitted
+
+**Validation:** `optimized` with `type: "progressive"`, `scans` with `type: "baseline"`, or `scans` outside `3`–`5` all return `422`. Omitting `scan` entirely produces unchanged Baseline ("Standard") output — fully backward compatible.
+
 
 ### PNG compression migration
 
@@ -1747,7 +1794,7 @@ ICC profile support is a **new V2 capability** — V1 had no output color profil
 
 ICC profiles can be applied in two places:
 
-1. **On `outputs`** — controls the exported file's color space. Add `iccProfile` to any output in `/v2/create-composite`, `/v2/create-artboard`, or `/v2/execute-actions`. Supported for JPEG, PNG, TIFF, and PSD — **not for PSDC** (Cloud PSD).
+1. **On `outputs`** — controls the exported file's color space. Add `iccProfile` to any output in `/v2/create-composite` or `/v2/create-artboard`. Supported for JPEG, PNG, TIFF, and PSD — **not for PSDC** (Cloud PSD).
 2. **On `image` (document creation)** — sets the document's embedded color profile at creation time. Add `iccProfile` to the `image` block when creating a new document (no `image.source`). Supports both standard and custom profiles.
 
 ### Standard profiles
@@ -2659,7 +2706,7 @@ switch (status) {
   case 'failed':
     // Handle error
     break;
-  case 'pending':
+  case 'not_started':
   case 'running':
     // Continue polling
     break;
@@ -3198,7 +3245,7 @@ All V2 status responses share this base structure regardless of destination type
 | `outputs[]._links` | *removed* | No per-output hypermedia links |
 | `outputs[].input` | *removed* | No input echo in outputs |
 
-**Status Values:** `"pending"`, `"running"`, `"succeeded"`, `"failed"`
+**Status Values:** `"not_started"`, `"running"`, `"succeeded"`, `"failed"`
 
 ### Destination type patterns
 
@@ -3907,7 +3954,8 @@ Use this checklist when migrating or validating V1 → V2 code:
 - [ ] Source: V1 `input: {href, storage}` → V2 `smartObject.smartObjectFile.source.url`
 - [ ] Linked flag: `smartObject.linked` → `smartObject.isLinked`
 - [ ] `transformMode` required when using `transform` object: `"none"`, `"custom"`, `"fit"`, or `"fill"`
-- [ ] V2 adds SVG and TIFF as new source file types (not in V1); PSD, JPEG, and PNG were already supported in V1
+- [ ] V2 adds SVG, TIFF, and AI (PDF-compatible saving required) as new source file types (not in V1); PSD, JPEG, PNG, and PDF were already supported in V1
+- [ ] AI (PDF-compatible saving required) files require **Create PDF Compatible File** to have been enabled when saving from Illustrator
 - [ ] Width-only resize: linked SOs are rasterized to pixel layers unless their content is provided in the same request
 
 ### Text endpoint migration specific (`/pie/psdService/text`)
@@ -4000,7 +4048,7 @@ Use this checklist when migrating or validating V1 → V2 code:
 
 ### Status checking
 - [ ] Status endpoint uses v2 path
-- [ ] Handling all status values (pending, running, succeeded, failed)
+- [ ] Handling all status values (not_started, running, succeeded, failed)
 - [ ] Error details handled as array
 - [ ] Polling with appropriate interval (5 seconds recommended)
 - [ ] Timeout handling implemented
@@ -4096,11 +4144,14 @@ curl -X GET https://photoshop-api.adobe.io/v2/status/{jobId} \
 
 ## Document version
 
-**Version:** 1.26
+**Version:** 1.33
 **Created:** October 29, 2025
-**Last Updated:** August 11, 2026
+**Last Updated:** September 24, 2026
 
 **Coverage:**
+- Job status value `not_started` (correction; was documented as `pending`) — actual V2 status endpoint value
+- Progressive JPEG scan encoding (net new in V2, not available in V1): optional `scan` field (`type`: `baseline`/`progressive`, plus `optimized`/`scans`) on JPEG outputs, scoped to `/v2/create-composite`, `/v2/create-artboard`, and `/v2/generate-manifest` only (not `/v2/execute-actions` or `/v2/edit`); omitting `scans` while `type` is `"progressive"` defaults to 3 scans
+- `layerEffects.dropShadow[]` (net new in V2, not available in V1): full field reference, and known limitation making it non-functional on `group_layer` (silently ignored on both add and edit)
 - `group_layer` delete child-handling control: `shouldIncludeChildren` (`true` default deletes descendants; `false` deletes only the group shell and promotes children in place)
 - All migration guides consolidated
 - Artboard migration: images/source structure, artboardSpacing, `images[].name` (optional artboard naming, 1–255 chars), validation rules, common issues
@@ -4138,7 +4189,7 @@ curl -X GET https://photoshop-api.adobe.io/v2/status/{jobId} \
 - Artboard visibility behavior change: V1 ignores artboard container visibility (full canvas always rendered); V2 respects it (hidden artboards excluded, output dimensions shrink to visible content)
 - Adjustment layer operations: `adjustments.type` discriminant required, type mapping table, `exposureValue` rename, hue/sat `hueSaturationAdjustments[]` restructure, `localRange`, parameter ranges, `transformMode` not applicable
 - Text layer operations: character style range off-by-one (V1 `to`=length → V2 `apply.to`=inclusive end index), `font.postScriptName`, `text.frame` area/point types, bounds conversion, font options rename, `textOrientation`
-- Smart object operations: `smartObject.smartObjectFile.source.url` path, `isLinked`, resize-with-linked-SO rasterization behavior, SVG support, supported source file types (PSD, JPEG, PNG, TIFF, SVG); SVG and TIFF added in V2
+- Smart object operations: `smartObject.smartObjectFile.source.url` path, `isLinked`, resize-with-linked-SO rasterization behavior, SVG support, supported source file types (PSD, JPEG, PNG, TIFF, SVG, AI (PDF-compatible saving required), PDF); SVG, TIFF, and AI added in V2; AI (PDF-compatible saving required) files require Create PDF Compatible File option in Illustrator
 - `/pie/psdService/text` migration: no declarative V2 equivalent; use `execute-actions` with ActionJSON (fixed edits) or UXP (conditional/iterative); decision table
 - Blend mode location: top-level `opacity`/`blendMode` for most layers; `blendOptions` for `smart_object_layer`
 - Layer transforms: V1 `bounds` → V2 `transform {offset, dimension}` with required `transformMode: "custom"`; `transform` forbidden on `fit`/`fill`/`none` (400); fit/fill always at (0,0), use second request for custom positioning; two-pass for dimension/angle/skew (geometry first, then setOffset with priority: offset > alignment > restore original); anchor default (0,0)
@@ -4494,7 +4545,7 @@ Several Photoshop filter actions use an internal random seed that differs betwee
 |---|---|
 | `options.costOptimization` | **Removed** — no equivalent |
 | `outputs[].includeMetadata` | **Removed** — implicit |
-| `outputs[].embedICCProfiles` | **Replaced** by `outputs[].iccProfile` object |
+| `outputs[].embedICCProfiles` | **Removed** — `iccProfile` is not yet supported on `/v2/execute-actions` outputs; support is planned in a future release |
 
 ### Output field renames
 

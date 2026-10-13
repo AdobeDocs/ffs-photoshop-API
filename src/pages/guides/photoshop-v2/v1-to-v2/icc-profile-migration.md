@@ -126,9 +126,9 @@ ICC profiles are supported for the following output formats:
 
 ICC profiles are **not** supported for PSDC (Photoshop Cloud Document) output format. If you include `iccProfile` with a PSDC output, you will receive:
 
-> ICC profiles are not currently supported for PSDC (Photoshop Cloud Document) output format. Please remove the iccProfile field or use a different output format (JPEG, PNG, TIFF, or PSD) if ICC profile support is required.
+> ICC profiles are not currently supported for PSDC (Photoshop Cloud Document) output format. Please remove the iccProfile field or use a different output format (JPEG, TIFF, or PSD) if ICC profile support is required.
 
-**Solution:** Remove the `iccProfile` field from PSDC outputs, or use JPEG, PNG, TIFF, or PSD instead.
+**Solution:** Remove the `iccProfile` field from PSDC outputs, or use JPEG, TIFF, or PSD instead.
 
 ## Where ICC profile applies
 
@@ -138,7 +138,6 @@ Add `iccProfile` to any output in these endpoints:
 
 - `/v2/create-composite`
 - `/v2/create-artboard`
-- `/v2/execute-actions`
 
 ```json
 {
@@ -294,9 +293,9 @@ When combining `iccProfile` with a **group or artboard layer PSD export** (`outp
 ```
 
 **Error:**
-> ICC profiles are not currently supported for PSDC (Photoshop Cloud Document) output format. Please remove the iccProfile field or use a different output format (JPEG, PNG, TIFF, or PSD) if ICC profile support is required.
+> ICC profiles are not currently supported for PSDC (Photoshop Cloud Document) output format. Please remove the iccProfile field or use a different output format (JPEG, TIFF, or PSD) if ICC profile support is required.
 
-**Solution:** Remove `iccProfile` from PSDC outputs, or switch to JPEG, PNG, TIFF, or PSD.
+**Solution:** Remove `iccProfile` from PSDC outputs, or switch to JPEG, TIFF, or PSD.
 
 ### Error 2: Uppercase imageMode
 

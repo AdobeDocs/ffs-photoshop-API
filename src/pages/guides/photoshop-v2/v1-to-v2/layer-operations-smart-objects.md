@@ -238,6 +238,7 @@ Smart objects can contain various file types:
 - PSD (image/vnd.adobe.photoshop)
 - JPEG (image/jpeg)
 - PNG (image/png)
+- PDF (application/pdf)
 
 **V2 Supported:**
 
@@ -246,10 +247,16 @@ Smart objects can contain various file types:
 - PNG (image/png)
 - TIFF (image/tiff)
 - SVG (image/svg+xml)
+- AI / Adobe Illustrator (application/illustrator) ([AI file note](#ai-file-note))
+- PDF (application/pdf)
 
 <InlineAlert variant="info" slots="text"/>
 
 V2 supports SVG files as smart object sources, which can be useful for scalable graphics.
+
+### AI file note
+
+AI files are only supported when the **Create PDF Compatible File** option was enabled when saving from Adobe Illustrator.
 
 ## Transform Mode
 
@@ -1005,7 +1012,7 @@ When you edit or add a linked smart object in the same request as a resize, the 
 - ✅ Blend options (opacity, blendMode)
 - ✅ Placement options (top, bottom, above, below, into)
 - ✅ Reference layer by name or ID
-- ✅ Multiple source file types (PSD, JPEG, PNG, TIFF, SVG)
+- ✅ Multiple source file types (PSD, JPEG, PNG, TIFF, SVG, AI ([AI file note](#ai-file-note)), PDF)
 - ✅ Linked and embedded smart objects (`smartObject.isLinked`)
 - ✅ Resize (`width`/`maxWidth`) documents containing linked smart objects
 - ✅ `autoResize` flag for embedded SO replacement (preserve native dims/dpi vs legacy scale-to-canvas)

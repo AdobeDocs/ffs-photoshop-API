@@ -45,20 +45,25 @@ async function main() {
 }
 
 // Execute main function
-main().catch(err => {
-  console.error("Script failed:", err);
-  process.exit(1);
-});
+main();
 ```
 
-### Common Modules
+### Supported Modules (execute-actions sandbox)
 
-| Module | Import | Purpose |
-|--------|--------|---------|
-| `photoshop` | `require("photoshop")` | Core Photoshop app and document API |
-| `uxp.storage` | `require("uxp").storage` | File system access |
-| `fs` | `require("fs")` | Node.js-style file operations |
-| `batchPlay` | `app.batchPlay()` | Execute action descriptors (same as Actions) |
+When running UXP scripts via the execute-actions API, only the following `require()` modules are available. These are UXP shims — not full Node.js built-ins. Everything else (e.g. `crypto`, `util`, `events`, `http`, `child_process`) throws `Module not found`.
+
+| Module | Import | What's available |
+|--------|--------|-----------------|
+| `photoshop` | `require("photoshop")` | Core Photoshop app, document, action, and batchPlay API |
+| `uxp` | `require("uxp")` | UXP platform — `storage.localFileSystem`, shell, etc. |
+| `fs` | `require("fs")` | `writeFileSync`, `readFileSync`, `readdirSync`, `unlinkSync` — writes are limited to **`plugin-temp:/`** paths; reads also work with `additionalContents` placeholder paths (`__ADDITIONAL_CONTENTS_PATH_0__`); absolute/relative paths throw `Route not found` |
+| `path` | `require("path")` | `resolve`, `basename` only — `join`, `dirname`, `extname` are not available |
+| `os` | `require("os")` | `platform()` only — returns `"win32"`; `tmpdir()`, `hostname()` not available |
+| `process` | `require("process")` | `version` (e.g. `"uxp-9.4.1-0"`), `platform` only — `env`, `argv`, `exit()` not available |
+
+<InlineAlert variant="info" slots="text1" />
+
+`node:` prefix imports (e.g. `node:fs`, `node:path`) are **not** supported. Use the bare module names above.
 
 ## Running UXP Scripts
 
@@ -204,11 +209,8 @@ async function main() {
     metadata.processedAt = new Date().toISOString();
     metadata.finalLayerCount = doc.layers.length;
     
-    // Write metadata to output
-    fs.writeFileSync(
-      "<YOUR_OUTPUT_DIRECTORY>/metadata.json",
-      JSON.stringify(metadata, null, 2)
-    );
+    // Write to plugin-temp:/ — captured as output via scriptOutputPattern
+    fs.writeFileSync("plugin-temp:/metadata.json", JSON.stringify(metadata, null, 2), "utf8");
     
     console.log("Processing complete!");
     
@@ -218,10 +220,7 @@ async function main() {
   }
 }
 
-main().catch(err => {
-  console.error("Script failed:", err);
-  process.exit(1);
-});
+main();
 ```
 
 ### Example 2: Conditional Processing Based on Image Size
@@ -279,7 +278,7 @@ async function main() {
       blurApplied = true;
     }
     
-    // Export processing report
+    // Write to plugin-temp:/ — captured as output via scriptOutputPattern
     const report = {
       originalSize: { width, height },
       finalSize: { width: doc.width, height: doc.height },
@@ -288,7 +287,7 @@ async function main() {
       timestamp: new Date().toISOString()
     };
     
-    fs.writeFileSync("<YOUR_OUTPUT_DIRECTORY>/report.json", JSON.stringify(report, null, 2));
+    fs.writeFileSync("plugin-temp:/report.json", JSON.stringify(report, null, 2), "utf8");
     
   } catch (error) {
     console.error("Error:", error);
@@ -296,8 +295,5 @@ async function main() {
   }
 }
 
-main().catch(err => {
-  console.error("Script failed:", err);
-  process.exit(1);
-});
+main();
 ```
