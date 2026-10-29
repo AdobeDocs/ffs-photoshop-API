@@ -129,15 +129,6 @@ Many useful Photoshop operations are available in the v2 API. Here are just a fe
 
 Explore all available services in the [Photoshop API v2 guides](/guides/photoshop-v2/index.md) or browse endpoints in the [Photoshop API v2 reference](/api/photoshop-v2/index.md).
 
-## Migration from v1
-
-**Photoshop API v1 will reach end of life on July 31, 2026.** Teams should begin planning migration to v2 immediately to take advantage of the new capabilities and avoid service disruption.
-
-**Start your migration:**
-
-- [Photoshop API v2 guides](/guides/photoshop-v2/index.md) — v2 workflow documentation
-- [Photoshop API v2 reference](/api/photoshop-v2/index.md) — Full endpoint reference for the `photoshopv2-api.json` specification
-
 ## Discover
 
 <DiscoverBlock slots="heading, link, text"/>
