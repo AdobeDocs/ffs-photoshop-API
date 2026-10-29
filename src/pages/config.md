@@ -45,7 +45,6 @@
       - [Execute Actions workflow](/guides/execute-actions/index.md)
       - [Smart Filters with Execute Actions](/guides/workflows/smart_filters/index.md)
       - [Smart Object workflow](/guides/workflows/smart_object/index.md)
-      - [v2/edit API benchmarking](/guides/api-benchmarking/v2-edit-api-benchmarking.md)
       - [Execute Actions models reference](/guides/pegasus-worker-v2-models/index.md)
       - [AutoCrop feature guide](/guides/autocrop/index.md)
     - Photoshop API v1 guides header

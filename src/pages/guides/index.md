@@ -20,7 +20,6 @@ The v2 API offers a unified architecture, combined operations, and flexible stor
 * **[About Photoshop v2 API](photoshop-v2/index.md)** — Orientation for v2 guides.
 * **[Execute Actions workflow](execute-actions/index.md)** — Automate Photoshop operations using Actions and UXP Scripts.
 * **[Smart Object workflow](workflows/smart_object/index.md)** — Add linked smart objects and replace smart object content.
-* **[/v2/edit API benchmarking](api-benchmarking/v2-edit-api-benchmarking.md)** — Output performance by resolution, quality, and compression.
 
 For endpoint-level detail, see the [Photoshop API v2 reference](../api/photoshop-v2/index.md).
 

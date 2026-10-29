@@ -18,5 +18,4 @@ Use this section to find step-by-step guidance for the Photoshop v2 API. The v2 
 
 * **[Execute Actions workflow](/guides/execute-actions/index.md)** — Automate Photoshop operations using Actions and UXP Scripts.
 * **[Smart Object workflow](/guides/workflows/smart_object/index.md)** — Add linked smart objects and replace smart object content.
-* **[/v2/edit API benchmarking](/guides/api-benchmarking/v2-edit-api-benchmarking.md)** — Output performance by resolution, quality, and compression.
 * **[Manifest response reference](manifest-response-reference.md)** — The current `/v2/generate-manifest` response schema, layer type by layer type.
