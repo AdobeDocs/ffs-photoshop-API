@@ -15,7 +15,7 @@ Learn how to automate Photoshop operations using Actions and UXP Scripts with th
 
 The **execute-actions workflow** allows you to execute Photoshop operations programmatically using Actions (JSON-formatted action descriptors and traditional binary `.atn` files) and UXP Scripts (modern JavaScript automation).
 
-To apply filters nondestructively to Smart Objects, see [Smart Filters with Execute Actions](../../../workflows/smart_filters/index.md).
+To apply filters nondestructively to Smart Objects, see [Smart Filters with Execute Actions](../workflows/smart_filters/index.md).
 
 Key capabilities include:
 

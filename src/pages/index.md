@@ -125,23 +125,9 @@ This significantly expands what can be built with the API.
 Many useful Photoshop operations are available in the v2 API. Here are just a few:
 
 - **[Remove background](/guides/remove-background/index.md)** — Detect and isolate the main subject with AI and remove the background while preserving the subject for use in composites and cutouts.
-- **[Smart Objects](/guides/smart-objects-and-the-api/index.md)** — Create and replace embedded and linked Smart Objects in a PSD so new imagery fits the original layer bounds and keeps its aspect ratio.
-- **[Product Crop](/guides/product-crop/index.md)** — Smart-crop images by detecting the subject and framing it as the focal point.
-- **[ActionJSON](/guides/actionjson-endpoint/index.md)** — Apply Photoshop Actions from an ATN file programmatically and adjust the action payload for more flexible, dynamic edits.
 - **[Autocrop](/guides/autocrop/index.md)** — Auto-crop images by detecting the subject and framing it as the focal point.
 
 Explore all available services in the [Photoshop API v2 guides](/guides/photoshop-v2/index.md) or browse endpoints in the [Photoshop API v2 reference](/api/photoshop-v2/index.md).
-
-## Migration from v1
-
-**Photoshop API v1 will reach end of life on July 31, 2026.** Teams should begin planning migration to v2 immediately to take advantage of the new capabilities and avoid service disruption.
-
-To support a smooth transition, we provide topic-based migration guides covering edit, document, layer, actions, output, artboard, manifest, and status flows. Versioned `/v2` endpoints and a dedicated v2 OpenAPI reference exist alongside the legacy v1 reference, so you can compare contracts and plan migration without merging the two.
-
-**Start your migration:**
-
-- [Photoshop API v2 migration guides](/guides/photoshop-v2/index.md) — v1-to-v2 topic guides and v2 workflow documentation
-- [Photoshop API v2 reference](/api/photoshop-v2/index.md) — Full endpoint reference for the `photoshopv2-api.json` specification
 
 ## Discover
 
@@ -157,7 +143,7 @@ Get started with the Adobe Photoshop Firefly Services.
 
 [Photoshop API v2 guides](/guides/photoshop-v2/index.md)
 
-**Recommended.** Migration guides, v1-to-v2 topics, and workflow guides for the v2 API.
+**Recommended.** Workflow guides for the v2 API.
 
 <DiscoverBlock slots="link, text"/>
 
@@ -170,15 +156,3 @@ Get started with the Adobe Photoshop Firefly Services.
 [Tutorials](/guides/index.md)
 
 Explore our tutorials page for comprehensive guidance.
-
-<DiscoverBlock slots="link, text"/>
-
-[Photoshop API v1 guides (Deprecated)](/guides/v1/index.md)
-
-⚠️ **Deprecated — End of life July 31, 2026.** Migration to v2 is required. Reference only; do not use for new integrations.
-
-<DiscoverBlock slots="link, text"/>
-
-[Photoshop API v1 reference (Deprecated)](/api/index.md)
-
-⚠️ **Deprecated — End of life July 31, 2026.** Migration to v2 is required. Reference only; do not use for new integrations.
