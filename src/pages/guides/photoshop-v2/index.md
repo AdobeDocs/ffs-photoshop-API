@@ -1,29 +1,22 @@
 ---
 title: Guides - Photoshop v2 API
-description: Step-by-step guides for the Photoshop v2 API, including migration from v1 and detailed endpoint guides.
+description: Step-by-step guides for the Photoshop v2 API, including endpoint guides and workflows.
 hideBreadcrumbNav: true
 keywords:
   - Photoshop v2 API
   - guides
-  - migration
-  - v1 to v2
+  - workflows
 ---
 
 # Guides
 
-Guides help you get the most out of the Photoshop v2 API—from migrating from v1 to using specific endpoints and workflows.
+Guides help you get the most out of the Photoshop v2 API, from using specific endpoints to end-to-end workflows.
 
 ## Overview
 
-Use this section to find step-by-step guidance for the Photoshop v2 API. Whether you're new to the API or moving from the legacy v1 Photoshop or Lightroom APIs, start with the links below and then dive into the detailed guides for your use case.
+Use this section to find step-by-step guidance for the Photoshop v2 API. The v2 API offers a unified architecture, combined operations in a single call, and flexible storage.
 
-## Migrating from v1?
-
-If you're already using the legacy Photoshop or Lightroom APIs (v1), the v2 API offers a unified architecture, combined operations in a single call, and more flexible storage—with a clear path to migrate.
-
-**Start here:**
-
-* **[Migration to v2 overview](v1-to-v2/index.md)** — What's changing, breaking changes, and a step-by-step migration path with a reference table that maps each v1 endpoint to its v2 equivalent and the right guide.
-* **[Key improvements and architecture with v2](v1-to-v2/key-improvements.md)** — Why migrate: combined operations, flexible storage options, published action files, and other architectural benefits.
-
-From the migration overview you can jump to detailed guides for your endpoints: edit operations, format conversion, document creation, layer operations, actions, artboards, manifest, status, and convenience APIs.
+* **[Execute Actions workflow](/guides/execute-actions/index.md)** — Automate Photoshop operations using Actions and UXP Scripts.
+* **[Smart Object workflow](/guides/workflows/smart_object/index.md)** — Add linked smart objects and replace smart object content.
+* **[/v2/edit API benchmarking](/guides/api-benchmarking/v2_edit_api_benchmarking.md)** — Output performance by resolution, quality, and compression.
+* **[Manifest response reference](manifest-response-reference.md)** — The current `/v2/generate-manifest` response schema, layer type by layer type.
