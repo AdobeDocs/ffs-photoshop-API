@@ -95,6 +95,4 @@ Note: Resolution 7500×5000 and higher will timeout.
 
 PNG **`maximum`** compression increases encode time sharply at large resolutions compared to **`default`**. At the largest sizes, **`maximum`** may exceed job time limits for **`/v2/edit`** jobs (shown as **N/A**). For very large exports, prefer **`default`** or a lower compression level if you need reliable completion within typical job timeouts. For service limits, retries, and related behavior, see [Technical usage notes][2].
 
-<!-- Links -->
-
 [2]: ../../getting-started/technical-usage-notes/index.md

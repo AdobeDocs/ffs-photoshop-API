@@ -16,4 +16,4 @@ This section publishes **benchmarking results for unified API workloads**. Use t
 
 ## Available benchmarks
 
-- [/v2/edit API Benchmarking](v2_edit_api_benchmarking.md) — **`POST /v2/edit`** raster output by resolution, JPEG `quality`, and PNG `compression`.
+- [/v2/edit API Benchmarking](v2-edit-api-benchmarking.md) — **`POST /v2/edit`** raster output by resolution, JPEG `quality`, and PNG `compression`.

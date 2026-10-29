@@ -16,6 +16,6 @@ This page summarizes **measured output performance** for Photoshop Services work
 
 ## Detailed results
 
-- [/v2/edit API Benchmarking](../../api-benchmarking/v2_edit_api_benchmarking.md) — **`POST /v2/edit`** raster output by resolution, JPEG `quality`, and PNG `compression`.
+- [/v2/edit API Benchmarking](../../api-benchmarking/v2-edit-api-benchmarking.md) — **`POST /v2/edit`** raster output by resolution, JPEG `quality`, and PNG `compression`.
 
 For prerequisites and environment setup, see [Using these guides](../../index.md).

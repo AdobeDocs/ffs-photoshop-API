@@ -19,6 +19,7 @@
     - [Guides](/guides/index.md)
     - API Reference
         - [Photoshop API v2](/api/photoshop-v2/index.md) - All v2 endpoints
+        - [Photoshop API v1](/api/index.md) - All v1 endpoints
 
 - buttons:
     - [Support](https://airtable.com/appu5RTWgdM95jynx/pagyuT1qspNJcPU2E/form)
@@ -44,7 +45,7 @@
       - [Execute Actions workflow](/guides/execute-actions/index.md)
       - [Smart Filters with Execute Actions](/guides/workflows/smart_filters/index.md)
       - [Smart Object workflow](/guides/workflows/smart_object/index.md)
-      - [v2/edit API benchmarking](/guides/api-benchmarking/v2_edit_api_benchmarking.md)
+      - [v2/edit API benchmarking](/guides/api-benchmarking/v2-edit-api-benchmarking.md)
       - [Execute Actions models reference](/guides/pegasus-worker-v2-models/index.md)
       - [AutoCrop feature guide](/guides/autocrop/index.md)
     - Photoshop API v1 guides header
