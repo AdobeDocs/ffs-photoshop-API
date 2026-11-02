@@ -84,19 +84,34 @@ export PS_FF_SERVICES_ACCESS_TOKEN=<Your_Access_Token>
 
 ## Execute an API call
 
-Once you've created your token, you can make your first API call:
+Once you've created your token, you can make your first API call. This example generates a manifest for a PSD stored at a signed URL:
 
 ``` shell
-curl --request GET \
-  --url https://image.adobe.io/pie/psdService/hello \
+curl --request POST \
+  --url https://photoshop-api.adobe.io/v2/generate-manifest \
   --header "Authorization: Bearer $PS_FF_SERVICES_ACCESS_TOKEN" \
-  --header "x-api-key: $PS_FF_SERVICES_CLIENT_ID"
+  --header "x-api-key: $PS_FF_SERVICES_CLIENT_ID" \
+  --header "Content-Type: application/json" \
+  --data '{
+    "image": {
+      "source": { "url": "<SIGNED_GET_URL>" }
+    },
+    "outputs": [
+      {
+        "destination": { "url": "<MANIFEST_OUTPUT_URL>" },
+        "mediaType": "application/json"
+      }
+    ]
+  }'
 ```
 
-You'll see the response:
+You'll see a response that contains the job ID and the URL to poll for the job's status:
 
-```bash
-Welcome to the Photoshop API!
+```json
+{
+  "jobId": "63c6e812-6cb8-43de-8a60-3681a9ec6feb",
+  "statusUrl": "https://photoshop-api.adobe.io/v2/status/63c6e812-6cb8-43de-8a60-3681a9ec6feb"
+}
 ```
 
 Congratulations! You made your first request to the Photoshop API.

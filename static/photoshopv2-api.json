@@ -1550,7 +1550,7 @@
           },
           "uprightMode": {
             "type": "string",
-            "description": "The upright mode to use for straightening. When not specified, performs basic straighten without upright correction (V1 behavior). Specify a mode to enable upright correction.",
+            "description": "The upright mode to use for straightening. When not specified, performs basic straighten without upright correction. Specify a mode to enable upright correction.",
             "enum": [
               "auto",
               "full",
@@ -3071,6 +3071,10 @@
             "default": true,
             "description": "Controls how the embedded smart object content is sized when a replacement file is provided. Only applies to embedded smart objects (isLinked=false) with raster (PNG, JPEG, TIFF, PSD) or PDF/AI replacement files. SVG, vector formats without intrinsic dimensions, and linked smart objects are unaffected. true (default): scales the replacement to match the original smart object's canvas dimensions and resolution. false: preserves the replacement file's native dimensions and dpi."
           },
+          "contentPlacement": {
+            "$ref": "#/components/schemas/SmartObjectContentPlacement",
+            "description": "Optional frame-contained replacement policy for an existing embedded smart object. Requires smartObjectFile.source and isLinked=false. Omit autoResize, transformMode and transform when using this option. Omitting contentPlacement preserves the existing replacement behavior."
+          },
           "isLinked": {
             "type": "boolean",
             "default": false,
@@ -3943,7 +3947,7 @@
               "unit": {
                 "type": "string",
                 "default": "pixels_unit",
-                "description": "Unit applied to width and height values. Use 'points_unit' for V1 payloads where dimensions are in typographic points. Defaults to pixels_unit.",
+                "description": "Unit applied to width and height values. Use 'points_unit' when dimensions are in typographic points. Defaults to pixels_unit.",
                 "enum": [
                   "pixels_unit",
                   "percent_unit",
@@ -5374,6 +5378,43 @@
             "description": "File reference for the smart object. Supported file formats: PSD, PNG, JPEG, TIFF, SVG, PDF, AI. Optional."
           }
         }
+      },
+      "SmartObjectContentPlacement": {
+        "type": "object",
+        "description": "Opt-in, non-destructive replacement within an existing embedded smart object's frame. The ingredient is retained inside a nested smart object. Alignment is relative to the frame, not the document canvas. Linked, skewed/perspective and pixel-masked rotated frames are unsupported.",
+        "properties": {
+          "horizontalAlign": {
+            "type": "string",
+            "default": "left",
+            "description": "Horizontal alignment within the smart object's frame.",
+            "enum": [
+              "left",
+              "center",
+              "right"
+            ]
+          },
+          "mode": {
+            "type": "string",
+            "description": "fit contains the full ingredient; fill covers the frame and clips visible overflow while retaining the source.",
+            "enum": [
+              "fit",
+              "fill"
+            ]
+          },
+          "verticalAlign": {
+            "type": "string",
+            "default": "top",
+            "description": "Vertical alignment within the smart object's frame.",
+            "enum": [
+              "top",
+              "center",
+              "bottom"
+            ]
+          }
+        },
+        "required": [
+          "mode"
+        ]
       },
       "SmartObjectFile": {
         "type": "object",

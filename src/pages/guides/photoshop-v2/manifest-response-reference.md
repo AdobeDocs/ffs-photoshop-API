@@ -12,11 +12,11 @@ keywords:
 
 # Manifest Response Reference (V2)
 
-This guide documents the current `/v2/generate-manifest` response schema, layer type by layer type. Unlike the [Manifest Response Migration guide](v1-to-v2/manifest-response-migration.md), this is **not** a V1-to-V2 comparison — it describes the V2 schema as it stands today, independent of what came before. Sections are added as layer types are verified against live manifest output.
+This guide documents the current `/v2/generate-manifest` response schema, layer type by layer type. This is **not** a V1-to-V2 comparison — it describes the V2 schema as it stands today, independent of what came before. Sections are added as layer types are verified against live manifest output.
 
 ## Gradient Layer
 
-A gradient fill layer is returned with `"type": "gradient_layer"`. It carries all the common per-layer fields (`id`, `bounds`/frame data, `blendOptions`, masks, etc. — see [Per-Layer Common Fields](v1-to-v2/manifest-response-migration.md#per-layer-common-fields)) plus a gradient-specific `fill` object.
+A gradient fill layer is returned with `"type": "gradient_layer"`. It carries all the common per-layer fields (`id`, `bounds`/frame data, `blendOptions`, masks, etc.) plus a gradient-specific `fill` object.
 
 ### Full layer example
 
