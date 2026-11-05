@@ -13,4 +13,4 @@ keywords:
   - Photoshop API Reference
 ---
 
-<RedoclyAPIBlock src="/firefly-services/docs/photoshop/photoshopv2-api.json" hideTryItPanel scrollYOffset={64} generateCodeSamples="languages: [{lang: 'curl'}]" />
+<RedoclyAPIBlock src="/firefly-services/docs/photoshop/photoshop_combined_api.json" hideTryItPanel scrollYOffset={64} generateCodeSamples="languages: [{lang: 'curl'}]" />

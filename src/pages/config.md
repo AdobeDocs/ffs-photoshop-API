@@ -18,7 +18,6 @@
     - [Getting Started](/getting-started/index.md)
     - [Guides](/guides/index.md)
     - API Reference
-        - [Photoshop API v1](/api/index.md) - All v1 endpoints
         - [Photoshop API v2](/api/photoshop-v2/index.md) - All v2 endpoints
 
 - buttons:
