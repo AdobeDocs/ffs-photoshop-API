@@ -1,0 +1,26 @@
+{
+  "image": {
+    "source": {
+      "url": "{{INPUT_URL}}"
+    }
+  },
+  "edits": {
+    "presets": [
+      {
+        "url": "{{PRESET_URL_1}}"
+      },
+      {
+        "url": "{{PRESET_URL_2}}"
+      }
+    ]
+  },
+  "outputs": [
+    {
+      "destination": {
+        "validityPeriod": 3600
+      },
+      "mediaType": "image/png",
+      "compression": "medium"
+    }
+  ]
+}

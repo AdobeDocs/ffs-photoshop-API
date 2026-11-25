@@ -1,0 +1,38 @@
+{
+  "image": {
+    "source": {
+      "url": "{{INPUT_URL}}"
+    }
+  },
+  "edits": {
+    "autoTone": true
+  },
+  "outputs": [
+    {
+      "destination": {
+        "url": "{{OUTPUT_PUT_URL}}"
+      },
+      "mediaType": "image/jpeg",
+      "quality": "high"
+    },
+    {
+      "destination": {
+        "validityPeriod": 3600
+      },
+      "mediaType": "image/png",
+      "compression": "medium"
+    },
+    {
+      "destination": {
+        "validityPeriod": 3600
+      },
+      "mediaType": "image/x-adobe-dng"
+    },
+    {
+      "destination": {
+        "embedded": "string"
+      },
+      "mediaType": "application/rdf+xml"
+    }
+  ]
+}

@@ -2225,6 +2225,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/TiffOutput"
+                },
+                {
+                  "$ref": "#/components/schemas/WebpOutput"
                 }
               ]
             },
@@ -3514,15 +3517,11 @@
         "properties": {
           "mediaType": {
             "type": "string",
-            "description": "The desired output format. Required. Supported formats: image/jpeg, image/png",
+            "description": "The desired output format. Required. Supported formats: image/jpeg, image/png, image/webp",
             "enum": [
               "image/jpeg",
               "image/png",
-              "image/tiff",
-              "image/vnd.adobe.photoshop",
-              "document/vnd.adobe.cpsd+dcxucf",
-              "document/vnd.adobe.cpsd+dcx",
-              "application/json"
+              "image/webp"
             ]
           }
         },
@@ -3667,6 +3666,9 @@
               },
               {
                 "$ref": "#/components/schemas/PngExportOptions"
+              },
+              {
+                "$ref": "#/components/schemas/WebpExportOptions"
               }
             ]
           },
@@ -5534,6 +5536,10 @@
               "horizontal",
               "vertical"
             ]
+          },
+          "dynamicText": {
+            "$ref": "#/components/schemas/DynamicText",
+            "description": "Dynamic text configuration. Optional. When present, layoutType is required and lineGap/wordGap are only valid when layoutType is not none."
           }
         }
       },
@@ -5936,6 +5942,169 @@
           "image/png",
           "image/webp",
           "image/vnd.adobe.photoshop"
+        ]
+      },
+      "DynamicText": {
+        "type": "object",
+        "description": "Dynamic text configuration for text layers. Optional; when present, layoutType is required.",
+        "properties": {
+          "layoutType": {
+            "type": "string",
+            "description": "The dynamic text layout type. Required when dynamicText is present.",
+            "enum": [
+              "none",
+              "block_fit"
+            ]
+          },
+          "lineGap": {
+            "type": "number",
+            "format": "double",
+            "default": 0.25,
+            "description": "Relative line gap for the dynamic layout. Optional. Only valid when layoutType is not none.",
+            "maximum": 2,
+            "minimum": 0
+          },
+          "wordGap": {
+            "type": "number",
+            "format": "double",
+            "default": 1.0,
+            "description": "Relative word gap for the dynamic layout. Optional. Only valid when layoutType is not none.",
+            "maximum": 3,
+            "minimum": 0
+          }
+        },
+        "required": [
+          "layoutType"
+        ]
+      },
+      "WebpExportOptions": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ExportOptions"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "compression": {
+                "type": "string",
+                "default": "lossy",
+                "description": "WebP compression mode. Defaults to lossy.",
+                "enum": [
+                  "lossy",
+                  "lossless"
+                ]
+              },
+              "includeEXIFData": {
+                "type": "boolean",
+                "default": false,
+                "description": "Include EXIF metadata."
+              },
+              "includePsExtras": {
+                "type": "boolean",
+                "default": false,
+                "description": "Include Photoshop-specific metadata."
+              },
+              "includeXMPData": {
+                "type": "boolean",
+                "default": false,
+                "description": "Include XMP metadata."
+              },
+              "quality": {
+                "type": "integer",
+                "format": "int32",
+                "description": "Lossy WebP quality, 0 through 100 inclusive. Defaults to 100 when omitted for lossy compression. Must be absent for lossless compression.",
+                "maximum": 100,
+                "minimum": 0
+              }
+            }
+          }
+        ],
+        "description": "Static WebP thumbnail export options. Resizing, ICC profiles, animation and content credential signing are not supported.",
+        "required": [
+          "mediaType"
+        ]
+      },
+      "WebpOutput": {
+        "type": "object",
+        "description": "Static merged WebP export for create-composite only. Supports document, single-layer and multi-layer targets. Resizing, ICC profiles, animation and content credential signing are not supported.",
+        "properties": {
+          "compression": {
+            "type": "string",
+            "default": "lossy",
+            "description": "WebP compression mode. Defaults to lossy.",
+            "enum": [
+              "lossy",
+              "lossless"
+            ]
+          },
+          "cropMode": {
+            "type": "string",
+            "description": "Crop mode for export output. layer_bounds requires exactly one layer. Optional.",
+            "enum": [
+              "trim_to_transparency",
+              "document_bounds",
+              "layer_bounds"
+            ]
+          },
+          "destination": {
+            "description": "The destination details for the output file. Required.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CreativeCloudDestination"
+              },
+              {
+                "$ref": "#/components/schemas/EmbeddedDestination"
+              },
+              {
+                "$ref": "#/components/schemas/HostedDestination"
+              },
+              {
+                "$ref": "#/components/schemas/UrlDestination"
+              }
+            ]
+          },
+          "includeEXIFData": {
+            "type": "boolean",
+            "default": false,
+            "description": "Include EXIF metadata."
+          },
+          "includePsExtras": {
+            "type": "boolean",
+            "default": false,
+            "description": "Include Photoshop-specific metadata."
+          },
+          "includeXMPData": {
+            "type": "boolean",
+            "default": false,
+            "description": "Include XMP metadata."
+          },
+          "layers": {
+            "type": "array",
+            "description": "Layers to export. Specify layers by id, name, or both. Optional.",
+            "items": {
+              "$ref": "#/components/schemas/ExportReferenceLayer"
+            },
+            "maxItems": 100,
+            "minItems": 0
+          },
+          "mediaType": {
+            "type": "string",
+            "description": "The desired output format.",
+            "enum": [
+              "image/webp"
+            ]
+          },
+          "quality": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Lossy WebP quality, 0 through 100 inclusive. Defaults to 100 when omitted for lossy compression. Must be absent for lossless compression.",
+            "maximum": 100,
+            "minimum": 0
+          }
+        },
+        "required": [
+          "destination",
+          "mediaType"
         ]
       }
     },

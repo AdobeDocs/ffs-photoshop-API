@@ -1,0 +1,15 @@
+{
+  "image": {
+    "source": {
+      "url": "{{INPUT_URL}}"
+    }
+  },
+  "outputs": [
+    {
+      "destination": {
+        "embedded": "json"
+      },
+      "mediaType": "application/json"
+    }
+  ]
+}
