@@ -1,0 +1,26 @@
+{
+  "image": {
+    "source": {
+      "url": "{{INPUT_URL}}"
+    }
+  },
+  "edits": {
+    "light": {
+      "blacks": -10,
+      "contrast": 15,
+      "exposure": 0.5,
+      "highlights": -40,
+      "shadows": 30,
+      "whites": 10
+    }
+  },
+  "outputs": [
+    {
+      "destination": {
+        "validityPeriod": 3600
+      },
+      "mediaType": "image/jpeg",
+      "quality": "photoshop_max"
+    }
+  ]
+}

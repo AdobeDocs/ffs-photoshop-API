@@ -1,0 +1,23 @@
+{
+  "image": {
+    "source": {
+      "url": "{{INPUT_URL}}"
+    }
+  },
+  "edits": {
+    "color": {
+      "saturation": -20,
+      "vibrance": 35,
+      "whiteBalance": "Auto"
+    }
+  },
+  "outputs": [
+    {
+      "destination": {
+        "validityPeriod": 3600
+      },
+      "mediaType": "image/jpeg",
+      "quality": "photoshop_max"
+    }
+  ]
+}

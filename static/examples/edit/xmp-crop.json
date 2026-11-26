@@ -1,0 +1,23 @@
+{
+  "image": {
+    "source": {
+      "url": "{{INPUT_URL}}"
+    }
+  },
+  "edits": {
+    "xmp": {
+      "source": {
+        "url": "{{XMP_URL}}"
+      }
+    }
+  },
+  "outputs": [
+    {
+      "destination": {
+        "validityPeriod": 3600
+      },
+      "mediaType": "image/jpeg",
+      "quality": "photoshop_max"
+    }
+  ]
+}

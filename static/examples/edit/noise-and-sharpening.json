@@ -1,0 +1,28 @@
+{
+  "image": {
+    "source": {
+      "url": "{{INPUT_URL}}"
+    }
+  },
+  "edits": {
+    "noiseReduction": {
+      "color": 25,
+      "luminance": 30
+    },
+    "sharpen": {
+      "detail": 30,
+      "edgeMasking": 40,
+      "radius": 1.2
+    },
+    "sharpness": 60
+  },
+  "outputs": [
+    {
+      "destination": {
+        "validityPeriod": 3600
+      },
+      "mediaType": "image/jpeg",
+      "quality": "photoshop_max"
+    }
+  ]
+}

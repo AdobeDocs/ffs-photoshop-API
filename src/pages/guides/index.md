@@ -18,6 +18,12 @@ Use this page to choose the right guide collection: **Photoshop API v2** (recomm
 The v2 API offers a unified architecture, combined operations, and flexible storage.
 
 * **[About Photoshop v2 API](photoshop-v2/index.md)** — Orientation for v2 guides.
+* **[Create Composite](create-composite/index.md)** — Create documents and edit document properties, layers, text, and Smart Objects.
+* **[Edit Images](edit/index.md)** — Apply photo adjustments, presets, and XMP settings.
+* **[Generate A Document Manifest](manifest/index.md)** — Inspect document properties and layers.
+* **[Input Files And Storage](shared-reference/input-files-and-storage.md)** — Prepare file sources and signed URLs.
+* **[Output Formats And Options](shared-reference/output-formats-and-options.md)** — Choose destinations, formats, and export settings.
+* **[Errors And Limits](errors-and-limits/index.md)** — Handle request and job errors.
 * **[Execute Actions workflow](execute-actions/index.md)** — Automate Photoshop operations using Actions and UXP Scripts.
 * **[Smart Object workflow](workflows/smart_object/index.md)** — Add linked smart objects and replace smart object content.
 
